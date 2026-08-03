@@ -84,7 +84,7 @@ $oJson       = new services_json();
       echo $oJson->encode(["iStatus"=>2, "sMensagem"=>urlencode("Funcionários não Encontrados")]);
       exit;
     } else {  
-      $iNroLinhas = pg_num_rows($rsConsultaFuncionarios);
+      $iNroLinhas = $rsConsultaFuncionarios === false || $rsConsultaFuncionarios === null ? 0 : pg_num_rows($rsConsultaFuncionarios);
     }  
     
   } else if ($oPost->tipo == "funcionario") {

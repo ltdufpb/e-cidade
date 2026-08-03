@@ -124,7 +124,7 @@ $oImpressao->setIp($sIp);
 					
 				}else{
 					
-					$iNumRows = pg_num_rows($rsBens);
+					$iNumRows = $rsBens === false || $rsBens === null ? 0 : pg_num_rows($rsBens);
 					for ( $i = 0; $i < $iNumRows; $i++  ) {
 							
 					  db_atutermometro($i, $iNumRows, 'termometro', 1, "Imprimindo etiquetas");

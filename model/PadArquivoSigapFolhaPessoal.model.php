@@ -189,7 +189,7 @@ final class PadArquivoSigapFolhaPessoal extends PadArquivoSigap
         // die($sSqlPessoal);
         
         $rsPessoal = db_query($sSqlPessoal);
-        $iTotalLinhas = pg_num_rows($rsPessoal);
+        $iTotalLinhas = $rsPessoal === false || $rsPessoal === null ? 0 : pg_num_rows($rsPessoal);
 
         for ($i = 0; $i < $iTotalLinhas; $i++) {
 

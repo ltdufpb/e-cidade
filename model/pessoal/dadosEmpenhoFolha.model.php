@@ -160,7 +160,7 @@ class dadosEmpenhoFolha
 
         if ($rsGerador) {
 
-            $iLinhasGerador = pg_num_rows($rsGerador);
+            $iLinhasGerador = $rsGerador === false || $rsGerador === null ? 0 : pg_num_rows($rsGerador);
 
             if ($iLinhasGerador > 0) {
 
@@ -336,7 +336,7 @@ class dadosEmpenhoFolha
 
                     if ($rsGeradorRubricas) {
 
-                        $iLinhasGeradorRubricas = pg_num_rows($rsGeradorRubricas);
+                        $iLinhasGeradorRubricas = $rsGeradorRubricas === false || $rsGeradorRubricas === null ? 0 : pg_num_rows($rsGeradorRubricas);
 
                         if ($iLinhasGeradorRubricas > 0) {
 
@@ -1552,7 +1552,7 @@ class dadosEmpenhoFolha
 
         if ($rsDadosEmp) {
 
-            $iLinhasDadosEmp = pg_num_rows($rsDadosEmp);
+            $iLinhasDadosEmp = $rsDadosEmp === false || $rsDadosEmp === null ? 0 : pg_num_rows($rsDadosEmp);
 
             if ($iLinhasDadosEmp > 0) {
 
@@ -1597,7 +1597,7 @@ class dadosEmpenhoFolha
 
         if ($rsDadosSlip) {
 
-            $iLinhasDadosSlip = pg_num_rows($rsDadosSlip);
+            $iLinhasDadosSlip = $rsDadosSlip === false || $rsDadosSlip === null ? 0 : pg_num_rows($rsDadosSlip);
 
             if ($iLinhasDadosSlip > 0) {
 
@@ -1730,7 +1730,7 @@ class dadosEmpenhoFolha
 
         if ($rsDadosRetencao) {
 
-            $iLinhasDadosRetencao = pg_num_rows($rsDadosRetencao);
+            $iLinhasDadosRetencao = $rsDadosRetencao === false || $rsDadosRetencao === null ? 0 : pg_num_rows($rsDadosRetencao);
 
             if ($iLinhasDadosRetencao > 0) {
 
@@ -2170,7 +2170,7 @@ class dadosEmpenhoFolha
 
         if ($rsPagExtra) {
 
-            $iLinhasPagExtra = pg_num_rows($rsPagExtra);
+            $iLinhasPagExtra = $rsPagExtra === false || $rsPagExtra === null ? 0 : pg_num_rows($rsPagExtra);
 
             if ($iLinhasPagExtra > 0) {
 
@@ -2414,7 +2414,7 @@ class dadosEmpenhoFolha
 
         if ($rsDevolucao) {
 
-            $iLinhasDevolucao = pg_num_rows($rsDevolucao);
+            $iLinhasDevolucao = $rsDevolucao === false || $rsDevolucao === null ? 0 : pg_num_rows($rsDevolucao);
 
             if ($iLinhasDevolucao > 0) {
 
@@ -2910,7 +2910,7 @@ class dadosEmpenhoFolha
 
         if ($rsGerador) {
 
-            $iLinhasGerador = pg_num_rows($rsGerador);
+            $iLinhasGerador = $rsGerador === false || $rsGerador === null ? 0 : pg_num_rows($rsGerador);
 
             if ($iLinhasGerador > 0) {
 
@@ -3530,7 +3530,7 @@ class dadosEmpenhoFolha
 
         if ($rsGerador) {
 
-            $iLinhasGerador = pg_num_rows($rsGerador);
+            $iLinhasGerador = $rsGerador === false || $rsGerador === null ? 0 : pg_num_rows($rsGerador);
 
             if ($iLinhasGerador > 0) {
 
@@ -4347,7 +4347,7 @@ class dadosEmpenhoFolha
         $sSqlRubricas .= "          recurso                                                       ";
 
         $rsDevolucao = db_query($sSqlRubricas);
-        $iLinhasDevolucao = pg_num_rows($rsDevolucao);
+        $iLinhasDevolucao = $rsDevolucao === false || $rsDevolucao === null ? 0 : pg_num_rows($rsDevolucao);
 
         if ($iLinhasDevolucao > 0) {
 

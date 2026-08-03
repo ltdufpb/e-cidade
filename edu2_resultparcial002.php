@@ -489,7 +489,7 @@ for ($x=0;$x<$linhas;$x++) {
              AND ed72_i_procavaliacao = $periodo
         ORDER BY ed59_i_ordenacao";
   $result5 = db_query($sql5);
-  $linhas5 = pg_num_rows($result5);
+  $linhas5 = $result5 === false || $result5 === null ? 0 : pg_num_rows($result5);
   $cont3 = 0;
   $somafaltas = 0;
   if($linhas5>0){
@@ -994,7 +994,7 @@ for ($x=0;$x<$linhas;$x++) {
            ORDER BY ed59_i_ordenacao";
 
    $result5 = db_query($sql5);
-   $linhas5 = pg_num_rows($result5);
+   $linhas5 = $result5 === false || $result5 === null ? 0 : pg_num_rows($result5);
    $cont3 = 0;
    $somafaltas = 0;
    if($linhas5>0){

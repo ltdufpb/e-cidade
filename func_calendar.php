@@ -121,8 +121,8 @@ function mostra_calendario($cltarefa,$cols,$id_usuario,$mes,$ano,$cor_livre,$cor
 //	echo "<tr><td>Seg</td><td>Ter</td><td>Qua</td><td>Qui</td><td>Sex</td></tr>\n"; 
 	
 	if($cltarefa->numrows > 0) {
-		$NumRegs   = pg_num_rows($rs_tarefa);
-		$NumCampos = pg_num_fields($rs_tarefa);
+		$NumRegs   = $rs_tarefa === false || $rs_tarefa === null ? 0 : pg_num_rows($rs_tarefa);
+		$NumCampos = $rs_tarefa === false || $rs_tarefa === null ? 0 : pg_num_fields($rs_tarefa);
 	}
 	else {
 		$NumRegs   = 0;
@@ -190,7 +190,7 @@ function mostra_calendario($cltarefa,$cols,$id_usuario,$mes,$ano,$cor_livre,$cor
 				             where at13_dia = '$data_dia' 
 	    	    	         order by at13_dia";
 		$rs_tarefa_agenda =  db_query($sql);
-		$tem_agenda       =  pg_num_rows($rs_tarefa_agenda);
+		$tem_agenda       =  $rs_tarefa_agenda === false || $rs_tarefa_agenda === null ? 0 : pg_num_rows($rs_tarefa_agenda);
 
 		if($tem_agenda > 0) {
 			$cor = $cor_ocupado;

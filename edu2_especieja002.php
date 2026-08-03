@@ -38,7 +38,7 @@
 		  where ed57_i_escola=$escola";
 
   $result = db_query($sql);
-  $linhas = pg_num_rows($result);
+  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
   if($linhas==0){?>
       <table width='100%'>
@@ -126,7 +126,7 @@
            order by   ed11_i_ensino";
 
   $result1 = db_query($sql1);
-  $linhas1= pg_num_rows($result1);  
+  $linhas1= $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);  
 
   for($x=0;$x<$linhas1;$x++){
       db_fieldsmemory($result1,$x);
@@ -162,7 +162,7 @@
 					 and ed10_i_tipoensino = 2
 				  group by ed47_v_sexo";
 		 $result2 = db_query($sql2);
-         $linhas2= pg_num_rows($result2);
+         $linhas2= $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 		 
 		 $masculino=0;
 		 $feminino=0;	
@@ -238,7 +238,7 @@
            order by   ed11_i_ensino";
 
   $result1 = db_query($sql1);
-  $linhas1= pg_num_rows($result1);  
+  $linhas1= $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);  
 
   for($x=0;$x<$linhas1;$x++){
       db_fieldsmemory($result1,$x);
@@ -273,7 +273,7 @@
                      and ed57_i_escola=$escola
 					 and ed10_i_tipoensino = 2";
 		 $result2 = db_query($sql2);
-         $linhas2= pg_num_rows($result2);
+         $linhas2= $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 		 db_fieldsmemory($result2,0);
 
 		 $vet[$vcont]=$vet[$vcont]+$quantidade;
@@ -400,7 +400,7 @@
            order by   ed11_i_ensino";
 
   $result1 = db_query($sql1);
-  $linhas1= pg_num_rows($result1);
+  $linhas1= $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
   $quebra=0;
   for($x=0;$x<$linhas1;$x++){
@@ -429,7 +429,7 @@
            order by   ed11_i_ensino";
 
   $result1 = db_query($sql1);
-  $linhas1= pg_num_rows($result1);  
+  $linhas1= $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);  
 
   for($idade=15;$idade<25;$idade++){
       
@@ -469,7 +469,7 @@
 					 and ed10_i_tipoensino = 2
 				  group by ed47_v_sexo";
 		 $result2 = db_query($sql2);
-         $linhas2= pg_num_rows($result2);
+         $linhas2= $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
          $masculino=0;
 		 $feminino=0;
 		 if($linhas2==0){

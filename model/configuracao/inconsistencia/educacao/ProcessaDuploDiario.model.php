@@ -207,7 +207,7 @@ class ProcessaDuploDiario implements IExcecaoProcessamentoDependencias {
             return false;
           }
           
-          $iLinhasDiarioFinal = pg_num_rows( $rsDiarioFinalOrigem );
+          $iLinhasDiarioFinal = $rsDiarioFinalOrigem === false || $rsDiarioFinalOrigem === null ? 0 : pg_num_rows( $rsDiarioFinalOrigem );
           
           /**
            * Percorre progressões retornadas de acordo com o diário final

@@ -70,7 +70,7 @@ function ElementosFreq($ed67_i_procresultado) {
   $iLinhas = 0;
 
   if ( $rs && pg_num_rows($rs) > 0) {
-    $iLinhas = pg_num_rows($rs);
+    $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
   }
 
   return $iLinhas;
@@ -316,7 +316,7 @@ function ElementosAprov($chavepesquisa) {
   $iLinhasUnion = 0;
 
   if ( $rsUnion && pg_num_rows($rsUnion) > 0 ) {
-    $iLinhasUnion = pg_num_rows($rsUnion);
+    $iLinhasUnion = $rsUnion === false || $rsUnion === null ? 0 : pg_num_rows($rsUnion);
   }
 
   return $iLinhasUnion;

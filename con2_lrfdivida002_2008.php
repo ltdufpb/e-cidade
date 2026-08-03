@@ -181,7 +181,7 @@ $anousu = db_getsession("DB_anousu");
 $xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 
 $resultinst = db_query("select codigo,munic,db21_tipoinstit from db_config where codigo in (" . str_replace('-', ', ', $db_selinstit) . ") ");
-$numrowsinstit = pg_num_rows($resultinst);
+$numrowsinstit = $resultinst === false || $resultinst === null ? 0 : pg_num_rows($resultinst);
 
 $instit_rpps = "";
 $instituicao = "";

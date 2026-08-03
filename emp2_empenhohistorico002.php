@@ -79,7 +79,7 @@ $sqlBuscaHistoricoEmpenho = "
     order by credor,codemp";
 
 $rsBuscaHistoricoEmpenho = db_query($sqlBuscaHistoricoEmpenho);
-$totalHistoricos = pg_num_rows($rsBuscaHistoricoEmpenho);
+$totalHistoricos = $rsBuscaHistoricoEmpenho === false || $rsBuscaHistoricoEmpenho === null ? 0 : pg_num_rows($rsBuscaHistoricoEmpenho);
 
 if($totalHistoricos == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.');
@@ -113,7 +113,7 @@ for ($i = 0; $i < $totalHistoricos; $i++) {
     'riseqitem');
 
   $rsBuscaItensEmpenho = db_query($sqlItensEmpenho);
-  $totalItensEmpenho = pg_num_rows($rsBuscaItensEmpenho);
+  $totalItensEmpenho = $rsBuscaItensEmpenho === false || $rsBuscaItensEmpenho === null ? 0 : pg_num_rows($rsBuscaItensEmpenho);
   $alternador_cinza = true;
 
   if ($totalItensEmpenho > 0) {

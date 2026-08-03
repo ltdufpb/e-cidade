@@ -106,7 +106,7 @@ final class PadArquivoSigapDecreto extends PadArquivoSigap
         $sSqlDecreto .= "         order by o45_numlei,o45_dataini,o39_numero,o39_data ";
         $sSqlDecreto .= "      ) as x ";
         $rsDecretos = db_query($sSqlDecreto);
-        $iTotalLinhas = pg_num_rows($rsDecretos);
+        $iTotalLinhas = $rsDecretos === false || $rsDecretos === null ? 0 : pg_num_rows($rsDecretos);
         for ($i = 0; $i < $iTotalLinhas; $i++) {
 
             $oDecreto = db_utils::fieldsMemory($rsDecretos, $i);

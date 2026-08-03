@@ -69,7 +69,7 @@ class tceFolhaPagamento extends tceEstruturaBasica
           $this->iDiaPagamento);
 
         $rsFolhaPagamento = db_query($sSqlFolhaPagamento);
-        $iNumRows = pg_num_rows($rsFolhaPagamento);
+        $iNumRows = $rsFolhaPagamento === false || $rsFolhaPagamento === null ? 0 : pg_num_rows($rsFolhaPagamento);
         $iTotalRegistros = 0;
 
         if ($this->oLeiaute) {

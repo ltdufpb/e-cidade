@@ -182,7 +182,7 @@ try {
       }
 
       $oRetorno->aDadosProgressao = [];
-      $iLinha                     = pg_num_rows( $rsProgressao );
+      $iLinha                     = $rsProgressao === false || $rsProgressao === null ? 0 : pg_num_rows( $rsProgressao );
 
       if ( $iLinha > 0 ) {
 

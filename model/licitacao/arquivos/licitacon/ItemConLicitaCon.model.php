@@ -120,7 +120,7 @@ class ItemConLicitaCon extends ArquivoLicitaCon
             throw new DBException("Não foi possível encontrar os itens para o arquivo " . self::NOME_ARQUIVO);
         }
 
-        $iTotalItens = pg_num_rows($rsItens);
+        $iTotalItens = $rsItens === false || $rsItens === null ? 0 : pg_num_rows($rsItens);
 
         for ($iIndice = 0; $iIndice < $iTotalItens; $iIndice++) {
             $oItem = db_utils::fieldsMemory($rsItens, $iIndice);
@@ -159,7 +159,7 @@ class ItemConLicitaCon extends ArquivoLicitaCon
             throw new DBException("Não foi possível encontrar os itens para o arquivo " . self::NOME_ARQUIVO);
         }
 
-        $iTotalItens = pg_num_rows($rsItens);
+        $iTotalItens = $rsItens === false || $rsItens === null ? 0 : pg_num_rows($rsItens);
 
         for ($iIndice = 0; $iIndice < $iTotalItens; $iIndice++) {
             $oItem = db_utils::fieldsMemory($rsItens, $iIndice);
@@ -200,7 +200,7 @@ class ItemConLicitaCon extends ArquivoLicitaCon
             throw new DBException("Não foi possível carregar os itens do acordo incluso com origem Processo de Compras.");
         }
 
-        $iTotalRegistros = pg_num_rows($rsBuscaItens);
+        $iTotalRegistros = $rsBuscaItens === false || $rsBuscaItens === null ? 0 : pg_num_rows($rsBuscaItens);
         for ($iRow = 0; $iRow < $iTotalRegistros; $iRow++) {
             $oStdInformacao = db_utils::fieldsMemory($rsBuscaItens, $iRow);
             $objetoImpressao = self::criarObjetoImpressao($oStdInformacao);

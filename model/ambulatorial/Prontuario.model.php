@@ -182,7 +182,7 @@ class Prontuario {
       throw new DBException( _M( MENSAGEM_PRONTUARIO . 'erro_buscar_triagens', $oErro ) );
     }
 
-    $iLinhasTriagem = pg_num_rows($rsTriagemConsulta) ;
+    $iLinhasTriagem = $rsTriagemConsulta === false || $rsTriagemConsulta === null ? 0 : pg_num_rows($rsTriagemConsulta) ;
 
     for( $iContador = 0; $iContador < $iLinhasTriagem; $iContador++ ) {
 

@@ -62,7 +62,7 @@ if (isset($oPost->sql) && trim($oPost->sql) != '') {
 
         if ($rsExecutaSQL) {
 
-            $iLinhasSQL = pg_num_rows($rsExecutaSQL);
+            $iLinhasSQL = $rsExecutaSQL === false || $rsExecutaSQL === null ? 0 : pg_num_rows($rsExecutaSQL);
 
             if ($iLinhasSQL > 0) {
 

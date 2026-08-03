@@ -204,7 +204,7 @@ if ($oPost->sAction == 'IncluirPeriodo') {
             throw new DBException( _M( MENSAGEM_RECHUMANOHORADISP002 . "erro_verificar_conflitos") );
           }
 
-          $iLinhas = pg_num_rows( $rsConflito );
+          $iLinhas = $rsConflito === false || $rsConflito === null ? 0 : pg_num_rows( $rsConflito );
 
           if ( $iLinhas > 0 ) {
             $oErro = new stdClass();

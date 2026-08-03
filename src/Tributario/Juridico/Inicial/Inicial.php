@@ -400,7 +400,7 @@ class Inicial implements Interfaces\ParcelamentoHonorario
         \db_utils::makeCollectionFromRecord($rsNumpres, function ($dado) use (&$valorAtualizado, $data) {
 
             $rsDebitos = debitos_numpre($dado->v59_numpre, 0, 0, $data->getTimestamp(), $data->format('Y'));
-            $totalRegistros = pg_num_rows($rsDebitos);
+            $totalRegistros = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
 
             for ($iIndDebito = 0; $iIndDebito < $totalRegistros; $iIndDebito++) {
                 $valorAtualizado += \db_utils::fieldsMemory($rsDebitos, $iIndDebito)->total;

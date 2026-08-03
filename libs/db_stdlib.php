@@ -219,7 +219,7 @@ class cl_download
     public $arquivo = null;
     public $texto = "Clique Aqui";
 
-    function cl_download()
+    function __construct()
     {
         $this->criaarquivo();
     }
@@ -238,7 +238,7 @@ class cl_download
 //Classe que verifica se o boletim já foi liberado
 class cl_verificaboletim
 {
-    function cl_verificaboletim($clboletim)
+    function __construct($clboletim)
     {
         global $k11_numbol;
         $data = date("Y-m-d", db_getsession("DB_datausu"));
@@ -396,7 +396,7 @@ function db_verifica_ip_banco()
             or  ( db46_datafinal = '".date('Y-m-d')."' and db46_horafinal >= '".date("G:i")."' ))
             ";
     $result = db_query($sql);
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     for ($i = 0; $i < $numrows; $i++) {
         db_fieldsmemory($result, $i);
         if ($db48_ip == "") {
@@ -431,7 +431,7 @@ function db_verifica_ip_banco()
             or  ( db46_dtinicio = '".date('Y-m-d')."' and db46_horaini   <= '".date("H:i")."' )
             or  ( db46_datafinal = '".date('Y-m-d')."' and db46_horafinal >= '".date("H:i")."' ))";
     $result = db_query($sql);
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     for ($i = 0; $i < $numrows; $i++) {
         db_fieldsmemory($result, $i);
         if ($db48_ip == $db_ip) {
@@ -510,7 +510,7 @@ class cl_abre_arquivo
     public $arquivo = null;
 
     //|30|//arquivo : FD do arquivo - retorno da função fopen()
-    function cl_abre_arquivo($nomearq = "")
+    function __construct($nomearq = "")
     {
         //#00#//cl_abre_arquivo
         //#10#//Método para abrir um arquivo
@@ -722,7 +722,7 @@ class rotulolov
             $result = db_query("select c.descricao,c.rotulo,c.tamanho
                            from db_syscampo c
                           where c.nomecam = '{$sCampoTrim}'");
-            $numrows = pg_num_rows($result);
+            $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
             if ($numrows != 0) {
                 $this->titulo = ucfirst(pg_fetch_result($result, 0, "rotulo"));
                 $this->title = ucfirst(pg_fetch_result($result, 0, "descricao"));
@@ -794,9 +794,9 @@ function db_criatabela($result, $columns = [])
     //#20#//result  : Record set gerado
     //#20#//columns : Array com nomes das colunas a exibir, se nao passar nada mostra todas colunas do recordset
 
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     if (count($columns) == 0) {
-        $numcols = pg_num_fields($result);
+        $numcols = $result === false || $result === null ? 0 : pg_num_fields($result);
         $bycolumn = false;
     } else {
         $numcols = count($columns);
@@ -840,7 +840,7 @@ function db_getMaxSizeField($recordset, $campo = 0)
     //#20#//recordset : Record que será pesquisado
     //#20#//campo     : Número do campo do record set que será pesquisado
 
-    $numrows = pg_num_rows($recordset);
+    $numrows = $recordset === false || $recordset === null ? 0 : pg_num_rows($recordset);
     $val = strlen(trim(pg_fetch_result($recordset, 0, $campo)));
     for ($i = 1; $i < $numrows; $i++) {
         $field = strlen(trim(pg_fetch_result($recordset, $i, $campo)));
@@ -1258,9 +1258,9 @@ function db_sel_instit($instit = null, $campos = " * ")
     if ($record_config == false) {
         return false;
     } else {
-        $num_rows = pg_num_rows($record_config);
+        $num_rows = $record_config === false || $record_config === null ? 0 : pg_num_rows($record_config);
         if ($num_rows > 0) {
-            $num_cols = pg_num_fields($record_config);
+            $num_cols = $record_config === false || $record_config === null ? 0 : pg_num_fields($record_config);
             for ($index = 0; $index < $num_cols; $index++) {
                 $nam_campo = pg_field_name($record_config, $index);
                 global ${$nam_campo};
@@ -1288,9 +1288,9 @@ function db_sel_usuario($usuario = null, $campos = " * ")
     if ($record_usuarios == false) {
         return false;
     } else {
-        $num_rows = pg_num_rows($record_usuarios);
+        $num_rows = $record_usuarios === false || $record_usuarios === null ? 0 : pg_num_rows($record_usuarios);
         if ($num_rows > 0) {
-            $num_cols = pg_num_fields($record_usuarios);
+            $num_cols = $record_usuarios === false || $record_usuarios === null ? 0 : pg_num_fields($record_usuarios);
             for ($index = 0; $index < $num_cols; $index++) {
                 $nam_campo = pg_field_name($record_usuarios, $index);
                 global ${$nam_campo};
@@ -1317,8 +1317,8 @@ function db_fieldsmemory($recordset, $indice, $formatar = "", $mostravar = false
     //#99#//Exemplo:
     //#99#//db_fieldsmemory($result,0);
     //#99#//Cria todas as variáveis com o conteúdo de cada uma sendo o valor do campo
-    $fm_numfields = pg_num_fields($recordset);
-    $fm_numrows = pg_num_rows($recordset);
+    $fm_numfields = $recordset === false || $recordset === null ? 0 : pg_num_fields($recordset);
+    $fm_numrows = $recordset === false || $recordset === null ? 0 : pg_num_rows($recordset);
     //if(pg_numrows($recordset)==0){
     // echo "RecordSet Vazio: <br>";
     // for ($i = 0;$i < $fm_numfields;$i++){
@@ -1930,7 +1930,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
     $query .= " limit $numlinhas offset " . ${$offset};
     $result = db_query($query);
-    $NumRows = pg_num_rows($result);
+    $NumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
     if ($NumRows == 0) {
 
@@ -1966,7 +1966,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
             $query = $query_anterior . " limit $numlinhas offset " . ${$offset};
             $result = db_query($query);
-            $NumRows = pg_num_rows($result);
+            $NumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
             $filtroquery = $query_anterior;
         }
     } else {
@@ -2007,7 +2007,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
         }
     }
 
-    $NumFields = pg_num_fields($result);
+    $NumFields = $result === false || $result === null ? 0 : pg_num_fields($result);
 
     if (($NumRows < $numlinhas) && ($numlinhas < (${$tot_registros} - ${$offset} - $numlinhas ) ) ) {
     $Dd1 = @ $Dd2 = "disabled";
@@ -2114,7 +2114,7 @@ function db_lovrot($query, $numlinhas, $arquivo = "", $filtro = "%", $aonde = "_
 
         if (count($totalizacao) > 0) {
 
-            $totNumfields = pg_num_fields($tot);
+            $totNumfields = $tot === false || $tot === null ? 0 : pg_num_fields($tot);
             for ($totrep = 1; $totrep < $totNumfields; $totrep++) {
 
                 $sHtml .= "<input type=\"hidden\"";
@@ -2658,8 +2658,8 @@ function db_lov($query, $numlinhas,
     // executa a query e cria a tabela
     $query .= " limit $numlinhas offset " . ${$offset};
     $result = db_query($query);
-    $NumRows = pg_num_rows($result);
-    $NumFields = pg_num_fields($result);
+    $NumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
+    $NumFields = $result === false || $result === null ? 0 : pg_num_fields($result);
     if ($NumRows < $numlinhas) {
         $Dd1 = $Dd2 = "disabled";
     }
@@ -3218,7 +3218,7 @@ function db_criacarne($arretipo, $ip, $datahj, $instit, $tipomod)
                    and k48_cadtipomod = $tipomod  ";
     //  die($sqlexe);
     $rsModexe = db_query($sqlexe);
-    $intnumexe = pg_num_rows($rsModexe);
+    $intnumexe = $rsModexe === false || $rsModexe === null ? 0 : pg_num_rows($rsModexe);
     if (isset($intnumexe) && $intnumexe > 0) {
         db_fieldsmemory($rsModexe,0);
     //    db_msgbox("achou excessao");
@@ -3239,7 +3239,7 @@ function db_criacarne($arretipo, $ip, $datahj, $instit, $tipomod)
              ";
       //     die($sqltipo);
       $rsModtipo = db_query($sqltipo);
-      $intnumtipo = pg_num_rows($rsModtipo);
+      $intnumtipo = $rsModtipo === false || $rsModtipo === null ? 0 : pg_num_rows($rsModtipo);
       if (isset($intnumtipo) && $intnumtipo > 0) {
           //        db_msgbox("achou tipo");
       db_fieldsmemory($rsModtipo,0);
@@ -3261,7 +3261,7 @@ function db_criacarne($arretipo, $ip, $datahj, $instit, $tipomod)
             ";
       //    die($sqlgeral);
       $rsModgeral = db_query($sqlgeral);
-      $intnumgeral = pg_num_rows($rsModgeral);
+      $intnumgeral = $rsModgeral === false || $rsModgeral === null ? 0 : pg_num_rows($rsModgeral);
       if ($intnumgeral > 0) {
           //        db_msgbox("achou padrao");
           db_fieldsmemory($rsModgeral, 0);
@@ -3700,7 +3700,7 @@ function db_buscaImagemBanco($cadban, $conn)
 
     $sqlcodban = "select k15_codbco from cadban where k15_codigo = $cadban";
     $resultcadban = db_query($sqlcodban);
-    $linhascadban = pg_num_rows($resultcadban);
+    $linhascadban = $resultcadban === false || $resultcadban === null ? 0 : pg_num_rows($resultcadban);
     if ($linhascadban > 0) {
         //db_fieldsmemory($resultcadban,0);
         $k15_codbco = pg_fetch_result($resultcadban, 0, "k15_codbco");
@@ -3708,7 +3708,7 @@ function db_buscaImagemBanco($cadban, $conn)
         // busca os dados do banco..logo etc
         $sqlBanco = "select  * from db_bancos where db90_codban = '" . $banco . "'";
         $resultBanco = db_query($sqlBanco);
-        $linhasBanco = pg_num_rows($resultBanco);
+        $linhasBanco = $resultBanco === false || $resultBanco === null ? 0 : pg_num_rows($resultBanco);
         if ($linhasBanco > 0) {
             //db_fieldsmemory($resultBanco,0);
             $db90_digban = pg_fetch_result($resultBanco, 0, "db90_digban");
@@ -3864,7 +3864,7 @@ function db_buscaImagemInstituicao($instit, $tipo)
     $sSqlConfigArquivos .= " where db38_instit = $instit ";
     $sSqlConfigArquivos .= "   and db38_tipo   = $tipo ";
     $rsSqlConfigArquivos = db_query($sSqlConfigArquivos);
-    $iNumRows = pg_num_rows($rsSqlConfigArquivos);
+    $iNumRows = $rsSqlConfigArquivos === false || $rsSqlConfigArquivos === null ? 0 : pg_num_rows($rsSqlConfigArquivos);
     if ($iNumRows > 0) {
 
         $arquivo = pg_fetch_result($rsSqlConfigArquivos, 0, "db38_arquivo");

@@ -202,7 +202,7 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 
 	  $sqlSettings  = " SELECT current_setting('{$aParametro['name']}') ";
 	  $rsSettings   = db_query($sqlSettings);
-	  $iSettings    = pg_num_rows($rsSettings);
+	  $iSettings    = $rsSettings === false || $rsSettings === null ? 0 : pg_num_rows($rsSettings);
 	  if ($iSettings > 0) {
 
 	    $oSettings = db_utils::fieldsMemory($rsSettings,0);
@@ -212,7 +212,7 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 
 	        $sqlSettingsServer  = " SELECT current_setting('server_version_num') ";
 	        $rsSettingsServer   = db_query($sqlSettingsServer);
-	        $iSettingsServer    = pg_num_rows($rsSettingsServer);
+	        $iSettingsServer    = $rsSettingsServer === false || $rsSettingsServer === null ? 0 : pg_num_rows($rsSettingsServer);
 	        if ($iSettingsServer > 0) {
 
 	          $oSettingsServer = db_utils::fieldsMemory($rsSettingsServer,0);

@@ -103,7 +103,7 @@ $clrhregime->rotulo->label();
                                     <?php
                                     $sSqlNatureza = "select rh71_sequencial,rh71_descricao from rhnaturezaregime";
                                     $rsNatureza = db_query($sSqlNatureza);
-                                    $iNatureza = pg_num_rows($rsNatureza);
+                                    $iNatureza = $rsNatureza === false || $rsNatureza === null ? 0 : pg_num_rows($rsNatureza);
                                     $aNatureza = [];
                                     for ($i = 0; $i < $iNatureza; $i++) {
 
@@ -165,7 +165,7 @@ $clrhregime->rotulo->label();
                                     $camposCodigoCategoria .=',rh255_descricao';
                                     $sqlCategoria = $clcodigocategoria->sql_query(null,$camposCodigoCategoria,null,"");
                                     $resultadoCategoria = $clcodigocategoria->sql_record($sqlCategoria);
-                                    $registrosCategoria = pg_num_rows($resultadoCategoria);
+                                    $registrosCategoria = $resultadoCategoria === false || $resultadoCategoria === null ? 0 : pg_num_rows($resultadoCategoria);
                                     $listaCategoria = [];
                                     for ($i = 0; $i < $registrosCategoria; $i++) {
                                         db_fieldsmemory($resultadoCategoria, $i);

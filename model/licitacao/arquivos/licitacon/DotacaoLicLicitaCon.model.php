@@ -66,7 +66,7 @@ class DotacaoLicLicitaCon extends ArquivoLicitaCon {
       throw new DBException("Houve um erro ao buscar as dotações da Licitação.");
     }
 
-    $iDotacoes = pg_num_rows($rsDotacoes);
+    $iDotacoes = $rsDotacoes === false || $rsDotacoes === null ? 0 : pg_num_rows($rsDotacoes);
     for ($i = 0; $i < $iDotacoes; $i++) {
 
       $oDotacao   = db_utils::fieldsMemory($rsDotacoes, $i);

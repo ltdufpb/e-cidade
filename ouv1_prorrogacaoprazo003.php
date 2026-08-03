@@ -77,7 +77,7 @@ if($codproc != ""){
 		if(pg_num_rows($rsQueryProcessos)>0){
 			$aDadosProrrogacao = [];
 			$aDadosSequencial	 = [];
-			$iNumRows = pg_num_rows($rsQueryProcessos);
+			$iNumRows = $rsQueryProcessos === false || $rsQueryProcessos === null ? 0 : pg_num_rows($rsQueryProcessos);
 
 			for($iInd = 0; $iInd < $iNumRows; $iInd++){
 				$aDados = db_utils::fieldsMemory($rsQueryProcessos,$iInd);
@@ -101,7 +101,7 @@ if($codproc != ""){
 			  // echo $sQueryProcesso."<br><br>";
 				
 				$rsQueryProcesso = db_query($sQueryProcesso);
-				$iNumRows1 = pg_num_rows($rsQueryProcesso);
+				$iNumRows1 = $rsQueryProcesso === false || $rsQueryProcesso === null ? 0 : pg_num_rows($rsQueryProcesso);
 				if($iNumRows1 > 0){
 					
 					$mktime_ant = 0;

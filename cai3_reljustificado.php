@@ -110,7 +110,7 @@ if ($datainicial != "--" and $datafinal != "--"){
                     order by k27_data ";
   //echo "$sqlarrejustreg";
   $result = db_query($sqlarrejustreg);
-	$linhas = pg_num_rows($result);
+	$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
   $total= 0;
   
   
@@ -122,7 +122,7 @@ if($linhas>0){
 from cgm where z01_numcgm = $k00_numcgm";
     //echo "bbbbbb   ====== $dados";
     $resultdados = db_query($dados);
-	  $linhasdados = pg_num_rows($resultdados);
+	  $linhasdados = $resultdados === false || $resultdados === null ? 0 : pg_num_rows($resultdados);
 	  if($linhasdados>0){
 	    db_fieldsmemory($resultdados,0);
 	  }
@@ -159,7 +159,7 @@ from cgm where z01_numcgm = $k00_numcgm";
        order by k28_numpre,k28_numpar";
       //echo "<br>$sqlnumpre<br>";
       $resultnumpre = db_query($sqlnumpre);
-	    $linhasnumpre = pg_num_rows($resultnumpre);
+	    $linhasnumpre = $resultnumpre === false || $resultnumpre === null ? 0 : pg_num_rows($resultnumpre);
       
    if($pdf->GetY() > ( $pdf->h - 30 )||($primeiro ==0)){
       $primeiro =1;

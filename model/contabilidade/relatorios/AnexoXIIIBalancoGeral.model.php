@@ -82,7 +82,7 @@ class AnexoXIIIBalancoGeral extends RelatoriosLegaisBase  {
      $oDaoEmpResto       = db_utils::getDao("empresto");
      $sSqlRestos         = $oDaoEmpResto->sql_rp_novo($this->iAnoUsu , $sWhereRP, $sDataInicial, $sDataFinal, '');
      $rsDespesaRestos    = db_query($sSqlRestos);
-     $iTotalLinhasRestos = pg_num_rows($rsDespesaRestos);
+     $iTotalLinhasRestos = $rsDespesaRestos === false || $rsDespesaRestos === null ? 0 : pg_num_rows($rsDespesaRestos);
      /**
       * processa o balancete de verificação
       * 
@@ -96,20 +96,20 @@ class AnexoXIIIBalancoGeral extends RelatoriosLegaisBase  {
                                            'true',
                                            'false');
                                            
-     $iTotalLinhasPlano = pg_num_rows($rsPlano);
+     $iTotalLinhasPlano = $rsPlano === false || $rsPlano === null ? 0 : pg_num_rows($rsPlano);
      $rsReceita        = db_receitasaldo(11, 1, 3, true, 
                                         $sWhereReceita, 
                                         $this->iAnoUsu, 
                                         $sDataInicial, 
                                         $sDataFinal);
                                         
-     $iTotalLinhasReceita = pg_num_rows($rsReceita);
+     $iTotalLinhasReceita = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
      
      $rsDespesa = db_dotacaosaldo(7,3,2, true, $sWhereDespesa, $this->iAnoUsu, $sDataInicial, $sDataFinal);
-     $iTotalLinhasDespesa = pg_num_rows($rsDespesa);
+     $iTotalLinhasDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
      
      $rsDespesaFuncao           = db_dotacaosaldo(3,3,2, true, $sWhereDespesa, $this->iAnoUsu, $sDataInicial, $sDataFinal);
-     $iTotalLinhasDespesaFUncao = pg_num_rows($rsDespesaFuncao);
+     $iTotalLinhasDespesaFUncao = $rsDespesaFuncao === false || $rsDespesaFuncao === null ? 0 : pg_num_rows($rsDespesaFuncao);
      /**
       * percorremos a slinhas cadastradas no relatorio, e adicionamos os valores cadastrados manualmente.
       */

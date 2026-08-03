@@ -612,7 +612,7 @@ class cl_liclicitemlances
       $this->erro_status = "0";
       return false;
     }
-    $this->numrows = pg_num_rows($result);
+    $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     if ($this->numrows == 0) {
       $this->erro_banco = "";
       $this->erro_sql   = "Record Vazio na Tabela:liclicitemlances";

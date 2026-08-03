@@ -193,7 +193,7 @@ class MapaExecucaoFinanceira {
     $sSqlBuscaAcordo = $oDaoAcordo->sql_query_movimentacao_empenho(null, $sCampos, null, implode(' and ', $aWhere));
 
     $rsBuscaAcordos  = db_query($sSqlBuscaAcordo);
-    $iTotalRegistros = pg_num_rows($rsBuscaAcordos);
+    $iTotalRegistros = $rsBuscaAcordos === false || $rsBuscaAcordos === null ? 0 : pg_num_rows($rsBuscaAcordos);
 
     if (!$rsBuscaAcordos) {
       throw new DBException('Não foi possível buscar os dados do acordo.');

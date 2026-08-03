@@ -1140,7 +1140,7 @@ class ppaVersao {
     //    $sSqlVerificaAnos .= "                from ppaintegracaodespesa ";
     //    $sSqlVerificaAnos .= "               where o121_ppaintegracao = o123_sequencial)";
     $rsAnosIntegrados = db_query($sSqlVerificaAnos);
-    $iTotalAnos       = pg_num_rows($rsAnosIntegrados);
+    $iTotalAnos       = $rsAnosIntegrados === false || $rsAnosIntegrados === null ? 0 : pg_num_rows($rsAnosIntegrados);
     $aAnosIntegrados = [];
     for ($i = 0; $i < $iTotalAnos; $i++) {
       $aAnosIntegrados = db_utils::fieldsMemory($rsAnosIntegrados, $i)->o123_ano;

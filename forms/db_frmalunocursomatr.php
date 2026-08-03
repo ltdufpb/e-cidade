@@ -238,7 +238,7 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
                         ORDER BY ed104_d_data DESC
                         LIMIT 1";
             $result_imp = db_query($sql_imp);
-            $linhas_imp = pg_num_rows($result_imp);
+            $linhas_imp = $result_imp === false || $result_imp === null ? 0 : pg_num_rows($result_imp);
 
             if ($linhas_imp > 0) {
         ?>

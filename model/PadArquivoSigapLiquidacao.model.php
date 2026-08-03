@@ -129,7 +129,7 @@ final class PadArquivoSigapLiquidacao extends PadArquivoSigap
         $sSqlLiquidacoes .= "  order by c75_data";
 
         $rsLiquidacoes = db_query($sSqlLiquidacoes);
-        $iTotalLinhas = pg_num_rows($rsLiquidacoes);
+        $iTotalLinhas = $rsLiquidacoes === false || $rsLiquidacoes === null ? 0 : pg_num_rows($rsLiquidacoes);
 
         for ($i = 0; $i < $iTotalLinhas; $i++) {
 

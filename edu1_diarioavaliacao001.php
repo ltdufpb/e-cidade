@@ -121,7 +121,7 @@ if (isset($salvartudo)) {
 
   $sql     .= "  ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome),ed60_c_ativa ";
   $result1  = db_query($sql);
-  $linhas1  = pg_num_rows($result1);
+  $linhas1  = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
   for ($x = 0; $x < $linhas1; $x++) {
 
@@ -364,7 +364,7 @@ $iAno    = $oTurma->getCalendario()->getAnoExecucao();
   $sql .= " ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome),ed60_c_ativa";
 
 $result1       = db_query($sql);
-$linhas1       = pg_num_rows($result1);
+$linhas1       = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 $descr_periodo = pg_fetch_result($result1,0,'ed09_c_descr');
 ?>
 <table border='0px' width="98%" bgcolor="#cccccc" style="" cellspacing="0px">
@@ -1521,7 +1521,7 @@ $sql_r    .= "         OR diarioavaliacao.ed72_i_valornota is not null ";
 $sql_r    .= "         OR diarioavaliacao.ed72_c_valorconceito != '' ";
 $sql_r    .= "         OR diarioavaliacao.ed72_t_parecer != '')";
 $result_r  = db_query( $sql_r );
-$linhas    = pg_num_rows( $result_r );
+$linhas    = $result_r === false || $result_r === null ? 0 : pg_num_rows( $result_r );
 db_fieldsmemory( $result_r, 0 );
 
 if ( $max == "" ) {
@@ -1580,7 +1580,7 @@ if ( $ed09_c_somach == "S" ) {
    $sql    .= "   AND ed221_c_origem       = 'S' ";
    $sql    .= " ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome) ";
    $result  = db_query( $sql );
-   $linhas  = pg_num_rows( $result );
+   $linhas  = $result === false || $result === null ? 0 : pg_num_rows( $result );
 
    if ( $linhas > 0 ) {
     ?>
@@ -1614,7 +1614,7 @@ if ( $ed09_c_somach == "S" ) {
       db_fieldsmemory( $result, $x );
       $sql1    = "SELECT * FROM trocaserie WHERE ed101_i_aluno = {$ed60_i_aluno} AND extract(year from ed101_d_data) = '{$ed52_i_ano}'";
       $result1 = db_query( $sql1 );
-      $linhas1 = pg_num_rows( $result1 );
+      $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows( $result1 );
 
       $sql2     = "SELECT * ";
       $sql2    .= "  FROM diarioavaliacao ";
@@ -1625,7 +1625,7 @@ if ( $ed09_c_somach == "S" ) {
       $sql2    .= "   AND ed95_i_escola   != {$codescola} ";
       $sql2    .= "   AND ed95_i_regencia  = {$regencia}";
       $result2  = db_query( $sql2 );
-      $linhas2  = pg_num_rows( $result2 );
+      $linhas2  = $result2 === false || $result2 === null ? 0 : pg_num_rows( $result2 );
 
       $sql3     = "SELECT * ";
       $sql3    .= "  FROM matricula ";
@@ -1636,7 +1636,7 @@ if ( $ed09_c_somach == "S" ) {
       $sql3    .= "   AND ed221_i_serie  = {$ed59_i_serie} ";
       $sql3    .= "   AND ed221_c_origem = 'S'";
       $result3  = db_query( $sql3 );
-      $linhas3  = pg_num_rows( $result3 );
+      $linhas3  = $result3 === false || $result3 === null ? 0 : pg_num_rows( $result3 );
 
       if ( $linhas1 == 0 && $linhas2 == 0  && $linhas3 == 0 ) {
 
@@ -1704,7 +1704,7 @@ if ( $ed09_c_somach == "S" ) {
  $sql1    .= "   AND ed221_c_origem       = 'S' ";
  $sql1    .= " ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome)";
  $result1  = db_query( $sql1 );
- $linhas1  = pg_num_rows( $result1 );
+ $linhas1  = $result1 === false || $result1 === null ? 0 : pg_num_rows( $result1 );
 
  if ( $linhas1 > 0 ) {
 

@@ -92,7 +92,7 @@ try {
         throw new DBException( _M(ARQUIVO_MENSAGEM_COTAS . "erro_buscar_limite_atendimento") );
       }
 
-      $iLaboratorios = pg_num_rows($rsLimite);
+      $iLaboratorios = $rsLimite === false || $rsLimite === null ? 0 : pg_num_rows($rsLimite);
 
       for ( $iLaboratorio = 0; $iLaboratorio < $iLaboratorios; $iLaboratorio++ ) {
 
@@ -114,7 +114,7 @@ try {
           throw new DBException( _M(ARQUIVO_MENSAGEM_COTAS . "erro_buscar_limite_exame") );
         }
 
-        $iExames = pg_num_rows( $rsLimiteExame );
+        $iExames = $rsLimiteExame === false || $rsLimiteExame === null ? 0 : pg_num_rows( $rsLimiteExame );
 
         for ( $iExame = 0; $iExame < $iExames; $iExame++ ) {
 
@@ -406,7 +406,7 @@ function migrarLimiteAtendimentoUsado( $oParam, $oDaoCotaUsadoAtendimento, $sDat
     throw new DBException( _M(ARQUIVO_MENSAGEM_COTAS . "erro_buscar_requisicoes") );
   }
 
-  $iTotalRequisicoes = pg_num_rows( $rsRequisicao );
+  $iTotalRequisicoes = $rsRequisicao === false || $rsRequisicao === null ? 0 : pg_num_rows( $rsRequisicao );
   for ( $iContador = 0; $iContador < $iTotalRequisicoes; $iContador++ ) {
 
     $oDadosAtendimentos = db_utils::fieldsMemory( $rsRequisicao, $iContador );
@@ -462,7 +462,7 @@ function migrarLimiteAtendimentoExameUsado( $oParam, $oDaoCotaExameUsado, $sData
     throw new DBException( _M(ARQUIVO_MENSAGEM_COTAS . "erro_buscar_exames") );
   }
 
-  $iTotalExames = pg_num_rows($rsExames);
+  $iTotalExames = $rsExames === false || $rsExames === null ? 0 : pg_num_rows($rsExames);
 
   for( $iExames = 0; $iExames < $iTotalExames; $iExames++ ) {
 
@@ -501,7 +501,7 @@ function buscarRequisicoes( $oParam, $oDaoRequisicao, $sDataAtual ) {
     throw new DBException( _M(ARQUIVO_MENSAGEM_COTAS . "erro_buscar_requisicoes") );
   }
 
-  $iTotalRequisicoes = pg_num_rows( $rsRequisicao );
+  $iTotalRequisicoes = $rsRequisicao === false || $rsRequisicao === null ? 0 : pg_num_rows( $rsRequisicao );
 
   for ( $iRequisicoes = 0; $iRequisicoes < $iTotalRequisicoes; $iRequisicoes++ ) {
     $aRequisicoes[] = db_utils::fieldsMemory( $rsRequisicao, $iRequisicoes)->la22_i_codigo;
@@ -693,7 +693,7 @@ function buscaLimiteAtendimentoPorExame( $aCodigoDoSetorExame ) {
  */
 function quantificaExamesPorDia( $rsLaboratorios, $aCodigoDoSetorExame ) {
 
-  $iLinhas      = pg_num_rows($rsLaboratorios);
+  $iLinhas      = $rsLaboratorios === false || $rsLaboratorios === null ? 0 : pg_num_rows($rsLaboratorios);
   $aLaboratorio = [];
   for ($i = 0; $i < $iLinhas; $i++) {
 

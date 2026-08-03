@@ -112,7 +112,7 @@ $texto  = "Tarefa : $tarefa \n";
 $texto .= "Resumo : ".pg_fetch_result($result,0,'at40_descr')."\n";
 $texto .= "Observ.: ".pg_fetch_result($result,0,'at40_obs')."\n";
 $tarefa_progresso= pg_fetch_result($result,0,'at40_progresso')."\n";
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 
 // Monta TXT com andamentos

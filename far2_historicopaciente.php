@@ -42,7 +42,7 @@ $head2 = "Histórico de Retirada de Medicamentos";
 $head3 = "Paciente: $cgs_get - $nome";
 
 $rsHistoricos = db_query( $cl_far_retiradaitens->sql_query_historicoretiradas($cgs_get, "fa04_d_data, to_char(fa04_d_data, 'dd/mm/yyyy') as fa04_d_data2, fa06_i_matersaude, m60_descr, fa06_f_quant, m77_lote, fa07_i_matrequi, login", "fa04_d_data desc") );
-$iLinhas = pg_num_rows($rsHistoricos);
+$iLinhas = $rsHistoricos === false || $rsHistoricos === null ? 0 : pg_num_rows($rsHistoricos);
 
 for($iCount = 0; $iCount < $iLinhas; $iCount++){
 	db_fieldsmemory($rsHistoricos,$iCount);

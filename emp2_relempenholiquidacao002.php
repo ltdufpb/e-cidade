@@ -192,7 +192,7 @@ $sql = " SELECT * FROM (
 ORDER  BY codigo_agrupamento;  ";
 
 $result = db_query($sql);
-$total = pg_num_rows($result);
+$total = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $pdf->Ln();
 $pdf->SetFont('Arial', '', 8);

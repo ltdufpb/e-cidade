@@ -515,7 +515,7 @@ if(isset($chavepesquisa)){
                 WHERE ed75_i_rechumano = $ed112_i_rhpessoal
                ";
        $result1 = db_query($sql1);
-       $linhas1 = pg_num_rows($result1);
+       $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
        if($linhas1>0){
         $ed112_c_dacesso = 'S';
         $x = ['S'=>'SIM'];

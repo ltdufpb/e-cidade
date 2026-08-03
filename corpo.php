@@ -184,7 +184,7 @@ if (db_getsession("DB_id_usuario") == 1 || db_getsession("DB_administrador") == 
 }
 
 $rsModulos = db_query($sSqlmodulos) or die($sSqlmodulos);
-$iNumRowsModulos = pg_num_rows($rsModulos);
+$iNumRowsModulos = $rsModulos === false || $rsModulos === null ? 0 : pg_num_rows($rsModulos);
 ?>
 
 <html>

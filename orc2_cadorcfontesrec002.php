@@ -40,7 +40,7 @@ $result = $clorcfontes->sql_record($clorcfontes->sql_query(null,db_getsession("D
 $head3 = "RELATÓRIO DE FONTES DA RECEITA";
 $head5 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem itens cadastrados : fontes da receita.');
    exit;

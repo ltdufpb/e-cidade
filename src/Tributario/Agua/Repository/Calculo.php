@@ -74,7 +74,7 @@ class Calculo {
       throw new DBException('Não foi possível consultar os valores.');
     }
 
-    $iQuantidadeValores = pg_num_rows($rsLinhasValores);
+    $iQuantidadeValores = $rsLinhasValores === false || $rsLinhasValores === null ? 0 : pg_num_rows($rsLinhasValores);
     $aValores = [];
     for ($iValor = 0; $iValor < $iQuantidadeValores; $iValor++) {
 
@@ -143,7 +143,7 @@ class Calculo {
       throw new DBException('Não foi possível fazer a consulta.');
     }
 
-    $iQuantidadeResultados = pg_num_rows($rsLinhaCalculo);
+    $iQuantidadeResultados = $rsLinhaCalculo === false || $rsLinhaCalculo === null ? 0 : pg_num_rows($rsLinhaCalculo);
     $aResultados = [];
     for ($iLinha = 0; $iLinha < $iQuantidadeResultados; $iLinha++) {
       $aResultados[] = $this->hydrate($rsLinhaCalculo, $iLinha);

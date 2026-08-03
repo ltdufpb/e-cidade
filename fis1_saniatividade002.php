@@ -65,7 +65,7 @@ if((isset($_POST["opcaoExec"]) && $_POST["opcaoExec"])=="Alterar"){
    // db_msgbox("princ = $y83_ativprinc ... seq = $y83_seq");
     $sqlpri = "select * from saniatividade where y83_codsani = $y83_codsani and y83_seq <> $y83_seq";
     $resultpri = db_query($sqlpri);
-    $linhaspri = pg_num_rows($resultpri);
+    $linhaspri = $resultpri === false || $resultpri === null ? 0 : pg_num_rows($resultpri);
     if($linhaspri>0){
       // se existir ... deixa fazer a alteração
       $pri=0;

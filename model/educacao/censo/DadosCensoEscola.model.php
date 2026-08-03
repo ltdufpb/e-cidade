@@ -619,7 +619,7 @@ class DadosCensoEscola extends DadosCenso {
     if ( !$rsTelefones ) {
       throw new DBException("Erro ao buscar os telefones.\n" . pg_last_error());
     }
-    $iTotalTelefones = pg_num_rows($rsTelefones);
+    $iTotalTelefones = $rsTelefones === false || $rsTelefones === null ? 0 : pg_num_rows($rsTelefones);
 
     $oDadosTelefone                   = new stdClass();
     $oDadosTelefone->ddd              = '';

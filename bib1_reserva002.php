@@ -288,7 +288,7 @@ if (isset($emprestimo)) {
             LIMIT 1";
   
   $result1 = db_query($sql1);
-  $linhas  = pg_num_rows($result1);
+  $linhas  = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
   
   if ($linhas == 0) {
     db_msgbox("Nenhum exemplar disponível no momento!");

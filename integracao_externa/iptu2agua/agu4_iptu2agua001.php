@@ -279,7 +279,7 @@ try {
   $sSqlIptuBaixa .= " WHERE NOT EXISTS (SELECT 1 FROM aguabasebaixa WHERE x08_matric = j02_matric) ";
   $sSqlIptuBaixa .= "   AND EXISTS (SELECT 1 FROM aguabase WHERE x01_matric = j02_matric) ";
   $rsIptuBaixa = db_query($pConexao, $sSqlIptuBaixa);
-  $iLinhasIptuBaixa = pg_num_rows($rsIptuBaixa);
+  $iLinhasIptuBaixa = $rsIptuBaixa === false || $rsIptuBaixa === null ? 0 : pg_num_rows($rsIptuBaixa);
 
 
   if ( $iLinhasIptuBaixa == 0 ) {

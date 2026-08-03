@@ -116,7 +116,7 @@ $sSqlUltimosAcessos .= "          data_ultimo_acesso;                           
 // die ($sSqlUltimosAcessos);
 
 $rsUltimosAcessos = db_query($sSqlUltimosAcessos);
-$iUltimosacessos  = pg_num_rows($rsUltimosAcessos);
+$iUltimosacessos  = $rsUltimosAcessos === false || $rsUltimosAcessos === null ? 0 : pg_num_rows($rsUltimosAcessos);
 
 if ($iUltimosacessos == 0 ) {
   $sMsg = "Nenhum registro encontrado!";

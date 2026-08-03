@@ -483,7 +483,7 @@ if (isset($gerararquivo)) {
   $sSql                   = $oDaoSauFecharquivo->sql_query_prd_bpa($oDados);
   $sErro                  = "Erro ao selecionar registros. <p>Comunique o adminstrador.";
   $rsProducao             = db_query ($sSql) or die ($sErro);
-  $iLinhasProducao        = pg_num_rows ($rsProducao);
+  $iLinhasProducao        = $rsProducao === false || $rsProducao === null ? 0 : pg_num_rows ($rsProducao);
 
   if ($iLinhasProducao == 0) {
     $iBpa = -1;

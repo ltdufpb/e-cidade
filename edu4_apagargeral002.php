@@ -165,7 +165,7 @@ if ( isset( $excluir ) ) {
       }
       
       $result5 = db_query("select ed275_i_codigo as codigoalt from alunoalt where ed275_i_aluno = $codalunos[$x]");
-      $linhas5 = pg_num_rows($result5);
+      $linhas5 = $result5 === false || $result5 === null ? 0 : pg_num_rows($result5);
       
       for ( $t = 0; $t < $linhas5; $t++) {
       	
@@ -297,7 +297,7 @@ if ( isset( $excluir ) ) {
 			ORDER BY ed47_v_nome
 		      ";
 	  $result_aluno = db_query($sql_aluno);
-	  $linhas_aluno = pg_num_rows($result_aluno);
+	  $linhas_aluno = $result_aluno === false || $result_aluno === null ? 0 : pg_num_rows($result_aluno);
 	  if($linhas_aluno==0){
 	  $x = [''=>'Nenhum registro'];
 	  db_select('aluno',$x,true,1,"style='width:400px;'");

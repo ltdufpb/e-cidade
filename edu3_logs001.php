@@ -121,7 +121,7 @@ $db_botao = true;
          ORDER BY datahr desc,campotext asc,db_acountkey.id_acount desc,db_syscampo.codcam asc
         ";
  $result = db_query($sql);
- $linhas = pg_num_rows($result);
+ $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
  //db_criatabela($result);
  if($linhas>0){
   $datainicial = "";
@@ -246,9 +246,9 @@ function Registro($tabela,$valor){
  }
  if($sql!=""){
   $result = db_query($sql);
-  $linhas = pg_num_rows($result);
+  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
   if($linhas>0){
-   $ncampos = pg_num_fields($result);
+   $ncampos = $result === false || $result === null ? 0 : pg_num_fields($result);
    $retorno = "";
    $sep = "";
    for($x=0;$x<$ncampos;$x++){

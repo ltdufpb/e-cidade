@@ -49,7 +49,7 @@ $clcgs_und = new cl_cgs_und;
 $result = $clcgs_und->sql_record( $clcgs_und->sql_query( $cgs ) );
 db_fieldsmemory($result,0);
 $query = @db_query($clprontuariomedico->sql_query("","*, a.z01_nome as profissional","sd32_d_atendimento desc","sd32_i_numcgs = $cgs" ));
-$linhas = @pg_num_rows($query);
+$linhas = $query === false || $query === null ? 0 : @pg_num_rows($query);
 //die($clprontuariomedico->sql_query("","*","sd32_d_atendimento desc ","sd32_i_numcgs = $cgs" ));
 
 //die($clprontproced->sql_query_prontuario("","*,sau_cid.sd70_c_cid,sau_cid.sd70_c_nome,sau_procedimento.sd63_c_nome,sd29_t_tratamento,m.z01_nome as profissional","sd24_d_cadastro desc ","sd24_i_numcgs = $cgs" ));
@@ -60,7 +60,7 @@ $sSql = $clprontproced->sql_query_prontuario("", "sd24_v_motivo, sd24_v_pressao,
                                              " sd29_t_tratamento,m.z01_nome as profissional","sd24_d_cadastro desc ",
                                              "sd24_i_numcgs = $cgs" );
 $query1 = db_query($sSql);
-$linhas1 = pg_num_rows($query1);
+$linhas1 = $query1 === false || $query1 === null ? 0 : pg_num_rows($query1);
 //die($clprontuarios->sql_query("","*","sd24_d_cadastro desc ","sd24_i_numcgs = $cgs" ));
 
 if($linhas == 0 && $linhas1 == 0 ){
@@ -137,8 +137,8 @@ for($p=0; $p<$linhas1; $p++){
 
       $sd70_c_nome_ = trim("    Principal : ".$sd70_c_cid." - ".$sd70_c_nome); 
       $query3 = db_query($clprontcid->sql_query("","sd70_c_cid,sd70_c_nome,sd55_b_principal","","sd55_b_principal = 'f' and prontcid.sd55_i_prontuario = $sd29_i_prontuario"));
-      $linhas3 = pg_num_rows($query3);
-      $qtde_cid = pg_num_rows($query3);
+      $linhas3 = $query3 === false || $query3 === null ? 0 : pg_num_rows($query3);
+      $qtde_cid = $query3 === false || $query3 === null ? 0 : pg_num_rows($query3);
       for($p1=0; $p1<$qtde_cid; $p1++){
         db_fieldsmemory($query3,$p1);
         $sd70_c_nome_ .= "\n"."                                          ".trim($sd70_c_cid." - ".$sd70_c_nome); 

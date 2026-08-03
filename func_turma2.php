@@ -109,7 +109,7 @@ $escola = db_getsession("DB_coddepto");
                   WHERE periodoescola.ed17_i_escola = $escola
                   GROUP BY ed15_i_codigo,ed15_c_nome";
       $result_tur = db_query($sql_tur);
-      $linhas_tur = pg_num_rows($result_tur);
+      $linhas_tur = $result_tur === false || $result_tur === null ? 0 : pg_num_rows($result_tur);
       if($linhas_tur==0){
        $x = [''=>'NENHUM REGISTRO'];
        db_select('ed57_i_turno',$x,true,1,"");

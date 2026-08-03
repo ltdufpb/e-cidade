@@ -62,7 +62,7 @@ try {
                 throw new Exception(_M(MSGTFD4_VEICULOS_RPC . "erro_buscar_veiculos_com_agenda", $oMsgErro));
             }
 
-            $iLinhas = pg_num_rows($rsAgenda);
+            $iLinhas = $rsAgenda === false || $rsAgenda === null ? 0 : pg_num_rows($rsAgenda);
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDados = db_utils::fieldsMemory($rsAgenda, $i);
                 $oDados->destino = urlencode((string) $oDados->destino);
@@ -87,7 +87,7 @@ try {
                 throw new Exception(_M(MSGTFD4_VEICULOS_RPC . "erro_buscar_veiculos_sem_agenda", $oMsgErro));
             }
 
-            $iLinhasSemPedido = pg_num_rows($rsLivres);
+            $iLinhasSemPedido = $rsLivres === false || $rsLivres === null ? 0 : pg_num_rows($rsLivres);
             for ($i = 0; $i < $iLinhasSemPedido; $i++) {
                 $oSemPedido = db_utils::fieldsMemory($rsLivres, $i);
                 $oSemPedido->modelo = urlencode((string) $oSemPedido->modelo);

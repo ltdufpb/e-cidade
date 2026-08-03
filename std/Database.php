@@ -201,7 +201,7 @@ class Database {
    */
   public static function getCollectionByRecord( $rsRecordset ) {
 
-    $iINumRows = pg_num_rows($rsRecordset);
+    $iINumRows = $rsRecordset === false || $rsRecordset === null ? 0 : pg_num_rows($rsRecordset);
     $aDButils  = [];
 
     if ( $iINumRows > 0 ) {

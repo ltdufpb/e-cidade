@@ -390,7 +390,7 @@ class ImportacaoCNES {
         $oMsgErro->sErro = pg_last_error();
         throw new Exception( _M(self::MSG_IMPORTACAOCNES . "erro_buscar_turno_atendimento", $oMsgErro) );
       }
-      $iLinhas = pg_num_rows($rs);
+      $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
       for ($i = 0; $i < $iLinhas; $i++) {
         $this->aTurnoAtendimento[] = db_utils::fieldsMemory($rs, $i)->sd43_cod_turnat;
       }
@@ -416,7 +416,7 @@ class ImportacaoCNES {
         $oMsgErro->sErro = pg_last_error();
         throw new Exception( _M(self::MSG_IMPORTACAOCNES . "erro_buscar_nivel_hierarquia", $oMsgErro) );
       }
-      $iLinhas = pg_num_rows($rs);
+      $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
       for ($i = 0; $i < $iLinhas; $i++) {
         $this->aNivelHierarquia[] = db_utils::fieldsMemory($rs, $i)->sd44_i_codnivhier;
       }
@@ -441,7 +441,7 @@ class ImportacaoCNES {
         $oMsgErro->sErro = pg_last_error();
         throw new Exception( _M(self::MSG_IMPORTACAOCNES . "erro_buscar_fluxo_cliente", $oMsgErro) );
       }
-      $iLinhas = pg_num_rows($rs);
+      $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
       for ($i = 0; $i < $iLinhas; $i++) {
         $this->aFluxoClientela[] = db_utils::fieldsMemory($rs, $i)->sd41_i_cod_cliente;
       }
@@ -466,7 +466,7 @@ class ImportacaoCNES {
         $oMsgErro->sErro = pg_last_error();
         throw new Exception( _M(self::MSG_IMPORTACAOCNES . "erro_buscar_natureza_organizacao", $oMsgErro) );
       }
-      $iLinhas = pg_num_rows($rs);
+      $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
       for ($i = 0; $i < $iLinhas; $i++) {
         $this->aNaturezaOrganizacao[] = db_utils::fieldsMemory($rs, $i)->sd40_i_cod_natorg;
       }
@@ -491,7 +491,7 @@ class ImportacaoCNES {
         $oMsgErro->sErro = pg_last_error();
         throw new Exception( _M(self::MSG_IMPORTACAOCNES . "erro_buscar_retencao_tributos", $oMsgErro) );
       }
-      $iLinhas = pg_num_rows($rs);
+      $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
       for ($i = 0; $i < $iLinhas; $i++) {
         $this->aRetencaoTributos[] = db_utils::fieldsMemory($rs, $i)->sd39_i_cod_reten;
       }
@@ -518,7 +518,7 @@ class ImportacaoCNES {
         $oMsgErro->sErro = pg_last_error();
         throw new Exception( _M(self::MSG_IMPORTACAOCNES . "erro_buscar_atividade", $oMsgErro) );
       }
-      $iLinhas = pg_num_rows($rsAtividade);
+      $iLinhas = $rsAtividade === false || $rsAtividade === null ? 0 : pg_num_rows($rsAtividade);
       for ($i = 0; $i < $iLinhas; $i++) {
         $this->aAtividade[] = db_utils::fieldsMemory($rsAtividade, $i)->sd38_i_cod_ativid;
       }
@@ -544,7 +544,7 @@ class ImportacaoCNES {
         $oMsgErro->sErro = pg_last_error();
         throw new Exception( _M(self::MSG_IMPORTACAOCNES . "erro_buscar_esfera_administrativa", $oMsgErro) );
       }
-      $iLinhas = pg_num_rows($rsEsfera);
+      $iLinhas = $rsEsfera === false || $rsEsfera === null ? 0 : pg_num_rows($rsEsfera);
       for ($i = 0; $i < $iLinhas; $i++) {
         $this->aEsferaAdministrativa[] = db_utils::fieldsMemory($rsEsfera, $i)->sd37_i_cod_esfadm;
       }
@@ -568,7 +568,7 @@ class ImportacaoCNES {
         $oMsgErro->sErro = pg_last_error();
         throw new Exception( _M(self::MSG_IMPORTACAOCNES . "erro_buscar_tipo_unidade", $oMsgErro) );
       }
-      $iLinhas = pg_num_rows($rsTipoUnidade);
+      $iLinhas = $rsTipoUnidade === false || $rsTipoUnidade === null ? 0 : pg_num_rows($rsTipoUnidade);
       for ($i = 0; $i < $iLinhas; $i++) {
         $this->aTiposUnidades[] = db_utils::fieldsMemory($rsTipoUnidade, $i)->sd42_i_tp_unid_id;
       }

@@ -509,7 +509,7 @@ if ($oParam->exec == 'getCgsCns') {
         echo "Erro ao verificar dados ";
         exit;
     }
-    $iNumSemVeic = pg_num_rows($rsSemVeic);
+    $iNumSemVeic = $rsSemVeic === false || $rsSemVeic === null ? 0 : pg_num_rows($rsSemVeic);
 
     /* Obtenho todas as pessoas que estão com a saída agendada para o destino e data informada e que foram
        vinculadas para o veículo informado

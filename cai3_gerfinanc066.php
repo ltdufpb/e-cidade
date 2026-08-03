@@ -94,7 +94,7 @@ if (isset($inicial) && $inicial == true) {
             $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}'   ";
               
             $rsSqlArrecad = db_query($sSqlArrecad);
-            $iNumRows     = pg_num_rows($rsSqlArrecad);
+            $iNumRows     = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
             if ($iNumRows == 0) {
                   
               $numpar1 .= $virgula.$numpar;
@@ -108,11 +108,11 @@ if (isset($inicial) && $inicial == true) {
 	        //    echo "if if ....  | $i --- $v<br>";
 	        $rsnumpre = db_query("select v59_numpre from inicialnumpre where v59_inicial = $v");
 	        //    db_criatabela($rsnumpre);
-	        $numrows  = pg_num_rows($rsnumpre);
+	        $numrows  = $rsnumpre === false || $rsnumpre === null ? 0 : pg_num_rows($rsnumpre);
 	        for($ii = 0; $ii < $numrows; $ii++ ){
 	          db_fieldsmemory($rsnumpre,$ii);
 	          $rsArrecad  = db_query(" select distinct k00_numpre,k00_numpar from arrecad where k00_numpre = $v59_numpre "); 
-	          $numArrecad = pg_num_rows($rsArrecad);
+	          $numArrecad = $rsArrecad === false || $rsArrecad === null ? 0 : pg_num_rows($rsArrecad);
 	          for($ia = 0 ;$ia < $numArrecad; $ia++ ){
 	            db_fieldsmemory($rsArrecad,$ia);
 	            $numpar1 .= $virgula.$k00_numpar;
@@ -126,11 +126,11 @@ if (isset($inicial) && $inicial == true) {
 	      //    echo "if if ....  | $i --- $v<br>";
 	      $rsnumpre = db_query("select v59_numpre from inicialnumpre where v59_inicial = $v");
 	      //    db_criatabela($rsnumpre);
-	      $numrows  = pg_num_rows($rsnumpre);
+	      $numrows  = $rsnumpre === false || $rsnumpre === null ? 0 : pg_num_rows($rsnumpre);
 	      for($ii = 0; $ii < $numrows; $ii++ ){
 	        db_fieldsmemory($rsnumpre,$ii);
 	        $rsArrecad  = db_query(" select distinct k00_numpre,k00_numpar from arrecad where k00_numpre = $v59_numpre "); 
-	        $numArrecad = pg_num_rows($rsArrecad);
+	        $numArrecad = $rsArrecad === false || $rsArrecad === null ? 0 : pg_num_rows($rsArrecad);
 	        for($ia = 0 ;$ia < $numArrecad; $ia++ ){
 	          db_fieldsmemory($rsArrecad,$ia);
 	          $numpar1 .= $virgula.$k00_numpar;
@@ -172,7 +172,7 @@ if (isset($inicial) && $inicial == true) {
             $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}'   ";
               
             $rsSqlArrecad = db_query($sSqlArrecad);
-            $iNumRows     = pg_num_rows($rsSqlArrecad);
+            $iNumRows     = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
             if ($iNumRows == 0) {
                   
               $numpar1 .= $virgula.$numpar;
@@ -251,7 +251,7 @@ if(isset($submit)){
                     from arrecad 
                     where k00_numpre= $numpre and k00_numpar = $numpar";
      $resultreceita = db_query($sqlreceita);
-     $linhasreceita = pg_num_rows($resultreceita);
+     $linhasreceita = $resultreceita === false || $resultreceita === null ? 0 : pg_num_rows($resultreceita);
      for($r=0;$r<$linhasreceita;$r++){
        db_fieldsmemory($resultreceita,$r);
 	     //echo "<br>numpre = $numpre - numpar=$numpar - receita = $k00_receit";

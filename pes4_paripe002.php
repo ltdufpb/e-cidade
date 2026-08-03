@@ -66,7 +66,7 @@ if ( isset($alterar) ) {
 
     db_fieldsmemory($rsCfpess, 0);
 
-    $iColunas = pg_num_fields($rsCfpess);
+    $iColunas = $rsCfpess === false || $rsCfpess === null ? 0 : pg_num_fields($rsCfpess);
 
     for( $iIndice = 0; $iIndice < $iColunas; $iIndice++) {
 

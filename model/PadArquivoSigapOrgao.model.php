@@ -63,7 +63,7 @@ final class PadArquivoSigapOrgao extends PadArquivoSigap {
     $sSqlOrgaos .= "                           and o58_anousu = o40_anousu ";
     $sSqlOrgaos .= " where o58_anousu <= {$iAno} {$sWhereInstit}";
     $rsOrgaos     = db_query($sSqlOrgaos);
-    $iTotalLinhas = pg_num_rows($rsOrgaos); 
+    $iTotalLinhas = $rsOrgaos === false || $rsOrgaos === null ? 0 : pg_num_rows($rsOrgaos); 
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $sDiaMesAno    =  "{$iAno}-".str_pad($iMes, 2, "0", STR_PAD_LEFT)."-".str_pad($iDia, 2, "0", STR_PAD_LEFT);

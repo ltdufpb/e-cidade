@@ -101,7 +101,7 @@ $sql = "select * from ($sql) as x where 1=1 $where $wheremov order by k11_instit
 //echo "$sql";exit;
 $result = pg_query($sql);
 
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro= Informação não encontrada ! ');
 }

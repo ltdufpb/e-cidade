@@ -42,7 +42,7 @@ $result = $clorcelemento->sql_record($clorcelemento->sql_query(null,db_getsessio
 $head3 = "CADASTRO DE ELEMENTOS";
 $head5 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem elementos cadastrado.');
    exit;

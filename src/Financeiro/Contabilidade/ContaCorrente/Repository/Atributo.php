@@ -110,7 +110,7 @@ class Atributo extends \BaseClassRepository
         $sqlAtributos = $daoAtributos->sql_query(null, "$campos", "c129_ordem", $where);
 
         $rsAtributos = db_query($sqlAtributos);
-        $totalAtributos = pg_num_rows($rsAtributos);
+        $totalAtributos = $rsAtributos === false || $rsAtributos === null ? 0 : pg_num_rows($rsAtributos);
         if ($totalAtributos == 0) {
             return false;
         }

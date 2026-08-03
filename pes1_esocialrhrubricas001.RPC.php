@@ -111,7 +111,7 @@ try {
                 throw new DBException("Erro ao buscar os subgrupos das rubricas.");
             }
 
-            $contador = pg_num_rows($rs);
+            $contador = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             $retorno->subgruposrubricas = [];
             $dadosRetorno = [];
             for ($i = 0; $i < $contador; $i++) {

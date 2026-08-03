@@ -65,7 +65,7 @@ $Sql .= "GROUP BY sd24_c_cid,
                   sd02_c_bairro";
 $Query1 = db_query($sql1);
 $Query = db_query($Sql);
-$Linhas = pg_num_rows($Query);
+$Linhas = $Query === false || $Query === null ? 0 : pg_num_rows($Query);
  if($Linhas == 0) {
   echo "<table width='100%'>
          <tr>

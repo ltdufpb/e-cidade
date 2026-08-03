@@ -429,7 +429,7 @@ switch ($oParam->sExec) {
             $sSqlIncosistencias = $oDaoDb_registrosinconsistentes->sql_query_file(null, "db136_sequencial", null, $sWhereInconsistencias);
 
             $rsInconsistencias = db_query($sSqlIncosistencias);
-            $iInconsistencias = pg_num_rows($rsInconsistencias);
+            $iInconsistencias = $rsInconsistencias === false || $rsInconsistencias === null ? 0 : pg_num_rows($rsInconsistencias);
 
             if (!$rsInconsistencias) {
                 throw new Exception("Erro ao consultar Inconsistências\n\n" . pg_last_error());

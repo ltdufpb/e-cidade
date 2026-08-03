@@ -112,7 +112,7 @@ $sQuery = "
 ";
 
 $resQuery = db_query($sQuery);
-$iNumRows = pg_num_rows($resQuery);
+$iNumRows = $resQuery === false || $resQuery === null ? 0 : pg_num_rows($resQuery);
 
 $sValorCompararQuebra = "";
 $sCampoQuebrar = "rh73_rubric";

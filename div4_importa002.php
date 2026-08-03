@@ -319,7 +319,7 @@ if(isset($tipo)) {
   echo "<input type=\"hidden\" name=\"tipo_debito\" value=\"".$tipo."\">\n";  
   echo "<table border=\"0\" cellspacing=\"0\" cellpadding=\"3\" id=\"tabdebitos\">\n";
 //cria o cabeçalho 
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   echo "<tr bgcolor=\"#FFCC66\">\n";
   echo "<th class=\"borda\" style=\"font-size:12px\" nowrap>&nbsp;</th>\n";
   echo "<th class=\"borda\" style=\"font-size:12px\" nowrap>Numpre</th>\n";

@@ -50,7 +50,7 @@ if (!empty($sTabelasParaGerarXML)) {
 }
 
 $rsTabelas       = pg_query($sSqlTabelas);
-$iNumRowsTabelas = pg_num_rows($rsTabelas);
+$iNumRowsTabelas = $rsTabelas === false || $rsTabelas === null ? 0 : pg_num_rows($rsTabelas);
 if ($lProcessaCompleto) {
 
   /*
@@ -95,7 +95,7 @@ if ($lProcessaCompleto) {
                order by db_sysprikey.sequen";
     //die($sSql);
     $rs = pg_query($sSql);
-    $iTotalRegistros = pg_num_rows($rs);
+    $iTotalRegistros = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
     //    $sXml .= "  <campos>\n";
     $sXml .= "  <fields>\n";
@@ -141,7 +141,7 @@ if ($lProcessaCompleto) {
                                   inner join db_syscampo on db_syscampo.codcam = db_sysprikey.codcam 
                             where codarq = {$oTabela->codarq} ";
     $rsChavePrimaria = pg_query($sSqlChavePrimaria);
-    $iTotalRegistros = pg_num_rows($rsChavePrimaria);
+    $iTotalRegistros = $rsChavePrimaria === false || $rsChavePrimaria === null ? 0 : pg_num_rows($rsChavePrimaria);
     $sXml .= "  <primarykey>\n";
     for ($i=0;$i < $iTotalRegistros; $i++) {
       $o = db_utils::fieldsMemory($rsChavePrimaria,$i);
@@ -168,7 +168,7 @@ if ($lProcessaCompleto) {
 
     $sXml .= "  <foreignkeys>\n";
     $rsChaveEstrangeira = pg_query($sSqlChaveEstrangeira);
-    $iTotalRegistros = pg_num_rows($rsChaveEstrangeira);
+    $iTotalRegistros = $rsChaveEstrangeira === false || $rsChaveEstrangeira === null ? 0 : pg_num_rows($rsChaveEstrangeira);
 
     $aProcessadas = [];
     $lPrimeiro    = true;
@@ -216,7 +216,7 @@ $sSqlTabelas        = "select distinct
                               inner join db_sysarquivo on db_sysarquivo.codarq = db_sysarqcamp.codarq
                         order by 2 ";
 $rsTabelas          = pg_query($sSqlTabelas);
-$iNumRowsTabelas    = pg_num_rows($rsTabelas);
+$iNumRowsTabelas    = $rsTabelas === false || $rsTabelas === null ? 0 : pg_num_rows($rsTabelas);
 $aSiglasProcessadas = [];
 $lPrimeiro          = true;
 

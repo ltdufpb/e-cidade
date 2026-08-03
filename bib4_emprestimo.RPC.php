@@ -93,7 +93,7 @@ try {
       $oRetorno->aEmprestimos = [];
 
       $oData   = new DBDate( date('Y-m-d') );
-      $iLinhas = pg_num_rows($rsEmprestimos);
+      $iLinhas = $rsEmprestimos === false || $rsEmprestimos === null ? 0 : pg_num_rows($rsEmprestimos);
       for ( $i = 0; $i < $iLinhas; $i++ ) {
 
         $oDados = db_utils::fieldsMemory($rsEmprestimos, $i);
@@ -237,7 +237,7 @@ try {
         break;
       }
 
-      $iLinhas      = pg_num_rows($rsReserva);
+      $iLinhas      = $rsReserva === false || $rsReserva === null ? 0 : pg_num_rows($rsReserva);
       $oDaoExemplar = new cl_exemplar();
       for ($i = 0; $i < $iLinhas; $i ++ ) {
 
@@ -261,7 +261,7 @@ try {
           throw new DBException("Erro ao buscar os exemplares disponíveis.");
         }
 
-        $iTotalExemplares = pg_num_rows($rsExemplares);
+        $iTotalExemplares = $rsExemplares === false || $rsExemplares === null ? 0 : pg_num_rows($rsExemplares);
         if (  $oDadosReserva->count > $iTotalExemplares ) {
 
           $oRetorno->lTemReserva          = true;

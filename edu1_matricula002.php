@@ -168,7 +168,7 @@ if ( isset($alterar) ) {
         throw new DBException( _M( MENSAGENS_EDU1_MATRICULA002 . 'erro_buscar_regencias', $oErro ) );
       }
 
-      $iTotalLinhasRegencia = pg_num_rows($rsRegencias);
+      $iTotalLinhasRegencia = $rsRegencias === false || $rsRegencias === null ? 0 : pg_num_rows($rsRegencias);
 
       for ($iRegencia = 0; $iRegencia < $iTotalLinhasRegencia; $iRegencia++) {
 

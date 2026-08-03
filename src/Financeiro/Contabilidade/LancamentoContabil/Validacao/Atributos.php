@@ -45,7 +45,7 @@ class Atributos implements InterfacePosProcessamento
             throw new \Exception(pg_last_error() . " -- Ocorreu algo inexperado ao buscar os lançamentos ");
         }
 
-        $numeroLinhas = pg_num_rows($rsAtributos);
+        $numeroLinhas = $rsAtributos === false || $rsAtributos === null ? 0 : pg_num_rows($rsAtributos);
         $sMensagem = "";
         for ($iLinhas = 0; $iLinhas < $numeroLinhas; $iLinhas++) {
             $oLancamento = \db_utils::fieldsMemory($rsAtributos, $iLinhas);

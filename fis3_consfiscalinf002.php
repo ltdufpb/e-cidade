@@ -40,7 +40,7 @@ $clfiscallocal = new cl_fiscallocal;
 $clfiscalexec  = new cl_fiscalexec;
 $sql    = " ";
 $result = $clfiscal->sql_record($clfiscal->sql_query($codfiscal));
-$num    = pg_num_rows($result);
+$num    = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 ?>
 

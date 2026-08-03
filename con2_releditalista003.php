@@ -124,7 +124,7 @@ for($d=0;$d<pg_num_rows($resultedital);$d++){
   $pdf->ln(5);
   $pdf->SetFont('Arial','B',11);
   $pdf->Cell(190,6,"ANEXO II - ".$j14_tipo."  ".$j14_nome,1,1,"C",1);
-  $numrows03=pg_num_rows($result);
+  $numrows03=$result === false || $result === null ? 0 : pg_num_rows($result);
   $pdf->SetFont('Arial','',8);
   $pdf->Cell(70,$largura,'PROPRIETÁRIO',1,0,"C",1);
   $pdf->Cell(30,$largura,'NUMERO',1,0,"C",1);

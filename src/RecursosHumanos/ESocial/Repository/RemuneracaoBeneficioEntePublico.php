@@ -115,7 +115,7 @@ SQL;
                 $msg = "Ocorreu um erro ao buscar os servidores.";
                 throw new BusinessException($msg);
             }
-            $qtdServidores = pg_num_rows($rsServidores);
+            $qtdServidores = $rsServidores === false || $rsServidores === null ? 0 : pg_num_rows($rsServidores);
             if ($qtdServidores == 0) {
                 $mensagem = "Nenhum cadastro de beneficário encontrado na competência informada na instituição.";
                 throw new DBException($mensagem);

@@ -76,7 +76,7 @@ function js_relatorio(){
               <?php 
                 $sqlAno  = " select distinct q01_anousu from isscalc order by q01_anousu desc";
                 $rsAno   = db_query($sqlAno);
-                $intAno  = pg_num_rows($rsAno);
+                $intAno  = $rsAno === false || $rsAno === null ? 0 : pg_num_rows($rsAno);
                 for($i=0;$i<$intAno;$i++){
                   db_fieldsmemory($rsAno,$i);
                   $arrayAno[$q01_anousu] = $q01_anousu;

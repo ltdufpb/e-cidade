@@ -210,7 +210,7 @@ try {
         throw new DBException("Não foi possível buscar as formas de pagamento.");
       }
 
-      $iTotalEmpAgeForma = pg_num_rows($rsEmpAgeForma);
+      $iTotalEmpAgeForma = $rsEmpAgeForma === false || $rsEmpAgeForma === null ? 0 : pg_num_rows($rsEmpAgeForma);
       for ($iIndice = 0; $iIndice < $iTotalEmpAgeForma; $iIndice++) {
 
         $oEmpAgeForma = db_utils::fieldsMemory($rsEmpAgeForma, $iIndice);

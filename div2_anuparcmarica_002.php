@@ -128,7 +128,7 @@ if(!$rsVinculoMatriculaInscricao) {
   $bErro  = true;
   $sMsgErro = "Buscando dados da Origem 1";	
 }
-$iLinhasMatric = pg_num_rows($rsVinculoMatriculaInscricao);
+$iLinhasMatric = $rsVinculoMatriculaInscricao === false || $rsVinculoMatriculaInscricao === null ? 0 : pg_num_rows($rsVinculoMatriculaInscricao);
 
 echo "<br><br><br> iLinhasMatric: $iLinhasMatric <br><br><br>";
 
@@ -165,7 +165,7 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
   	$bErro  = true;
   	$sMsgErro = "Buscando dados da Origem 2";
   }
-  $iLinhasDivida = pg_num_rows($rsDivida);
+  $iLinhasDivida = $rsDivida === false || $rsDivida === null ? 0 : pg_num_rows($rsDivida);
 
   $aParcelas   = [];
   $aExercicios = [];
@@ -335,7 +335,7 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
           	$bErro  = true;
           	$sMsgErro = "Buscando dados da Origem 6";
           }
-          $iLinhasParcelBusca = pg_num_rows($rsParcelBusca);
+          $iLinhasParcelBusca = $rsParcelBusca === false || $rsParcelBusca === null ? 0 : pg_num_rows($rsParcelBusca);
 
           $oParcelBusca = db_utils::fieldsmemory( $rsParcelBusca, 0 );
           $iParcelBusca = $oParcelBusca->v07_parcel;
@@ -503,7 +503,7 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
   	$bErro  = true;
   	$sMsgErro = "Buscando dados da Origem 9";
   }    
-  $iLinhasArrecad = pg_num_rows($rsArrecad);
+  $iLinhasArrecad = $rsArrecad === false || $rsArrecad === null ? 0 : pg_num_rows($rsArrecad);
 
   $aArrecad = [];
 
@@ -540,7 +540,7 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
           $bErro = true;
           $sMsgErro = "Buscando dados da Origem 10";	
         }
-        $iLinhasParcelBusca = pg_num_rows($rsParcelBusca);
+        $iLinhasParcelBusca = $rsParcelBusca === false || $rsParcelBusca === null ? 0 : pg_num_rows($rsParcelBusca);
 
         $oParcelBusca = db_utils::fieldsmemory( $rsParcelBusca, 0 );
         $iParcelBusca = $oParcelBusca->v07_parcel;
@@ -706,7 +706,7 @@ echo "<br><br><br> =============================================== <br><br><br>"
   	$bErro = true;
   	$sMsgErro = "Buscando dados da Origem 11";
   }  
-  $iLinhasDivida = pg_num_rows($rsDivida);
+  $iLinhasDivida = $rsDivida === false || $rsDivida === null ? 0 : pg_num_rows($rsDivida);
 
   if ( $iDebuga == 1) {
     echo "<br><br><br>";

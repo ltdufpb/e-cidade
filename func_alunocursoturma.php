@@ -130,7 +130,7 @@ if ($oDaoEduParametros->numrows > 0) {
                   ORDER BY ed15_i_sequencia
                   ";
       $result_tur = db_query($sql_tur);
-      $linhas_tur = pg_num_rows($result_tur);
+      $linhas_tur = $result_tur === false || $result_tur === null ? 0 : pg_num_rows($result_tur);
       if ($linhas_tur==0) {
        $x = [''=>'NENHUM REGISTRO'];
        db_select('ed57_i_turno',$x,true,1,"");

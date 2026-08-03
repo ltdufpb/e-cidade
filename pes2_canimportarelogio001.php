@@ -105,7 +105,7 @@ if(isset($gerar)){
                             where rh01_regist = $matricula
                            ";
         $res_pessoal = db_query($sql_pessoal);
-        $num_pessoal = pg_num_rows($res_pessoal);
+        $num_pessoal = $res_pessoal === false || $res_pessoal === null ? 0 : pg_num_rows($res_pessoal);
         if($num_pessoal > 0){
           db_fieldsmemory($res_pessoal,0);
 //echo "<br> entrou 4";

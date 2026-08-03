@@ -57,7 +57,7 @@ $sqlTaxa  = " SELECT j08_iptucadtaxaexe FROM cadastro.iptucadtaxaexe INNER JOIN 
 $sqlTaxa .= "     ON j07_iptucadtaxa = j08_iptucadtaxa where j08_anousu = {$anousu};";
 
 $rsTaxa = db_query($sqlTaxa);
-$linhasTaxa = pg_num_rows($rsTaxa);
+$linhasTaxa = $rsTaxa === false || $rsTaxa === null ? 0 : pg_num_rows($rsTaxa);
 
 if ($linhasTaxa > 0) {
     db_fieldsmemory($rsTaxa, 0);
@@ -124,7 +124,7 @@ $sqlTipo .= "  where j18_anousu = {$anousu} 					  ";
 $gera_parcelado = 1;
 
 $rsTipo = db_query($sqlTipo);
-$linhasTipo = pg_num_rows($rsTipo);
+$linhasTipo = $rsTipo === false || $rsTipo === null ? 0 : pg_num_rows($rsTipo);
 
 if ($linhasTipo > 0) {
     db_fieldsmemory($rsTipo, 0);
@@ -370,7 +370,7 @@ if ($debugar == true) {
     echo "<br>SQL1 - Principal:<br> $sqlIptunump <br>";
 }
 
-$linhasIptunump = pg_num_rows($rsIptunump);
+$linhasIptunump = $rsIptunump === false || $rsIptunump === null ? 0 : pg_num_rows($rsIptunump);
 
 try {
     $oRegraEmissao = new regraEmissao($tipo_debito, 4, db_getsession('DB_instit'),
@@ -395,7 +395,7 @@ if ($linhasIptunump > 0) {
              where j20_anousu = $anousu limit 1";
 
     $rsTipo = db_query($sqlTipo);
-    $linhasTipo = pg_num_rows($rsTipo);
+    $linhasTipo = $rsTipo === false || $rsTipo === null ? 0 : pg_num_rows($rsTipo);
     if ($linhasTipo > 0) {
         db_fieldsmemory($rsTipo, 0);
         $tipo_debito = $k00_tipo;
@@ -512,7 +512,7 @@ if ($linhasIptunump > 0) {
         $sqlArrecad .= "  	      k00_numpar  				  ";
 
         $rsArrecad = db_query($sqlArrecad);
-        $linhasArrecad = pg_num_rows($rsArrecad);
+        $linhasArrecad = $rsArrecad === false || $rsArrecad === null ? 0 : pg_num_rows($rsArrecad);
 
         if ($linhasArrecad > 0) {
             db_fieldsmemory($rsArrecad, 0);
@@ -645,7 +645,7 @@ if ($linhasIptunump > 0) {
 				inner join db_uf on db12_uf=uf
 				where db_config.codigo = " . db_getsession("DB_instit");
         $resul = db_query($sqlpref);
-        $linhas = pg_num_rows($resul);
+        $linhas = $resul === false || $resul === null ? 0 : pg_num_rows($resul);
 
         if ($linhas > 0) {
             db_fieldsmemory($resul, 0); // pega o dados da prefa
@@ -926,7 +926,7 @@ if ($linhasIptunump > 0) {
                         where j39_dtdemo is null and
                         j39_matric = $j23_matric";
             $resultsqlareaconstr = db_query($sqlareaconstr);
-            $linhasareaconstr = pg_num_rows($resultsqlareaconstr);
+            $linhasareaconstr = $resultsqlareaconstr === false || $resultsqlareaconstr === null ? 0 : pg_num_rows($resultsqlareaconstr);
             if ($linhasareaconstr > 0) {
                 db_fieldsmemory($resultsqlareaconstr, 0);
             }
@@ -937,7 +937,7 @@ if ($linhasIptunump > 0) {
 						where k00_numpre = $k00_numpre
 						group by k00_receit,k02_descr";
             $resultReceitaCapa = db_query($sqlReceitaCapa);
-            $linhasReceitaCapa = pg_num_rows($resultReceitaCapa);
+            $linhasReceitaCapa = $resultReceitaCapa === false || $resultReceitaCapa === null ? 0 : pg_num_rows($resultReceitaCapa);
 
 // *************************** CAPA DO CARNE *****************************
             if ($auxiliar != $j23_matric && $capa == "s") {
@@ -1246,7 +1246,7 @@ if ($linhasIptunump > 0) {
                         }
 
                         $rsReceitas = db_query($sqlReceitas);
-                        $intnumrows = pg_num_rows($rsReceitas);
+                        $intnumrows = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
                         for ($x = 0; $x < $intnumrows; $x++) {
                             db_fieldsmemory($rsReceitas, $x);
                             $pdf1->arraycodreceitas[$x] = $codreceita;
@@ -1295,7 +1295,7 @@ if ($linhasIptunump > 0) {
                         /* busca as mensagens da arretipo */
                         $sqlMsgCarne = " select k00_msguni2 from arretipo where k00_tipo = $k00_tipo ";
                         $rsMsgCarneUnica = db_query($sqlMsgCarne);
-                        $intNumrowsMsgCarne = pg_num_rows($rsMsgCarneUnica);
+                        $intNumrowsMsgCarne = $rsMsgCarneUnica === false || $rsMsgCarneUnica === null ? 0 : pg_num_rows($rsMsgCarneUnica);
                         if ($intNumrowsMsgCarne > 0) {
                             db_fieldsmemory($rsMsgCarneUnica, 0);
                         }
@@ -1311,7 +1311,7 @@ if ($linhasIptunump > 0) {
                             if ($k03_tipo == 3) {
                                 $sqlaliq = "select q05_aliq,q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
                                 $rsIssvarano = db_query($sqlaliq);
-                                $intNumrows = pg_num_rows($rsIssvarano);
+                                $intNumrows = $rsIssvarano === false || $rsIssvarano === null ? 0 : pg_num_rows($rsIssvarano);
                                 if ($intNumrows == 0) {
                                     db_msgbox("Ano não encontrado na tabela issvar. Contate o suporte");
                                     echo "<script>  parent.db_iframe_carne.hide(); </script> ";
@@ -1359,7 +1359,7 @@ if ($linhasIptunump > 0) {
 
                         $sqlmsg = "select k00_tipo,k00_msguni,k00_msguni2 from arretipo where k00_tipo=" . $k00_tipo;
                         $resultmsg = db_query($sqlmsg);
-                        $linhasmsg = pg_num_rows($resultmsg);
+                        $linhasmsg = $resultmsg === false || $resultmsg === null ? 0 : pg_num_rows($resultmsg);
                         db_fieldsmemory($resultmsg, 0);
                         $desconto = $k00_percdes;
                         $texto = db_geratexto($k00_msguni);
@@ -1690,7 +1690,7 @@ if ($linhasIptunump > 0) {
                 }
 
                 $rsReceitas = db_query($sqlReceitas);
-                $intnumrows = pg_num_rows($rsReceitas);
+                $intnumrows = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
                 for ($x = 0; $x < $intnumrows; $x++) {
                     db_fieldsmemory($rsReceitas, $x);
                     $pdf1->arraycodreceitas[$x] = $codreceita;
@@ -1826,7 +1826,7 @@ if ($linhasIptunump > 0) {
 
                 $sqlmsg = "select k00_tipo,k00_msgparc,k00_msgparc2 from arretipo where k00_tipo=" . $k00_tipo;
                 $resultmsg = db_query($sqlmsg);
-                $linhasmsg = pg_num_rows($resultmsg);
+                $linhasmsg = $resultmsg === false || $resultmsg === null ? 0 : pg_num_rows($resultmsg);
                 db_fieldsmemory($resultmsg, 0);
 
                 if ($total == 0) {
@@ -1834,7 +1834,7 @@ if ($linhasIptunump > 0) {
                     if ($k03_tipo == 3) {
                         $sqlaliq = "select q05_aliq,q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
                         $rsIssvarano = db_query($sqlaliq);
-                        $intNumrows = pg_num_rows($rsIssvarano);
+                        $intNumrows = $rsIssvarano === false || $rsIssvarano === null ? 0 : pg_num_rows($rsIssvarano);
                         if ($intNumrows == 0) {
                             db_msgbox("Ano não encontrado na tabela issvar. Contate o suporte");
                             echo "<script>  parent.db_iframe_carne.hide(); </script> ";
@@ -2016,7 +2016,7 @@ if ($linhasIptunump > 0) {
           where k00_numpre = $k00_numpre and k00_numpar = $k00_numpar  ";
                 //echo "<br> $sqlVerParcel <br>";
                 $resultVerParcel = db_query($sqlVerParcel);
-                $linhasVerParcel = pg_num_rows($resultVerParcel);
+                $linhasVerParcel = $resultVerParcel === false || $resultVerParcel === null ? 0 : pg_num_rows($resultVerParcel);
                 if ($linhasVerParcel > 0) {
                     db_fieldsmemory($resultVerParcel, 0);
                     //calcula o desconto.
@@ -2025,7 +2025,7 @@ if ($linhasIptunump > 0) {
                         $sqlDesconto = "select  fc_recibodesconto($k00_numpre,$k00_numpar,$v07_totpar,$k00_receit,$k00_tipo,'$k00_dtvenc','$k00_dtvenc') as percento";
                         //echo "<br>$sqlDesconto<br>";
                         $resultDesconto = db_query($sqlDesconto);
-                        $linhasDesconto = pg_num_rows($resultDesconto);
+                        $linhasDesconto = $resultDesconto === false || $resultDesconto === null ? 0 : pg_num_rows($resultDesconto);
                         $pdf1->descr4_2 = "";
 
                         if ($linhasDesconto > 0) {

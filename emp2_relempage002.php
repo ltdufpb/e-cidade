@@ -216,7 +216,7 @@ foreach ($aCodigosAgendas as $iCodigoAgenda) {
 	$sSqlAgendaSlips .= "	 order by slip.k17_codigo                                                                      ";
 
 	$rsAgendaSlips       = db_query($sSqlAgendaSlips);
-	$iNumrowsAgendaSlips = pg_num_rows($rsAgendaSlips);
+	$iNumrowsAgendaSlips = $rsAgendaSlips === false || $rsAgendaSlips === null ? 0 : pg_num_rows($rsAgendaSlips);
 
 
 	//===================================================================================================================

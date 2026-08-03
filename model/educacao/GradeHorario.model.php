@@ -228,7 +228,7 @@ class GradeHorario
         }
 
         $aPeriodosAula = [];
-        $iLinhas = pg_num_rows($rsRegenciaHorario);
+        $iLinhas = $rsRegenciaHorario === false || $rsRegenciaHorario === null ? 0 : pg_num_rows($rsRegenciaHorario);
 
         for ($i = 0; $i < $iLinhas; $i++) {
 

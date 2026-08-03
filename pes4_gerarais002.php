@@ -824,7 +824,7 @@ function ficha_128()
 
             if ($rsVerificaFeriasNaRescisao) {
 
-                $iNumeroLinhasVerificaFeriasNaRescisao = pg_num_rows($rsVerificaFeriasNaRescisao);
+                $iNumeroLinhasVerificaFeriasNaRescisao = $rsVerificaFeriasNaRescisao === false || $rsVerificaFeriasNaRescisao === null ? 0 : pg_num_rows($rsVerificaFeriasNaRescisao);
 
                 if ($iNumeroLinhasVerificaFeriasNaRescisao <> 0) {
 

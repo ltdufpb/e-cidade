@@ -92,7 +92,7 @@ $oDaoDisciplina       = new cl_disciplina();
   $sWhere                 = " ed100_i_historicompsfora = {$ed100_i_historicompsfora}";
   $sSql                   = $oDaoHistMpsDiscFora->sql_query( "", $campos, $sOrdenacao, $sWhere );
   $result                 = db_query( $sSql );
-  $iLinhasHistMpsDiscFora = pg_num_rows( $result );
+  $iLinhasHistMpsDiscFora = $result === false || $result === null ? 0 : pg_num_rows( $result );
 
   if( is_resource( $result ) && $iLinhasHistMpsDiscFora == 0 ) {
 

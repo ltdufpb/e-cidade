@@ -1002,7 +1002,7 @@ class ServidorMovimentacao
             ORDER BY r33_codtab;";
 
         $result = \db_query($sql);
-        $totalRegistros = pg_num_rows($result);
+        $totalRegistros = $result === false || $result === null ? 0 : pg_num_rows($result);
         $tabPrev = $this->getTabelaCalculoPrevidencia();
 
         for ($row = 0; $row < $totalRegistros; $row++) {

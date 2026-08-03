@@ -42,7 +42,7 @@ if($sqlerro==false) {
 
   $sqlrhlotavinc = "select * from rhlotavinc where rh25_anousu = ".$anodestino;
   $resultrhlotavinc = db_query($sqlrhlotavinc);
-  $linhasrhlotavinc = pg_num_rows($resultrhlotavinc);
+  $linhasrhlotavinc = $resultrhlotavinc === false || $resultrhlotavinc === null ? 0 : pg_num_rows($resultrhlotavinc);
 
   if ($linhasrhlotavinc == 0) {
     $sql1  = "select * ";
@@ -53,7 +53,7 @@ if($sqlerro==false) {
     $sql1 .= "  where rh25_anousu = {$anodestino}";
 
     $result1 = db_query($sql1);
-    $linhas1 = pg_num_rows($result1);
+    $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
     if ($linhas1==0) {
 
       $sql2  = "select * ";
@@ -63,7 +63,7 @@ if($sqlerro==false) {
       $sql2 .= "                              and o55_anousu    = {$anodestino} ";
       $sql2 .= " where rh25_anousu = {$anoorigem} ";
       $result2 = db_query($sql2);
-      $linhas2 = pg_num_rows($result2);
+      $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
       if ($linhas2==0) {
         $cldb_viradaitemlog->c35_log           = "Nao existem dados de proj/atividades e recursos da folha cadastrados para o exercicio {$anoorigem}";
         $cldb_viradaitemlog->c35_codarq        =  749;
@@ -84,7 +84,7 @@ if($sqlerro==false) {
         $sql3 .= "                              and o55_anousu    = {$anodestino} ";
         $sql3 .= " where rh25_anousu = {$anoorigem} ";
         $result3 = db_query($sql3);
-        $linhas3 = pg_num_rows($result3);
+        $linhas3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
 
         for ($xx=0; $xx<$linhas3; $xx++) {
           db_fieldsmemory($result3,$xx);
@@ -106,7 +106,7 @@ if($sqlerro==false) {
 
           $sql_vincativ = "select * from rhlotavincativ where rh39_codlotavinc = ".$seq_ant;
           $result_vincativ = db_query($sql_vincativ);
-          $linhas_vincativ = pg_num_rows($result_vincativ);
+          $linhas_vincativ = $result_vincativ === false || $result_vincativ === null ? 0 : pg_num_rows($result_vincativ);
 
           if ($linhas_vincativ > 0) {
 
@@ -144,7 +144,7 @@ if($sqlerro==false) {
 
           $sql_vincele = "select * from rhlotavincele where rh28_codlotavinc = ".$seq_ant;
           $result_vincele = db_query($sql_vincele);
-          $linhas_vincele = pg_num_rows($result_vincele);
+          $linhas_vincele = $result_vincele === false || $result_vincele === null ? 0 : pg_num_rows($result_vincele);
 
           if ($linhas_vincele > 0) {
 
@@ -166,7 +166,7 @@ if($sqlerro==false) {
 
           $sql_vincrec = "select * from rhlotavincrec where rh43_codlotavinc = ".$seq_ant;
           $result_vincrec = db_query($sql_vincrec);
-          $linhas_vincrec = pg_num_rows($result_vincrec);
+          $linhas_vincrec = $result_vincrec === false || $result_vincrec === null ? 0 : pg_num_rows($result_vincrec);
           if ($linhas_vincrec > 0) {
 
             for ($iVincRec = 0; $iVincRec < $linhas_vincrec; $iVincRec++) {

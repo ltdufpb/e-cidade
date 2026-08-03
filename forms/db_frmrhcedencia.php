@@ -240,7 +240,7 @@ if (!empty($rh261_numcgm)) {
                     $camposCodigoCategoria .= ',rh255_descricao';
                     $sqlCategoria = $clcodigocategoria->sql_query(null, $camposCodigoCategoria, null, "");
                     $resultadoCategoria = $clcodigocategoria->sql_record($sqlCategoria);
-                    $registrosCategoria = pg_num_rows($resultadoCategoria);
+                    $registrosCategoria = $resultadoCategoria === false || $resultadoCategoria === null ? 0 : pg_num_rows($resultadoCategoria);
                     $listaCategoria = [];
                     $listaCategoria[0] = 'Não se aplica';
                     for ($i = 0; $i < $registrosCategoria; $i++) {

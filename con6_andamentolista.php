@@ -55,7 +55,7 @@ if (isset($ordem)) {
   								     where o.codordem = $ordem
 								     order by o.dtini, o.codandam
 								    ");
-  $numAndamentosSelecionados = pg_num_rows($andamentosSelecionados);
+  $numAndamentosSelecionados = $andamentosSelecionados === false || $andamentosSelecionados === null ? 0 : pg_num_rows($andamentosSelecionados);
   //Mostra tabela contendo todos os andamentos selecionados
   echo"
 	<table width=\"95%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">

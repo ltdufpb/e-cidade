@@ -87,7 +87,7 @@ if ( isset($k75_sequencial) and $k75_sequencial != "" ){
 						            inner join db_usuarios on id_usuario      = k75_usuario
 						      where k75_sequencial = {$k75_sequencial}";
   $rsCarrega     = db_query($sqlCarrega);
-	$linhasCarrega = pg_num_rows($rsCarrega);
+	$linhasCarrega = $rsCarrega === false || $rsCarrega === null ? 0 : pg_num_rows($rsCarrega);
 
 	if ( $linhasCarrega > 0 ) {
 	 	db_fieldsmemory($rsCarrega,0);
@@ -100,7 +100,7 @@ if(isset($k00_sequencial) && $k00_sequencial!=""){
 
   $sqlAlt    = "select * from arrevenc where k00_sequencial =$k00_sequencial";
 	$rsAlt     = db_query($sqlAlt);
-	$linhasAlt = pg_num_rows($rsAlt);
+	$linhasAlt = $rsAlt === false || $rsAlt === null ? 0 : pg_num_rows($rsAlt);
 
 	if($linhasAlt > 0){
 

@@ -122,7 +122,7 @@ $sSQlContas .= " where c45_coddoc = $iCodDoc";
 $sSQlContas .= "   and c45_instit = ".$iInstit;
 $sSQlContas .= "   and c45_anousu = ".$iAnoUsu;
 $rsContas    = db_query($sSQlContas);
-$iNumRowsLan = pg_num_rows($rsContas);
+$iNumRowsLan = $rsContas === false || $rsContas === null ? 0 : pg_num_rows($rsContas);
 if ($rsContas){
     $rsEnce   = $clconencerramento->sql_record($clconencerramento->sql_query(null,"*",null," c42_instit       = $iInstit
                                                                and  c42_anousu           = $iAnoUsu

@@ -642,7 +642,7 @@ class Escola implements IEscola {
       throw new DBException ("Não foi possível buscar os dias letivos. \n" . pg_last_error());
     }
 
-    $iLinhas = pg_num_rows( $rsDiaLetivo );
+    $iLinhas = $rsDiaLetivo === false || $rsDiaLetivo === null ? 0 : pg_num_rows( $rsDiaLetivo );
     for ($i = 0; $i < $iLinhas; $i++ ) {
       $aDiasLetivos[] = db_utils::fieldsMemory($rsDiaLetivo, $i)->diasemana;
     }
@@ -735,7 +735,7 @@ class Escola implements IEscola {
 
     if ( $rsProcedimentos && pg_num_rows($rsProcedimentos) > 0 ) {
 
-      $iLinhas = pg_num_rows($rsProcedimentos);
+      $iLinhas = $rsProcedimentos === false || $rsProcedimentos === null ? 0 : pg_num_rows($rsProcedimentos);
 
       for ($iContador = 0; $iContador < $iLinhas; $iContador++ ) {
 

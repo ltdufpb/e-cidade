@@ -40,7 +40,7 @@ $mostramsg = false;
 if(isset($excluir)){
   $setor = " select * from iptubaseregimovel where j04_setorregimovel= $j69_sequencial";
   $resultsetor = db_query($setor);
-  $linhassetor = pg_num_rows($resultsetor);
+  $linhassetor = $resultsetor === false || $resultsetor === null ? 0 : pg_num_rows($resultsetor);
   if($linhassetor > 0){
     $mostramsg = true;
 	  

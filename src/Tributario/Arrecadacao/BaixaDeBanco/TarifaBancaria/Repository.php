@@ -119,7 +119,7 @@ class Repository
             throw new \DBException(_M(TarifaArrecadacao::MENSAGENS . 'erro_busca_tarifas'));
         }
 
-        $totalRegistros = pg_num_rows($rsBuscaTarifas);
+        $totalRegistros = $rsBuscaTarifas === false || $rsBuscaTarifas === null ? 0 : pg_num_rows($rsBuscaTarifas);
 
         if ($totalRegistros === 0) {
             throw new \BusinessException( _M(TarifaArrecadacao::MENSAGENS . 'sem_registros') );

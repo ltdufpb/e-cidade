@@ -66,7 +66,7 @@ if (!isset($lGeraPDF)){
 // Todas instituições
 $aListaInstit     = [];
 $rsListaInstit    = $cldb_config->sql_record($cldb_config->sql_query_file(null,"codigo"));
-$iNroLinhasInstit = pg_num_rows($rsListaInstit);
+$iNroLinhasInstit = $rsListaInstit === false || $rsListaInstit === null ? 0 : pg_num_rows($rsListaInstit);
 
 for ($i=0; $i < $iNroLinhasInstit; $i++) {
   $oListaInstit   = db_utils::fieldsMemory($rsListaInstit,$i);	
@@ -124,7 +124,7 @@ $sSqlPeriodoAnt .= "        order by o58_orgao,o58_codigo,db21_tipoinstit		  			
 //db_criatabela($rsPeriodoAnt);exit;
 
 $rsPeriodoAnt 		 = db_query($sSqlPeriodoAnt);
-$iNroLinhaPeriodoAnt = pg_num_rows($rsPeriodoAnt);
+$iNroLinhaPeriodoAnt = $rsPeriodoAnt === false || $rsPeriodoAnt === null ? 0 : pg_num_rows($rsPeriodoAnt);
 
 $aPagProc	 = 0;
 $aPagNaoProc = 0;
@@ -252,7 +252,7 @@ $sSqlDotacaoSaldo .= "          db21_tipoinstit,  													  ";
 $sSqlDotacaoSaldo .= "          x.o58_codigo 														  ";
 
 $rsDotacaoSaldo 		= db_query($sSqlDotacaoSaldo);
-$iNroLinhasDotacaoSaldo = pg_num_rows($rsDotacaoSaldo);
+$iNroLinhasDotacaoSaldo = $rsDotacaoSaldo === false || $rsDotacaoSaldo === null ? 0 : pg_num_rows($rsDotacaoSaldo);
 
 //die($sSqlDotacaoSaldo);
 

@@ -70,7 +70,7 @@ $sql = "select distinct
 								and {$oGet->sigla}_instit = ".db_getsession("DB_instit")."
           order by z01_nome";
 $rsDados = db_query($sql);
-$numrows = pg_num_rows($rsDados); 
+$numrows = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados); 
 if($numrows == 0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado");
 }

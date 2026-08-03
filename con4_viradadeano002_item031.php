@@ -38,17 +38,17 @@ if($sqlerro==false) {
   // PARÂMETROS EDUCACAO
   $sqlorigem = "select * from ouvidoriaparametro where ov06_anousu =  $anoorigem limit 1";
   $resultorigem = db_query($sqlorigem);
-  $linhasorigem = pg_num_rows($resultorigem);
+  $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
   $sqldestino = "select * from ouvidoriaparametro where ov06_anousu = $anodestino limit 1";
   $resultdestino = db_query($sqldestino);
-  $linhasdestino = pg_num_rows($resultdestino);
+  $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
   if (($linhasorigem > 0) && ($linhasdestino == 0 )) {
     
 		$sqlouvidoriaparametro = $cl_ouvidoriaparametro->sql_query_file("","","*","","ov06_anousu = {$anoorigem}");
 		$rsouvidoriaparametro  = $cl_ouvidoriaparametro->sql_record($sqlouvidoriaparametro);
-		$iTotalLinhaInsert = pg_num_rows($rsouvidoriaparametro);
+		$iTotalLinhaInsert = $rsouvidoriaparametro === false || $rsouvidoriaparametro === null ? 0 : pg_num_rows($rsouvidoriaparametro);
 		for ($iLinhaInsert = 0; $iLinhaInsert < $iTotalLinhaInsert;  $iLinhaInsert++ ) {
 		  db_fieldsmemory($rsouvidoriaparametro, $iLinhaInsert);
 

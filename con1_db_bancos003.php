@@ -41,7 +41,7 @@ if (isset($excluir)) {
     $db_opcao = 3;
     $sql = "select db90_logo as arquivoalt from db_bancos where db90_codban  = '" . $db90_codban . "'";
     $result = db_query($sql);
-    $linhas = pg_num_rows($result);
+    $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
     if ($linhas > 0) {
         db_fieldsmemory($result, 0);
         if ($arquivoalt != "") {

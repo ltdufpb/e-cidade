@@ -754,7 +754,7 @@ function js_atualiza_variavel_retorno(objeto){
 
        $result  = db_query($sSql);
 
-       $linhas = pg_num_rows($result);
+       $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
        for ($i = 0; $i < $linhas; $i++) {
            db_fieldsmemory($result, $i);
 

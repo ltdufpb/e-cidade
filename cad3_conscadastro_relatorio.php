@@ -53,7 +53,7 @@ $sql = "
   where j01_matric = $parametro[$totalRegistos] limit 1
 ";
 $matriculaSelecionada = db_query($sql);
-$numMatriculaSelecionada = pg_num_rows($matriculaSelecionada);
+$numMatriculaSelecionada = $matriculaSelecionada === false || $matriculaSelecionada === null ? 0 : pg_num_rows($matriculaSelecionada);
   if ($numMatriculaSelecionada == 0) {
 
     $pdf->SetFont('Arial','B',9);

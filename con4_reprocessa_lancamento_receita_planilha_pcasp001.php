@@ -264,7 +264,7 @@ if (isset($_POST["processar"])) {
     $rsReceitas       = db_query($sSqlReceita);
 //    db_criatabela($rsReceitas);
 //echo "Linhas:".pg_num_rows($rsReceitas);
-    $iTotalLinhas = pg_num_rows($rsReceitas);
+    $iTotalLinhas = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
     db_inicio_transacao();
     for ($i = 0; $i < $iTotalLinhas; $i++) {
 

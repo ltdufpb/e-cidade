@@ -115,7 +115,7 @@ if (isset($oGet->p51_codigo)) {
                     where p51_codigo = {$iCod} ";
 
   $rsTipoProc  = db_query($sqlTipoProc);
-  $iTipoProc   = pg_num_rows($rsTipoProc);
+  $iTipoProc   = $rsTipoProc === false || $rsTipoProc === null ? 0 : pg_num_rows($rsTipoProc);
 
   if ($iTipoProc > 0) {
 	  $oTipoProc  = db_utils::fieldsMemory($rsTipoProc,0);

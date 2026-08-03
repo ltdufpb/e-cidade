@@ -79,7 +79,7 @@ if(@$_POST["seta"]==true){
   }else{
      $conf=db_query("select * from db_gerador ");
   }
-  $num=pg_num_rows($conf);
+  $num=$conf === false || $conf === null ? 0 : pg_num_rows($conf);
   for($i=0;$i < $num; $i++ ){
     $result=pg_fetch_result($conf,$i,1);
     if($result==$nome){

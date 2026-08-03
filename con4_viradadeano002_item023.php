@@ -65,11 +65,11 @@ if($sqlerro==false) {
   // orcparamseqfiltroorcamento
   $sqldeporigem = "select * from orcparamseqfiltroorcamento where o133_anousu = $anoorigem limit 1";
   $resultdeporigem = db_query($sqldeporigem);
-  $linhasdeporigem = pg_num_rows($resultdeporigem);
+  $linhasdeporigem = $resultdeporigem === false || $resultdeporigem === null ? 0 : pg_num_rows($resultdeporigem);
 
   $sqldepdestino  = "select * from orcparamseqfiltroorcamento where o133_anousu =  $anodestino limit 1";
   $resultdepdestino = db_query($sqldepdestino);
-  $linhasdepdestino = pg_num_rows($resultdepdestino);
+  $linhasdepdestino = $resultdepdestino === false || $resultdepdestino === null ? 0 : pg_num_rows($resultdepdestino);
 
   if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
 		/*
@@ -78,7 +78,7 @@ if($sqlerro==false) {
 		 */  
 		$sSqlorcparamseqfiltroorcamento = $oCl_orcparamseqfiltroorcamento->sql_query_file("","*","","o133_anousu = {$anoorigem}");
 		$rsOrcparamseqfiltroorcamento   = $oCl_orcparamseqfiltroorcamento->sql_record($sSqlorcparamseqfiltroorcamento);
-		$iTotalLinhaInsertOrcamento     = pg_num_rows($rsOrcparamseqfiltroorcamento);
+		$iTotalLinhaInsertOrcamento     = $rsOrcparamseqfiltroorcamento === false || $rsOrcparamseqfiltroorcamento === null ? 0 : pg_num_rows($rsOrcparamseqfiltroorcamento);
 		for ($iLinhaInsertOrcamento = 0; $iLinhaInsertOrcamento < $iTotalLinhaInsertOrcamento;  $iLinhaInsertOrcamento++ ) {
 		  
 		  db_fieldsmemory($rsOrcparamseqfiltroorcamento, $iLinhaInsertOrcamento);
@@ -118,11 +118,11 @@ if($sqlerro==false) {
     // orcparamseqfiltropadrao
     $sqldeporigem = "select * from orcparamseqfiltropadrao  where o132_anousu = $anoorigem limit 1";
     $resultdeporigem = db_query($sqldeporigem);
-    $linhasdeporigem = pg_num_rows($resultdeporigem);
+    $linhasdeporigem = $resultdeporigem === false || $resultdeporigem === null ? 0 : pg_num_rows($resultdeporigem);
 
     $sqldepdestino = "select * from orcparamseqfiltropadrao  where o132_anousu = $anodestino limit 1";
     $resultdepdestino = db_query($sqldepdestino);
-    $linhasdepdestino = pg_num_rows($resultdepdestino);
+    $linhasdepdestino = $resultdepdestino === false || $resultdepdestino === null ? 0 : pg_num_rows($resultdepdestino);
 
     if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
 		/*
@@ -131,7 +131,7 @@ if($sqlerro==false) {
 		 */  
 		$sSqlorcparamseqfiltropadrao = $oCl_orcparamseqfiltropadrao->sql_query_file("","*","","o132_anousu = {$anoorigem}");
 		$rsOrcparamseqfiltropadrao   = $oCl_orcparamseqfiltropadrao->sql_record($sSqlorcparamseqfiltropadrao);
-		$iTotalLinhaInsertpadrao     = pg_num_rows($rsOrcparamseqfiltropadrao);
+		$iTotalLinhaInsertpadrao     = $rsOrcparamseqfiltropadrao === false || $rsOrcparamseqfiltropadrao === null ? 0 : pg_num_rows($rsOrcparamseqfiltropadrao);
 		for ($iLinhaInsertpadrao = 0; $iLinhaInsertpadrao < $iTotalLinhaInsertpadrao;  $iLinhaInsertpadrao++ ) {
 		  
 		  db_fieldsmemory($rsOrcparamseqfiltropadrao, $iLinhaInsertpadrao);

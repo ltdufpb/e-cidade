@@ -12,7 +12,7 @@ abstract class ModelCollection extends Collection
     {
         parent::__construct();        
 
-        $this->size = pg_num_rows($resource);
+        $this->size = $resource === false || $resource === null ? 0 : pg_num_rows($resource);
         $this->resource = $resource;
     }
 

@@ -45,7 +45,7 @@ function xx($fd, $parq) {
   $qalias = "";
 
   if (pg_num_rows($fk) > 0) {
-    $Nfk = pg_num_rows($fk);
+    $Nfk = $fk === false || $fk === null ? 0 : pg_num_rows($fk);
     $arq = 0;
     $virgula = "";
     for($f = 0; $f < $Nfk; $f ++) {
@@ -158,7 +158,7 @@ if (isset($codarq) && $codarq != '') {
 $sql     .= "   order by nomearq ";
 
 $resulta  = db_query($sql);
-$iNumrows = pg_num_rows($resulta);
+$iNumrows = $resulta === false || $resulta === null ? 0 : pg_num_rows($resulta);
 
 
 //
@@ -232,7 +232,7 @@ $sql = "select a.codarq,a.nomearq,m.codmod,m.nomemod, a.rotulo
           $qr
           order by codmod";
 $result = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $RecordsetTabMod = $result;
 if ($numrows == 0) {
   echo ("Não foi encontrada nenhuma tabela com o argumento $nometab");
@@ -257,7 +257,7 @@ if ($numrows == 0) {
                                inner join db_sysarquivo aa   on aa.codarq = a.codarq
 	                       left outer join db_syssequencia s on s.codsequencia = a.codsequencia
                           where a.codarq = " . pg_fetch_result($result, $i, "codarq") . "order by a.seqarq");
-    $Ncampos = pg_num_rows($campo);
+    $Ncampos = $campo === false || $campo === null ? 0 : pg_num_rows($campo);
     if ($Ncampos > 0) {
         fputs($fd, "class cl_" . trim(pg_fetch_result($result, $i, "nomearq")) . "\n");
         fputs($fd, "{\n");
@@ -346,7 +346,7 @@ if ($numrows == 0) {
 		       order by p.sequen");
 
       if (pg_num_rows($pk) > 0) {
-        $Npk = pg_num_rows($pk);
+        $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
         $virgula = "";
         for($p = 0; $p < $Npk; $p ++) {
           $varpk .= $virgula . '$this->' . trim(pg_fetch_result($pk, $p, "nomecam"));
@@ -414,7 +414,7 @@ if ($numrows == 0) {
                          where a.codarq = " . pg_fetch_result($result, $i, "codarq") . "
              order by p.sequen");
         if (pg_num_rows($pk) > 0) {
-          $Npk = pg_num_rows($pk);
+          $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
           $virgula = "";
           $virconc = "";
           for($p = 0; $p < $Npk; $p ++) {
@@ -514,7 +514,7 @@ if ($numrows == 0) {
         }
         if ($temsequencia == false) {
           if (pg_num_rows($pk) > 0) {
-            $Npk = pg_num_rows($pk);
+            $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
             for($p = 0; $p < $Npk; $p ++) {
               fputs($fd, '       $this->' . trim(pg_fetch_result($pk, $p, "nomecam")) . ' = $' . trim(pg_fetch_result($pk, $p, "nomecam")) . '; ' . "\n");
             }
@@ -522,7 +522,7 @@ if ($numrows == 0) {
         }
         // verifica chave primaria
         if (pg_num_rows($pk) > 0) {
-          $Npk = pg_num_rows($pk);
+          $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
           for($p = 0; $p < $Npk; $p ++) {
             fputs($fd, '     if(($this->' . trim(pg_fetch_result($pk, $p, "nomecam")) . ' == null) || ($this->' . trim(pg_fetch_result($pk, $p, "nomecam")) . ' == "") ){' . " \n");
             fputs($fd, '       $this->erro_sql = " Campo ' . trim(pg_fetch_result($pk, $p, "nomecam")) . ' não declarado.";' . "\n");
@@ -600,7 +600,7 @@ if ($numrows == 0) {
           // coloca as chaves primerias
           if (pg_num_rows($pk) > 0) {
 
-            $Npk = pg_num_rows($pk);
+            $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
             $virgula = "";
             for($p = 0; $p < $Npk; $p ++) {
 
@@ -614,7 +614,7 @@ if ($numrows == 0) {
           fputs($fd, '         $acount = pg_result($resac,0,0);' . "\n");
           fputs($fd, '         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");' . "\n");
           if (pg_num_rows($pk) > 0) {
-            $Npk = pg_num_rows($pk);
+            $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
             for($p = 0; $p < $Npk; $p ++) {
               fputs($fd, '         $resac = db_query("insert into db_acountkey values($acount,' . pg_fetch_result($pk, $p, "codcam") . ',\'$this->' . trim(pg_fetch_result($pk, $p, "nomecam")) . '\',\'I\')");' . "\n");
             }
@@ -643,7 +643,7 @@ if ($numrows == 0) {
                               inner join db_syscampo c   on c.codcam = p.codcam
                          where a.codarq = " . pg_fetch_result($result, $i, "codarq") . " order by p.sequen");
         if (pg_num_rows($pk) > 0) {
-          $Npk = pg_num_rows($pk);
+          $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
           $virgula = "";
           for($p = 0; $p < $Npk; $p ++) {
             fputs($fd, $virgula . "$" . trim(pg_fetch_result($pk, $p, "nomecam")) . "=null");
@@ -735,7 +735,7 @@ if ($numrows == 0) {
         }
         fputs($fd, '     $sql .= " where ";' . "\n");
         if (pg_num_rows($pk) > 0) {
-          $Npk = pg_num_rows($pk);
+          $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
           $virgula = "";
           for($p = 0; $p < $Npk; $p ++) {
 
@@ -765,7 +765,7 @@ if ($numrows == 0) {
           fputs($fd, '       $resaco = $this->sql_record($this->sql_query_file(');
           // coloca as chaves primerias
           if (pg_num_rows($pk) > 0) {
-            $Npk = pg_num_rows($pk);
+            $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
             $virgula = "";
             for($p = 0; $p < $Npk; $p ++) {
               fputs($fd, $virgula . '$this->' . trim(pg_fetch_result($pk, $p, "nomecam")));
@@ -780,7 +780,7 @@ if ($numrows == 0) {
           fputs($fd, '           $acount = pg_result($resac,0,0);' . "\n");
           fputs($fd, '           $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");' . "\n");
           if (pg_num_rows($pk) > 0) {
-            $Npk = pg_num_rows($pk);
+            $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
             for($p = 0; $p < $Npk; $p ++) {
               fputs($fd, '           $resac = db_query("insert into db_acountkey values($acount,' . pg_fetch_result($pk, $p, "codcam") . ',\'$this->' . trim(pg_fetch_result($pk, $p, "nomecam")) . '\',\'A\')");' . "\n");
             }
@@ -848,7 +848,7 @@ if ($numrows == 0) {
                               inner join db_syscampo c   on c.codcam = p.codcam
                          where a.codarq = " . pg_fetch_result($result, $i, "codarq") . " order by p.sequen");
         if (pg_num_rows($pk) > 0) {
-          $Npk = pg_num_rows($pk);
+          $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
           $virgula = "";
           for($p = 0; $p < $Npk; $p ++) {
             fputs($fd, $virgula . "$" . trim(pg_fetch_result($pk, $p, "nomecam")) . "=null");
@@ -871,7 +871,7 @@ if ($numrows == 0) {
           fputs($fd, '         $resaco = $this->sql_record($this->sql_query_file(');
           // coloca as chaves primerias
           if (pg_num_rows($pk) > 0) {
-            $Npk = pg_num_rows($pk);
+            $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
             $virgula = "";
             for($p = 0; $p < $Npk; $p ++) {
               fputs($fd, $virgula . '$' . trim(pg_fetch_result($pk, $p, "nomecam")));
@@ -884,7 +884,7 @@ if ($numrows == 0) {
           fputs($fd, '         $resaco = $this->sql_record($this->sql_query_file(');
           // coloca as chaves primerias
           if (pg_num_rows($pk) > 0) {
-            $Npk = pg_num_rows($pk);
+            $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
             $virgula = "";
             for($p = 0; $p < $Npk; $p ++) {
               fputs($fd, $virgula . 'null');
@@ -900,7 +900,7 @@ if ($numrows == 0) {
           fputs($fd, '           $acount = pg_result($resac,0,0);' . "\n");
           fputs($fd, '           $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");' . "\n");
           if (pg_num_rows($pk) > 0) {
-            $Npk = pg_num_rows($pk);
+            $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
             for($p = 0; $p < $Npk; $p ++) {
               fputs($fd, '           $resac  = db_query("insert into db_acountkey values($acount,' . pg_fetch_result($pk, $p, "codcam") . ',\'$' . trim(pg_fetch_result($pk, $p, "nomecam")) . '\',\'E\')");' . "\n");
             }
@@ -917,7 +917,7 @@ if ($numrows == 0) {
         fputs($fd, '     $' . 'sql2 = "";' . "\n");
         if (pg_num_rows($pk) > 0) {
           fputs($fd, '     if (empty($dbwhere)) {' . "\n");
-          $Npk = pg_num_rows($pk);
+          $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
           $virgula = "";
           for($p = 0; $p < $Npk; $p ++) {
             fputs($fd, '        if (!empty($' . trim(pg_fetch_result($pk, $p, "nomecam")) . ')){' . "\n");
@@ -1026,7 +1026,7 @@ if ($numrows == 0) {
         fputs($fd, "\n");
         fputs($fd, "    public function sql_query(");
       if (pg_num_rows($pk) > 0) {
-        $Npk = pg_num_rows($pk);
+        $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
         $virgula = "";
         for($p = 0; $p < $Npk; $p ++) {
           fputs($fd, $virgula . "$" . trim(pg_fetch_result($pk, $p, "nomecam")) . " = null");
@@ -1058,7 +1058,7 @@ if ($numrows == 0) {
       fputs($fd, '     $sql2 = "";' . "\n");
       fputs($fd, '     if (empty($dbwhere)) {' . "\n");
       if (pg_num_rows($pk) > 0) {
-        $Npk = pg_num_rows($pk);
+        $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
         for($p = 0; $p < $Npk; $p ++) {
           $x = pg_fetch_result($pk, $p, "conteudo");
           if (str_starts_with($x, "char") || str_starts_with($x, "varc") || str_starts_with($x, "text") || str_starts_with($x, "bool") || substr($x, 0, 4) == "timestamp" || str_starts_with($x, "date"))
@@ -1104,7 +1104,7 @@ if ($numrows == 0) {
         fputs($fd, "\n");
         fputs($fd, "    public function sql_query_file(");
       if (pg_num_rows($pk) > 0) {
-        $Npk = pg_num_rows($pk);
+        $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
         $virgula = "";
         for($p = 0; $p < $Npk; $p ++) {
           fputs($fd, $virgula . "$" . trim(pg_fetch_result($pk, $p, "nomecam")) . " = null");
@@ -1119,7 +1119,7 @@ if ($numrows == 0) {
       fputs($fd, '     $sql2 = "";' . "\n");
       fputs($fd, '     if (empty($dbwhere)) {' . "\n");
       if (pg_num_rows($pk) > 0) {
-        $Npk = pg_num_rows($pk);
+        $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
         for($p = 0; $p < $Npk; $p ++) {
           $x = pg_fetch_result($pk, $p, "conteudo");
           if (str_starts_with($x, "char") || str_starts_with($x, "varc") || str_starts_with($x, "text") || str_starts_with($x, "bool") || substr($x, 0, 4) == "timestamp" || str_starts_with($x, "date"))

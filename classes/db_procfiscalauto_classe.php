@@ -52,7 +52,7 @@ class cl_procfiscalauto {
                  y111_auto = int4 = Código do Auto de Infração 
                  ";
    //funcao construtor da classe 
-   function cl_procfiscalauto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procfiscalauto"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
@@ -345,7 +345,7 @@ class cl_procfiscalauto {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = $result === false || $result === null ? 0 : pg_numrows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procfiscalauto";

@@ -293,7 +293,7 @@ if ($tipo == 'c'){
 }
 //echo $sql;exit;
 $result = db_query($sql);
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($num == 0 ){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existe pagamentos efetuados no período de '.db_formatar($datai,'d').' até '.db_formatar($dataf,'d'));
 }

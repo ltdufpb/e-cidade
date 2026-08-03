@@ -48,7 +48,7 @@ function ElementosFreq($ed67_i_procresultado) {
 
  $sSql          = "SELECT * FROM avalfreqres WHERE ed67_i_procresultado = $ed67_i_procresultado";
  $rsAvalFreqRes = db_query($sSql);
- $iLinhas       = pg_num_rows($rsAvalFreqRes);
+ $iLinhas       = $rsAvalFreqRes === false || $rsAvalFreqRes === null ? 0 : pg_num_rows($rsAvalFreqRes);
  return $iLinhas;
 
 }

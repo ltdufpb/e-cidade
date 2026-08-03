@@ -85,7 +85,7 @@ $totalsao1 = 0;
 if($opcao!=3){
   $pdf->SetFont('Arial','B',13);
   $pdf->Cell(167,10,($opcao == 1?"Lançamento em Contribuição de Melhoria":"ANEXO II"),1,1,"C",1);
-  $numrows03=pg_num_rows($result);
+  $numrows03=$result === false || $result === null ? 0 : pg_num_rows($result);
   $pdf->SetFont('Arial','',8);
   $pdf->Cell(70,$largura,'PROPRIETÁRIO',1,0,"C",1);
   $pdf->Cell(20,$largura,'NUMERO',1,0,"C",1);
@@ -137,7 +137,7 @@ if($opcao!=2){
   $pdf->ln(5);
   $pdf->SetFont('Arial','B',13);
   $pdf->Cell(167,10,($opcao == 1?"Pago ao empreiteiro":"ANEXO II"),1,1,"C",1);
-  $numrows03=pg_num_rows($result);
+  $numrows03=$result === false || $result === null ? 0 : pg_num_rows($result);
   $pdf->SetFont('Arial','',8);
   $pdf->Cell(70,$largura,'PROPRIETÁRIO',1,0,"C",1);
   $pdf->Cell(20,$largura,'NUMERO',1,0,"C",1);

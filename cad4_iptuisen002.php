@@ -544,7 +544,7 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
                                                     j08_anousu = " . db_getsession('DB_anousu');
 
                                         $rsTaxa = db_query($sql);
-                                        $qtdTaxas = pg_num_rows($rsTaxa);
+                                        $qtdTaxas = $rsTaxa === false || $rsTaxa === null ? 0 : pg_num_rows($rsTaxa);
 
                                         for ($i = 0; $i < $qtdTaxas; $i++) {
                                             $taxa = pg_fetch_object($rsTaxa, $i);

@@ -82,7 +82,7 @@ require_once(modification("model/estoque/Almoxarifado.model.php"));
       throw new Exception("Ñão foi possível executar o SQL para verificar as transferências em aberto.");
     }
 
-    $iTotalTransferencias = pg_num_rows($rsBuscaMaterial);
+    $iTotalTransferencias = $rsBuscaMaterial === false || $rsBuscaMaterial === null ? 0 : pg_num_rows($rsBuscaMaterial);
     if ( $iTotalTransferencias == 0 ) {
       throw new Exception("Nao foi localizada nenhuma transferencia em aberto.");
     }

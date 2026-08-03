@@ -41,7 +41,7 @@ class ConfiguracaoConsignadoRepository {
       throw new DBException("Erro ao realizar a pesquisa das configurações de consignação da instituição");
     }
     $aConfiguracoes = [];
-    $iTotalItens = pg_num_rows($rsDadosConfiguracao);
+    $iTotalItens = $rsDadosConfiguracao === false || $rsDadosConfiguracao === null ? 0 : pg_num_rows($rsDadosConfiguracao);
     for ($iConfig = 0; $iConfig < $iTotalItens; $iConfig++) {
 
       $oDadosConfiguracao = db_utils::fieldsMemory($rsDadosConfiguracao, $iConfig);
@@ -75,7 +75,7 @@ class ConfiguracaoConsignadoRepository {
     if (!$rsDadosConfiguracao) {
       throw new DBException("Erro ao realizar a pesquisa das configurações de consignação da instituição");
     }
-    $iTotalItens = pg_num_rows($rsDadosConfiguracao);
+    $iTotalItens = $rsDadosConfiguracao === false || $rsDadosConfiguracao === null ? 0 : pg_num_rows($rsDadosConfiguracao);
     if ($iTotalItens == 0) {
       return null;
     }

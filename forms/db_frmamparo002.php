@@ -47,7 +47,7 @@ $clrotulo->label("ed06_i_codigo");
            ORDER BY ed47_v_nome
           ";
    $result = db_query($sql);
-   $linhas = pg_num_rows($result);
+   $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
    ?>
    <b>Selecione o aluno:</b><br>
    <select name="alunosdiario" id="alunosdiario" onchange="js_alunoescolha(this.value,<?=$regencia?>);" style="font-size:9px;width:330px;">
@@ -77,7 +77,7 @@ $clrotulo->label("ed06_i_codigo");
              AND ed72_c_amparo = 'N'
             ";
      $result1 = db_query($sql1);
-     $linhas1 = pg_num_rows($result1);
+     $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
      ?>
      <b>Períodos:</b><br>
      <select name="avaliacoesdiario" id="avaliacoesdiario" onclick="js_desabinc2()" style="font-size:9px;width:330px;height:100px" multiple>
@@ -141,7 +141,7 @@ $clrotulo->label("ed06_i_codigo");
                 AND ed72_c_amparo = 'S'
                ";
         $result2 = db_query($sql2);
-        $linhas2 = pg_num_rows($result2);
+        $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
         ?>
         <b>Períodos com Amparo:</b><br>
         <select name="avaliacoes[]" id="avaliacoes" onclick="js_desabexc2()" style="font-size:9px;width:330px;height:100px" multiple>

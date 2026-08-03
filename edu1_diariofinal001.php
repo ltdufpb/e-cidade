@@ -277,7 +277,7 @@ if ($n_resultados == 0) {
   $sql     .= "        {$sWhere} ";
   $sql     .= "  ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome),ed60_c_ativa ";
   $result2  = db_query($sql);
-  $linhas   = pg_num_rows($result2);
+  $linhas   = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
   if ($ed59_c_encerrada == "S") {
     $pri_calculo = pg_fetch_result($result2,0,'ed74_i_calcfreq');
   } else {
@@ -893,7 +893,7 @@ if ($n_resultados == 0) {
               $sql       .= "    AND ed09_c_somach   = 'S' ";
               $sql       .= "  ORDER BY ed09_i_sequencia ";
               $result6    = db_query($sql);
-              $linhas6    = pg_num_rows($result6);
+              $linhas6    = $result6 === false || $result6 === null ? 0 : pg_num_rows($result6);
               $embranco   = false;
               $per_branco = "";
               $vrg        = "";
@@ -1143,7 +1143,7 @@ if ($n_resultados == 0) {
       $sql_r   .= "          OR diarioavaliacao.ed72_c_valorconceito != '' ";
       $sql_r   .= "          OR diarioavaliacao.ed72_t_parecer != '') ";
       $result_r = db_query($sql_r);
-      $linhas   = pg_num_rows($result_r);
+      $linhas   = $result_r === false || $result_r === null ? 0 : pg_num_rows($result_r);
       db_fieldsmemory($result_r,0);
       if ($max == "") {
         db_inicio_transacao();

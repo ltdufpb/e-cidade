@@ -1395,7 +1395,7 @@ class DadosCensoDocente2015 extends DadosCensoDocente {
         throw new DBException("Erro ao buscar os cursos de formações.");
     }
 
-    $iTotalLinhas = pg_num_rows($rsGrau);
+    $iTotalLinhas = $rsGrau === false || $rsGrau === null ? 0 : pg_num_rows($rsGrau);
     if ( $iTotalLinhas > 0 ) {
 
       for( $iContador = 0; $iContador < $iTotalLinhas; $iContador++ ) {

@@ -236,7 +236,7 @@ if(isset($gerar)){
                                                      );
                                                      
             $result_ger = db_query($sql_ger);
-            $numrows_ger = pg_num_rows($result_ger);
+            $numrows_ger = $result_ger === false || $result_ger === null ? 0 : pg_num_rows($result_ger);
             for($im=0; $im<$numrows_ger; $im++){
               db_fieldsmemory($result_ger, $im);
               if($rubri == "R919" || $rubri == "R921"){

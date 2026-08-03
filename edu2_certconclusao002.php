@@ -284,7 +284,7 @@ function montaRodape($oPdf, $oDadosRelatModel, $oDadosAluno, $oDadosHist, $iCodi
   $sSqlSerie   .= "      WHERE ed99_i_historico IN ($iCodigoHist) $sCondicaoHistMpsFora";      
   $sSqlSerie   .= "      ORDER BY ed62_i_anoref ASC ";
   $rsSerie      = db_query($sSqlSerie); 	         
-  $iLinhasSerie = pg_num_rows($rsSerie);
+  $iLinhasSerie = $rsSerie === false || $rsSerie === null ? 0 : pg_num_rows($rsSerie);
   $iContSerie   = 0;
   
   for ($iContRodape = 0; $iContRodape < $iLinhasSerie; $iContRodape++) {
@@ -592,7 +592,7 @@ for ($iContPrincipal = 0; $iContPrincipal < $iLinhasAluno; $iContPrincipal++) {
   $sSqlUnion   .= "       WHERE ed61_i_codigo in ($iCodigoHist) and ed29_c_historico = 'S' $sCondicaoHistMpsFora";
   $sSqlUnion   .= "       ORDER BY ed62_i_anoref ASC ";
   $rsUnion      = db_query($sSqlUnion);
-  $iLinhasUnion = pg_num_rows($rsUnion);
+  $iLinhasUnion = $rsUnion === false || $rsUnion === null ? 0 : pg_num_rows($rsUnion);
 
   $oPdf->SetY(48);
 

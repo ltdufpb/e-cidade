@@ -560,7 +560,7 @@ class cl_arrecad {
       $this->erro_status = "0";
       return false;
     }
-    $this->numrows = pg_num_rows($result);
+    $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     if($this->numrows==0){
       $this->erro_banco = "";
       $this->erro_sql   = "Record Vazio na Tabela:arrecad";
@@ -802,7 +802,7 @@ class cl_arrecad {
       $sql .= " and k00_receit = $receit";
     }
     $result=@db_query($sql);
-    $numrows =  pg_num_rows($result);
+    $numrows =  $result === false || $result === null ? 0 : pg_num_rows($result);
     if($result!=false && $numrows>0){
       $k00_numpre = pg_fetch_result($result,0,"k00_numpre");
       $k00_numpar = pg_fetch_result($result,0,"k00_numpar");
@@ -1130,7 +1130,7 @@ class cl_arrecad {
       $sql .= " and k00_numpar = $numpar";
     }
     $result=@db_query($sql);
-    $numrows =  pg_num_rows($result);
+    $numrows =  $result === false || $result === null ? 0 : pg_num_rows($result);
     if($result!=false && $numrows>0){
       $k00_numpre = pg_fetch_result($result,0,"k00_numpre");
       $k00_numpar = pg_fetch_result($result,0,"k00_numpar");

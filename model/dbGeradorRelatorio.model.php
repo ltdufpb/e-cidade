@@ -288,7 +288,7 @@ class dbGeradorRelatorio {
 
     if ( $rsConsultaCampos ) {
 
-      $iNroLinhas = pg_num_rows($rsConsultaCampos);
+      $iNroLinhas = $rsConsultaCampos === false || $rsConsultaCampos === null ? 0 : pg_num_rows($rsConsultaCampos);
 
       if ( $iNroLinhas > 0 ) {
 

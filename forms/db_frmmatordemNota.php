@@ -352,7 +352,7 @@ if($pesqemp == true){
     <?php
     if ((isset($e60_numcgm) && $e60_numcgm!= "")){
       $result   = db_query($sSQLemp);
-      $numrows  = pg_num_rows($result);
+      $numrows  = $result === false || $result === null ? 0 : pg_num_rows($result);
       $sClassName = 'normal';
       $sChecked   = '';
       if ($numrows == 1) {

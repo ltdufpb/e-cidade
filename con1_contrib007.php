@@ -105,7 +105,7 @@ db_postmemory($_POST);
 			where d05_contri=$contri
 			and d06_valor is null and d07_matric is null;
                   ");     
-  $numeli=pg_num_rows($resultos);
+  $numeli=$resultos === false || $resultos === null ? 0 : pg_num_rows($resultos);
   if($numeli>0){
     for($l=0; $l<$numeli; $l++){
       db_fieldsmemory($resultos,$l); 
@@ -178,7 +178,7 @@ class cl_fate extends cl_contrib {
 	   $resultad=db_query("	select d06_valor as valtot 
 													from contlotv 
 													where d06_contri=$numcontri and d06_idbql=$j34_idbql");
-	   $nu=pg_num_rows($resultad);
+	   $nu=$resultad === false || $resultad === null ? 0 : pg_num_rows($resultad);
 	   if($nu>0){
 	     $total="";
 	     for($q=0; $q<$nu; $q++){

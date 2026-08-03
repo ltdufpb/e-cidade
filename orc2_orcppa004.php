@@ -98,7 +98,7 @@ $sSqlEstimativa .= " and o08_instit in({$sListaInstit})";
 $sSqlEstimativa .= " order by o08_orgao";
 //die($sSqlEstimativa);
 $rsEstimativa 	   = db_query($sSqlEstimativa); 
-$iLinhasEstimativa = pg_num_rows($rsEstimativa);
+$iLinhasEstimativa = $rsEstimativa === false || $rsEstimativa === null ? 0 : pg_num_rows($rsEstimativa);
 $aEstimativa	     = [];	 
 
 for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
@@ -165,7 +165,7 @@ for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
    $sSqlindicadores .= "      order by o25_anousu";
 
       $rsConsultaIndicador 			 = db_query($sSqlindicadores);  
-      $iLinhasIndicador	  			 = pg_num_rows($rsConsultaIndicador);
+      $iLinhasIndicador	  			 = $rsConsultaIndicador === false || $rsConsultaIndicador === null ? 0 : pg_num_rows($rsConsultaIndicador);
       $oDados->iLinhasIndicador 	 = $iLinhasIndicador;
       
       
@@ -250,7 +250,7 @@ for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
   $sSqlAcoes .= "          o05_anoreferencia;										";
 
   $rsConsultaAcoes 	= db_query($sSqlAcoes);  
-  $iLinhasAcoes    	= pg_num_rows($rsConsultaAcoes);
+  $iLinhasAcoes    	= $rsConsultaAcoes === false || $rsConsultaAcoes === null ? 0 : pg_num_rows($rsConsultaAcoes);
   $aAcoes 		    	= [];
   $nValorTotalGrupo = 0;
   if ( $iLinhasAcoes > 0 ) {

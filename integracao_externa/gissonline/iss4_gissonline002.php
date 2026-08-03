@@ -191,7 +191,7 @@ if ($processartodos == false) {
                            inner join issbase on issbase.q02_inscr = issbaseintegracaoexterna.q135_inscr";
 
   $resultinscricao = db_query($conn, $sqlinscricao);
-  $linhasinscricao = pg_num_rows($resultinscricao);
+  $linhasinscricao = $resultinscricao === false || $resultinscricao === null ? 0 : pg_num_rows($resultinscricao);
   if ($linhasinscricao > 0) {
 
     for($procalt = 0; $procalt < $linhasinscricao; $procalt ++) {
@@ -288,7 +288,7 @@ if ($cancelaProcessamento == false) {
                   $whereinscr ";
 
   $resultissbase = db_query($conn, $sqlissbase);
-  $linhasissbase = pg_num_rows($resultissbase);
+  $linhasissbase = $resultissbase === false || $resultissbase === null ? 0 : pg_num_rows($resultissbase);
   if (isset($mostrahtml) and $mostrahtml == true) {
 
     db_atutermometro(1, 8, 'termometro2');
@@ -316,7 +316,7 @@ if ($cancelaProcessamento == false) {
       //verifica se ja processou hoje...
       $sqlverifica    = " select * from tb_inter_empresas where cod_cliente = $DB_CLIENTE_GISSONLINE and num_cadastro=$num_cadastro and timestamp = to_timestamp({$iMomentoIntegracao})";
       $resultverifica = db_query($conn2, $sqlverifica);
-      $linhasverifica = pg_num_rows($resultverifica);
+      $linhasverifica = $resultverifica === false || $resultverifica === null ? 0 : pg_num_rows($resultverifica);
       if ($linhasverifica > 0) {
         continue;
       }
@@ -527,7 +527,7 @@ if ($cancelaProcessamento == false) {
                        order by q07_inscr,cod_atividade,ativ_principal;";
 
       $resultativ = db_query($conn, $sqlativ);
-      $linhasativ = pg_num_rows($resultativ);
+      $linhasativ = $resultativ === false || $resultativ === null ? 0 : pg_num_rows($resultativ);
       $aux_atividade = "";
       if ($linhasativ > 0) {
 
@@ -610,7 +610,7 @@ if ($cancelaProcessamento == false) {
     $sqldivida .= "         inner join certid    on certid.v13_certid    = certdiv.v14_certid  ";
 
     $resultdivida = db_query($conn, $sqldivida);
-    $linhasdivida = pg_num_rows($resultdivida);
+    $linhasdivida = $resultdivida === false || $resultdivida === null ? 0 : pg_num_rows($resultdivida);
 
     if ($linhasdivida > 0) {
 
@@ -645,7 +645,7 @@ if ($cancelaProcessamento == false) {
         $sqlfund .= "  order by db04_ordem                                          ";
 
         $resultfund = db_query($conn, $sqlfund);
-        $linhasfund = pg_num_rows($resultfund);
+        $linhasfund = $resultfund === false || $resultfund === null ? 0 : pg_num_rows($resultfund);
 
         if ($linhasfund > 0) {
           db_fieldsmemory($resultfund, 0);
@@ -665,7 +665,7 @@ if ($cancelaProcessamento == false) {
         $sSqlVerificaCDA .= "    and ano_competencia = {$v01_exerc}             ";
         $rsVerificaCDA    = db_query($conn2,$sSqlVerificaCDA) or die($sSqlVerificaCDA);
 
-        $iNumRowsVerificaCDA = pg_num_rows($rsVerificaCDA);
+        $iNumRowsVerificaCDA = $rsVerificaCDA === false || $rsVerificaCDA === null ? 0 : pg_num_rows($rsVerificaCDA);
         if ( $iNumRowsVerificaCDA > 0 ) {
         	$oVerificaCDA = (new db_utils())->fieldsMemory($rsVerificaCDA, 0);
         }else{
@@ -761,7 +761,7 @@ if ($cancelaProcessamento == false) {
   $sqlcomp .= "            q02_dtinic                               ";
 
   $resultcomp = db_query($conn, $sqlcomp);
-  $linhascomp = pg_num_rows($resultcomp);
+  $linhascomp = $resultcomp === false || $resultcomp === null ? 0 : pg_num_rows($resultcomp);
   if (isset($mostrahtml) and $mostrahtml == true) {
     db_atutermometro(5, 8, 'termometro2');
     echo "<script>document.getElementById('titulo').innerHTML='PROCESSANDO COMPONENTES'; </script>";
@@ -841,7 +841,7 @@ if ($cancelaProcessamento == false) {
     inner join varfixval          on q33_codigo        = q34_codigo
     $whereinscr ";
   $resultestim = db_query($conn, $sqlestim);
-  $linhasestim = pg_num_rows($resultestim);
+  $linhasestim = $resultestim === false || $resultestim === null ? 0 : pg_num_rows($resultestim);
   if (isset($mostrahtml) and $mostrahtml == true) {
     db_atutermometro(6, 8, 'termometro2');
     echo "<script>document.getElementById('titulo').innerHTML='PROCESSANDO ESTIMATIVA'; </script>";
@@ -872,7 +872,7 @@ if ($cancelaProcessamento == false) {
       $sSqlVerificaEstimativa    .= "   and vlr_estimativa = ".dbValida($vlr_estimativa, 'int');
       $sSqlVerificaEstimativa    .= "   and timestamp = to_timestamp($iMomentoIntegracao) ";
       $rsSqlVerificaEstimativa    = db_query($conn2, $sSqlVerificaEstimativa);
-      $iNumRowsVerificaEstimativa = pg_num_rows($rsSqlVerificaEstimativa);
+      $iNumRowsVerificaEstimativa = $rsSqlVerificaEstimativa === false || $rsSqlVerificaEstimativa === null ? 0 : pg_num_rows($rsSqlVerificaEstimativa);
       if ($rsSqlVerificaEstimativa == false) {
 
         db_log("Erro: \n sql = $sSqlVerificaEstimativa", null, 1, true, true);
@@ -953,7 +953,7 @@ if ($cancelaProcessamento == false) {
 
     ";
   $resultsocios = db_query($conn, $sqlsocios);
-  $linhassocios = pg_num_rows($resultsocios);
+  $linhassocios = $resultsocios === false || $resultsocios === null ? 0 : pg_num_rows($resultsocios);
   if (isset($mostrahtml) and $mostrahtml == true) {
     db_atutermometro(7, 8, 'termometro2');
     echo "<script>document.getElementById('titulo').innerHTML='PROCESSANDO SOCIOS'; </script>";
@@ -1087,7 +1087,7 @@ $sqlBuscaBoleto .= "                        where tb_inter_empresas.num_cadastro
 $sqlBuscaBoleto .= " order by cod_cliente, num_cadastro, num_documento                                                       ";
 
 $rsBuscaBoleto = db_query($conn2, $sqlBuscaBoleto);
-$linhasBuscaBoleto = pg_num_rows($rsBuscaBoleto);
+$linhasBuscaBoleto = $rsBuscaBoleto === false || $rsBuscaBoleto === null ? 0 : pg_num_rows($rsBuscaBoleto);
 if (isset($mostrahtml) and $mostrahtml == true) {
 
   db_atutermometro(8, 9, 'termometro2');
@@ -1135,7 +1135,7 @@ if ($linhasBuscaBoleto > 0) {
     //validar se a inscrição esta na issbase
     $sqlValidaIssbase = "select q02_inscr from issbase where q02_inscr = $num_cadastro ";
     $rsValidaIssbase = db_query($conn, $sqlValidaIssbase);
-    $linhasValidaIssbase = pg_num_rows($rsValidaIssbase);
+    $linhasValidaIssbase = $rsValidaIssbase === false || $rsValidaIssbase === null ? 0 : pg_num_rows($rsValidaIssbase);
 
     if ($linhasValidaIssbase == 0) {
 
@@ -1152,7 +1152,7 @@ if ($linhasBuscaBoleto > 0) {
       $sSqlPesquisaCgmCnpjGiss .= "   from tb_inter_empresas_giss ";
       $sSqlPesquisaCgmCnpjGiss .= "  where num_cadastro = $num_cadastro ";
       $rsPesquisaCgmCnpjGiss = db_query($conn2, $sSqlPesquisaCgmCnpjGiss) or die($sSqlPesquisaCgmCnpjGiss);
-      $iNumRowsGiss = pg_num_rows($rsPesquisaCgmCnpjGiss);
+      $iNumRowsGiss = $rsPesquisaCgmCnpjGiss === false || $rsPesquisaCgmCnpjGiss === null ? 0 : pg_num_rows($rsPesquisaCgmCnpjGiss);
 
       if ($iNumRowsGiss > 0) {
 
@@ -1162,7 +1162,7 @@ if ($linhasBuscaBoleto > 0) {
         $sSqlPesquisaCgmCnpj .= "   from cgm ";
         $sSqlPesquisaCgmCnpj .= "  where z01_cgccpf = '{$oPesquisaCgmCnpjGiss->cpf_cnpj}'";
         $rsPesquisaCgmCnpj = db_query($conn, $sSqlPesquisaCgmCnpj) or die($sSqlPesquisaCgmCnpj);
-        $iNumRows = pg_num_rows($rsPesquisaCgmCnpj);
+        $iNumRows = $rsPesquisaCgmCnpj === false || $rsPesquisaCgmCnpj === null ? 0 : pg_num_rows($rsPesquisaCgmCnpj);
 
         if ($iNumRows > 0) {
           $oPesquisaCgmCnpj = (new db_utils())->fieldsMemory($rsPesquisaCgmCnpj, 0);
@@ -1197,7 +1197,7 @@ if ($linhasBuscaBoleto > 0) {
              $sSqlPesquisaCgmCnpj .= "   from cgm ";
              $sSqlPesquisaCgmCnpj .= "  where z01_cgccpf = '{$oPesquisaCgmCnpjGiss->cpf_cnpj}'";
              $rsPesquisaCgmCnpj = db_query($conn, $sSqlPesquisaCgmCnpj) or die($sSqlPesquisaCgmCnpj);
-             $iNumRows = pg_num_rows($rsPesquisaCgmCnpj);
+             $iNumRows = $rsPesquisaCgmCnpj === false || $rsPesquisaCgmCnpj === null ? 0 : pg_num_rows($rsPesquisaCgmCnpj);
              if ($iNumRows > 0) {
                $oPesquisaCgmCnpj = (new db_utils())->fieldsMemory($rsPesquisaCgmCnpj, 0);
              }
@@ -1263,7 +1263,7 @@ if ($linhasBuscaBoleto > 0) {
           $sqlBuscarAbertos .= "    and coalesce(q05_vlrinf,0) = 0";
 
           $rsBuscarAbertos = db_query($conn, $sqlBuscarAbertos);
-          $linhasBuscarAbertos = pg_num_rows($rsBuscarAbertos);
+          $linhasBuscarAbertos = $rsBuscarAbertos === false || $rsBuscarAbertos === null ? 0 : pg_num_rows($rsBuscarAbertos);
           if ($linhasBuscarAbertos > 0) {
 
             //Exclui os issvar encontrados em aberto
@@ -1279,7 +1279,7 @@ if ($linhasBuscaBoleto > 0) {
               $sqlSimples .= "       left  join disbanco                 on disbanco.idret = q44_disbanco ";
               $sqlSimples .= " where q68_issvar = $cod_issvar ";
               $rsSimples = db_query($sqlSimples);
-              $linhasSimples = pg_num_rows($rsSimples);
+              $linhasSimples = $rsSimples === false || $rsSimples === null ? 0 : pg_num_rows($rsSimples);
               if ($linhasSimples > 0) {
                 db_fieldsmemory($rsSimples, 0);
                 db_log("Erro: ISS não processado ... Boleto giss documento = $num_documento importado para simples (issvar = $cod_issvar, Remessa = $q17_nroremessa, Arquivo = $q17_nomearq).", $sArquivoLog, 2, true, true);
@@ -1463,7 +1463,7 @@ $sqlArreidret .= "          arrepaga.k00_dtpaga,";
 $sqlArreidret .= "          disarq.arqret,";
 $sqlArreidret .= "          disarq.dtarquivo ";
 $rsArreidret   = db_query($conn, $sqlArreidret);
-$linhasArreidret = pg_num_rows($rsArreidret);
+$linhasArreidret = $rsArreidret === false || $rsArreidret === null ? 0 : pg_num_rows($rsArreidret);
 if (isset($mostrahtml) and $mostrahtml == true) {
   db_atutermometro(2, 8, 'termometro2');
   echo "<script>document.getElementById('titulo').innerHTML='PROCESSANDO BAIXA POR DISBANCO'; </script>";
@@ -1496,7 +1496,7 @@ if ($linhasArreidret > 0) {
         and cod_banco    = $k15_codbco
         and num_sequencia =$idret ";
       $rsVerBaixa = db_query($conn2, $sqlVerBaixa);
-      $linhasVerBaixa = pg_num_rows($rsVerBaixa);
+      $linhasVerBaixa = $rsVerBaixa === false || $rsVerBaixa === null ? 0 : pg_num_rows($rsVerBaixa);
       if ($linhasVerBaixa == 0) {
 
         $incluibaixa = " INSERT INTO tb_inter_baixa (
@@ -1539,7 +1539,7 @@ if ($linhasArreidret > 0) {
       and linha         = $k00_numpar
       ";
     $rsVerBaixaDet = db_query($conn2, $sqlVerBaixaDet);
-    $linhasVerBaixaDet = pg_num_rows($rsVerBaixaDet);
+    $linhasVerBaixaDet = $rsVerBaixaDet === false || $rsVerBaixaDet === null ? 0 : pg_num_rows($rsVerBaixaDet);
     if ($linhasVerBaixaDet == 0) {
 
       $incluirbaixadetalhe = "
@@ -1615,7 +1615,7 @@ $sqlCornump = "select correnteid.k56_sequencial,
   corrente.k12_data
   ";
 $rsCornump = db_query($conn, $sqlCornump);
-$linhasCornump = pg_num_rows($rsCornump);
+$linhasCornump = $rsCornump === false || $rsCornump === null ? 0 : pg_num_rows($rsCornump);
 if (isset($mostrahtml) and $mostrahtml == true) {
   db_atutermometro(2, 8, 'termometro2');
   echo "<script>document.getElementById('titulo').innerHTML='PROCESSANDO BAIXA POR CORNUMP'; </script>";
@@ -1646,7 +1646,7 @@ if ($linhasCornump > 0) {
         and cod_banco     = 0
         and num_sequencia = $k56_sequencial ";
       $rsVerBaixaCor = db_query($conn2, $sqlVerBaixaCor);
-      $linhasVerBaixaCor = pg_num_rows($rsVerBaixaCor);
+      $linhasVerBaixaCor = $rsVerBaixaCor === false || $rsVerBaixaCor === null ? 0 : pg_num_rows($rsVerBaixaCor);
       if ($linhasVerBaixaCor == 0) {
 
         $incluibaixaCor = " INSERT INTO tb_inter_baixa (
@@ -1688,7 +1688,7 @@ if ($linhasCornump > 0) {
       and linha         = $k00_numpar ";
 
     $rsVerBaixaDetCor = db_query($conn2, $sqlVerBaixaDetCor);
-    $linhasVerBaixaDetCor = pg_num_rows($rsVerBaixaDetCor);
+    $linhasVerBaixaDetCor = $rsVerBaixaDetCor === false || $rsVerBaixaDetCor === null ? 0 : pg_num_rows($rsVerBaixaDetCor);
     if ($linhasVerBaixaDetCor == 0) {
 
       $incluirbaixadetalhecor = "

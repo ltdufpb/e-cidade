@@ -65,7 +65,7 @@ try {
       throw new DBException('Falha ao buscar os dados do procedimento de avaliação.');
     }
 
-    $linhas = pg_num_rows($result);
+    $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
     if( $linhas == 0 ) {
       $max = 0;
@@ -357,7 +357,7 @@ function AvalResultList( $nome, $procedimento, $disabled, $sequencia, $avalvinc,
 
   $query  = db_query($sql);
   $query1 = db_query($sql);
-  $linhas = pg_num_rows($query);
+  $linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
   ?>
   <select name="<?=$nome?>[]"
           id="<?=$nome?>"

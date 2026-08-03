@@ -133,7 +133,7 @@ class RecadastroImobiliarioImoveisBic {
     $sSqlConsulta  .= "        left   join  setorloc           on setorloc.j05_codigo     = loteloc.j06_setorloc                                                       ";
     $sSqlConsulta  .= "  where proprietario.j01_matric = {$this->iMatricula} limit 1                                                                                   ";
     $rsSqlConsulta  = db_query($sSqlConsulta);
-    $iNumRows       = pg_num_rows($rsSqlConsulta);
+    $iNumRows       = $rsSqlConsulta === false || $rsSqlConsulta === null ? 0 : pg_num_rows($rsSqlConsulta);
     if ($iNumRows == 0){
       db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
     }
@@ -211,7 +211,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlAreaTotal .= "             and j34_lote   = '{$oDados->j34_lote}'                                  ";
         $sSqlAreaTotal .= "             and j01_baixa is null ) as x                                            ";
         $rsSqlAreaTotal    = db_query($sSqlAreaTotal);
-        $iNumRowsAreaTotal = pg_num_rows($rsSqlAreaTotal);
+        $iNumRowsAreaTotal = $rsSqlAreaTotal === false || $rsSqlAreaTotal === null ? 0 : pg_num_rows($rsSqlAreaTotal);
 
         $nAreaRealLote = '0';
         if ($iNumRowsAreaTotal > 0) {
@@ -268,7 +268,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlCaractLote    .= "         left  outer join cargrup on caracter.j31_grupo  = cargrup.j32_grupo     ";
         $sSqlCaractLote    .= "   where carlote.j35_idbql  = {$oDados->j01_idbql}                               ";
         $rsSqlCaractLote    = db_query($sSqlCaractLote);
-        $iNumRowsCaractLote = pg_num_rows($rsSqlCaractLote);
+        $iNumRowsCaractLote = $rsSqlCaractLote === false || $rsSqlCaractLote === null ? 0 : pg_num_rows($rsSqlCaractLote);
 
         if ( $iNumRowsCaractLote > 0 ) {
 
@@ -307,7 +307,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlCaractFace    .= "        inner join cargrup  on cargrup.j32_grupo    = caracter.j31_grupo   ";
         $sSqlCaractFace    .= "  where testada.j36_idbql  = {$oDados->j01_idbql}                          ";
         $rsSqlCaractFace    = db_query($sSqlCaractFace);
-        $iNumRowsCaractFace = pg_num_rows($rsSqlCaractFace);
+        $iNumRowsCaractFace = $rsSqlCaractFace === false || $rsSqlCaractFace === null ? 0 : pg_num_rows($rsSqlCaractFace);
 
         if ($iNumRowsCaractFace > 0) {
 
@@ -340,7 +340,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlDadosTestadaLote    .= "         inner join ruas          on ruas.j14_codigo         = face.j37_codigo   ";
         $sSqlDadosTestadaLote    .= "   where j36_idbql = {$oDados->j01_idbql}                                        ";
         $rsSqlDadosTestadaLote    = db_query($sSqlDadosTestadaLote);
-        $iNumRowsDadosTestadaLote = pg_num_rows($rsSqlDadosTestadaLote);
+        $iNumRowsDadosTestadaLote = $rsSqlDadosTestadaLote === false || $rsSqlDadosTestadaLote === null ? 0 : pg_num_rows($rsSqlDadosTestadaLote);
 
         if ( $iNumRowsDadosTestadaLote > 0 ) {
 
@@ -387,7 +387,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlDadosTestadaInterna    .= "        left  join lote as interno on interno.j34_idbql = j69_idbql        ";
         $sSqlDadosTestadaInterna    .= "  where j39_idbql = {$oDados->j01_idbql}                                   ";
         $rsSqlDadosTestadaInterna    = db_query($sSqlDadosTestadaInterna);
-        $iNumRowsDadosTestadaInterna = pg_num_rows($rsSqlDadosTestadaInterna);
+        $iNumRowsDadosTestadaInterna = $rsSqlDadosTestadaInterna === false || $rsSqlDadosTestadaInterna === null ? 0 : pg_num_rows($rsSqlDadosTestadaInterna);
 
         if ( $iNumRowsDadosTestadaInterna > 0 ) {
 
@@ -431,7 +431,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlDadosProprietario    .= "         inner join cgm on cgm.z01_numcgm = proprietario.z01_numcgm       ";
         $sSqlDadosProprietario    .= "   where proprietario.j01_matric = {$oDados->j01_matric}                  ";
         $rsSqlDadosProprietario    = db_query($sSqlDadosProprietario);
-        $iNumRowsDadosProprietario = pg_num_rows($rsSqlDadosProprietario);
+        $iNumRowsDadosProprietario = $rsSqlDadosProprietario === false || $rsSqlDadosProprietario === null ? 0 : pg_num_rows($rsSqlDadosProprietario);
 
         if ( $iNumRowsDadosProprietario > 0 ) {
 
@@ -472,7 +472,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlOutrosProprietarios    .= "          inner join cgm          on cgm.z01_numcgm          = propri.j42_numcgm  ";
         $sSqlOutrosProprietarios    .= "    where propri.j42_matric = {$oDados->j01_matric}                               ";
         $rsSqlOutrosProprietarios    = db_query($sSqlOutrosProprietarios);
-        $iNumRowsOutrosProprietarios = pg_num_rows($rsSqlOutrosProprietarios);
+        $iNumRowsOutrosProprietarios = $rsSqlOutrosProprietarios === false || $rsSqlOutrosProprietarios === null ? 0 : pg_num_rows($rsSqlOutrosProprietarios);
 
         if ($iNumRowsOutrosProprietarios > 0) {
 
@@ -514,7 +514,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlPromitentes    .= "     where j41_matric = {$oDados->j01_matric}                                   ";
         $sSqlPromitentes    .= "       and promitente.j41_tipopro is true                                       ";
         $rsSqlPromitentes    = db_query($sSqlPromitentes);
-        $iNumRowsPromitentes = pg_num_rows($rsSqlPromitentes);
+        $iNumRowsPromitentes = $rsSqlPromitentes === false || $rsSqlPromitentes === null ? 0 : pg_num_rows($rsSqlPromitentes);
 
         if ($iNumRowsPromitentes > 0) {
 
@@ -557,7 +557,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlOutrosPromitentes    .= "     where j41_matric = {$oDados->j01_matric}                             ";
         $sSqlOutrosPromitentes    .= "       and promitente.j41_tipopro is false                                ";
         $rsSqlOutrosPromitentes    = db_query($sSqlOutrosPromitentes);
-        $iNumRowsOutrosPromitentes = pg_num_rows($rsSqlOutrosPromitentes);
+        $iNumRowsOutrosPromitentes = $rsSqlOutrosPromitentes === false || $rsSqlOutrosPromitentes === null ? 0 : pg_num_rows($rsSqlOutrosPromitentes);
 
         if ($iNumRowsOutrosPromitentes > 0) {
 
@@ -632,7 +632,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlEnderecoEntrega    .= "  where j43_matric = {$oDados->j01_matric}                                  ";
 
         $rsSqlEnderecoEntrega    = db_query($sSqlEnderecoEntrega);
-        $iNumRowsEnderecoEntrega = pg_num_rows($rsSqlEnderecoEntrega);
+        $iNumRowsEnderecoEntrega = $rsSqlEnderecoEntrega === false || $rsSqlEnderecoEntrega === null ? 0 : pg_num_rows($rsSqlEnderecoEntrega);
 
         if ($iNumRowsEnderecoEntrega > 0) {
 
@@ -674,7 +674,7 @@ class RecadastroImobiliarioImoveisBic {
         $rsSqlEdificacoes    = db_query($sSqlEdificacoes);
 
 
-        $iNumRowsEdificacoes = pg_num_rows($rsSqlEdificacoes);
+        $iNumRowsEdificacoes = $rsSqlEdificacoes === false || $rsSqlEdificacoes === null ? 0 : pg_num_rows($rsSqlEdificacoes);
 
         if ($iNumRowsEdificacoes > 0) {
 
@@ -731,7 +731,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlRegistroImoveis    .= "        inner join setorregimovel on setorregimovel.j69_sequencial = iptubaseregimovel.j04_setorregimovel  ";
         $sSqlRegistroImoveis    .= "  where iptubaseregimovel.j04_matric = {$oDados->j01_matric}                                               ";
         $rsSqlRegistroImoveis    = db_query($sSqlRegistroImoveis);
-        $iNumRowsRegistroImoveis = pg_num_rows($rsSqlRegistroImoveis);
+        $iNumRowsRegistroImoveis = $rsSqlRegistroImoveis === false || $rsSqlRegistroImoveis === null ? 0 : pg_num_rows($rsSqlRegistroImoveis);
 
         if ($iNumRowsRegistroImoveis > 0) {
 
@@ -767,7 +767,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlIsencoes    .= "      and tipoisen.j45_tipo = iptuisen.j46_tipo                                    ";
         $sSqlIsencoes    .= " order by j46_dtini desc                                                           ";
         $rsSqlIsencoes    = db_query($sSqlIsencoes);
-        $iNumRowsIsencoes = pg_num_rows($rsSqlIsencoes);
+        $iNumRowsIsencoes = $rsSqlIsencoes === false || $rsSqlIsencoes === null ? 0 : pg_num_rows($rsSqlIsencoes);
 
         if ($iNumRowsIsencoes > 0) {
 
@@ -796,7 +796,7 @@ class RecadastroImobiliarioImoveisBic {
             $sSqlTaxas .= "                                 and isentaxa.j56_receit         = tabrec.k02_codigo                ";
             $sSqlTaxas .= "  order by k02_codigo                                                                               ";
             $rsSqlTaxas    = db_query($sSqlTaxas);
-            $iNumRowsTaxas = pg_num_rows($rsSqlTaxas);
+            $iNumRowsTaxas = $rsSqlTaxas === false || $rsSqlTaxas === null ? 0 : pg_num_rows($rsSqlTaxas);
 
             if ($iNumRowsTaxas > 0) {
 
@@ -831,7 +831,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlAverbacoes    .= "         inner join cgm        on z01_numcgm = j01_numcgm                        ";
         $sSqlAverbacoes    .= "   where j75_matric = {$oDados->j01_matric}                                      ";
         $rsSqlAverbacoes    = db_query($sSqlAverbacoes);
-        $iNumRowsAverbacoes = pg_num_rows($rsSqlAverbacoes);
+        $iNumRowsAverbacoes = $rsSqlAverbacoes === false || $rsSqlAverbacoes === null ? 0 : pg_num_rows($rsSqlAverbacoes);
 
         if ($iNumRowsAverbacoes > 0) {
 
@@ -899,7 +899,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlIptuCalc .= " order by iptucalc.j23_anousu desc                                                    ";
 
         $rsSqlIptuCalc    = db_query($sSqlIptuCalc);
-        $iNumRowsIptuCalc = pg_num_rows($rsSqlIptuCalc);
+        $iNumRowsIptuCalc = $rsSqlIptuCalc === false || $rsSqlIptuCalc === null ? 0 : pg_num_rows($rsSqlIptuCalc);
 
         if ($iNumRowsIptuCalc > 0) {
 
@@ -1015,7 +1015,7 @@ class RecadastroImobiliarioImoveisBic {
 
             $rsSqlValoresLancados    = db_query($sSqlValoresLancados);
 
-            $iNumRowsValoresLancados = pg_num_rows($rsSqlValoresLancados);
+            $iNumRowsValoresLancados = $rsSqlValoresLancados === false || $rsSqlValoresLancados === null ? 0 : pg_num_rows($rsSqlValoresLancados);
             if ($iNumRowsValoresLancados > 0) {
 
               for ( $zInd = 0; $zInd  < $iNumRowsValoresLancados; $zInd++ ) {
@@ -1049,7 +1049,7 @@ class RecadastroImobiliarioImoveisBic {
         $sSqlOutrosDados    .= "   from matricobs                                                               ";
         $sSqlOutrosDados    .= " where j26_matric = {$oDados->j01_matric}                                       ";
         $rsSqlOutrosDados    = db_query($sSqlOutrosDados);
-        $iNumRowsOutrosDados = pg_num_rows($rsSqlOutrosDados);
+        $iNumRowsOutrosDados = $rsSqlOutrosDados === false || $rsSqlOutrosDados === null ? 0 : pg_num_rows($rsSqlOutrosDados);
 
         if ($iNumRowsOutrosDados > 0) {
 

@@ -134,7 +134,7 @@ for($x=0;$x<$clmatricula->numrows;$x++){
            ORDER BY ed92_i_sequencial
          ";
   $result3 = db_query($sql3);
-  $linhas3 = pg_num_rows($result3);
+  $linhas3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
   if($linhas3>0){
    if($tp_per=="A"){
     $amparo = pg_fetch_result($result3,0,'amparo');

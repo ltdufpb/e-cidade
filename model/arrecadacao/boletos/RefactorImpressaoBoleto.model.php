@@ -583,7 +583,7 @@ class RefactorImpressaoBoleto {
               $sSqlArrecad .= "     and k00_numpar   = {$iNumpar}       ";
               $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}'   ";
               $rsSqlArrecad = db_query($sSqlArrecad);
-              $iNumRows     = pg_num_rows($rsSqlArrecad);
+              $iNumRows     = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
               if ($iNumRows == 0) {
 
                 if ($tipo_debito == 3 || $tipo_debito == 5) {
@@ -1906,7 +1906,7 @@ class RefactorImpressaoBoleto {
     $pdf1->predatacalc      = db_formatar($minvenc, "d");
     $pdf1->taxabanc         = db_formatar($taxabancaria,'f');
     $pdf1->recorddadospagto = $DadosPagamento;
-    $pdf1->linhasdadospagto = pg_num_rows($DadosPagamento);
+    $pdf1->linhasdadospagto = $DadosPagamento === false || $DadosPagamento === null ? 0 : pg_num_rows($DadosPagamento);
     $pdf1->receita          = 'k00_receit';
     $pdf1->valor            = 'valor';
     $pdf1->receitared       = 'codreduz';
@@ -2030,7 +2030,7 @@ class RefactorImpressaoBoleto {
       throw new Exception(pg_last_error());
     }
 
-    $intnumrows = pg_num_rows($rsReceitas);
+    $intnumrows = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 
     for ($x=0;$x<$intnumrows;$x++) {
 
@@ -2070,7 +2070,7 @@ class RefactorImpressaoBoleto {
 
     $sSqlMsgCarne = "select k03_msgbanco from numpref where k03_anousu = ".db_getsession('DB_anousu');
     $rsMsgcarne = db_query($sSqlMsgCarne);
-    $iNumrows   = pg_num_rows($rsMsgcarne);
+    $iNumrows   = $rsMsgcarne === false || $rsMsgcarne === null ? 0 : pg_num_rows($rsMsgcarne);
     if($iNumrows > 0){
       //      db_fieldsmemory($rsMsgcarne,0);
       $k03_msgbanco = db_utils::fieldsMemory($rsMsgcarne,0)->k03_msgbanco;

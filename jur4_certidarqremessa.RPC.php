@@ -203,7 +203,7 @@ switch($oParam->exec) {
         $sSqlParcelamentos .= "  inner join termo on v07_parcel = v14_parcel";
         $sSqlParcelamentos .= "  where v14_certid in ($iCertid) ";
         $rsParcelamentos    = db_query($sSqlParcelamentos);
-        $iLinhasParcel      = pg_num_rows($rsParcelamentos);
+        $iLinhasParcel      = $rsParcelamentos === false || $rsParcelamentos === null ? 0 : pg_num_rows($rsParcelamentos);
 
         for ( $iIndParcel=0; $iIndParcel < $iLinhasParcel; $iIndParcel++) {
 
@@ -217,7 +217,7 @@ switch($oParam->exec) {
 
           if ( $rsDadosDebitoCorrigido != false ) {
 
-            $iLinhasDebito = pg_num_rows($rsDadosDebitoCorrigido);
+            $iLinhasDebito = $rsDadosDebitoCorrigido === false || $rsDadosDebitoCorrigido === null ? 0 : pg_num_rows($rsDadosDebitoCorrigido);
 
             for ($iIndDebito = 0; $iIndDebito < $iLinhasDebito; $iIndDebito++) {
               $nValor += db_utils::fieldsMemory($rsDadosDebitoCorrigido,$iIndDebito)->total;
@@ -235,7 +235,7 @@ switch($oParam->exec) {
         $sSqlDadosDebitos .= "  where v14_certid in ($iCertid)";
 
         $rsDadosDebitos      = db_query($sSqlDadosDebitos);
-        $iLinhasDadosDebitos = pg_num_rows($rsDadosDebitos); 
+        $iLinhasDadosDebitos = $rsDadosDebitos === false || $rsDadosDebitos === null ? 0 : pg_num_rows($rsDadosDebitos); 
 
         for ( $iIndDadosDebitos = 0; $iIndDadosDebitos < $iLinhasDadosDebitos; $iIndDadosDebitos++ ) {
 
@@ -571,7 +571,7 @@ switch($oParam->exec) {
         $sMunic       = str_replace("'","",trim(strtoupper(db_translate($oDadosEnvol->z01_munic))));
         $sSqlCodMunic = "select v85_codcidade from cadmunictj where trim(to_ascii(fc_remove_acentos(v85_munic))) = '{$sMunic}'";
         $rsCodMunic   = db_query($sSqlCodMunic) ;
-        $iLinhasMunic = pg_num_rows($rsCodMunic);
+        $iLinhasMunic = $rsCodMunic === false || $rsCodMunic === null ? 0 : pg_num_rows($rsCodMunic);
         if ($iLinhasMunic > 0) {
           $iCodMunic    = db_utils::fieldsMemory($rsCodMunic,0)->v85_codcidade;
         }
@@ -633,7 +633,7 @@ switch($oParam->exec) {
                            inner join tipofiscaliza on tipofiscaliza.y27_codtipo = auto.y50_codtipo  
                            where certdiv.v14_certid = {$oDados->v13_certid}";
           $rsAuto = db_query($sSqlAuto);
-          $iLinhasAuto = pg_num_rows($rsAuto); 
+          $iLinhasAuto = $rsAuto === false || $rsAuto === null ? 0 : pg_num_rows($rsAuto); 
           if ($iLinhasAuto > 0) {
             $oDadosAuto = db_utils::getCollectionByRecord($rsAuto);
           }

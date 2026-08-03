@@ -209,7 +209,7 @@ $sSql .= "             ) as x; ";
 
 $rsCalculo = db_query($sSql);
 if ($rsCalculo) {
-  $iTotalLinha = pg_num_rows($rsCalculo);
+  $iTotalLinha = $rsCalculo === false || $rsCalculo === null ? 0 : pg_num_rows($rsCalculo);
   for ($i = 0; $i < $iTotalLinha; $i++) {
 
     $oLinhaCalculo               = db_utils::fieldsMemory($rsCalculo, $i);

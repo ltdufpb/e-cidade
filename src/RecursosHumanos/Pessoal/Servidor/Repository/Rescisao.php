@@ -51,7 +51,7 @@ class Rescisao extends \BaseClassRepository
         if (!$rsRescisao) {
             throw new \DBException("Erro ao pesquisar dados da rescisão.");
         }
-        $totalLinhas = pg_num_rows($rsRescisao);
+        $totalLinhas = $rsRescisao === false || $rsRescisao === null ? 0 : pg_num_rows($rsRescisao);
         if ($totalLinhas == 0) {
             return null;
         }

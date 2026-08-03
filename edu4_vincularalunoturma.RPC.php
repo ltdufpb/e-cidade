@@ -266,7 +266,7 @@ try {
       if ( !$rsProgressao ) {
       	throw new DBException( _M( $sCaminhoMensagens."erro_ao_buscar_progressoes" ) );
       }
-      $iLinhas = pg_num_rows( $rsProgressao );
+      $iLinhas = $rsProgressao === false || $rsProgressao === null ? 0 : pg_num_rows( $rsProgressao );
 
       $oRetorno->aProgressao = [];
       for ($i = 0; $i < $iLinhas; $i++) {

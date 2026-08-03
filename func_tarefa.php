@@ -61,7 +61,7 @@ $cltarefa->rotulo->label("at40_descr");
 	     	if (@$aut==1) { // 1
 	     	  
 	     	  $rsDensenvolvedorErro = db_query("select * from db_desenvolvedorerro where usuario = " . db_getsession("DB_id_usuario"));
-	     	  $iLinhasDesenvolvedorErro = pg_num_rows($rsDensenvolvedorErro);
+	     	  $iLinhasDesenvolvedorErro = $rsDensenvolvedorErro === false || $rsDensenvolvedorErro === null ? 0 : pg_num_rows($rsDensenvolvedorErro);
 	     	  if ($iLinhasDesenvolvedorErro == 0) {
 
 	     	    $resultado = $cldb_proced->sql_record($cldb_proced->sql_query_aut(null," distinct at30_codigo,at30_descr","at30_codigo", "at56_usuario = " . db_getsession("DB_id_usuario"))); 	
@@ -114,7 +114,7 @@ $cltarefa->rotulo->label("at40_descr");
 								                         where at46_codigo = 2 ) as x
 								                order by at46_codigo ";
          				$resultsutusu = db_query($sqlsutusu);
-					      $linhassutusu = pg_num_rows($resultsutusu);
+					      $linhassutusu = $resultsutusu === false || $resultsutusu === null ? 0 : pg_num_rows($resultsutusu);
 					      if ($linhassutusu>0) {
 						    ?>
 						     <select name="situacao" >

@@ -39,7 +39,7 @@ class Especificacao
             $campos = "distinct on (o15_recurso) o15_recurso, o15_descr";
             $busca = $dao->sql_query_file(null, $campos, 1, $sWhere);
             $resBusca = db_query($busca);
-            $totalRegistros = pg_num_rows($resBusca);
+            $totalRegistros = $resBusca === false || $resBusca === null ? 0 : pg_num_rows($resBusca);
             self::$itens = [];
             if ($totalRegistros > 0) {
                 for ($row = 0; $row < $totalRegistros; $row++) {

@@ -421,7 +421,7 @@ switch ($oParam->exec) {
       $sSqlRegraEmissao .= "         group by k49_tipo, k36_ip, k48_parcini, k48_parcfim, k48_cadconvenio, ar11_cadtipoconvenio, k03_tipo, k48_cadtipomod \n ";
       $sSqlRegraEmissao .= "       ) as x                                                                    \n ";
       $rsSqlRegraEmissao = db_query($sSqlRegraEmissao);
-      $iRowsRegraEmissao = pg_num_rows($rsSqlRegraEmissao);
+      $iRowsRegraEmissao = $rsSqlRegraEmissao === false || $rsSqlRegraEmissao === null ? 0 : pg_num_rows($rsSqlRegraEmissao);
 
       /**
        * Valida se existe alguma regra de emissao cadastrada no sistema

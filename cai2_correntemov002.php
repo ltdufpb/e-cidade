@@ -140,7 +140,7 @@ from
     $result2 = db_query($sql1);
     $result = db_query($sql2);
 //db_criatabela($result);
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 $linha = 60;
 $pre = 0;
 $total = 0;

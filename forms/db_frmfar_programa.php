@@ -76,7 +76,7 @@ db_input('fa12_c_descricao',40,$Ifa12_c_descricao,true,'text',$db_opcao,"")
      <?php 
       $sql="select s148_i_codigo,s148_c_sigla,s148_c_descr from sau_tipoacaoprog";
       $result=db_query($sql);
-      $linhas=pg_num_rows($result);
+      $linhas=$result === false || $result === null ? 0 : pg_num_rows($result);
       $vet= ["0"=>""];
       for($x=0;$x<$linhas;$x++){
           db_fieldsmemory($result,$x);

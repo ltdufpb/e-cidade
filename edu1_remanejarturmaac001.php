@@ -139,7 +139,7 @@ if (isset($processar)) {
                                                                            )
                                         );       
  $row        = $clcalendario->numrows;
- $num        = pg_num_rows($sql_result);
+ $num        = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
  $conta      = "";
  while ($row = pg_fetch_array($sql_result)) {
    $conta     = $conta+1;
@@ -335,7 +335,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        $sql   .= "        where ed288_i_tipoturma = 2 and ed268_i_calendario = $calendario1)  order by ed268_c_descr";
         //die($sql);
         $result = db_query($sql);
-        $linhas = pg_num_rows($result);
+        $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
        ?>
        <b>Turmas:</b><br>
        <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" 
@@ -406,7 +406,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
           $sql1   .= " where ed52_i_codigo = $calendario1 order by descr1";    
    
           $result1 = db_query($sql1);
-          $linhas1 = pg_num_rows($result1);
+          $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
          ?>
         <select name="turmasincluidas" id="turmasincluidas" size="10" onclick="js_desabexc()" 
                 style="font-size:9px;width:300px;height:120px" multiple>

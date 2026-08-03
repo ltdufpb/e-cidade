@@ -53,7 +53,7 @@ $sql = "SELECT  count(*) as quantidade,
         ";
         
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 //db_criatabela($result);
 //exit;
 if($linhas == 0){

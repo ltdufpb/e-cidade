@@ -119,7 +119,7 @@ db_input('db42_nome',20,$Idb42_nome,true,'text',$db_opcao,"")
             order by tipo, 
                   typname ";
   $result    = db_query($sql);
-  $numrows   = pg_num_rows($result);
+  $numrows   = $result === false || $result === null ? 0 : pg_num_rows($result);
   $elementos = [" Selecione o tipo do parametro "];
   for($i=0;$i<$numrows;$i++){
      db_fieldsmemory($result,$i);

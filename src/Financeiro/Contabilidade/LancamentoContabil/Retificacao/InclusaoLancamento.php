@@ -66,7 +66,7 @@ class InclusaoLancamento
         if (!$resultConsulta) {
             throw new \DBException("Ocorreu um erro ao consultar os lançamentos.");
         }
-        $totalRegistros = pg_num_rows($resultConsulta);
+        $totalRegistros = $resultConsulta === false || $resultConsulta === null ? 0 : pg_num_rows($resultConsulta);
 
         $eventoContabil = new \EventoContabil($parametros->documento, $anoSessao, $instituicaoSessao);
         $lancamentos = $eventoContabil->getEventoContabilLancamento();

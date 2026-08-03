@@ -288,7 +288,7 @@ if ($chave != 0) {
       $sqlReceit = "select distinct k02_descr from tabrec where k02_codigo in ($parReceit)";
 			//echo $sqlReceit;
 			$rsRec     = db_query($sqlReceit);
-			$numRows   = pg_num_rows($rsRec);
+			$numRows   = $rsRec === false || $rsRec === null ? 0 : pg_num_rows($rsRec);
 			$vRec      = "";
 			$legRec    = '';
 			if ($numRows > 0){
@@ -337,7 +337,7 @@ if ($chave != 0) {
    $sSqlSuspensao .= " 	   and arretipo.k00_instit = ".db_getsession('DB_instit');
    
    $rsSuspensao      = db_query($sSqlSuspensao);
-   $iLinhasSuspensao = pg_num_rows($rsSuspensao);
+   $iLinhasSuspensao = $rsSuspensao === false || $rsSuspensao === null ? 0 : pg_num_rows($rsSuspensao);
    $aSuspensao		 = [];
 	
    if ( $iLinhasSuspensao > 0 ) {

@@ -33,7 +33,7 @@ $sSqlEstado .= "       t70_situac 		as id_do_estado_de_conservacao, ";
 $sSqlEstado .= "       t70_descr 			as nome_do_estado_de_consevacao";
 $sSqlEstado .= " from situabens";
 $rsEstado    		= db_query($sSqlEstado);
-$iNumeroLinhas 	= pg_num_rows($rsEstado);
+$iNumeroLinhas 	= $rsEstado === false || $rsEstado === null ? 0 : pg_num_rows($rsEstado);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oEstado     = db_utils::fieldsMemory($rsEstado,$i);

@@ -236,7 +236,7 @@ if(isset($incluir)){
   $db_opcao = 2;
   $r = $cladmissao->sql_query_dados($h07_regist);
   $result = db_query("select * from admissao inner join rhpessoal on rhpessoal.rh01_regist = admissao.h07_regist inner join cgm on cgm.z01_numcgm = rhpessoal.rh01_numcgm where admissao.h07_regist =".$h07_regist);
-  $linhas = pg_num_rows($result);
+  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
   $oServidor = ServidorRepository::getInstanciaByCodigo($h07_regist, DBPessoal::getAnoFolha(), DBPessoal::getMesFolha());
   if ($h07_justif !== $oServidor->getRegistroJustificativa()) {

@@ -99,7 +99,7 @@ function getPosicaoEstoque($sDataProcessamento) {
 
   $sSqlPosicaoEstoque = $oDaoPosicaoEstoque->sql_query(null, $sCampos, null, $sWhere);
   $rsPosicaoEstoque   = db_query($sSqlPosicaoEstoque);
-  $iTotalItens = pg_num_rows($rsPosicaoEstoque);
+  $iTotalItens = $rsPosicaoEstoque === false || $rsPosicaoEstoque === null ? 0 : pg_num_rows($rsPosicaoEstoque);
   $aPosicaoEstoque = [];
 
   if ( !$rsPosicaoEstoque ) {

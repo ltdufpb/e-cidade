@@ -81,7 +81,7 @@ if ($clturma->numrows > 0) {
          ";
  //echo $sql1;
  $result1 = db_query($sql1);
- $linhas1 = pg_num_rows($result1);
+ $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
  //db_criatabela($result1);
  //exit;
  if ($linhas1 == 0) {?>

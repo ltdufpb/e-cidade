@@ -441,7 +441,7 @@ class Encerramento extends ExercicioContabil
         //db_criatabela($rsEncerrar);
 
 
-        $totalRegistros = pg_num_rows($rsEncerrar);
+        $totalRegistros = $rsEncerrar === false || $rsEncerrar === null ? 0 : pg_num_rows($rsEncerrar);
 
         $codigosEncerramento = [];
         for ($i = 0; $i < $totalRegistros; $i++) {

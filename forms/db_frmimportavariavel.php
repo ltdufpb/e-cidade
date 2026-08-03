@@ -123,7 +123,7 @@ $clrotulo->label("z01_numcgm");
 		$cliframe_seleciona->sql = $sql;
     
 		$rsIssvar 		  = db_query($sql) or die($sql);
-		$iNumRowsIssvar = pg_num_rows($rsIssvar);	
+		$iNumRowsIssvar = $rsIssvar === false || $rsIssvar === null ? 0 : pg_num_rows($rsIssvar);	
 			
 		if ($iNumRowsIssvar > 0) {
 			$oIssvar           = db_utils::fieldsMemory($rsIssvar,0);

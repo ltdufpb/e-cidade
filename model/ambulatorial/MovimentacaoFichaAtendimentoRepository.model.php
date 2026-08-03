@@ -109,7 +109,7 @@ class MovimentacaoFichaAtendimentoRepository {
       throw new DBException( _M(MovimentacaoFichaAtendimento::MENSAGEM."erro_buscar_movimentacao", $oErro) );
     }
 
-    $iLinhas        = pg_num_rows($rsMovimentacoes);
+    $iLinhas        = $rsMovimentacoes === false || $rsMovimentacoes === null ? 0 : pg_num_rows($rsMovimentacoes);
     $aMovimentacoes = [];
 
     if ( $iLinhas > 0 ) {

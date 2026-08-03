@@ -35,7 +35,7 @@ if($db_opcao!= 1 and isset($j93_codigo)){
   //verifica se ja tem averbação para este tipo 
   $sqlAverba = "select * from averbacao where j75_tipo = $j93_codigo limit 2";
   $rsAverba = db_query($sqlAverba);
-  $linhasAverba = pg_num_rows($rsAverba);
+  $linhasAverba = $rsAverba === false || $rsAverba === null ? 0 : pg_num_rows($rsAverba);
   if($linhasAverba > 0){
     // não pode alterar nem excluir esse tipo 
     $opcaoAverba = 3; 

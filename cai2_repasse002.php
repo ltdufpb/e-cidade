@@ -115,7 +115,7 @@ order by g.k02_tipo desc ,g.k02_codigo
 //echo $sql;exit;
 
 $result = db_query($sql);
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
   //db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos para a receita '.$codrec.' no período de '.db_formatar($datai,'d').' a '.db_formatar($dataf,'d'));
   

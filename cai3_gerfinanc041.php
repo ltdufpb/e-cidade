@@ -137,7 +137,7 @@ if (isset($certid)) {
 <?php 
   
   $result02=db_query($sql02);
-  $numrows02=pg_num_rows($result02);
+  $numrows02=$result02 === false || $result02 === null ? 0 : pg_num_rows($result02);
   echo " <table border='1';>   
            <tr>
 				      <th nowrap bgcolor=\"#CDCDFF\" title=\"$Tv01_exerc\" align=\"center\">$Lv01_exerc</b></th>
@@ -163,7 +163,7 @@ if (isset($certid)) {
 		    
 
 		$result05=debitos_numpre($v01_numpre,0,@$tipo,db_getsession("DB_datausu"),db_getsession("DB_anousu"),0,"",""," and y.k00_hist <> 918");
-		$numrows05=pg_num_rows($result05);	
+		$numrows05=$result05 === false || $result05 === null ? 0 : pg_num_rows($result05);	
 		for ($d=0; $d<$numrows05; $d++) {
 		   db_fieldsmemory($result05,$d);
 					
@@ -206,7 +206,7 @@ if (isset($certid)) {
   <td>
 <?php 
   $result=db_query($sql);
-  $numrows=pg_num_rows($result);
+  $numrows=$result === false || $result === null ? 0 : pg_num_rows($result);
     echo "
    <table border='1';>   
     <tr>

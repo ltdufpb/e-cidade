@@ -512,7 +512,7 @@ class cl_rhdepend
       $result = db_query($sql);
 
       if($result) {
-        $totalRegistros = pg_num_rows($result);
+        $totalRegistros = $result === false || $result === null ? 0 : pg_num_rows($result);
         for ($row = 0; $row < $totalRegistros; $row++) {
             $current = \db_utils::fieldsMemory($result, $row);
             $this->excluir($current->rh31_codigo);
@@ -627,7 +627,7 @@ class cl_rhdepend
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_num_rows($result);
+     $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
       if ($this->numrows == 0) {
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhdepend";

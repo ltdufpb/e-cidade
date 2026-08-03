@@ -111,7 +111,7 @@ class LaboratorioRepository {
 
     if( $rsLabLaboratorio && pg_num_rows( $rsLabLaboratorio ) > 0 ) {
 
-      $iTotalLinhas = pg_num_rows( $rsLabLaboratorio );
+      $iTotalLinhas = $rsLabLaboratorio === false || $rsLabLaboratorio === null ? 0 : pg_num_rows( $rsLabLaboratorio );
       for( $iContador = 0; $iContador < $iTotalLinhas; $iContador++ ) {
 
         $iCodigoLaboratorio = db_utils::fieldsMemory( $rsLabLaboratorio, $iContador )->la02_i_codigo;

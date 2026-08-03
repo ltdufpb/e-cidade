@@ -139,7 +139,7 @@ if (!function_exists("db_contas")) {
 
 
                         $result_redu = db_query($sql_redu);
-                        $numrows = pg_num_rows($result_redu);
+                        $numrows = $result_redu === false || $result_redu === null ? 0 : pg_num_rows($result_redu);
                         for ($i = 0; $i < $numrows; $i++) {
                             echo "<option value=\"" . pg_fetch_result($result_redu, $i, 0) . "\" >" . pg_fetch_result($result_redu, $i, 0) . "</option>\n";
                         }
@@ -414,7 +414,7 @@ if (!function_exists("db_multiploselect")) {
                                 onDblClick="js_db_multiploselect_incluir_item(this,document.form1.<?= $objsel ?>);">
                             <?php
                             if (gettype($recordnsel) == "resource") {
-                                $numrows_recnsel = pg_num_rows($recordnsel);
+                                $numrows_recnsel = $recordnsel === false || $recordnsel === null ? 0 : pg_num_rows($recordnsel);
                                 for ($i = 0; $i < $numrows_recnsel; $i++) {
                                     db_fieldsmemory($recordnsel, $i);
                                     global ${$valueobj};
@@ -473,7 +473,7 @@ if (!function_exists("db_multiploselect")) {
                                 onDblClick="js_db_multiploselect_incluir_item(this,document.form1.<?= $objnsel ?>);">
                             <?php
                             if (gettype($recordsel) == "resource") {
-                                $numrows_recsel = pg_num_rows($recordsel);
+                                $numrows_recsel = $recordsel === false || $recordsel === null ? 0 : pg_num_rows($recordsel);
                                 for ($i = 0; $i < $numrows_recsel; $i++) {
                                     db_fieldsmemory($recordsel, $i);
                                     global ${$valueobj};
@@ -752,7 +752,7 @@ if (!function_exists("db_selectrecord")) {
                     }
                     $iTotalRegistros = 0;
                     if ($record) {
-                        $iTotalRegistros = pg_num_rows($record);
+                        $iTotalRegistros = $record === false || $record === null ? 0 : pg_num_rows($record);
                     }
                     for ($sqli = 0; $sqli < $iTotalRegistros; $sqli++) {
                         $sqlv = pg_fetch_result($record, $sqli, 0);

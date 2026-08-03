@@ -77,7 +77,7 @@ class tceCadastroPensionistas extends tceEstruturaBasica
         db_criatermometro('terTCEPensionista', 'Arquivo Pensionista...', 'blue', 1);
         $this->oTxtLayout->setByLineOfDBUtils($this->cabecalhoPadrao($this->iInstit, $this->sDataIni, $this->sDataFim, $this->sCodRemessa), 1);
         $rsFuncionarios = db_query($this->sqlCadastroPensionista($this->sDataFim, $this->sDataIni));
-        $iNumRows = pg_num_rows($rsFuncionarios);
+        $iNumRows = $rsFuncionarios === false || $rsFuncionarios === null ? 0 : pg_num_rows($rsFuncionarios);
         $iTotalRegistros = 0;
         $iQuant = 0;
 

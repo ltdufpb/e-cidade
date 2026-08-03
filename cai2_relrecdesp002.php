@@ -430,7 +430,7 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
             $sql .= "   and tabrec.k02_tipo = 'E' ";
 
             $rs = db_query($sql);
-            $numrows = pg_num_rows($rs);
+            $numrows = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             $totalRecp = 0;
             if ($numrows > 0) {
                 db_fieldsmemory($rs, 0);
@@ -510,7 +510,7 @@ for ($orctiporec = 0; $orctiporec < $clorctiporec->numrows; $orctiporec++) {
             $sql .= " where {$wh} ";
             $sql .= "   and corrente.k12_data between '{$dataini}' and '{$datafim}' ";
             $rs = db_query($sql);
-            $numrows = pg_num_rows($rs);
+            $numrows = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             $totalDesp = 0;
             if ($numrows > 0) {
                 db_fieldsmemory($rs, 0);

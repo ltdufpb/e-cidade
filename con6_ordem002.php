@@ -173,7 +173,7 @@ input {
 	    $result = db_query("select id_item,nome_modulo,descr_modulo 
 	    from db_modulos 
 	    order by lower(nome_modulo)");
-	    $numrows = pg_num_rows($result);
+	    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
 		   echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."\">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
 		}  
@@ -240,7 +240,7 @@ input {
                               where m.modulo = $mod 
 							  and m.id_item = $item 
 							  and i.itemativo = $ambiente");			  
-			  $numrows = pg_num_rows($sub);
+			  $numrows = $sub === false || $sub === null ? 0 : pg_num_rows($sub);
               if($numrows > 0) {
                 for($x = 0;$x < $numrows;$x++) {                  
 				  $valor = pg_fetch_result($sub,$x,"id_item_filho");

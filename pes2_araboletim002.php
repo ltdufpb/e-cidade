@@ -92,7 +92,7 @@ $sql = "
 //echo $sql ; exit;
 
 $result = db_query($sql);
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários cadastrados no período de '.$mes.' / '.$ano);
 
@@ -238,7 +238,7 @@ for($x = 0; $x < pg_num_rows($result);$x++){
    $margem_consignada = 0;
    $margem_deduz = 0;
    $alt       = 5;
-   $num_calculo = pg_num_rows($res_calculo);
+   $num_calculo = $res_calculo === false || $res_calculo === null ? 0 : pg_num_rows($res_calculo);
 //echo ' <br><br>  num calculo '.$num_calculo;exit;
    if($num_calculo > 0){
      for($xy = 0; $xy < $num_calculo;$xy++){

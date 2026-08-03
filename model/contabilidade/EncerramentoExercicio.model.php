@@ -291,7 +291,7 @@ class EncerramentoExercicio {
             throw new Exception("Não foi possível buscar os dados de empenho de restos a pagar.");
         }
 
-        $iTotalRegistros = pg_num_rows($rsBuscaRestos);
+        $iTotalRegistros = $rsBuscaRestos === false || $rsBuscaRestos === null ? 0 : pg_num_rows($rsBuscaRestos);
         if ($iTotalRegistros == 0) {
             return true;
         }
@@ -488,7 +488,7 @@ class EncerramentoExercicio {
         if (!$rsBalanceteVerificacao) {
             throw new DBException('Erro na execução do balancete de Verificação durante o encerramento das VP');
         }
-        $iTotalLinhas          = pg_num_rows($rsBalanceteVerificacao);
+        $iTotalLinhas          = $rsBalanceteVerificacao === false || $rsBalanceteVerificacao === null ? 0 : pg_num_rows($rsBalanceteVerificacao);
         for ($iConta = 0; $iConta < $iTotalLinhas; $iConta++) {
 
             $oConta = db_utils::fieldsMemory($rsBalanceteVerificacao, $iConta);
@@ -593,7 +593,7 @@ class EncerramentoExercicio {
             $sWhereBalancete .= " and c61_reduz <> {$iContaReferencia}";
             $rsBalancete      = $this->exececutarBalanceteVerificacao($sWhereBalancete);
 
-            $iTotalLinhas     = pg_num_rows($rsBalancete);
+            $iTotalLinhas     = $rsBalancete === false || $rsBalancete === null ? 0 : pg_num_rows($rsBalancete);
             for ($iConta = 0; $iConta < $iTotalLinhas; $iConta++) {
 
                 $oConta = db_utils::fieldsMemory($rsBalancete, $iConta);

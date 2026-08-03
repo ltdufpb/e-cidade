@@ -260,7 +260,7 @@ class ProgramaMeta {
       }
 
       $this->aIniciativas = [];
-      $iTotalIniciativas  = pg_num_rows($rsBuscaIniciativas);
+      $iTotalIniciativas  = $rsBuscaIniciativas === false || $rsBuscaIniciativas === null ? 0 : pg_num_rows($rsBuscaIniciativas);
 
       /**
        * Adiciona cada iniciativa vinculada ao array da propriedade

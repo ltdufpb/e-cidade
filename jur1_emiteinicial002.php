@@ -116,7 +116,7 @@ if(isset($alterar)){
 
   $sqlPardiv = "select v04_tipoinicial,v04_tipocertidao as tipocertidao from pardiv where v04_instit  = ".db_getsession('DB_instit') ;
   $rsPardiv  = db_query($sqlPardiv);
-  $linhasPardiv = pg_num_rows($rsPardiv);
+  $linhasPardiv = $rsPardiv === false || $rsPardiv === null ? 0 : pg_num_rows($rsPardiv);
   if ($linhasPardiv > 0 ) {
     db_fieldsmemory($rsPardiv,0);
   }else{
@@ -160,7 +160,7 @@ if(isset($alterar)){
         $sql .= "         where v51_inicial  = $v50_inicial ";
         $sql .= "           and v51_certidao = ".${$w}." ) as x ";
         $rsExcArrecad = db_query($sql);
-        $intNumrows   = pg_num_rows($rsExcArrecad);
+        $intNumrows   = $rsExcArrecad === false || $rsExcArrecad === null ? 0 : pg_num_rows($rsExcArrecad);
 
         // for excluindo da inicial numpre as certidoes desmarcadas e dando update no arrecad
         for($ii = 0;$ii < $intNumrows; $ii++){
@@ -247,7 +247,7 @@ if(isset($alterar)){
         		   	 and v50_instit  = ".db_getsession('DB_instit')."  ) as x";
 
           $result = db_query($sql);
-          $numso  = pg_num_rows($result);
+          $numso  = $result === false || $result === null ? 0 : pg_num_rows($result);
 
           for($xr=0;$xr<$numso;$xr++){
             db_fieldsmemory($result,$xr);

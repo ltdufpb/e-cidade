@@ -181,7 +181,7 @@ if (isset ($gerar)) {
 									left join ruas as b on b.j14_codigo = j39_codigo 
 								where j01_baixa is null  
 								order by j01_matric, j39_idcons");
-			$numrows = pg_num_rows($result);
+			$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			if ($result == false || $numrows == 0) {
 				$erro = true;
 				$descricao_erro .= "Não existe matricula cadastrada!";
@@ -241,7 +241,7 @@ if (isset ($gerar)) {
 							   where q02_dtbaix is null and q07_databx is null and q07_datafi>".date("Y-m-d", db_getsession("DB_datausu"))."  
 							   order by issbase.q02_inscr");
 			
-			$numrows = pg_num_rows($result);
+			$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			if ($result == false || $numrows == 0) {
 				$erro = true;
 				$descricao_erro .= "Não existe inscrição cadastrada!";
@@ -265,7 +265,7 @@ if (isset ($gerar)) {
                               and k22_instit = $instit
 					group by k22_numcgm,z01_nome,z01_ender,z01_munic,z01_uf,k22_matric,k22_inscr,k22_tipo,k03_descr,
 					k22_numpre,k22_numpar,k22_dtvenc ");
-			$numrows = pg_num_rows($result); 
+			$numrows = $result === false || $result === null ? 0 : pg_num_rows($result); 
 			if ($result == false || $numrows == 0) {
 				$erro = true;
 				$descricao_erro .= "Não existe debito!";

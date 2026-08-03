@@ -806,7 +806,7 @@ if ($db_opcao == 1) {
 	  if (isset ($q02_inscr) && $q02_inscr != "") {
 	    $sqlbairro = "select *from issbairro inner join bairro on q13_bairro = j13_codi where q13_inscr = $q02_inscr";
 	    $resultbairro = db_query($sqlbairro);
-	    $linhasbairro = pg_num_rows($resultbairro);
+	    $linhasbairro = $resultbairro === false || $resultbairro === null ? 0 : pg_num_rows($resultbairro);
 	    if($linhasbairro == 0){
 	      echo "<script>alert('Atualize dados cadastrais da inscrição...\"Bairro não informado\".')</script>";
 				echo "<script>

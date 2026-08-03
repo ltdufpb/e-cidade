@@ -153,7 +153,7 @@ $result_ano .= " left join rechumanocgm  on  rechumanocgm.ed285_i_rechumano = re
 $result_ano .= " left join cgm as cgmcgm on  cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm";
 $result_ano .= " where $where order by ed52_i_ano desc";
 $resultano   = db_query($result_ano) ;
-$linhas2     = pg_num_rows($resultano);
+$linhas2     = $resultano === false || $resultano === null ? 0 : pg_num_rows($resultano);
 if (!isset($calendario) && $linhas2 > 0) {
   $calendario = pg_fetch_result($resultano,0,'ed52_i_ano');
 } else {
@@ -201,7 +201,7 @@ $resultano .= " left join rechumanocgm  on  rechumanocgm.ed285_i_rechumano = rec
 $resultano .= " left join cgm as cgmcgm on  cgmcgm.z01_numcgm = rechumanocgm.ed285_i_cgm";
 $resultano .= " where $where AND ed52_i_ano = $calendario order by ed18_c_nome";
 $resultano1 = db_query($resultano) ;
-$linhas3    = pg_num_rows($resultano1);
+$linhas3    = $resultano1 === false || $resultano1 === null ? 0 : pg_num_rows($resultano1);
 ?>
 <b>Escola:</b>
 <select id="esc_horario" style="width:300px;" name="esc_horario" onchange="js_trocaEscola(this.value);">

@@ -35,7 +35,7 @@ $sSqlUsuario .= "       from usuariocriterium inner join db_usuarios";
 $sSqlUsuario .= "       on t08_id_usuario = id_usuario";
 
 $rsUsuario    = db_query($sSqlUsuario);
-$iNumeroLinhas	= pg_num_rows($rsUsuario);
+$iNumeroLinhas	= $rsUsuario === false || $rsUsuario === null ? 0 : pg_num_rows($rsUsuario);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oUsuario     = db_utils::fieldsMemory($rsUsuario,$i);

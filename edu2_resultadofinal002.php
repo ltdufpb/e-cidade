@@ -168,7 +168,7 @@ for($x=0;$x<$clturma->numrows;$x++){
            ORDER BY ed95_i_regencia
          ";
   $result5 = db_query($sql5);
-  $linhas5 = pg_num_rows($result5);
+  $linhas5 = $result5 === false || $result5 === null ? 0 : pg_num_rows($result5);
   $cont3 = 0;
   if($linhas5>0){
    for($v=0;$v<$linhas5;$v++){
@@ -207,7 +207,7 @@ for($x=0;$x<$clturma->numrows;$x++){
            AND ed74_c_resultadofinal = 'R'
           ";
   $result6 = db_query($sql6);
-  $linhas6 = pg_num_rows($result6);
+  $linhas6 = $result6 === false || $result6 === null ? 0 : pg_num_rows($result6);
   //db_criatabela($result4);
   if($linhas6==0){
    $rf = "APR";
@@ -460,7 +460,7 @@ for($x=0;$x<$clturma->numrows;$x++){
             ORDER BY ed95_i_regencia
           ";
    $result5 = db_query($sql5);
-   $linhas5 = pg_num_rows($result5);
+   $linhas5 = $result5 === false || $result5 === null ? 0 : pg_num_rows($result5);
    $cont3 = 0;
    if($linhas5>0){
     for($v=0;$v<$linhas5;$v++){
@@ -499,7 +499,7 @@ for($x=0;$x<$clturma->numrows;$x++){
             AND ed74_c_resultadofinal = 'R'
            ";
    $result6 = db_query($sql6);
-   $linhas6 = pg_num_rows($result6);
+   $linhas6 = $result6 === false || $result6 === null ? 0 : pg_num_rows($result6);
    //db_criatabela($result4);
    if($linhas6==0){
     $rf = "APR";

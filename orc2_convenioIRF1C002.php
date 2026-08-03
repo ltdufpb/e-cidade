@@ -141,7 +141,7 @@ $datausu         = "{$iAnoUsu}-{$iMesFim}-$iUltimoDiaMes";
 
 $rsReceitaSaldo = db_receitasaldo(11, 1, 3,true, $sWhere,$iAnoUsu, $iDataInicial, $datausu);
 $nTotalPeriodo  = 0;
-$iTotalLinhas   = pg_num_rows($rsReceitaSaldo);
+$iTotalLinhas   = $rsReceitaSaldo === false || $rsReceitaSaldo === null ? 0 : pg_num_rows($rsReceitaSaldo);
 for ($iRec = 0; $iRec < $iTotalLinhas; $iRec++) {
 
   $oLinha = db_utils::fieldsMemory($rsReceitaSaldo, $iRec);

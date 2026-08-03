@@ -37,7 +37,7 @@ $oJson         = new services_json();
 $sName    = mb_convert_encoding($_POST["string"], 'ISO-8859-1');
 $sql      = "SELECT ov25_sequencial as cod,ov25_descricao as label FROM ouvidoriacadlocal WHERE ov25_descricao ilike '".$sName."%'";
 $result   = db_query($sql);
-$iNumRows = pg_num_rows($result);
+$iNumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $array    = db_utils::getCollectionByRecord($result,false,false,true);
 

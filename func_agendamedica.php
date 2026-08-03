@@ -190,7 +190,7 @@ class calendario{
                         )";
 
           $result_undmedhorario = db_query( $str_query ) or die( "ERRO: <p> $str_query ");
-          $iTam = pg_num_rows($result_undmedhorario);
+          $iTam = $result_undmedhorario === false || $result_undmedhorario === null ? 0 : pg_num_rows($result_undmedhorario);
           if ($iTam > 0) {
 
             $sMotivosAusencias      = "";

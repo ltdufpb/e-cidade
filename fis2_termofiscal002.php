@@ -112,7 +112,7 @@ $str_sql .= $where;
 
 $result = db_query($str_sql);// or 
 
-$int_linhas = pg_num_rows($result);
+$int_linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($int_linhas == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro para o filtro selecionado!');
   exit;
@@ -168,7 +168,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
     // SE NÃO TIVER TERMO DE VITORIA PARA  ESTA INSCRIÇÃO NESTE EXERCÍCIO
     if($numrowstipo==0 && $primeiro == 't'){
       $rsTermovist = db_query("select last_value+1 as termovist from termovist_y91_termovist_seq");
-      $numrows = pg_num_rows($rsTermovist);
+      $numrows = $rsTermovist === false || $rsTermovist === null ? 0 : pg_num_rows($rsTermovist);
       if ($numrows>0){
         db_fieldsmemory($rsTermovist,0);
       }
@@ -214,7 +214,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
       db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do Termo de Vistoria!');
       exit;
     }
-    $numrows = pg_num_rows($resparag);
+    $numrows = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
     //$pdf1->inicia     = $db02_inicia;
     $pdf->setx($col);
     $pdf->setfont('Arial','B',14);
@@ -299,7 +299,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
 
         $str_sql = "select * from ISSCALC where q01_inscr = $q02_inscr order by q01_anousu desc ";
         $res_isscalc = db_query( $str_sql ) or die( "FALHA $str_sql");
-        $int_linhas_isscalc = pg_num_rows( $res_isscalc );
+        $int_linhas_isscalc = $res_isscalc === false || $res_isscalc === null ? 0 : pg_num_rows( $res_isscalc );
         $str_alvara = "";
         $str_sanitario = "";
         $str_issqn = "";
@@ -333,7 +333,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
         $resulttfv= db_query($sqltfv);
         
         
-        $linhastfv = pg_num_rows($resulttfv);
+        $linhastfv = $resulttfv === false || $resulttfv === null ? 0 : pg_num_rows($resulttfv);
         //  echo "<br>1-$linhastfv";
         if($linhastfv>0){
           db_fieldsmemory( $resulttfv, 0 );
@@ -363,7 +363,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
         where vistorias.y70_codvist= $visttfv and  y70_instit = ".db_getsession('DB_instit')  ;
           //echo $sqldebtfv; exit;
           $resultdebtfv= db_query($sqldebtfv);
-          $linhasdebtfv = pg_num_rows($resultdebtfv);
+          $linhasdebtfv = $resultdebtfv === false || $resultdebtfv === null ? 0 : pg_num_rows($resultdebtfv);
           if ($linhasdebtfv>0) {
             db_fieldsmemory( $resultdebtfv, 0 );
             $imprimealvar=1;
@@ -403,7 +403,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
 			and not exists (select 1 from vistoriasanu where y28_codvist = y70_codvist)	
 		order by y70_data desc limit 1";
         $resulttfs= db_query($sqltfs);
-        $linhastfs = pg_num_rows($resulttfs);
+        $linhastfs = $resulttfs === false || $resulttfs === null ? 0 : pg_num_rows($resulttfs);
         if($linhastfs>0){
           db_fieldsmemory( $resulttfs, 0 );
           // busca debitos
@@ -431,7 +431,7 @@ for($cont=0;$cont < $int_linhas;$cont++) {
         from vistorias 
         where vistorias.y70_codvist= $visttfs and y70_instit = ".db_getsession('DB_instit')." ";
           $resultdebtfs= db_query($sqldebtfs);
-          $linhasdebtfs = pg_num_rows($resultdebtfs);
+          $linhasdebtfs = $resultdebtfs === false || $resultdebtfs === null ? 0 : pg_num_rows($resultdebtfs);
           if($linhasdebtfs>0){
             db_fieldsmemory( $resultdebtfs, 0 );
             $imprimesani=1;
@@ -553,7 +553,7 @@ function func_issqn( $q01_numpre, $q01_cadcal ){
   $str_sql3 .= "    and arrecad.k00_dtvenc < '".date("Y/m/d",db_getsession('DB_datausu'))."' ) as zzz";
   //	die($str_sql3);
   $rsIsscalc  = db_query($str_sql3);
-  $intIsscalc = pg_num_rows($rsIsscalc);
+  $intIsscalc = $rsIsscalc === false || $rsIsscalc === null ? 0 : pg_num_rows($rsIsscalc);
   if( $intIsscalc > 0 ){
     $virgula = '';
     $vir   = '';
@@ -585,7 +585,7 @@ function func_issqn( $q01_numpre, $q01_cadcal ){
   //	die($str_sql1);
   $rsIssvar  = db_query($str_sql1);
   //db_criatabela($rsIssvar);exit;
-  $intIssvar = pg_num_rows($rsIssvar);
+  $intIssvar = $rsIssvar === false || $rsIssvar === null ? 0 : pg_num_rows($rsIssvar);
 
   if( $intIssvar > 0 ){
     $vir = '';
@@ -622,7 +622,7 @@ function func_divida( $q02_inscr ){
   where arreinscr.k00_inscr = $q02_inscr";
 
   $result = db_query( $str_sql ) or die ("FALHA: $str_sql");
-  $int_linhas = pg_num_rows( $result );
+  $int_linhas = $result === false || $result === null ? 0 : pg_num_rows( $result );
   if($int_linhas>0){
     for( $z=0; $z<$int_linhas; $z++ ){
       $dados = pg_fetch_array( $result );
@@ -647,7 +647,7 @@ function func_parcel( $q02_inscr ){
   inner join arrecad on arrecad.k00_numpre = arreinscr.k00_numpre
   where     arreinscr.k00_inscr = $q02_inscr";
   $result1 = db_query( $str_sql1 ) or die ("FALHA: $str_sql1");
-  $linhaspar1 = pg_num_rows($result1);
+  $linhaspar1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
   if( $linhaspar1> 0 ){
     $str_sql = "select k00_dtvenc
 	  from arreinscr
@@ -658,7 +658,7 @@ function func_parcel( $q02_inscr ){
 	        and arrecad.k00_dtvenc < '".date('Y-m-d',db_getsession('DB_datausu'))."' limit 1";
     //die($str_sql);
     $result = db_query( $str_sql ) or die ("FALHA: $str_sql");
-    $linhaspar = pg_num_rows($result);
+    $linhaspar = $result === false || $result === null ? 0 : pg_num_rows($result);
     if( $linhaspar> 0 ){
       $str_retorno =  "SIM - IRREGULAR";
     }else{

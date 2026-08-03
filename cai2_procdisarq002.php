@@ -78,7 +78,7 @@ $sqldiferenca = "
 	  and disarq.autent   is false  
     and disbanco.instit = $instit";
 $resultdiferenca = db_query($sqldiferenca);
-$linhasdiferenca = pg_num_rows($resultdiferenca);
+$linhasdiferenca = $resultdiferenca === false || $resultdiferenca === null ? 0 : pg_num_rows($resultdiferenca);
 if($linhasdiferenca >0){
   db_inicio_transacao();
   for($i=0;$i<$linhasdiferenca;$i++){
@@ -96,7 +96,7 @@ if($linhasdiferenca >0){
     $sqldisbancodiver .= "       left  join arrecad  on  dv05_numpre  = k00_numpre ";
     $sqldisbancodiver .= " where k44_idret = $idret ";
     $resultdisbancodiver = db_query($sqldisbancodiver);
-    $linhasdisbancodiver = pg_num_rows($resultdisbancodiver);
+    $linhasdisbancodiver = $resultdisbancodiver === false || $resultdisbancodiver === null ? 0 : pg_num_rows($resultdisbancodiver);
     if($linhasdisbancodiver > 0){
       $linhadesprocess ++;
       db_fieldsmemory($resultdisbancodiver,0);
@@ -163,7 +163,7 @@ if($linhasdiferenca >0){
 
       $sqlcgm = " select k00_numcgm from arrenumcgm where k00_numpre = $k00_numpre";
       $resultcgm = db_query($sqlcgm);
-      $linhascgm = pg_num_rows($resultcgm);
+      $linhascgm = $resultcgm === false || $resultcgm === null ? 0 : pg_num_rows($resultcgm);
       if($linhascgm>0){
         db_fieldsmemory($resultcgm,0);
       }
@@ -174,7 +174,7 @@ if($linhasdiferenca >0){
         $sqlcgm .= "        inner join arrenumcgm on arrenumcgm.k00_numpre = recibopaga.k00_numpre ";
         $sqlcgm .= "  where recibopaga.k00_numnov = $k00_numpre limit 1";
         $resultcgm = db_query($sqlcgm);
-        $linhascgm = pg_num_rows($resultcgm);
+        $linhascgm = $resultcgm === false || $resultcgm === null ? 0 : pg_num_rows($resultcgm);
         if($linhascgm>0){
           db_fieldsmemory($resultcgm,0);
         }
@@ -183,7 +183,7 @@ if($linhasdiferenca >0){
       if($k00_numcgm==0) {
         $sqlcgm = " select k00_numcgm from recibo where k00_numpre = $k00_numpre";
         $resultcgm = db_query($sqlcgm);
-        $linhascgm = pg_num_rows($resultcgm);
+        $linhascgm = $resultcgm === false || $resultcgm === null ? 0 : pg_num_rows($resultcgm);
         if($linhascgm>0){
           db_fieldsmemory($resultcgm,0);
         }
@@ -237,7 +237,7 @@ if($linhasdiferenca >0){
 			inner join arrematric on arrematric.k00_numpre = arrecant.k00_numpre
 			where arrecant.k00_numpre = $k00_numpre";
       $resultmatric = db_query($sqlmatric);
-      $linhasmatric = pg_num_rows($resultmatric);
+      $linhasmatric = $resultmatric === false || $resultmatric === null ? 0 : pg_num_rows($resultmatric);
       if($linhasmatric>0){
         db_fieldsmemory($resultmatric,0);
         //inclui na arrematric
@@ -270,7 +270,7 @@ from arrecant
 inner join arreinscr on arreinscr.k00_numpre = arrecant.k00_numpre
 where arrecant.k00_numpre = $k00_numpre";
       $resultinscr = db_query($sqlinscr);
-      $linhasinscr = pg_num_rows($resultinscr);
+      $linhasinscr = $resultinscr === false || $resultinscr === null ? 0 : pg_num_rows($resultinscr);
       if($linhasinscr>0){
         db_fieldsmemory($resultinscr,0);
         $clarreinscr->k00_numpre=$nextval;

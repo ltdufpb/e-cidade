@@ -33,11 +33,11 @@ if($sqlerro==false) {
   // PARÂMETROS LICITACOES
   $sqlorigem = "select * from pccflicitanum where l24_anousu = {$anoorigem} limit 1";
   $resultorigem = db_query($sqlorigem);
-  $linhasorigem = pg_num_rows($resultorigem);
+  $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
   $sqldestino = "select * from pccflicitanum where l24_anousu = {$anodestino} limit 1";
   $resultdestino = db_query($sqldestino);
-  $linhasdestino = pg_num_rows($resultdestino);
+  $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
   if (($linhasorigem > 0) && ($linhasdestino == 0 )) {
     
@@ -85,11 +85,11 @@ if($sqlerro==false) {
   // PARÂMETROS LICITACOES
   $sqlorigem = "select * from pccflicitapar where l25_anousu = {$anoorigem} limit 1";
   $resultorigem = db_query($sqlorigem);
-  $linhasorigem = pg_num_rows($resultorigem);
+  $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
   $sqldestino = "select * from pccflicitapar where l25_anousu = {$anodestino} limit 1";
   $resultdestino = db_query($sqldestino);
-  $linhasdestino = pg_num_rows($resultdestino);
+  $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
   if (($linhasorigem > 0) && ($linhasdestino == 0 )) {
     

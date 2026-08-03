@@ -84,7 +84,7 @@ $sql .= "                 where reg.ed59_i_codigo    = ed95_i_regencia ";
 $sql .= "                   AND reg.ed59_c_encerrada = 'S' ) ";
 
 $result1     = db_query( $sql );
-$jaencerrado = pg_num_rows( $result1 );
+$jaencerrado = $result1 === false || $result1 === null ? 0 : pg_num_rows( $result1 );
 ?>
 <html>
   <head>
@@ -126,7 +126,7 @@ if ( isset( $alterar ) ) {
   $sql .= "   AND ed72_i_numfaltas is not null ";
   
   $result1 = db_query( $sql );
-  $linhas1 = pg_num_rows( $result1 );
+  $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows( $result1 );
   
   if ( $linhas1 > 0 && $aulasdadas == '' ) {
     db_msgbox( "Existem alunos com faltas neste período!" );

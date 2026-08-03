@@ -337,7 +337,7 @@ class DBDataBaseMigration {
       throw new DBException( "ERRO: Ao executar SQL {$sScriptsNotApplied} " . pg_last_error() );
     }
 
-    $iCount  = pg_num_rows($rScriptsNotApplied);
+    $iCount  = $rScriptsNotApplied === false || $rScriptsNotApplied === null ? 0 : pg_num_rows($rScriptsNotApplied);
     $sSql   .= $iCount > 0 ? "/* RODANDO $sTipo */ \n" : "";
 
     for ( $x = 0; $x < $iCount; $x++ ) {

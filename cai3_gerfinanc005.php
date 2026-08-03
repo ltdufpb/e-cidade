@@ -60,7 +60,7 @@ $sSqlArrejust .= "  and k27_data+k27_dias > '" . date("Y-m-d", db_getsession("DB
 $sSqlArrejust .= "  and k27_instit = " . db_getsession('DB_instit') . "                               ";
 
 $rsArrejust = db_query($sSqlArrejust);
-$iLinhaArrejust = pg_num_rows($rsArrejust);
+$iLinhaArrejust = $rsArrejust === false || $rsArrejust === null ? 0 : pg_num_rows($rsArrejust);
 
 if ($numpar > 0) {
     $sAnd1 = " and k00_numpar = {$numpar} ";
@@ -70,7 +70,7 @@ if ($numpar > 0) {
 
 $sSqlArrevenc = "select * from arrevenc where k00_numpre = {$numpre} {$sAnd1}";
 $rsArrevenc = db_query($sSqlArrevenc);
-$iLinhaArrevenc = pg_num_rows($rsArrevenc);
+$iLinhaArrevenc = $rsArrevenc === false || $rsArrevenc === null ? 0 : pg_num_rows($rsArrevenc);
 
 $usuario = db_getsession("DB_id_usuario");
 
@@ -170,7 +170,7 @@ if ($oDaoParJuridico->numrows > 0) {
     $sSqlReparcelamento .= " where v07_numpre = $numpre and v07_instit = " . db_getsession('DB_instit');
 
     $rsReparc = db_query($sSqlReparcelamento);
-    $intNumrows = pg_num_rows($rsReparc);
+    $intNumrows = $rsReparc === false || $rsReparc === null ? 0 : pg_num_rows($rsReparc);
 
 
     if ($intNumrows > 0) {

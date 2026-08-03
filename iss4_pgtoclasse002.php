@@ -138,7 +138,7 @@ if(pg_num_rows($result) == 0 ){
   exit;
 }
 
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   echo "<form name=\"form1\" id=\"form1\" method=\"post\" target=\"relatorio\">\n";
   echo "<table valign=\"top\" border=\"0\" cellspacing=\"1\" cellpadding=\"0\">\n";
   echo "<tr align=\"top\">";

@@ -384,7 +384,7 @@ class CgmFisico extends CgmBase
                 $rsCgmFisico   = db_query($sSqlCgmFisico);
 
                 if (is_resource($rsCgmFisico)) {
-                    $oDaoCgmFisico->numrows = pg_num_rows($rsCgmFisico);
+                    $oDaoCgmFisico->numrows = $rsCgmFisico === false || $rsCgmFisico === null ? 0 : pg_num_rows($rsCgmFisico);
                 }
 
                 if ($oDaoCgmFisico->numrows > 0) {
@@ -420,7 +420,7 @@ class CgmFisico extends CgmBase
                 $rsCgmEnderecoExterior   = db_query($sSqlCgmEnderecoExterior);
 
                 if (is_resource($rsCgmEnderecoExterior)) {
-                    $oDaoCgmEnderecoExterior->numrows = pg_num_rows($rsCgmEnderecoExterior);
+                    $oDaoCgmEnderecoExterior->numrows = $rsCgmEnderecoExterior === false || $rsCgmEnderecoExterior === null ? 0 : pg_num_rows($rsCgmEnderecoExterior);
                 }
 
                 if ($oDaoCgmEnderecoExterior->numrows > 0) {
@@ -1309,7 +1309,7 @@ class CgmFisico extends CgmBase
             throw new DBException("Ocorreu um erro ao verificar os familiares");
         }
 
-        $oDaoCgmFamilia->numrows = pg_num_rows($rsFamilia);
+        $oDaoCgmFamilia->numrows = $rsFamilia === false || $rsFamilia === null ? 0 : pg_num_rows($rsFamilia);
 
         if ($oDaoCgmFamilia->numrows > 0) {
             $oDadosFamilia  = db_utils::fieldsMemory($rsFamilia, 0);
@@ -1345,7 +1345,7 @@ class CgmFisico extends CgmBase
         $rsFamilia      = db_query($sSqlFamilia);
 
         if (is_resource($rsFamilia)) {
-            $oDaoCgmFamilia->numrows = pg_num_rows($rsFamilia);
+            $oDaoCgmFamilia->numrows = $rsFamilia === false || $rsFamilia === null ? 0 : pg_num_rows($rsFamilia);
         }
 
         if ($oDaoCgmFamilia->numrows > 0) {
@@ -1361,7 +1361,7 @@ class CgmFisico extends CgmBase
             $oDaoCgmFamilia->numrows = 0;
 
             if (is_resource($rsFamilia)) {
-                $oDaoCgmFamilia->numrows = pg_num_rows($rsFamilia);
+                $oDaoCgmFamilia->numrows = $rsFamilia === false || $rsFamilia === null ? 0 : pg_num_rows($rsFamilia);
             }
 
             for ($i = 0; $i < $oDaoCgmFamilia->numrows; $i++) {

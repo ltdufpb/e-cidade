@@ -344,7 +344,7 @@ function getNomeArquivo($iInstit, $sDataini, $sDatafim, $sRemessa)
     $sNomeArquivo = "";
     $sSqlInstit = "select cgc,db21_tipoinstit from db_config where codigo = {$iInstit} ";
     $rsInstit = db_query($sSqlInstit);
-    $iNumRows = pg_num_rows($rsInstit);
+    $iNumRows = $rsInstit === false || $rsInstit === null ? 0 : pg_num_rows($rsInstit);
     if ($iNumRows == 0) {
         return false;
     }

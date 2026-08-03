@@ -112,7 +112,7 @@ try {
 
     $aContas = [];
 
-    $numrows = pg_num_rows($resultcontasmovimento);
+    $numrows = $resultcontasmovimento === false || $resultcontasmovimento === null ? 0 : pg_num_rows($resultcontasmovimento);
     for ($linha = 0; $linha < $numrows; $linha++) {
         db_fieldsmemory($resultcontasmovimento, $linha);
 

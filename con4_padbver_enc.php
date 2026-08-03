@@ -70,7 +70,7 @@ class bver_enc
         $array_teste = [];
         $array_erro = [];
 
-        $iTotalRegistros = pg_num_rows($result);
+        $iTotalRegistros = $result === false || $result === null ? 0 : pg_num_rows($result);
         $estruturalProcessado = [];
         for ($x = 0; $x < $iTotalRegistros; $x++) {
             global $instituicoes, $c61_instit, $c61_reduz, $nivel, $estrutural, $saldo_anterior, $saldo_anterior_debito, $saldo_anterior_credito, $saldo_final, $c60_descr, $c61_codigo;

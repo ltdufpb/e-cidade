@@ -178,7 +178,7 @@ $clnotificaarretipodoc->rotulo->label();
   	  		   $sSqlReceita .= "    and k00_numpar = {$iNumpar}    ";	
   	  		   
   	  		   $rsReceita   = db_query($sSqlReceita) or die($sSqlReceita);
-  	  		   $iNroReceita = pg_num_rows($rsReceita);
+  	  		   $iNroReceita = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
   	  		   
   	  		   for ( $i=0; $i < $iNroReceita; $i++ ) {
   	  		   	$oReceita   = db_utils::fieldsMemory($rsReceita,$i);	
@@ -190,7 +190,7 @@ $clnotificaarretipodoc->rotulo->label();
   	  		}
   	  		
   	  		$rsDebitosNumpre   = debitos_numpre($ChaveNumpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"),$iNumpar);
-			$iNroDebitosNumpre = pg_num_rows($rsDebitosNumpre); 
+			$iNroDebitosNumpre = $rsDebitosNumpre === false || $rsDebitosNumpre === null ? 0 : pg_num_rows($rsDebitosNumpre); 
 
   	  		foreach ( $aReceita as $iReceita ) {
   	  		   
@@ -361,7 +361,7 @@ $clnotificaarretipodoc->rotulo->label();
   	  		   $sSqlReceita .= "    and k00_numpar = {$iNumpar}    ";	
   	  		   
   	  		   $rsReceita   = db_query($sSqlReceita) or die($sSqlReceita);
-  	  		   $iNroReceita = pg_num_rows($rsReceita);
+  	  		   $iNroReceita = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
   	  		   
   	  		   for ( $i=0; $i < $iNroReceita; $i++ ) {
   	  		   	$oReceita   = db_utils::fieldsMemory($rsReceita,$i);	
@@ -374,7 +374,7 @@ $clnotificaarretipodoc->rotulo->label();
   	  		
   	  		$rsDebitosNumpre   = debitos_numpre($ChaveNumpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"),$iNumpar);
   	  	
-  	  		$iNroDebitosNumpre = pg_num_rows($rsDebitosNumpre);
+  	  		$iNroDebitosNumpre = $rsDebitosNumpre === false || $rsDebitosNumpre === null ? 0 : pg_num_rows($rsDebitosNumpre);
   	  		
   	  		
   	  		foreach ( $aReceita as $iReceita ) {
@@ -596,7 +596,7 @@ $clnotificaarretipodoc->rotulo->label();
 				  $sSqlNotiDebitos .= "    		  arretipo.k00_descr						  			   "; 
 				 
 				  $rsNotiDebitos   = db_query($sSqlNotiDebitos) or die($sSqlNotiDebitos);
-				  $iNroNotiDebitos = pg_num_rows($rsNotiDebitos);
+				  $iNroNotiDebitos = $rsNotiDebitos === false || $rsNotiDebitos === null ? 0 : pg_num_rows($rsNotiDebitos);
 
 				  if ( $iNroNotiDebitos > 0 ) {
 				  	

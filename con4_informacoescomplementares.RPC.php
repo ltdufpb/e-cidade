@@ -58,7 +58,7 @@ try {
             }
 
             $contasRetorno = [];
-            $totalRegistros = pg_num_rows($buscaContas);
+            $totalRegistros = $buscaContas === false || $buscaContas === null ? 0 : pg_num_rows($buscaContas);
             for ($row = 0; $row < $totalRegistros; $row++) {
                 $stdDados = db_utils::fieldsMemory($buscaContas, $row);
 

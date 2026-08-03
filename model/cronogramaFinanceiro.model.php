@@ -815,7 +815,7 @@ class cronogramaFinanceiro {
     $sSqlReceitas  .= $sWhere;
     $rsReceitas     = db_query(analiseQueryPlanoOrcamento($sSqlReceitas));
     $aReceitas      = [];
-    $iTotalReceitas = pg_num_rows($rsReceitas);
+    $iTotalReceitas = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
     for ($i = 0; $i < $iTotalReceitas; $i++) {
 
       $oReceita                     = db_utils::fieldsMemory($rsReceitas, $i, false, false, true);

@@ -134,7 +134,7 @@ $sql =  " select distinct k80_codpla,
 		      order by k80_codpla" ; 
 			    
 $result = db_query($sql);
-$total  = pg_num_rows($result);
+$total  = $result === false || $result === null ? 0 : pg_num_rows($result);
 if (pg_num_rows($result) == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 

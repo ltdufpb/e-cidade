@@ -65,7 +65,7 @@ class RequisicaoExame extends \BaseClassRepository
             throw new Exception('Erro ao buscar os exames das requisições');
         }
 
-        $totalRequisicoes = pg_num_rows($rs);
+        $totalRequisicoes = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
         if (pg_num_rows($rs) === 0) {
             throw new Exception('Nenhuma requisição de exame encontrada.');

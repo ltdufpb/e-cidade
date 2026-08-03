@@ -349,7 +349,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
     $sSqlDirAval   .= "       WHERE ed95_i_aluno = $ed60_i_aluno ";
     $sSqlDirAval   .= "       AND ed95_i_regencia = $ed59_i_codigo AND ed72_i_procavaliacao = $periodo ";
     $sResultDirAval = db_query($sSqlDirAval);
-    $iLinhasDirAval = pg_num_rows($sResultDirAval);
+    $iLinhasDirAval = $sResultDirAval === false || $sResultDirAval === null ? 0 : pg_num_rows($sResultDirAval);
     if ($iLinhasDirAval > 0) {
       db_fieldsmemory($sResultDirAval,0);
     } else {
@@ -803,7 +803,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
       $sSqlDiarioAvalia   .= "      AND ed95_i_regencia = $ed59_i_codigo ";
       $sSqlDiarioAvalia   .= "      AND ed72_i_procavaliacao = $periodo ";
       $sResultDiarioAvalia = db_query($sSqlDiarioAvalia);
-      $iLinhasDir          = pg_num_rows($sResultDiarioAvalia);
+      $iLinhasDir          = $sResultDiarioAvalia === false || $sResultDiarioAvalia === null ? 0 : pg_num_rows($sResultDiarioAvalia);
 
       if ($iLinhasDir > 0) {
         db_fieldsmemory($sResultDiarioAvalia,0);
@@ -817,7 +817,7 @@ for ($x = 0; $x < $iLinhas; $x++) {
       $sSqlDiarioFinal   .= "      WHERE ed95_i_aluno = $ed60_i_aluno ";
       $sSqlDiarioFinal   .= "            AND ed95_i_regencia = $ed59_i_codigo ";
       $sResultDiarioFinal = db_query($sSqlDiarioFinal);
-      $iLinhasDiarioFinal = pg_num_rows($sResultDiarioFinal);
+      $iLinhasDiarioFinal = $sResultDiarioFinal === false || $sResultDiarioFinal === null ? 0 : pg_num_rows($sResultDiarioFinal);
 
       if ($iLinhasDiarioFinal > 0) {
         db_fieldsmemory($sResultDiarioFinal,0);

@@ -117,7 +117,7 @@ if(isset($proceguir)){
                                                       iner join sau_procsemfatura on s146_i_codigo=s147_i_procsf 
                                                    where s147_i_triagem=$sd24_i_codigo";
                                         $result_proc=db_query($sql_proc);
-                                        $linhas_proc=pg_num_rows($result_proc);
+                                        $linhas_proc=$result_proc === false || $result_proc === null ? 0 : pg_num_rows($result_proc);
                                         $proc=[];
                                         for($c=0;$c<$linhas_proc;$c++){
                                             db_fieldsmemory($result_proc,$c);
@@ -138,7 +138,7 @@ $sql1 = "select z01_nome  as profissional,sd03_i_codigo,z01_numcgm
                   where sd02_i_codigo = $sd24_i_unidade and db_usuacgm.id_usuario=".db_getsession("DB_id_usuario");
                   
 $query1 = db_query($sql1) or die(pg_last_error());
-$linhas1 = pg_num_rows($query1);
+$linhas1 = $query1 === false || $query1 === null ? 0 : pg_num_rows($query1);
 $profissional_branco = true;
 if($linhas1>0 && ( !isset( $sd03_i_codigo ) || (int)$sd03_i_codigo == 0 )) {
   db_fieldsmemory($query1,0);

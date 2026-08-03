@@ -84,7 +84,7 @@ $sql = $clrhvisavalecad->sql_query_lotaexe(null," rhvisavalecad.*,z01_nome,o40_o
 //echo $sql ; exit;
 
 $result = db_query($sql);
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Vales cadastrados no período de '.$mes.' / '.$ano);
 

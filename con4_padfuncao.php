@@ -99,7 +99,7 @@ where o52_funcao > 0
 
 
      $res=db_query($sql);
-     $rows = pg_num_rows($res);
+     $rows = $res === false || $res === null ? 0 : pg_num_rows($res);
      for ($x=0;$x < $rows;$x++){
         $anousu = formatar(pg_fetch_result($res,$x,"anousu"),4);
         $funcao = formatar(pg_fetch_result($res,$x,"funcao"),2);

@@ -138,7 +138,7 @@ if(isset($atualizar)){
    <?php 
     $sql = "SELECT ed108_i_codigo,ed108_t_descr from questaoaval where ed108_c_tipoaval = 'P' order by ed108_i_sequencia";
     $query = db_query($sql);
-    $linhas = pg_num_rows($query);
+    $linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
     if($linhas>0){
      for($i=0;$i<$linhas;$i++){
      $dados = pg_fetch_array($query);

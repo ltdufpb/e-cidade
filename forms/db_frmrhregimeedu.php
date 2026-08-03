@@ -88,7 +88,7 @@ $clrhregime->rotulo->label();
       <?php 
       $sSqlNatureza = "select rh71_sequencial,rh71_descricao from rhnaturezaregime";
       $rsNatureza   = db_query($sSqlNatureza);
-      $iNatureza    = pg_num_rows($rsNatureza);
+      $iNatureza    = $rsNatureza === false || $rsNatureza === null ? 0 : pg_num_rows($rsNatureza);
       $aNatureza    = [];
       for ($i = 0; $i < $iNatureza; $i++) {
 

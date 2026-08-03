@@ -108,7 +108,7 @@ $clrotulo->label("bi09_biblioteca");
                                   ORDER BY bi20_sequencia,bi27_letra,bi23_codigo
                                 ";
                                 $result = db_query($sql);
-                                $linhas = pg_num_rows($result);
+                                $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
                                 for ($i = 0; $i < $linhas; $i++) {
                                     db_fieldsmemory($result, $i);

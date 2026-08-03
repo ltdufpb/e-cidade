@@ -323,7 +323,7 @@ final class Pedido
 
     $sSqlTipos = $this->oPedidoTipoDAO->sql_query_file(null, "d66_arretipo", null, "d66_codigo = {$oPedido->getCodigo()}");
     $rsResultadoTipos = db_query($sSqlTipos);
-    $iQuantidadeTipos = pg_num_rows($rsResultadoTipos);
+    $iQuantidadeTipos = $rsResultadoTipos === false || $rsResultadoTipos === null ? 0 : pg_num_rows($rsResultadoTipos);
 
     for ($iTipo = 0; $iTipo < $iQuantidadeTipos; $iTipo++) {
 

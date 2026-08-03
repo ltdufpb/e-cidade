@@ -433,7 +433,7 @@ class Turma
                 throw new DBException(_M(URL_MENSAGEM_TURMA . 'erro_buscar_etapas_turma', $oErro));
             }
 
-            $iTotalTurmaSerie = pg_num_rows($rsTurmaSerie);
+            $iTotalTurmaSerie = $rsTurmaSerie === false || $rsTurmaSerie === null ? 0 : pg_num_rows($rsTurmaSerie);
 
             if ($iTotalTurmaSerie > 0) {
 
@@ -477,7 +477,7 @@ class Turma
                 throw new DBException(_M(URL_MENSAGEM_TURMA . 'erro_buscar_regencias', $oErro));
             }
 
-            $iTotalLinhas = pg_num_rows($rsDisciplina);
+            $iTotalLinhas = $rsDisciplina === false || $rsDisciplina === null ? 0 : pg_num_rows($rsDisciplina);
 
             for ($i = 0; $i < $iTotalLinhas; $i++) {
 
@@ -631,7 +631,7 @@ class Turma
                 throw new DBException(_M(URL_MENSAGEM_TURMA . 'erro_buscar_alunos_progressao', $oErro));
             }
 
-            $iRegistros = pg_num_rows($rsProgressaoParcial);
+            $iRegistros = $rsProgressaoParcial === false || $rsProgressaoParcial === null ? 0 : pg_num_rows($rsProgressaoParcial);
 
             if ($iRegistros > 0) {
 
@@ -681,7 +681,7 @@ class Turma
                 throw new DBException(_M(URL_MENSAGEM_TURMA . "erro_buscar_vagas", $oMensagem));
             }
 
-            $iTotalLinhas = pg_num_rows($rsTurmaTurnoReferente);
+            $iTotalLinhas = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows($rsTurmaTurnoReferente);
 
             for ($iContador = 0; $iContador < $iTotalLinhas; $iContador++) {
 
@@ -724,7 +724,7 @@ class Turma
                 throw new DBException(_M(URL_MENSAGEM_TURMA . "erro_buscar_matriculas_turno", $oMensagem));
             }
 
-            $iTotalLinhas = pg_num_rows($rsMatriculaTurno);
+            $iTotalLinhas = $rsMatriculaTurno === false || $rsMatriculaTurno === null ? 0 : pg_num_rows($rsMatriculaTurno);
             foreach ($this->getVagas() as $iIndiceTurnoReferente => $iVagas) {
 
                 /**
@@ -1003,7 +1003,7 @@ class Turma
                 throw new DBException(_M(URL_MENSAGEM_TURMA . 'erro_buscar_numeros_bloqueados', $oErro));
             }
 
-            $iTotalLinhas = pg_num_rows($rsEduNumAlunoBloqueado);
+            $iTotalLinhas = $rsEduNumAlunoBloqueado === false || $rsEduNumAlunoBloqueado === null ? 0 : pg_num_rows($rsEduNumAlunoBloqueado);
 
             for ($iNumero = 0; $iNumero < $iTotalLinhas; $iNumero++) {
                 $aNumerosBloqueados[] = db_utils::fieldsMemory($rsEduNumAlunoBloqueado, $iNumero)->ed289_i_numaluno;
@@ -1187,7 +1187,7 @@ class Turma
                 throw new DBException(_M(URL_MENSAGEM_TURMA . 'erro_buscar_turno_referente', $oErro));
             }
 
-            $iLinhas = pg_num_rows($rsTurnoReferente);
+            $iLinhas = $rsTurnoReferente === false || $rsTurnoReferente === null ? 0 : pg_num_rows($rsTurnoReferente);
 
             if ($iLinhas == 0) {
                 throw new BusinessException(_M(URL_MENSAGEM_TURMA . "sem_registro_turno"));
@@ -1366,7 +1366,7 @@ class Turma
             throw new DBException(_M(URL_MENSAGEM_TURMA . 'erro_buscar_ultima_matricula', $oErro));
         }
 
-        $iLinhasMatricula = pg_num_rows($rsMatricula);
+        $iLinhasMatricula = $rsMatricula === false || $rsMatricula === null ? 0 : pg_num_rows($rsMatricula);
 
         if ($iLinhasMatricula > 0) {
 

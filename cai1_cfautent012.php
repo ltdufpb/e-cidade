@@ -60,7 +60,7 @@ if(isset($alterar)){
     if($k11_impassche==1){
       $sqlchq = "select * from cfautentdocasschq where k39_cfautent =".$k11_id;
       $resultchq = db_query($sqlchq);
-      $linhaschq = pg_num_rows($resultchq);
+      $linhaschq = $resultchq === false || $resultchq === null ? 0 : pg_num_rows($resultchq);
       if($linhaschq >0){
         //altera
 

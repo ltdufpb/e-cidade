@@ -128,7 +128,7 @@ class LinhaDePacto extends \BaseClassRepository
             throw new \DBException($mensagem);
         }
 
-        $totalRegistros = pg_num_rows($buscaLinhas);
+        $totalRegistros = $buscaLinhas === false || $buscaLinhas === null ? 0 : pg_num_rows($buscaLinhas);
         for ($row = 0; $row < $totalRegistros; $row++) {
             self::getInstance()->make(\db_utils::fieldsMemory($buscaLinhas, $row));
         }

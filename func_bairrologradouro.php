@@ -81,7 +81,7 @@ if ( !$rsItinerario ) {
 $aLinhas = ['' => 'Selecione'];
 if ( pg_num_rows($rsItinerario) > 0 ) {
 
-  $iLinhas = pg_num_rows($rsItinerario);
+  $iLinhas = $rsItinerario === false || $rsItinerario === null ? 0 : pg_num_rows($rsItinerario);
   for( $i = 0; $i < $iLinhas; $i++ ) {
 
     $oDados = db_utils::fieldsMemory($rsItinerario, $i );

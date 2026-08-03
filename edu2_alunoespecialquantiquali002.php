@@ -101,7 +101,7 @@ if ($codigo_turma != 0) $sql_turma .= " AND ed57_i_codigo =" . $codigo_turma;
 $sql_turma .= " ORDER BY 1";
 
 $rs_turma = db_query($sql_turma);
-$linhas_turma = pg_num_rows($rs_turma);
+$linhas_turma = $rs_turma === false || $rs_turma === null ? 0 : pg_num_rows($rs_turma);
 
 // WALLACE (2019-01-31) ITERA O RESULTADO DAS TURMAS OBTIDAS PELA QUERY E TRANSFORMA OS CAMPOS DA CONSULTA EM VARÍAVEL PARA SEREM USADAS PELO FPDF
 
@@ -127,7 +127,7 @@ for ($x = 0; $x < $linhas_turma; $x++) {
     ";
 
     $rs_anos = db_query($sql_anos);
-    $linhas_anos = pg_num_rows($rs_anos);
+    $linhas_anos = $rs_anos === false || $rs_anos === null ? 0 : pg_num_rows($rs_anos);
 
 // WALLACE (2019-01-31) ITERA O RESULTADO DOS ANOS ESCOLARES OBTIDOS PELA QUERY E TRANSFORMA OS CAMPOS DA CONSULTA EM VARÍAVEL PARA SEREM USADAS PELO FPDF
     for ($y = 0; $y < $linhas_anos; $y++) {
@@ -156,7 +156,7 @@ for ($x = 0; $x < $linhas_turma; $x++) {
             ";
 
         $rs_alunos = db_query($sSqlAlunos);
-        $linhas_alunos = pg_num_rows($rs_alunos);
+        $linhas_alunos = $rs_alunos === false || $rs_alunos === null ? 0 : pg_num_rows($rs_alunos);
 
         // WALLACE (2019-01-31) ITERA O RESULTADO DOS ALUNOS OBTIDOS PELA QUERY E TRANSFORMA OS CAMPOS DA CONSULTA
         // EM VARÍAVEL PARA SEREM USADAS PELO FPDF

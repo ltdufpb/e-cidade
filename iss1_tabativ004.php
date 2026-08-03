@@ -320,7 +320,7 @@ if (isset($incluir) && !$sqlerro) {
     if (isset($incluiativ) && $incluiativ = 't') {
       $sqlrua = "select * from issruas where q02_inscr= $q07_inscr";
       $resultrua = db_query($sqlrua);
-      $linhasrua = pg_num_rows($resultrua);
+      $linhasrua = $resultrua === false || $resultrua === null ? 0 : pg_num_rows($resultrua);
       if($linhasrua==0){
         $erromsg = "Inscrição sem logradouro cadastrado.";
         $sqlerro = true;
@@ -328,7 +328,7 @@ if (isset($incluir) && !$sqlerro) {
 
       $sqlbairro = "select * from issbairro where q13_inscr =  $q07_inscr";
       $resultbairro = db_query($sqlbairro);
-      $linhasbairro = pg_num_rows($resultbairro);
+      $linhasbairro = $resultbairro === false || $resultbairro === null ? 0 : pg_num_rows($resultbairro);
       if($linhasbairro==0){
         $erromsg = "Inscrição sem Bairro cadastrado.";
         $sqlerro = true;
@@ -725,7 +725,7 @@ $sSqlAlvaraAuto .= "         inner join classe on q82_classe = q12_classe       
 $sSqlAlvaraAuto .= "    where q07_inscr = {$q07_inscr}                                           ";
 
 $rsAlvaraAuto      = db_query($sSqlAlvaraAuto);
-$iLinhasAlvaraAuto = pg_num_rows($rsAlvaraAuto);
+$iLinhasAlvaraAuto = $rsAlvaraAuto === false || $rsAlvaraAuto === null ? 0 : pg_num_rows($rsAlvaraAuto);
 $aAlvaraAuto       = [];
 $lGeraAutomatico   = 'true';
 $lPermanente       = 'false';

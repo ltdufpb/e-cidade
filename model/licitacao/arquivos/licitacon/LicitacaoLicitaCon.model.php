@@ -82,7 +82,7 @@ class LicitacaoLicitaCon extends ArquivoLicitaCon
             throw new DBException($sMsgErro);
         }
 
-        $iTotalLicitacoes = pg_num_rows($rsLicitacao);
+        $iTotalLicitacoes = $rsLicitacao === false || $rsLicitacao === null ? 0 : pg_num_rows($rsLicitacao);
         for ($iLicitacao = 0; $iLicitacao < $iTotalLicitacoes; $iLicitacao++) {
             $sSqlTotalLicitacao = null;
             $oStdLicitacao = db_utils::fieldsMemory($rsLicitacao, $iLicitacao);

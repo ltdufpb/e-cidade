@@ -62,7 +62,7 @@ try{
     throw new DBException("Erro ao buscar os dados do emprestimo.");
   }
 
-  $iTotalEmprestimos = pg_num_rows($rsEmprestimo);
+  $iTotalEmprestimos = $rsEmprestimo === false || $rsEmprestimo === null ? 0 : pg_num_rows($rsEmprestimo);
 
   if ( $iTotalEmprestimos == 0 ) {
     throw new BusinessException("Não foi possível localizar o emprestimo.");

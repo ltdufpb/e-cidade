@@ -107,7 +107,7 @@
                 group by horas";
 
           $rs2      = db_query($sql2);
-            $numrows2 = pg_num_rows($rs2);
+            $numrows2 = $rs2 === false || $rs2 === null ? 0 : pg_num_rows($rs2);
            // if (!$rs2 or ($k == 14 and $i == 8)){
           //   echo $sql2;exit;
           // }

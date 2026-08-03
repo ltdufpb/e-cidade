@@ -42,7 +42,7 @@ if ((isset ( $_POST ["db_opcao"] ) && $_POST ["db_opcao"]) == "Alterar") {
 
 	$sql1 = "select z01_v_nome from cgs_und where z01_i_cgsund = $s128_i_numcgs ";
 	$result1 = db_query ( $sql1 );
-	$linhas1 = pg_num_rows ( $result1 );
+	$linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows ( $result1 );
 	if ($linhas1 > 0) {
 		db_fieldsmemory ( $result1, 0 );
 		db_inicio_transacao ();

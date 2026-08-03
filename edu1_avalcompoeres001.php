@@ -254,7 +254,7 @@ function Elementos($ed44_i_procresultado) {
          ORDER BY ed41_i_sequencia
         ";
   $query  = db_query($sql);
-  $linhas = pg_num_rows($query);
+  $linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
   if ($linhas==0) {
 
    $sql   = "UPDATE procresultado SET ed43_c_obtencao = 'AT' WHERE ed43_i_codigo = $ed44_i_procresultado";

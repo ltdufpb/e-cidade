@@ -108,7 +108,7 @@ $result =$clmatmater->sql_record($sql);
 
 //$result =  $clmatmater->sql_record($clmatmater->sql_query_com(null,"*",$xordem,$dbwhere));
 //db_criatabela($result);exit;
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem unidades cadastrados.');
 }

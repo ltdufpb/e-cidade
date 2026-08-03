@@ -99,7 +99,7 @@ function js_excluir() {
       <td align="left" valign="top"><strong>Favoritos:</strong><br> <select onDblClick="js_inserir(this.options[this.selectedIndex].text)" style="width:136px;font-size:9px;" name="favoritos" size="10" id="select">
           <?php 			 
 			  $result = db_query("select codigo,descr from favoritos where codmed = ".db_getsession("DB_id_usuario")." order by upper(descr)");
-			  $numrows = pg_num_rows($result);
+			  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			  for($i = 0;$i < $numrows;$i++) {
 			    db_fieldsmemory($result,$i);
 			    echo "<option value=\"".$codigo."\">".trim((string) $descr)."</option>\n";

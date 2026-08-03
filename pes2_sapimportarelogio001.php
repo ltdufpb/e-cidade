@@ -97,7 +97,7 @@ if(isset($gerar)){
         $sSqlPessoal .= " where rh01_regist = " . $iMatricula;
 
         $rsPessoal               = db_query($sSqlPessoal);
-        $iTotalRegistrosPessoal  = pg_num_rows($rsPessoal);
+        $iTotalRegistrosPessoal  = $rsPessoal === false || $rsPessoal === null ? 0 : pg_num_rows($rsPessoal);
 
         if($iTotalRegistrosPessoal > 0){
 
@@ -113,7 +113,7 @@ if(isset($gerar)){
           $sSqlBuscaRubricas .= "   and r10_rubric = lpad($sRubrica,4,'0')                ";
 
           $rsBuscaRubricas         = db_query($sSqlBuscaRubricas);
-          $iTotalRegistrosRubricas = pg_num_rows($rsBuscaRubricas);
+          $iTotalRegistrosRubricas = $rsBuscaRubricas === false || $rsBuscaRubricas === null ? 0 : pg_num_rows($rsBuscaRubricas);
 
           if($iTotalRegistrosRubricas > 0){
 

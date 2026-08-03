@@ -148,7 +148,7 @@ $sql .= "         where iptucalc.j23_anousu = $anousu $wheretipo $limit ) as x "
 $sql .= " order by $orderby "; 
 
 $rsUnica 	  = db_query($sql) or die($sql);
-$numrowsunica = pg_num_rows($rsUnica);
+$numrowsunica = $rsUnica === false || $rsUnica === null ? 0 : pg_num_rows($rsUnica);
 
 if ($numrowsunica == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existe calculo para o IPTU '.$anousu);
@@ -197,7 +197,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
 			 and k00_dtvenc < '".date("Y-m-d", db_getsession("DB_datausu"))."' limit 1";
 
   $rsResulant = db_query($sql);
-  $numlin = pg_num_rows($rsResulant);
+  $numlin = $rsResulant === false || $rsResulant === null ? 0 : pg_num_rows($rsResulant);
   
   if ($numlin > 0) {
     $pdf2->iptdebant = "Há Débitos Anteriores, favor procurar Setor de Dívida Ativa";

@@ -63,7 +63,7 @@ where c.k12_instit = " . db_getsession('DB_instit') . " and
 c.k12_data = '$data'
 and c.k12_id = $id
 order by c.k12_autent");
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($numrows == 0) {
   echo "<script>window.opener.alert('Nenhuma autenticação encontrada.');window.close();</script>\n";
   exit;

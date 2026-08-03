@@ -56,7 +56,7 @@ $resultinst = db_query("
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-$numero_instit = pg_num_rows($resultinst);
+$numero_instit = $resultinst === false || $resultinst === null ? 0 : pg_num_rows($resultinst);
 
 $totalInstituicao = 0;
 if ($numero_instit > 0) {

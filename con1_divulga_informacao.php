@@ -67,7 +67,7 @@ p {
  
     $sql = "select demodescr from db_itensmenudemonstracao where id_item = $divulgacao_codigo";
     $result = db_query($sql);
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     if( $numrows > 0 ){
       $descricao = pg_fetch_result($result,0,0); 
     }else{

@@ -68,7 +68,7 @@ $sSqlEstimativa .= "   and o08_instit in({$sListaInstit}) {$sWherePrograma} {$sW
 $sSqlEstimativa .= " order by o08_programa";  
 
 $rsEstimativa 	   = pg_query($sSqlEstimativa); 
-$iLinhasEstimativa = pg_num_rows($rsEstimativa);
+$iLinhasEstimativa = $rsEstimativa === false || $rsEstimativa === null ? 0 : pg_num_rows($rsEstimativa);
 $aEstimativa	   = [];	 
 
 $valor = 0;
@@ -125,7 +125,7 @@ for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
   $sSqlAcoes .= "          o05_anoreferencia;											 ";
   
   $rsConsultaAcoes 	= pg_query($sSqlAcoes);  
-  $iLinhasAcoes    	= pg_num_rows($rsConsultaAcoes);
+  $iLinhasAcoes    	= $rsConsultaAcoes === false || $rsConsultaAcoes === null ? 0 : pg_num_rows($rsConsultaAcoes);
   $aAcoes 			= [];
   
   if ( $iLinhasAcoes > 0 ) {
@@ -440,7 +440,7 @@ if ( $oGet->selforma == "s" ) {
 	  $sSqlPrograma .= "  and o54_programa = $oEstimativa->iPrograma";
 	  //die($sSqlPrograma);
 	  $resSqlPrograma	= pg_query($sSqlPrograma);  
-  	$iLinhaPrograma	= pg_num_rows($resSqlPrograma);
+  	$iLinhaPrograma	= $resSqlPrograma === false || $resSqlPrograma === null ? 0 : pg_num_rows($resSqlPrograma);
   	
   	if ( $iLinhaPrograma > 0 ){
   		$oDadosPrograma = db_utils::fieldsMemory($resSqlPrograma,0);
@@ -621,7 +621,7 @@ if ( $oGet->selforma == "s" ) {
 	  		//$sSqlAcao .= "  and  o55_instit   = ".db_getsession('DB_instit');
 
 	  		$resSqlAcao	= pg_query($sSqlAcao);  
-  	    $iLinhaAcao	= pg_num_rows($resSqlAcao);
+  	    $iLinhaAcao	= $resSqlAcao === false || $resSqlAcao === null ? 0 : pg_num_rows($resSqlAcao);
   	    $pdf->Ln();
   	    validaNovaPagina($pdf, 35);
   	    $iAltDescr = ($alt);

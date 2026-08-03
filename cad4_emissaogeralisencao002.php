@@ -96,7 +96,7 @@ $oPdf->objpdf->AddPage();
 
 $sqlMunic     = "select nomeinst, munic, logo from db_config where codigo = ". db_getsession("DB_instit");
 $rsMunic      = db_query($sqlMunic);
-$numrowsmunic = pg_num_rows($rsMunic);
+$numrowsmunic = $rsMunic === false || $rsMunic === null ? 0 : pg_num_rows($rsMunic);
 if ($numrowsmunic == 0){
 
   db_redireciona('db_erros.php?fechar=true&db_erro=Nome da instituição não encontrado!');
@@ -117,7 +117,7 @@ $sqlparag = "select *
 	            where db03_tipodoc = 1019
                 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
 $resparag = db_query($sqlparag);
-$numrows  = pg_num_rows($resparag);
+$numrows  = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
 if ( $numrows == 0 ) {
 
  db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento da certidão de isenção!');

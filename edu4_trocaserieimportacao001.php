@@ -225,7 +225,7 @@ if (!isset($incluir)) {
                                                      and ed59_i_serie = $etapaorigem
                                                      )";
                   $rs3     = db_query($sql2);
-                  $linhas2 = pg_num_rows($rs3);
+                  $linhas2 = $rs3 === false || $rs3 === null ? 0 : pg_num_rows($rs3);
                 ?>
                   <select name="regenciadestino" style="padding:0px;width:75px;height:16px;font-size:12px;"
                     onchange="js_eliminareg(this.value,<?=$iCont?>)">
@@ -395,7 +395,7 @@ if (!isset($incluir)) {
                                     and ed223_i_serie = $etapaorigem)
                            order by ed41_i_sequencia";
                   $rs3     = db_query($sql2);
-                  $linhas2 = pg_num_rows($rs3);
+                  $linhas2 = $rs3 === false || $rs3 === null ? 0 : pg_num_rows($rs3);
                   ?>
                   <select name="periododestino" style="padding:0px;width:75px;height:16px;font-size:12px;"
                     onchange="js_eliminaper(this.value,<?=$iCont?>)">
@@ -1096,7 +1096,7 @@ if (!isset($incluir)) {
                                                                                  $sWhereTurmaTurnoReferente
                                                                                );
             $rsTurmaTurnoReferente     = db_query( $sSqlTurmaTurnoReferente );
-            $iTotalTurmaTurnoReferente = pg_num_rows( $rsTurmaTurnoReferente );
+            $iTotalTurmaTurnoReferente = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows( $rsTurmaTurnoReferente );
 
             for( $iContador = 0; $iContador < $iTotalTurmaTurnoReferente; $iContador++ ) {
 

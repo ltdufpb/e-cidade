@@ -136,7 +136,7 @@ $sql = "select distinct
 	           $txt_where
          	order by estrut,z01_nome ";
 $res = db_query($sql);
-$num = pg_num_rows($res);
+$num = $res === false || $res === null ? 0 : pg_num_rows($res);
 if($num == 0){
   echo "<script>parent.js_detectaarquivo('',true,'Não existe Cálculo no período de $mes / $ano')</script>";
   exit;

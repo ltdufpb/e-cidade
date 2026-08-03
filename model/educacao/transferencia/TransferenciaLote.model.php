@@ -213,7 +213,7 @@ class TransferenciaLote {
       throw new DBException( _M(self::MSG_TRANSFERENCIA_LOTE . "erro_buscar_alunos") );
     }
 
-    $iLinhas = pg_num_rows($rs);
+    $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
     for ($i = 0; $i < $iLinhas; $i++) {
       $this->addMatricula(MatriculaRepository::getMatriculaByCodigo(db_utils::fieldsMemory($rs, $i)->ed138_matricula));
     }
@@ -307,7 +307,7 @@ class TransferenciaLote {
       throw new DBException( _M(self::MSG_TRANSFERENCIA_LOTE . "erro_ao_validar_matriculas") );
     }
 
-    $iLinhas = pg_num_rows($rs);
+    $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
     if ( $iLinhas == 0 ) {
       return true;
     }

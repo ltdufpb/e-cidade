@@ -74,7 +74,7 @@ $classinatura = new cl_assinatura;
 			                inner join orcorgao on o41_orgao = o40_orgao and o40_anousu = $anousu
 		             where o41_anousu = $anousu and o41_instit  in (".str_replace('-', ',', $db_selinstit).")";
   $res_orgaos  = @db_query($sql_orgaos);
-  $numrows     = @pg_num_rows($res_orgaos);
+  $numrows     = $res_orgaos === false || $res_orgaos === null ? 0 : @pg_num_rows($res_orgaos);
   $orgaos      = "";
   $separador   = "";
 

@@ -84,7 +84,7 @@ if (isset($baixar)) {
 				   and k03_tipo = 3";
 
       $resultdebito3 = db_query($sqldebito3);
-      $linhasdebito3 = pg_num_rows($resultdebito3);
+      $linhasdebito3 = $resultdebito3 === false || $resultdebito3 === null ? 0 : pg_num_rows($resultdebito3);
       if($linhasdebito3>0){//5
         $cancelabaixa= true;
       }

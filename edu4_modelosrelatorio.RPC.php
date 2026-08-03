@@ -76,7 +76,7 @@ try {
 
       if( $rsDadosEduRelModel && pg_num_rows( $rsDadosEduRelModel ) ) {
 
-        $iTotalLinhas = pg_num_rows( $rsDadosEduRelModel );
+        $iTotalLinhas = $rsDadosEduRelModel === false || $rsDadosEduRelModel === null ? 0 : pg_num_rows( $rsDadosEduRelModel );
         for( $iContador = 0; $iContador < $iTotalLinhas; $iContador++ ) {
 
           $oDadosModelo         = db_utils::fieldsMemory( $rsDadosEduRelModel, $iContador );

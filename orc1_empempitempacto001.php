@@ -208,7 +208,7 @@ if ( isset($oPost->incluir) ) {
 	      		$sSqlLanc .= "  order by c80_data desc limit 1;                           ";
 
 	      		$rsLanc      = db_query($sSqlLanc);
-	      		$iLinhasLanc = pg_num_rows($rsLanc);
+	      		$iLinhasLanc = $rsLanc === false || $rsLanc === null ? 0 : pg_num_rows($rsLanc);
 
 	      		if ( $iLinhasLanc > 0 ) {
 

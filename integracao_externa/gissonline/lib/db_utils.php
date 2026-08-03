@@ -41,7 +41,7 @@ class db_utils {
   function fieldsMemory($rs, $idx, $formata=false, $mostra = false)
   {
     $oFields   = new _db_fields();
-    $numFields = pg_num_fields($rs);
+    $numFields = $rs === false || $rs === null ? 0 : pg_num_fields($rs);
     for ($i = 0; $i < $numFields; $i++) {
       
       $sFieldName     = @pg_field_name($rs, $i);

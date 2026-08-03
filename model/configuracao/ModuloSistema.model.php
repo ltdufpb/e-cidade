@@ -291,7 +291,7 @@ class ModuloSistema {
       throw new DBException( _M( CAMINHO_MENSAGENS_MODULO_SISTEMA . "erro_buscar_db_menu", $oMensagem ) );
     }
     
-    $iLinhasDbMenu = pg_num_rows( $rsDbMenu );
+    $iLinhasDbMenu = $rsDbMenu === false || $rsDbMenu === null ? 0 : pg_num_rows( $rsDbMenu );
     if ( $iLinhasDbMenu > 0 ) {
       
       for ( $iContador = 0; $iContador < $iLinhasDbMenu; $iContador++ ) {
@@ -325,7 +325,7 @@ class ModuloSistema {
       throw new DBException( _M( CAMINHO_MENSAGENS_MODULO_SISTEMA . "erro_buscar_menus_principais", $oMensagem ) );
     }
     
-    $iLinhasItemMenu = pg_num_rows( $rsItemMenu );
+    $iLinhasItemMenu = $rsItemMenu === false || $rsItemMenu === null ? 0 : pg_num_rows( $rsItemMenu );
     if ( $iLinhasItemMenu > 0 ) {
       $aMenus = db_utils::getCollectionByRecord( $rsItemMenu );
     }

@@ -159,7 +159,7 @@ try {
                         throw new DBException("Erro ao buscar a previsão de despesa.");   
                     }
 
-                    $linhasPrevisaoDespesa = pg_num_rows($rsPrevisaoDespesa);
+                    $linhasPrevisaoDespesa = $rsPrevisaoDespesa === false || $rsPrevisaoDespesa === null ? 0 : pg_num_rows($rsPrevisaoDespesa);
                     $codigosPrevisaoDespesa = [];
                     for ($i = 0; $i < $linhasPrevisaoDespesa; $i++) {
                         $codigosPrevisaoDespesa[] = db_utils::fieldsMemory($rsPrevisaoDespesa, $i)->c333_sequencial;

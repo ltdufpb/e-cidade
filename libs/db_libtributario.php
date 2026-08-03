@@ -328,7 +328,7 @@ function db_getcadbancobranca($arretipo, $ip, $datahj, $instit, $tipomod)
     
     //*   die ($sqlexe);
     $rsModexe = db_query($sqlexe) or die($sqlexe);
-    $intnumexe = pg_num_rows($rsModexe);
+    $intnumexe = $rsModexe === false || $rsModexe === null ? 0 : pg_num_rows($rsModexe);
     if (isset($intnumexe) && $intnumexe > 0) {
         db_fieldsmemory($rsModexe, 0);
         return true;
@@ -430,7 +430,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
             }
             
             $matriculaSelecionada = db_query($sql) or die($sql);
-            $numMatriculaSelecionada = pg_num_rows($matriculaSelecionada);
+            $numMatriculaSelecionada = $matriculaSelecionada === false || $matriculaSelecionada === null ? 0 : pg_num_rows($matriculaSelecionada);
             if ($numMatriculaSelecionada == 0) {
                 $pdf->AddPage();
                 $pdf->SetFont('Arial', 'B', 9);
@@ -452,7 +452,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 and j01_baixa is null) as x";
                 
                 $resultareatotal = db_query($sqlareatotal);
-                $linhasareatotal = pg_num_rows($resultareatotal);
+                $linhasareatotal = $resultareatotal === false || $resultareatotal === null ? 0 : pg_num_rows($resultareatotal);
                 if ($linhasareatotal > 0) {
                     $fieldareatotal = db_utils::fieldsMemory($resultareatotal, 0);
                 }
@@ -475,7 +475,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 and j01_baixa is null";
                 // echo "xxxxxxxxxxxxxxxxxxxxxxxxxx sql 4 areaconst = ".$sqlareaconst;
                 $resultareaconst = db_query($sqlareaconst);
-                $linhasareaconst = pg_num_rows($resultareaconst);
+                $linhasareaconst = $resultareaconst === false || $resultareaconst === null ? 0 : pg_num_rows($resultareaconst);
                 if ($linhasareaconst > 0) {
                     $fieldareaconst = db_utils::fieldsMemory($resultareaconst, 0);
                     //db_fieldsmemory($resultareaconst,0);
@@ -490,7 +490,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 //echo "xxxxxxxxxxxxxxxxxxxxxxxxxx sql 5 areaconsttotal = ".$sqlareaconsttotal;
                 
                 $resultareaconsttotal = db_query($sqlareaconsttotal);
-                $linhasareaconsttotal = pg_num_rows($resultareaconsttotal);
+                $linhasareaconsttotal = $resultareaconsttotal === false || $resultareaconsttotal === null ? 0 : pg_num_rows($resultareaconsttotal);
                 if ($linhasareaconsttotal > 0) {
                     $fieldareaconsttotal = db_utils::fieldsMemory($resultareaconsttotal, 0);
                     //db_fieldsmemory($resultareaconsttotal,0);
@@ -506,7 +506,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 //die ($sqledif);
                 //echo "xxxxxxxxxxxxxxxxxxxxxxxxxx sql 6 sqledifmat = ".$sqledifmat;
                 $resultedifmat = db_query($sqledifmat);
-                $linhasedifmat = pg_num_rows($resultedifmat);
+                $linhasedifmat = $resultedifmat === false || $resultedifmat === null ? 0 : pg_num_rows($resultedifmat);
                 if ($linhasedifmat > 0) {
                     $fieldedifmat = db_utils::fieldsMemory($resultedifmat, 0);
                     //db_fieldsmemory($resultedifmat,0);
@@ -522,7 +522,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 and j34_lote    = '" . $fieldmatriculaSelecionada->j34_lote . "' ";
                 
                 $resulted = db_query($sqled);
-                $linhased = pg_num_rows($resulted);
+                $linhased = $resulted === false || $resulted === null ? 0 : pg_num_rows($resulted);
                 if ($linhased > 0) {
                     $fielded = db_utils::fieldsMemory($resulted, 0);
                     //db_fieldsmemory($resulted,0);
@@ -627,7 +627,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                                     order by  j41_tipopro desc";
                 
                 $resultpromitente = db_query($sqlpromitente);
-                $linhaspromitente = pg_num_rows($resultpromitente);
+                $linhaspromitente = $resultpromitente === false || $resultpromitente === null ? 0 : pg_num_rows($resultpromitente);
                 
                 if ($linhaspromitente > 0) {
                     for ($pro = 0; $pro < $linhaspromitente; $pro++) {
@@ -838,7 +838,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                 // ###################### dados do registro de imóveis. v######################
                 $sqlreg    = " select * from iptubaseregimovel inner join setorregimovel on j69_sequencial = j04_setorregimovel where j04_matric = $fieldmatriculaSelecionada->j01_matric";
                 $resultreg = db_query($sqlreg);
-                $linhasreg = pg_num_rows($resultreg);
+                $linhasreg = $resultreg === false || $resultreg === null ? 0 : pg_num_rows($resultreg);
                 if ($linhasreg > 0) {
                     $fieldreg = db_utils::fieldsMemory($resultreg, 0);
                     // db_fieldsmemory($resultreg,0);
@@ -924,7 +924,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                             $field2     = db_utils::fieldsMemory($result, $contador);
                             //db_fieldsmemory($result,$contador);
                             $result_lim = db_query("select j47_anousu from isenexe where j47_codigo = " . $field2->j46_codigo . " order by j47_anousu ");
-                            $numrows    = pg_num_rows($result_lim);
+                            $numrows    = $result_lim === false || $result_lim === null ? 0 : pg_num_rows($result_lim);
                             $field_lim  = db_utils::fieldsMemory($result_lim, 0);
                             //db_fieldsmemory($result_lim,0);
                             $anoini     = $field_lim->j47_anousu;
@@ -1271,7 +1271,7 @@ function db_emitebic($parametro, $pdf, $tipo, $geracalculo, $dadosBic = null)
                             } else {
                                 
                                 $result_demoparc  = db_query("select * from iptuconstrdemo where j60_matric = $field5->j39_matric and j60_idcons=$field5->j39_idcons");
-                                $numrows_demoparc = pg_num_rows($result_demoparc);
+                                $numrows_demoparc = $result_demoparc === false || $result_demoparc === null ? 0 : pg_num_rows($result_demoparc);
                                 for ($w = 0; $w < $numrows_demoparc; $w++) {
                                     $field_demoparc = db_utils::fieldsMemory($result_demoparc, $w);
                                     // db_fieldsmemory($result_demoparc,$w);

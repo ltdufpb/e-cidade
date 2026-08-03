@@ -1354,7 +1354,7 @@ class Recibo
         }
 
         $rsBuscaAutenticacao = db_query($sql);
-        $iTotalLinhas = pg_num_rows($rsBuscaAutenticacao);
+        $iTotalLinhas = $rsBuscaAutenticacao === false || $rsBuscaAutenticacao === null ? 0 : pg_num_rows($rsBuscaAutenticacao);
         for ($iRowAutenticacao = 0; $iRowAutenticacao < $iTotalLinhas; $iRowAutenticacao++) {
             $oDadoAutenticacao = db_utils::fieldsMemory($rsBuscaAutenticacao, $iRowAutenticacao);
 

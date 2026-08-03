@@ -4488,7 +4488,7 @@ class cl_permusuario_dotacao {
           return false;
         } else {
           $this->recordset = $result;
-          $this->numrows = pg_num_rows($result);
+          $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
           $this->sql = $dotacoes;
           $this->orgaos = $secretar;
           $this->depart = $departam;
@@ -4834,7 +4834,7 @@ class cl_selorcdotacao {
           $sql_elem = "select o56_elemento from orcelemento where o56_anousu = ".db_getsession("DB_anousu")." and
                                                                     o56_codele = ".$ver[1];
           $rr       = @ db_query($sql_elem);
-          $numrows  = @ pg_num_rows($rr);
+          $numrows  = $rr === false || $rr === null ? 0 : @ pg_num_rows($rr);
           if ($rr != false) {
             for ($xx = 0; $xx < $numrows; $xx++){
               $estrut = substr(pg_fetch_result($rr,$xx,"o56_elemento"),0,7);

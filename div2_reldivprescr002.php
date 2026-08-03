@@ -188,7 +188,7 @@ require_once(modification("libs/db_utils.php"));
   $sqlPrescr .= " $orderby ";
 
 	$rsPrescr    = db_query($sqlPrescr) or die($sqlPrescr);
-	$iRowsPrescr = pg_num_rows($rsPrescr);
+	$iRowsPrescr = $rsPrescr === false || $rsPrescr === null ? 0 : pg_num_rows($rsPrescr);
 
 	$aResumos = [];
 	$aAgrupaResumo['proced']      = 'v03_codigo';

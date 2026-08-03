@@ -117,7 +117,7 @@ $sSqlBuscaLancamentos .= "       order by x.c61_reduz";
 //echo $sSqlBuscaLancamentos; die();
 
 $rsBuscaLancamentos = db_query($sSqlBuscaLancamentos);
-$iTotalRegistros    = pg_num_rows($rsBuscaLancamentos);
+$iTotalRegistros    = $rsBuscaLancamentos === false || $rsBuscaLancamentos === null ? 0 : pg_num_rows($rsBuscaLancamentos);
 $iCodigoReduzido    = null;
 $aDadosImprimir     = [];
 

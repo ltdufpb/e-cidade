@@ -45,7 +45,7 @@ $head6 = '';
 
 $sql        = "select * from procdiver where dv09_procdiver = ".$procdiver;
 $result     = db_query($sql);
-$intNumrows = pg_num_rows($result);
+$intNumrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 if( $intNumrows == 0 ){
   
   $sMsg = _M('tributario.diversos.dv02_loteamentos002.nao_existem_registros');

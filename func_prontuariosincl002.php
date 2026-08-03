@@ -58,7 +58,7 @@ $sql1 = "select z01_nome as profissional,db_usuacgm.id_usuario as sd24_i_codigo,
                   where sd02_i_codigo = $unidade and db_usuacgm.id_usuario= $usuario                                
                   ";
  $query1 = db_query($sql1) or die(pg_last_error());
- $linhas1 = pg_num_rows($query1);
+ $linhas1 = $query1 === false || $query1 === null ? 0 : pg_num_rows($query1);
 if($linhas1>0){
 db_fieldsmemory($query1,0);
 } 

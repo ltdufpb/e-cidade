@@ -104,7 +104,7 @@ class PeriodoAquisitivoFeriasRepository {
     /**
      * Nenhum registro encontrado pela matricula informada
      */
-    $iTotalLinhas = pg_num_rows($rsRhFerias);
+    $iTotalLinhas = $rsRhFerias === false || $rsRhFerias === null ? 0 : pg_num_rows($rsRhFerias);
     if ($iTotalLinhas == 0 ) {
 
       throw new BusinessException(_M(

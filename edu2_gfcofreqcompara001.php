@@ -54,7 +54,7 @@ $clmatricula = new cl_matricula;
          AND ed52_c_passivo = 'N'
          ORDER BY ed52_i_ano DESC";
  $sql_result = db_query($sql);
- $num = pg_num_rows($sql_result);
+ $num = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
  $conta = "";
  while ($row=pg_fetch_array($sql_result)){
   $conta = $conta+1;
@@ -70,7 +70,7 @@ $clmatricula = new cl_matricula;
               ORDER BY ed29_i_codigo
              ";
   $sub_result = db_query($sub_sql);
-  $num_sub = pg_num_rows($sub_result);
+  $num_sub = $sub_result === false || $sub_result === null ? 0 : pg_num_rows($sub_result);
   if ($num_sub>=1){
    # Se achar alguma base para o curso, marca a palavra Todas
    echo "new Array(\"\", ''),\n";
@@ -235,7 +235,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
                ORDER BY ed11_i_sequencia
               ";
        $result = db_query($sql);
-       $linhas = pg_num_rows($result);
+       $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
        ?>
        <b>Etapa:</b><br>
        <select name="serie" style="font-size:9px;width:200px;height:18px;" onchange="js_pesquisa(document.form1.grupo.value,document.form1.serie.value);">

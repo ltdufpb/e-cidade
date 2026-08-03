@@ -403,7 +403,7 @@ class planilhaRetencao {
     }
     $sql = "select * from issplan where q20_planilha = $planilha";
     $result = db_query($sql);
-    $linhas = pg_num_rows($result);
+    $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
     if($linhas > 0){
       $q20_numpre = pg_fetch_result($result,0,"q20_numpre");
     } else {
@@ -438,7 +438,7 @@ class planilhaRetencao {
       //gravar na cancdebitos, cancdebitosreg, cancdebitosproc, cancdebitosprocreg
       $sqltipo = "select w10_tipo from db_confplan ";
       $resulttipo = db_query($sqltipo);
-      $linhastipo = pg_num_rows($resulttipo);
+      $linhastipo = $resulttipo === false || $resulttipo === null ? 0 : pg_num_rows($resulttipo);
       if($linhastipo > 0){
         //db_fieldsmemory($resulttipo,0);
         $w10_tipo = pg_fetch_result($resulttipo,0,"w10_tipo");

@@ -68,7 +68,7 @@ if(!$result_arqbanco || pg_num_rows($result_arqbanco) == 0) {
   $sqlerro = true;
   $erro_msg = "Arquivo não encontrado";
 }
-$clrharqbanco->numrows = pg_num_rows($result_arqbanco);
+$clrharqbanco->numrows = $result_arqbanco === false || $result_arqbanco === null ? 0 : pg_num_rows($result_arqbanco);
 
 if($clrharqbanco->numrows>0){
 
@@ -169,7 +169,7 @@ if($sqlerro == false){
       $erro_msg = 'Não foram encontrados pagamentos para tipo de arquivo selecionado.';
     }
 
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   } else {
 
     $titarquivo = "pensaojudicial";
@@ -209,7 +209,7 @@ if($sqlerro == false){
       $erro_msg = 'Não foram encontrados pagamentos para tipo de arquivo selecionado.';
     }
 
-    $numrows     = pg_num_rows($result);
+    $numrows     = $result === false || $result === null ? 0 : pg_num_rows($result);
   }
 
   if ($numrows > 0 && $rh34_codban == "041") {

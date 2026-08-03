@@ -952,7 +952,7 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
             throw new DBException("Erro ao buscar os alunos.");
         }
 
-        $iLinhas = pg_num_rows($rs);
+        $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         if ($iLinhas == 0) {
             throw new BusinessException("Não foi possível localizar os alunos  solicitados!");
         }
@@ -1513,7 +1513,7 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
 			    AND j13_codi <> 0
                     ORDER BY 2";
     $rsBairro = db_query($bBairro);
-    $nBairro = pg_num_rows($rsBairro);
+    $nBairro = $rsBairro === false || $rsBairro === null ? 0 : pg_num_rows($rsBairro);
 
     if ($nBairro > 0) {
         $oRetorno->aResult = db_utils::getCollectionByRecord($rsBairro, false, false, true);
@@ -1538,7 +1538,7 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
                                     AND ed18_i_bairro IN ($cod_bairro)
                                ORDER BY ed52_c_descr";
         $rsCalendario = db_query($bCalendario);
-        $nCalendario = pg_num_rows($rsCalendario);
+        $nCalendario = $rsCalendario === false || $rsCalendario === null ? 0 : pg_num_rows($rsCalendario);
     if ($nCalendario > 0) {
         $oRetorno->aResult = db_utils::getCollectionByRecord($rsCalendario, false, false, true);
     } else {
@@ -1574,7 +1574,7 @@ if ($oParam->exec == 'getDadosUltimaMatriculaAluno') {
                       AND ed18_i_bairro IN ($cod_bairro)
                  ORDER BY 2";
         $rsEtapa = db_query($bEtapa);
-        $nEtapa = pg_num_rows($rsEtapa);
+        $nEtapa = $rsEtapa === false || $rsEtapa === null ? 0 : pg_num_rows($rsEtapa);
     if ($nEtapa > 0) {
         $oRetorno->aResult = db_utils::getCollectionByRecord($rsEtapa, false, false, true);
     } else {

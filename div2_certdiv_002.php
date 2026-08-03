@@ -182,7 +182,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	  db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento da CDA com o tipo 1008!');
 	  exit;
 	}
-	$numrows = pg_num_rows($resparag);
+	$numrows = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
 	//$pdf->inicia     = $db02_inicia;
 	$assinaturas_php = "";
 	for($i=0;$i<$numrows;$i++){
@@ -297,7 +297,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	      continue;
 	    }
 	  }
-	  $num = pg_num_rows($result2);
+	  $num = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 	  for($i = 0;$i < $num;$i++) {
 	    db_fieldsmemory($result2,$i);
 	    $flt_total  += $total;
@@ -338,7 +338,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 		$sSqlPardiv .= "	 where v04_instit = ".db_getsession("DB_instit") ;
 		
 		$rsPardiv			 = db_query($sSqlPardiv) or die($sSqlPardiv);
-		$iLinhasPardiv = pg_num_rows($rsPardiv);
+		$iLinhasPardiv = $rsPardiv === false || $rsPardiv === null ? 0 : pg_num_rows($rsPardiv);
 		
 		$oPardiv = db_utils::fieldsMemory($rsPardiv,0);
 		if ( $oPardiv->v04_envolcdaiptu == "" || $oPardiv->v04_envolcdaiss == "" || $oPardiv->v04_envolprinciptu == "" ) {
@@ -393,7 +393,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 					$sqlPossuidor .= "  where j18_anousu= ".db_getsession("DB_anousu") ;
 
 					$resultPossuidor = db_query($sqlPossuidor);
-					$linhasPossuidor = pg_num_rows($resultPossuidor);
+					$linhasPossuidor = $resultPossuidor === false || $resultPossuidor === null ? 0 : pg_num_rows($resultPossuidor);
 					
 					if($linhasPossuidor>0){
 						
@@ -410,7 +410,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 						
 					$sSqlEnvol    = " select * from fc_busca_envolvidos({$lRegra},{$oPardiv->v04_envolcdaiptu},'M',{$matric})";
 					$rsEnvol      = db_query($sSqlEnvol) or die($sSqlEnvol);
-					$iLinhasEnvol = pg_num_rows($rsEnvol);
+					$iLinhasEnvol = $rsEnvol === false || $rsEnvol === null ? 0 : pg_num_rows($rsEnvol);
 				
 					if ($oPardiv->v04_envolcdaiptu == 2 && $iLinhasEnvol == 0 ) {
              
@@ -420,7 +420,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 						$sSqlEnvol .= "	 where j01_matric = {$matric}	   "; 
 						
 						$rsEnvol      = db_query($sSqlEnvol) or die($sSqlEnvol);
-						$iLinhasEnvol = pg_num_rows($rsEnvol);
+						$iLinhasEnvol = $rsEnvol === false || $rsEnvol === null ? 0 : pg_num_rows($rsEnvol);
 
 					}
 					
@@ -443,7 +443,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 						$sSqlDadosEnvol .= "  where z01_numcgm = {$oEnvol->rinumcgm}";
 						
 						$rsDadosEnvol			 = db_query($sSqlDadosEnvol) or die($sSqlDadosEnvol);
-						$iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
+						$iLinhasDadosEnvol = $rsDadosEnvol === false || $rsDadosEnvol === null ? 0 : pg_num_rows($rsDadosEnvol);
 
 						if ($iLinhasDadosEnvol > 0) {
 							
@@ -591,7 +591,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 
 				$sSqlEnvol    = " select * from fc_busca_envolvidos({$lRegra},{$oPardiv->v04_envolcdaiss},'I',{$inscr})";
 				$rsEnvol      = db_query($sSqlEnvol) or die($sSqlEnvol);
-				$iLinhasEnvol = pg_num_rows($rsEnvol);
+				$iLinhasEnvol = $rsEnvol === false || $rsEnvol === null ? 0 : pg_num_rows($rsEnvol);
 
 				for ($i = 0; $i < $iLinhasEnvol; $i++ ) {
 
@@ -612,7 +612,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 					$sSqlDadosEnvol .= "  where z01_numcgm = {$oEnvol->rinumcgm}";
 
 					$rsDadosEnvol      = db_query($sSqlDadosEnvol);
-					$iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
+					$iLinhasDadosEnvol = $rsDadosEnvol === false || $rsDadosEnvol === null ? 0 : pg_num_rows($rsDadosEnvol);
 
 					if ($iLinhasDadosEnvol > 0) {
 						$oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol,0);
@@ -860,7 +860,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	    exit;
 	  }
 	  
-		$numrows = pg_num_rows($resparag);
+		$numrows = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
 	  for($i=0;$i<$numrows;$i++){
 	    db_fieldsmemory($resparag,$i);
 
@@ -955,7 +955,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	  }
 //testa se o retorno da função debitos_numpre_old
     if ($result2){ 
-	      $num = pg_num_rows($result2);
+	      $num = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
     }else{
         $num=0;
     }
@@ -1129,7 +1129,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	
 	$resMetCalculo = db_query($sMetCalculo);
 	if(pg_num_rows($resMetCalculo)){
-		$iNumRows = pg_num_rows($resMetCalculo);
+		$iNumRows = $resMetCalculo === false || $resMetCalculo === null ? 0 : pg_num_rows($resMetCalculo);
 		for($v=0; $v < $iNumRows; $v++){
 			db_fieldsmemory($resMetCalculo,$v);
 			$pdf->MultiCell(0,5,@$db02_texto,0,"L",0);

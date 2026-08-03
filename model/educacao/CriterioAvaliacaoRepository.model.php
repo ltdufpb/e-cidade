@@ -122,7 +122,7 @@ class CriterioAvaliacaoRepository {
 
 
     $rsCriterioAvaliacao     = db_query( $sSqlCriterioAvaliacao );
-    $iTotalCriterioAvaliacao = pg_num_rows( $rsCriterioAvaliacao );
+    $iTotalCriterioAvaliacao = $rsCriterioAvaliacao === false || $rsCriterioAvaliacao === null ? 0 : pg_num_rows( $rsCriterioAvaliacao );
 
     for ( $iContador = 0; $iContador < $iTotalCriterioAvaliacao; $iContador++ ) {
 

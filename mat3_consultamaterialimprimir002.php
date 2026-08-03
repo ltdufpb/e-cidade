@@ -250,7 +250,7 @@ if (isset($oGet->lLancamentos) && $oGet->lLancamentos) {
   $sSqlBuscaLancamento .= "         origem";
 
   $rsBuscaLancamento    = db_query($sSqlBuscaLancamento);
-  $iLinhasLancamento    = pg_num_rows($rsBuscaLancamento);
+  $iLinhasLancamento    = $rsBuscaLancamento === false || $rsBuscaLancamento === null ? 0 : pg_num_rows($rsBuscaLancamento);
   if ($iLinhasLancamento > 0) {
 
     $oPdf->ln();

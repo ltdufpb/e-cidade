@@ -125,7 +125,7 @@ if($clbiblioteca->numrows!=0){
     if($pesquisa_chave!=null && $pesquisa_chave!=""){
      $sql .= " AND bi23_codigo = $pesquisa_chave ORDER BY bi06_titulo";
      $result = db_query($sql);
-     $linhas = pg_num_rows($result);
+     $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
      if($linhas!=0){
       db_fieldsmemory($result,0);
       echo "<script>".$funcao_js."('$bi06_titulo',false);</script>";

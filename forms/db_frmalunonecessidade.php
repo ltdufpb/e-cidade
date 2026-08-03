@@ -52,7 +52,7 @@ if(isset($opcao) && $opcao=="alterar"){
 if($ed214_i_aluno!=""){
  $sql4 = "SELECT ed56_i_escola as cod_escola FROM alunocurso WHERE ed56_i_aluno = $ed214_i_aluno";
  $query4 = db_query($sql4);
- $linhas4 = pg_num_rows($query4);
+ $linhas4 = $query4 === false || $query4 === null ? 0 : pg_num_rows($query4);
  if($linhas4==0){
   $db_botao = true;
  }elseif(db_getsession("DB_coddepto")!=pg_fetch_result($query4,0,0)){
@@ -152,7 +152,7 @@ if($ed214_i_aluno!=""){
            WHERE ed214_i_aluno = $ed214_i_aluno
            ORDER BY ed48_c_descr";
    $result = db_query($sql);
-   $linhas = pg_num_rows($result);
+   $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
    if($linhas>1){
     ?>
     <b>Informe a necessidade maior:</b><br>

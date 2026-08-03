@@ -111,7 +111,7 @@ $subQuery .= " {$whereregime} ";
 $ordenacao = !$tipoGeral ? "rh55_estrut, z01_nome" : "z01_nome";
 $sql = "select * from ({$subQuery}) as x {$where} order by {$ordenacao}";
 $result = db_query($sql);
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 if ($xxnum == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários cadastrados no intervalo para o período de ' . $mesfolha . ' / ' . $anofolha);
@@ -129,7 +129,7 @@ $troca = 1;
 $alt = 9;
 $orgao = 0;
 $troca_loc = 's';
-$totalLinhas = pg_num_rows($result);
+$totalLinhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 for ($x = 0; $x < $totalLinhas; $x++) {
     db_fieldsmemory($result, $x);

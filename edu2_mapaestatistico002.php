@@ -689,7 +689,7 @@ function buscaEscolas() {
   }
 
   $aEscolas = [];
-  $iEscolas = pg_num_rows($rsEscolas);
+  $iEscolas = $rsEscolas === false || $rsEscolas === null ? 0 : pg_num_rows($rsEscolas);
 
   for ($i = 0; $i < $iEscolas; $i++) {
 

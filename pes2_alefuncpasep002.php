@@ -88,8 +88,8 @@ group by o15_codigo, o15_descr";
 $result_orgao   = db_query($sql_orgao);
 $result_recurso = db_query($sql_recurso);
 
-$num_orgao      = pg_num_rows($result_orgao);
-$num_recurso    = pg_num_rows($result_recurso);
+$num_orgao      = $result_orgao === false || $result_orgao === null ? 0 : pg_num_rows($result_orgao);
+$num_recurso    = $result_recurso === false || $result_recurso === null ? 0 : pg_num_rows($result_recurso);
 
 //echo "<br> orgao $num_orgao   ".$sql_orgao;
 //echo "<br> recurso $num_recurso  ".$sql_recurso;exit;

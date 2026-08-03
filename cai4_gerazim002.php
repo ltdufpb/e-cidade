@@ -69,7 +69,7 @@ if($cgc!="87366159000102"){
   group by k12_conta,o08_reduz,k12_receit
   ");
 
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   set_time_limit(0);
   $clabre_arquivo =  new cl_abre_arquivo("/prg/opt/zim/".str_replace("-","",$datai));
 
@@ -110,7 +110,7 @@ if($cgc!="87366159000102"){
 
   ");
 
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     if($numrows!=false){
       for($i=0;$i<$numrows;$i++){
 	     db_fieldsmemory($result,$i);
@@ -157,7 +157,7 @@ if($cgc!="87366159000102"){
   group by k12_conta,o08_reduz,k12_receit,k00_histtxt
   ");
 
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
     if($numrows!=false){
       for($i=0;$i<$numrows;$i++){
@@ -204,7 +204,7 @@ if($cgc!="87366159000102"){
   group by k12_conta,k02_estorc,k12_receit
   ");
 
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   set_time_limit(0);
   $clabre_arquivo =  new cl_abre_arquivo("/tmp/".str_replace("-","",$datai));
 

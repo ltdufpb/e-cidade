@@ -278,7 +278,7 @@ try {
             }
 
             $aSimulacao = db_utils::getCollectionByRecord($rsSimulacao,false,false,true);
-            $iLinhasSimulacao = pg_num_rows($rsSimulacao);
+            $iLinhasSimulacao = $rsSimulacao === false || $rsSimulacao === null ? 0 : pg_num_rows($rsSimulacao);
 
             for ( $iInd=0; $iInd < $iLinhasSimulacao; $iInd++ ) {
 

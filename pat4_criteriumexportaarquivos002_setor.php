@@ -39,7 +39,7 @@ $sSqlSetor .= "  from departdiv                                    		";
 //$sSqlSetor .= " where t52_instit = $iIdDaEmpresa											";
 
 $rsSetor    		= db_query($sSqlSetor);
-$iNumeroLinhas 	= pg_num_rows($rsSetor);
+$iNumeroLinhas 	= $rsSetor === false || $rsSetor === null ? 0 : pg_num_rows($rsSetor);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oSetor = db_utils::fieldsMemory($rsSetor,$i);

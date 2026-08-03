@@ -72,7 +72,7 @@ final class PadArquivoSigapSubFuncao extends PadArquivoSigap {
     $sSqlSubFuncao .= "  where o73_subfuncao > 0 ";
     $sSqlSubFuncao .= "    and o73_anousu <= {$iAno}";
     $rsSubFuncao    = db_query($sSqlSubFuncao);
-    $iTotalLinhas = pg_num_rows($rsSubFuncao);
+    $iTotalLinhas = $rsSubFuncao === false || $rsSubFuncao === null ? 0 : pg_num_rows($rsSubFuncao);
      
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       

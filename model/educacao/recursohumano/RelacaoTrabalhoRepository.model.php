@@ -62,7 +62,7 @@ class RelacaoTrabalhoRepository {
       throw new DBException( _M( self::MENSAGEM_RELACAOTRABALHOREPOSITORY . "erro_buscar_relacao_trabalho", $oErro ) );
     }
 
-    $iLinhas           = pg_num_rows($rsRelacaoTrabalho);
+    $iLinhas           = $rsRelacaoTrabalho === false || $rsRelacaoTrabalho === null ? 0 : pg_num_rows($rsRelacaoTrabalho);
     $aRelacoesTrabalho = [];
 
     if ( $iLinhas > 0 ) {
@@ -97,7 +97,7 @@ class RelacaoTrabalhoRepository {
       throw new DBException( _M( self::MENSAGEM_RELACAOTRABALHOREPOSITORY . "erro_buscar_relacao_trabalho", $oErro ) );
     }
 
-    $iLinhas           = pg_num_rows($rsRelacao);
+    $iLinhas           = $rsRelacao === false || $rsRelacao === null ? 0 : pg_num_rows($rsRelacao);
     $aRelacoesTrabalho = [];
 
     if ( $iLinhas > 0 ) {

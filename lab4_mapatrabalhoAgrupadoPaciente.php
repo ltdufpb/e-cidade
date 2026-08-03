@@ -286,7 +286,7 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
     $aCodigoAtributos = [];
 
     if ($rsExames && pg_num_rows($rsExames) > 0) {
-        $iLinhasExame = pg_num_rows($rsExames);
+        $iLinhasExame = $rsExames === false || $rsExames === null ? 0 : pg_num_rows($rsExames);
 
         for ($i = 0; $i < $iLinhasExame; $i++) {
             $oDadosExame = db_utils::fieldsMemory($rsExames, $i);

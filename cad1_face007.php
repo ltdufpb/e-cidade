@@ -34,7 +34,7 @@ db_postmemory($_POST);
 
 $sql = "select * from testada where j36_face = $face";
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 //echo "<br>linhas=$linhas";
 echo "
 <script>

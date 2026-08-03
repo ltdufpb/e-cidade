@@ -944,7 +944,7 @@ class db_layouttxt
 
         $aNomeCampos = $this->getArrCamposNome();
 
-        $iNumRows = pg_num_rows($rsRecord);
+        $iNumRows = $rsRecord === false || $rsRecord === null ? 0 : pg_num_rows($rsRecord);
 
         for ($i = 0; $i < $iNumRows; $i ++) {
             foreach ($aNomeCampos as $indice => $valorcampo) {
@@ -977,7 +977,7 @@ class db_layouttxt
 										 order by db52_posicao";
 
         $rsCampos      = db_query($sSqlCampos);
-        $iLinhasCampos = pg_num_rows($rsCampos);
+        $iLinhasCampos = $rsCampos === false || $rsCampos === null ? 0 : pg_num_rows($rsCampos);
 
         for ($x=0; $x < $iLinhasCampos; $x++) {
             $oLinhaArquivo = db_utils::fieldsMemory($rsCampos, $x);

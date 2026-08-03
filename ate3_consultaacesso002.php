@@ -77,7 +77,7 @@ if($tipototal==1){
     order by menusequencia
     ");			  
 
-    $numrows = pg_num_rows($sub);
+    $numrows = $sub === false || $sub === null ? 0 : pg_num_rows($sub);
     if($numrows > 0) {
       for($x = 0;$x < $numrows;$x++) {
         $libcliente = pg_fetch_result($sub,$x,"libcliente");

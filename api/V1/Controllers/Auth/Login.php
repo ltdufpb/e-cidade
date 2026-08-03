@@ -19,7 +19,7 @@ class Login extends GenericApplicationController implements ResourceInterface
      * @return string
      * @throws Exception
      */
-    public function login()
+    public function __construct()
     {
         $request = $this->request->request;
         $app = $this->application();

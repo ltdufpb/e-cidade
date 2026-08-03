@@ -213,7 +213,7 @@ $sSql .= "               ) as ordem ";
 $sSql .= "       ) as distincao {$ordem} {$order}";
 
 $result    = db_query($sSql);
-$numrows   = pg_num_rows($result);
+$numrows   = $result === false || $result === null ? 0 : pg_num_rows($result);
 $matric    = "";
 $idcons    = "";
 $area      = "";

@@ -248,7 +248,7 @@ if(isset($alterar)){
 	         ORDER BY ed18_c_nome
 	        ";
  $result_vinculo = db_query($sql_vinculo);
- $linhas_vinculo = pg_num_rows($result_vinculo);
+ $linhas_vinculo = $result_vinculo === false || $result_vinculo === null ? 0 : pg_num_rows($result_vinculo);
  if($linhas_vinculo>0){
   $db_botao = false;
  }

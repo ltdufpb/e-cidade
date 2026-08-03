@@ -84,17 +84,17 @@ class AnexoXVBalancoGeral extends RelatoriosLegaisBase  {
                                            'true',
                                            'false'
                                            );
-     $iTotalLinhasPlano = pg_num_rows($rsPlano);     
+     $iTotalLinhasPlano = $rsPlano === false || $rsPlano === null ? 0 : pg_num_rows($rsPlano);     
      $rsReceita        = db_receitasaldo(11, 1, 3, true, 
                                         $sWhereReceita, 
                                         $this->iAnoUsu, 
                                         $sDataInicial, 
                                         $sDataFinal);
                                         
-     $iTotalLinhasReceita = pg_num_rows($rsReceita);
+     $iTotalLinhasReceita = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
      
      $rsDespesa = db_dotacaosaldo(7, 3, 4, true, $sWhereDespesa, $this->iAnoUsu, $sDataInicial, $sDataFinal);
-     $iTotalLinhasDespesa = pg_num_rows($rsDespesa);
+     $iTotalLinhasDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
      /**
       * percorremos a slinhas cadastradas no relatorio, e adicionamos os valores cadastrados manualmente.
       */

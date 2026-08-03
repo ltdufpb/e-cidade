@@ -143,7 +143,7 @@ input {
                          where '".($data ?? date("Y-m-d",db_getsession("DB_datausu")))."' = agendam.ag20_data
 						 and ((agenmed.ag06_codmed is not null and agenmed.ag06_codmed = $aa01_codig) or (agenesp.ag05_codesp is not null and agenesp.ag05_codesp = $aa01_espec))";
 	$agenda = db_query($sql);
-	$numrows = pg_num_rows($agenda);
+	$numrows = $agenda === false || $agenda === null ? 0 : pg_num_rows($agenda);
 	if($numrows == 0) {
 	  $DB_MSG = "Não existe agenda para esta data.";		
 	//else if($numrows == 1) {
@@ -191,7 +191,7 @@ input {
 					   where ag06_codmed = '$codmed'
 					   and ag30_codigo||ag30_data||ag30_hora not in(select ag40_codigo||ag40_data||ag40_hora from atendmed where ag40_medico = '$codmed')
 					   order by ag30_data desc limit 15");
-    $numrows = @pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
 	echo "<center><table><tr bgcolor=\"#CCFF99\"><th>Datas</th></tr>\n";
 	for($i = 0;$i < $numrows;$i++)
 	  echo "<tr onClick=\"js_inserir(document.getElementById('linha".$i."').innerText)\" style=\"cursor:hand\" bgcolor=\"=".($i%2==0?"#CCFF99":"#AABB99")."\"><td id=\"linha".$i."\">".@pg_fetch_result($result,$i,0)."</td></tr>\n";

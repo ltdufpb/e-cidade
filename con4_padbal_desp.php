@@ -268,7 +268,7 @@ SQL;
 
         db_query($sqlCriarTabela);
         $consultaBalver = db_query($sql);
-        $totalRegistros = pg_num_rows($consultaBalver);
+        $totalRegistros = $consultaBalver === false || $consultaBalver === null ? 0 : pg_num_rows($consultaBalver);
 
         $sqlSuplementacao = "
                               select o58_orgao,
@@ -330,7 +330,7 @@ SQL;
             );
 
             $rsConsultaEmpenhos = db_query($consultaDadosEmpenhos);
-            $totalLinhasEmpenho = pg_num_rows($rsConsultaEmpenhos);
+            $totalLinhasEmpenho = $rsConsultaEmpenhos === false || $rsConsultaEmpenhos === null ? 0 : pg_num_rows($rsConsultaEmpenhos);
             $valorTotalEmpenhado = 0;
             if ($totalLinhasEmpenho > 0) {
                 for ($j = 0; $j < $totalLinhasEmpenho; $j++) {

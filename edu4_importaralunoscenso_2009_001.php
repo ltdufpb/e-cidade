@@ -351,7 +351,7 @@ if(isset($processar)){
      if($ed47_i_censomunicnat==""){
       $ed47_i_censomunicnat = 'null';
      }
-     $linhas11 = pg_num_rows($result11);
+     $linhas11 = $result11 === false || $result11 === null ? 0 : pg_num_rows($result11);
      if($linhas11==0){
       $sqlinsert11 = "INSERT INTO aluno (
                        ed47_i_codigo,
@@ -499,7 +499,7 @@ if(isset($processar)){
        if($ed47_v_bairro!=""){
         $sql_bairro = "SELECT j13_codi FROM bairro WHERE to_ascii(j13_descr,'LATIN1') = '$ed47_v_bairro'";
         $res_bairro = db_query($sql_bairro);
-        $linhas_bairro = pg_num_rows($res_bairro);
+        $linhas_bairro = $res_bairro === false || $res_bairro === null ? 0 : pg_num_rows($res_bairro);
         if($linhas_bairro>0){
          $codbairro = pg_fetch_result($res_bairro,0,0);
          $deletebairro = db_query("DELETE FROM alunobairro WHERE ed225_i_aluno = $codigoaluno");

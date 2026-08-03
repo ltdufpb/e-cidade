@@ -238,7 +238,7 @@ if (!isset($incluir)) {
   and ed59_i_serie = $etapaorigem
   )";
                   $result2 = db_query($sql2);
-                  $linhas2 = pg_num_rows($result2);
+                  $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
                 ?>
                   <select name="regenciadestino" style="visibility:hidden;position:absolute;padding:0px;width:75px;height:16px;font-size:12px;" onchange="js_eliminareg(this.value,<?= $t ?>)">
                     <option value=""></option>
@@ -368,7 +368,7 @@ if (!isset($incluir)) {
      and ed223_i_serie = $etapaorigem)
 order by ed41_i_sequencia";
                   $result2 = db_query($sql2);
-                  $linhas2 = pg_num_rows($result2);
+                  $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
                 ?>
                   <select name="periododestino" style="padding:0px;width:75px;height:16px;font-size:12px;" onchange="js_eliminaper(this.value,<?= $t ?>)">
                     <option value=""></option>

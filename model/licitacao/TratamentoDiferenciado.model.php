@@ -723,7 +723,7 @@ class TratamentoDiferenciado {
     $sSql    = $oDaoLicitacaoReservaCotas->sql_query(null, $sCampos, null, $sWhere);
     $rsItens = db_query($sSql);
 
-    $iQuantidadeRegistros = pg_num_rows($rsItens);
+    $iQuantidadeRegistros = $rsItens === false || $rsItens === null ? 0 : pg_num_rows($rsItens);
     if ($rsItens === false || $iQuantidadeRegistros === 0) {
       throw new DBException('Não foi possível buscar as reservas existentes.');
     }

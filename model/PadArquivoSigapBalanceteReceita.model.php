@@ -98,7 +98,7 @@ final class PadArquivoSigapBalanceteReceita extends PadArquivoSigap
         $sSqlBalancete .= "       left join orctiporec on orcreceita.o70_codigo = o15_codigo ";
         $sSqlBalancete .= " order by o57_fonte asc ";
         $rsBalancete = db_query($sSqlBalancete);
-        $iTotalLinhas = pg_num_rows($rsBalancete);
+        $iTotalLinhas = $rsBalancete === false || $rsBalancete === null ? 0 : pg_num_rows($rsBalancete);
         if (PostgreSQLUtils::isTableExists("work_receita")) {
             db_query("drop table work_receita");
         }

@@ -207,7 +207,7 @@ if (isset($oPost->incluir)) {
           $lSqlErro  = true;
           $erro_msg  = "Não foi possível recuperar as opções da pergunta na base de dados";
         }
-        $iQtdeOpcaoPergunta = pg_num_rows($rsOpcaoPergunta);
+        $iQtdeOpcaoPergunta = $rsOpcaoPergunta === false || $rsOpcaoPergunta === null ? 0 : pg_num_rows($rsOpcaoPergunta);
 
         if($iQtdeOpcaoPergunta > 0) {
 
@@ -331,7 +331,7 @@ $rsLayoutVinculado   = db_query($sSqlLayoutVinculado);
 $db50_codigo              = '';
 $db50_descr               = '';
 $db51_codigo              = '';
-$iTotalLinhasCamposLayout = pg_num_rows($rsLayoutVinculado);
+$iTotalLinhasCamposLayout = $rsLayoutVinculado === false || $rsLayoutVinculado === null ? 0 : pg_num_rows($rsLayoutVinculado);
 $bloquearCampo           = "false";
 if ($iTotalLinhasCamposLayout > 0) {
 

@@ -117,7 +117,7 @@ try {
             $sSql .= ' ORDER BY c95_estrutural;';
 
             $result = db_query($sSql);
-            $numRows = pg_num_rows($result);
+            $numRows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
             if ($numRows == 0) {
                 throw new Exception('Nenhum ementário encontrado.');

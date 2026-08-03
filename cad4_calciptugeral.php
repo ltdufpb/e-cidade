@@ -211,7 +211,7 @@ if (isset($calcular)) {
                     $xInicio = time();
                     $sql = "select j01_matric from iptubase";
                     $result  = db_query( $sql );
-                    $numrows = pg_num_rows($result);
+                    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
                     
                     if ($numrows == 0) {
                         echo "<script>alert('Sem matrículas a calcular!');</script>";

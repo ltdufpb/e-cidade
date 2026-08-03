@@ -230,7 +230,7 @@ public function setOrdem($ordem)
       throw new DBException( _M(ARQUIVO_MENSAGEM_EQUIVALENCIA . "erro_buscar_cursos_equivalentes") );
     }
 
-    $iTotalCursos = pg_num_rows($rsCursoEquivalencia);
+    $iTotalCursos = $rsCursoEquivalencia === false || $rsCursoEquivalencia === null ? 0 : pg_num_rows($rsCursoEquivalencia);
 
     for ( $iContador = 0; $iContador < $iTotalCursos; $iContador++ ) {
 

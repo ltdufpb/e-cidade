@@ -313,7 +313,7 @@ if ($tipo == 'p') {
 	if(($filtro=='s')&&($tipo=='p')){
 		$sqlfiltro = "select k60_codigo,login,nome,k60_filtros from lista inner join db_usuarios on id_usuario = k60_usuario where k60_codigo = $lista and k60_instit = $instit";
 		$resultfiltro = db_query($sqlfiltro);
-		$linhasfiltro = pg_num_rows($resultfiltro);
+		$linhasfiltro = $resultfiltro === false || $resultfiltro === null ? 0 : pg_num_rows($resultfiltro);
 		if ($linhasfiltro>0){
 			db_fieldsmemory($resultfiltro, 0);
 			if ($k60_filtros!=""){

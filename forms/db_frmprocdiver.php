@@ -50,7 +50,7 @@ $sSqlArretipo .= " where k03_tipo = 7 ";
 $sSqlArretipo .= "   and k00_instit = ".db_getsession('DB_instit');
 
 $rsTipos       = db_query($sSqlArretipo);
-$iNumrowsTipo  = pg_num_rows($rsTipos);
+$iNumrowsTipo  = $rsTipos === false || $rsTipos === null ? 0 : pg_num_rows($rsTipos);
 $aTipos        = [];
 
 $aTiposDebitos = db_utils::getCollectionByRecord($rsTipos);

@@ -246,7 +246,7 @@ $sql = "select arrecad.k00_numpre,arrecad.k00_numpar,arrecad.k00_receit
               and arrecad.k00_numpar = recibopaga.k00_numpar
         group by arrecad.k00_numpre,arrecad.k00_numpar,arrecad.k00_receit  ";
 $result = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   for($i = 0;$i < $numrows;$i++) {
     db_fieldsmemory($result,$i);
     $sql = "select fc_calcula('$k00_numpre','$k00_numpar','$k00_receit','".date("Y-m-d",db_getsession("DB_datausu"))."','".db_vencimento()."',".db_getsession("DB_anousu").")";
@@ -369,7 +369,7 @@ $pdf1->bairropri	= $j13_descr;
 $pdf1->datacalc		= $datavencimento;
 $pdf1->taxabanc		= db_formatar($taxabancaria,'f');
 $pdf1->recorddadospagto = $DadosPagamento;
-$pdf1->linhasdadospagto = pg_num_rows($DadosPagamento);
+$pdf1->linhasdadospagto = $DadosPagamento === false || $DadosPagamento === null ? 0 : pg_num_rows($DadosPagamento);
 $pdf1->receita		= 'k00_receit';
 $pdf1->dreceita 	= 'k02_descr';
 $pdf1->ddreceita	= 'k02_drecei';

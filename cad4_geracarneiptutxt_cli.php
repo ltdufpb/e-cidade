@@ -761,7 +761,7 @@ $sSqlReceitas .= "union ";
 $sSqlReceitas .= "select distinct j23_recdst as j18_receit from iptucalcconfrec where j23_anousu = $anousu and j23_tipo = 1";
 
 $rsReceitas = db_query($sSqlReceitas);
-$iLinhasRec = pg_num_rows($rsReceitas);
+$iLinhasRec = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 
 if($iLinhasRec>0) {
   //
@@ -906,7 +906,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
     $quantos = 0;
     $cliptubase = new cl_iptubase;
 
-    $total_reg = pg_num_rows($resultprinc);
+    $total_reg = $resultprinc === false || $resultprinc === null ? 0 : pg_num_rows($resultprinc);
 
     if ($quantescolhida == "") {
       $quantidade = $total_reg;
@@ -1074,7 +1074,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
       $sSqlValorMaxExec = "EXECUTE sSqlValorMax($j20_numpre)";
       $rsValorMax = db_query($sSqlValorMaxExec) or die($sSqlValorMaxExec);
 
-      $intNumrowsValorMax = pg_num_rows($rsValorMax);
+      $intNumrowsValorMax = $rsValorMax === false || $rsValorMax === null ? 0 : pg_num_rows($rsValorMax);
       if($intNumrowsValorMax > 0){
         db_fieldsmemory($rsValorMax,0);
       }
@@ -1229,7 +1229,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
         $sSqlArretipoTxBancoExec = "EXECUTE sSqlArretipoTxBanco($k00_tipo)";
         $rsSqlArretipo = db_query($sSqlArretipoTxBancoExec) or die($sSqlArretipoTxBancoExec);
 
-        $iNumRows      = pg_num_rows($rsSqlArretipo);
+        $iNumRows      = $rsSqlArretipo === false || $rsSqlArretipo === null ? 0 : pg_num_rows($rsSqlArretipo);
 
         if ( $iNumRows == 0 ) {
           echo "O cÃ³digo do banco nÃ£o esta cadastrado no arquivo arretipo para este tipo!";
@@ -2231,7 +2231,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
                   $sSqlArretipoExec = "EXECUTE sSqlArretipo($k00_tipo)";
                   $rsSqlArretipo = db_query($sSqlArretipoExec);
 
-                  $iNumRows      = pg_num_rows($rsSqlArretipo);
+                  $iNumRows      = $rsSqlArretipo === false || $rsSqlArretipo === null ? 0 : pg_num_rows($rsSqlArretipo);
 
                   if ( $iNumRows == 0 ) {
                     echo "O código do banco não esta cadastrado no arquivo arretipo para este tipo!";
@@ -2735,7 +2735,7 @@ for ($vez = 0; $vez <= 1; $vez++) {
             $sSqlFinReciboExec = "EXECUTE sSqlFinRecibo($j20_numpre)";
             $resultfinrecibo = db_query($sSqlFinReciboExec) or die($sSqlFinReciboExec);
 
-            $iNumRows        = pg_num_rows($resultfinrecibo);
+            $iNumRows        = $resultfinrecibo === false || $resultfinrecibo === null ? 0 : pg_num_rows($resultfinrecibo);
 
             try {
               $oRecibo = new recibo(2, null, 5);
@@ -3342,8 +3342,8 @@ include(modification("cad4_geracarneiptutxtParcelasOpcionais.php"));
           fputs($clabre_arquivo->arquivo, "{$sQuebraLinha}");
           fputs($clabre_arquivo->arquivo, "BASE DE DADOS UTILIZADA: " . @$GLOBALS["DB_NBASE"] . "{$sQuebraLinha}");
           fputs($clabre_arquivo->arquivo, "ORDEM: " . ($ordem == "endereco"?"Endereco de entrega":($ordem == "alfabetica"?"Alfabética":"Zona de entrega")) . "{$sQuebraLinha}");
-          fputs($clabre_arquivo->arquivo, "ESPÉCIE: $especie{$sQuebraLinha}");
-          fputs($clabre_arquivo->arquivo, "QUANTIDADE DE REGISTROS A PROCESSAR: $quantescolhida{$sQuebraLinha}");
+          fputs($clabre_arquivo->arquivo, "ESPÉCIE: $especie[$sQuebraLinha]");
+          fputs($clabre_arquivo->arquivo, "QUANTIDADE DE REGISTROS A PROCESSAR: $quantescolhida[$sQuebraLinha]");
           fputs($clabre_arquivo->arquivo, "IMPRIMIR APENAS REGISTROS COM ENDERECO DE ENTREGA VALIDOS: " . (!empty($entregavalido)?"SIM":"NAO"));
 
           $sqlnaogeracgm = "select j68_numcgm, z01_nome from iptunaogeracarnecgm inner join cgm on z01_numcgm = j68_numcgm order by j68_numcgm";
@@ -3358,7 +3358,7 @@ include(modification("cad4_geracarneiptutxtParcelasOpcionais.php"));
           for ($naogeracgm = 0; $naogeracgm < pg_num_rows($resultnaogeracgm); $naogeracgm++) {
             db_fieldsmemory($resultnaogeracgm, $naogeracgm);
 
-            fputs($clabre_arquivo->arquivo, str_pad((string) $j68_numcgm, 6, "0", STR_PAD_LEFT) . " - $z01_nome{$sQuebraLinha}");
+            fputs($clabre_arquivo->arquivo, str_pad((string) $j68_numcgm, 6, "0", STR_PAD_LEFT) . " - $z01_nome[$sQuebraLinha]");
 
           }
           fputs($clabre_arquivo->arquivo, "{$sQuebraLinha}");
@@ -3374,7 +3374,7 @@ include(modification("cad4_geracarneiptutxtParcelasOpcionais.php"));
           }
 
 
-          fputs($clabre_arquivo->arquivo, "FILTRO PRINCIPAL: $filtroprincipal{$sQuebraLinha}");
+          fputs($clabre_arquivo->arquivo, "FILTRO PRINCIPAL: $filtroprincipal[$sQuebraLinha]");
           fputs($clabre_arquivo->arquivo, "{$sQuebraLinha}");
 
           if ($imobiliaria == "todos") {

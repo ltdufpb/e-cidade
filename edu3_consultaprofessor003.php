@@ -419,7 +419,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                 if( $rsRecHumanoEscola && pg_num_rows( $rsRecHumanoEscola ) > 0 ) {
 
                   unset( $aVinculos );
-                  $iTotalLinhas = pg_num_rows( $rsRecHumanoEscola );
+                  $iTotalLinhas = $rsRecHumanoEscola === false || $rsRecHumanoEscola === null ? 0 : pg_num_rows( $rsRecHumanoEscola );
                   for( $iContador = 0; $iContador < $iTotalLinhas; $iContador++ ) {
 
                     $oDadosRetorno = db_utils::fieldsMemory( $rsRecHumanoEscola, $iContador );

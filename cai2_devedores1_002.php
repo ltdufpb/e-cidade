@@ -81,7 +81,7 @@ $ttvlrdesconto=0;
 $tttotal=0;
 $preenc = 0;
 $xborda = 0;
-$resultnrows= pg_num_rows($result1);
+$resultnrows= $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 $pdf->SetFillColor(220);
 $col  = [];
 $cor = 240;

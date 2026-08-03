@@ -231,7 +231,7 @@ try {
                                    from information_schema.schemata
                                   where schema_name = '{$sSchema}' ";
   $rsSchemasAtual      = db_query($connDestino,$sSqlConsultaSchemasAtual);
-  $iLinhasSchemasAtual = pg_num_rows($rsSchemasAtual);
+  $iLinhasSchemasAtual = $rsSchemasAtual === false || $rsSchemasAtual === null ? 0 : pg_num_rows($rsSchemasAtual);
 
   if ( $iLinhasSchemasAtual > 0 ) {
 
@@ -288,7 +288,7 @@ try {
                                                  and c60_anousu = o58_anousu ) ";
 
   $rsCorrigeConplano      = db_query($connOrigem,$sSqlCorrigeConplano);
-  $iLinhasCorrigeConplano = pg_num_rows($rsCorrigeConplano);
+  $iLinhasCorrigeConplano = $rsCorrigeConplano === false || $rsCorrigeConplano === null ? 0 : pg_num_rows($rsCorrigeConplano);
 
 
   for ( $iInd=0; $iInd < $iLinhasCorrigeConplano; $iInd++ ) {
@@ -302,7 +302,7 @@ try {
                        order by o56_anousu asc ";
 
     $rsOrcElemento      = db_query($connOrigem,$sSqlOrcElemento);
-    $iLinhasOrcElemento = pg_num_rows($rsOrcElemento);
+    $iLinhasOrcElemento = $rsOrcElemento === false || $rsOrcElemento === null ? 0 : pg_num_rows($rsOrcElemento);
 
 
     /**
@@ -350,7 +350,7 @@ try {
                         where c60_codcon = {$oConplano->o58_codele}";
 
       $rsConplano      = db_query($connOrigem,$sSqlConplano);
-      $iLinhasConplano = pg_num_rows($rsConplano);
+      $iLinhasConplano = $rsConplano === false || $rsConplano === null ? 0 : pg_num_rows($rsConplano);
 
       if ($iLinhasConplano > 0) {
 
@@ -405,7 +405,7 @@ try {
                                                  and c60_anousu = o70_anousu ) ";
 
   $rsCorrigeConplano      = db_query($connOrigem,$sSqlCorrigeConplano);
-  $iLinhasCorrigeConplano = pg_num_rows($rsCorrigeConplano);
+  $iLinhasCorrigeConplano = $rsCorrigeConplano === false || $rsCorrigeConplano === null ? 0 : pg_num_rows($rsCorrigeConplano);
 
 
   for ( $iInd=0; $iInd < $iLinhasCorrigeConplano; $iInd++ ) {
@@ -421,7 +421,7 @@ try {
                        order by o57_anousu asc ";
 
     $rsOrcFontes      = db_query($connOrigem,$sSqlOrcFontes);
-    $iLinhasOrcFontes = pg_num_rows($rsOrcFontes);
+    $iLinhasOrcFontes = $rsOrcFontes === false || $rsOrcFontes === null ? 0 : pg_num_rows($rsOrcFontes);
 
 
     /**
@@ -469,7 +469,7 @@ try {
                         where c60_codcon = {$oConplano->o70_codfon}";
 
       $rsConplano      = db_query($connOrigem,$sSqlConplano);
-      $iLinhasConplano = pg_num_rows($rsConplano);
+      $iLinhasConplano = $rsConplano === false || $rsConplano === null ? 0 : pg_num_rows($rsConplano);
 
       if ($iLinhasConplano > 0 ) {
 
@@ -604,7 +604,7 @@ try {
   $sSqlInstit .= "   from db_config                        ";
 
   $rsInstit     = db_query($connOrigem,$sSqlInstit);
-  $iRowsInstit = pg_num_rows($rsInstit);
+  $iRowsInstit = $rsInstit === false || $rsInstit === null ? 0 : pg_num_rows($rsInstit);
 
   if ( $iRowsInstit ==  0 ) {
     throw new Exception('Nenhuma instituição encontrada!');
@@ -650,7 +650,7 @@ try {
   $sSqlListaInstitDestino .= "  from instituicoes ";
 
   $rsListaInstitDestino    = db_query($connDestino,$sSqlListaInstitDestino);
-  $iRowsListaInstitDestino = pg_num_rows($rsListaInstitDestino);
+  $iRowsListaInstitDestino = $rsListaInstitDestino === false || $rsListaInstitDestino === null ? 0 : pg_num_rows($rsListaInstitDestino);
 
   if ( $iRowsListaInstitDestino == 0 ) {
     throw new Exception('Nenhum registro encontrado');
@@ -680,7 +680,7 @@ try {
   $sSqlOrgao .= "   from orcorgao                        ";
 
   $rsOrgao    = db_query($connOrigem,$sSqlOrgao);
-  $iRowsOrgao = pg_num_rows($rsOrgao);
+  $iRowsOrgao = $rsOrgao === false || $rsOrgao === null ? 0 : pg_num_rows($rsOrgao);
 
   if ( $iRowsOrgao ==  0 ) {
     throw new Exception('Nenhum orgão encontrado!');
@@ -726,7 +726,7 @@ try {
   $sSqlListaOrgaoDestino .= "   from orgaos ";
 
   $rsListaOrgaoDestino    = db_query($connDestino,$sSqlListaOrgaoDestino);
-  $iRowsListaOrgaoDestino = pg_num_rows($rsListaOrgaoDestino);
+  $iRowsListaOrgaoDestino = $rsListaOrgaoDestino === false || $rsListaOrgaoDestino === null ? 0 : pg_num_rows($rsListaOrgaoDestino);
 
   if ( $iRowsListaOrgaoDestino == 0 ) {
     throw new Exception('Nenhum registro encontrado');
@@ -757,7 +757,7 @@ try {
   $sSqlUnidade .= "   from orcunidade                      ";
 
   $rsUnidade    = db_query($connOrigem,$sSqlUnidade);
-  $iRowsUnidade = pg_num_rows($rsUnidade);
+  $iRowsUnidade = $rsUnidade === false || $rsUnidade === null ? 0 : pg_num_rows($rsUnidade);
 
   if ( $iRowsUnidade ==  0 ) {
     throw new Exception('Nenhuma unidade encontrada!');
@@ -804,7 +804,7 @@ try {
   $sSqlListaUnidadeDestino .= "   from unidades ";
 
   $rsListaUnidadeDestino    = db_query($connDestino,$sSqlListaUnidadeDestino);
-  $iRowsListaUnidadeDestino = pg_num_rows($rsListaUnidadeDestino);
+  $iRowsListaUnidadeDestino = $rsListaUnidadeDestino === false || $rsListaUnidadeDestino === null ? 0 : pg_num_rows($rsListaUnidadeDestino);
 
   if ( $iRowsListaUnidadeDestino == 0 ) {
     throw new Exception('Nenhum registro encontrado');
@@ -834,7 +834,7 @@ try {
   $sSqlProjeto .= "   from orcprojativ                     ";
 
   $rsProjeto    = db_query($connOrigem,$sSqlProjeto);
-  $iRowsProjeto = pg_num_rows($rsProjeto);
+  $iRowsProjeto = $rsProjeto === false || $rsProjeto === null ? 0 : pg_num_rows($rsProjeto);
 
   if ( $iRowsProjeto ==  0 ) {
     throw new Exception('Nenhum projeto encontrado!');
@@ -880,7 +880,7 @@ try {
   $sSqlListaProjetoDestino .= "   from projetos ";
 
   $rsListaProjetoDestino    = db_query($connDestino,$sSqlListaProjetoDestino);
-  $iRowsListaProjetoDestino = pg_num_rows($rsListaProjetoDestino);
+  $iRowsListaProjetoDestino = $rsListaProjetoDestino === false || $rsListaProjetoDestino === null ? 0 : pg_num_rows($rsListaProjetoDestino);
 
   if ( $iRowsListaProjetoDestino == 0 ) {
     throw new Exception('Nenhum registro encontrado');
@@ -907,7 +907,7 @@ try {
   $sSqlFuncao .= "   from orcfuncao                ";
 
   $rsFuncao    = db_query($connOrigem,$sSqlFuncao);
-  $iRowsFuncao = pg_num_rows($rsFuncao);
+  $iRowsFuncao = $rsFuncao === false || $rsFuncao === null ? 0 : pg_num_rows($rsFuncao);
 
   if ( $iRowsFuncao ==  0 ) {
     throw new Exception('Nenhuma função encontrada!');
@@ -952,7 +952,7 @@ try {
   $sSqlListaFuncaoDestino .= "   from funcoes  ";
 
   $rsListaFuncaoDestino    = db_query($connDestino,$sSqlListaFuncaoDestino);
-  $iRowsListaFuncaoDestino = pg_num_rows($rsListaFuncaoDestino);
+  $iRowsListaFuncaoDestino = $rsListaFuncaoDestino === false || $rsListaFuncaoDestino === null ? 0 : pg_num_rows($rsListaFuncaoDestino);
 
   if ( $iRowsListaFuncaoDestino == 0 ) {
     throw new Exception('Nenhum registro encontrado');
@@ -979,7 +979,7 @@ try {
   $sSqlSubFuncao .= "   from orcsubfuncao                   ";
 
   $rsSubFuncao    = db_query($connOrigem,$sSqlSubFuncao);
-  $iRowsSubFuncao = pg_num_rows($rsSubFuncao);
+  $iRowsSubFuncao = $rsSubFuncao === false || $rsSubFuncao === null ? 0 : pg_num_rows($rsSubFuncao);
 
   if ( $iRowsSubFuncao ==  0 ) {
     throw new Exception('Nenhuma SubFunção encontrada!');
@@ -1025,7 +1025,7 @@ try {
   $sSqlListaSubFuncaoDestino .= "   from subfuncoes  ";
 
   $rsListaSubFuncaoDestino    = db_query($connDestino,$sSqlListaSubFuncaoDestino);
-  $iRowsListaSubFuncaoDestino = pg_num_rows($rsListaSubFuncaoDestino);
+  $iRowsListaSubFuncaoDestino = $rsListaSubFuncaoDestino === false || $rsListaSubFuncaoDestino === null ? 0 : pg_num_rows($rsListaSubFuncaoDestino);
 
   if ( $iRowsListaSubFuncaoDestino == 0 ) {
     throw new Exception('Nenhum registro encontrado');
@@ -1053,7 +1053,7 @@ try {
   $sSqlPrograma .= "   from orcprograma                     ";
 
   $rsPrograma    = db_query($connOrigem,$sSqlPrograma);
-  $iRowsPrograma = pg_num_rows($rsPrograma);
+  $iRowsPrograma = $rsPrograma === false || $rsPrograma === null ? 0 : pg_num_rows($rsPrograma);
 
   if ( $iRowsPrograma ==  0 ) {
     throw new Exception('Nenhum programa encontrado!');
@@ -1098,7 +1098,7 @@ try {
   $sSqlListaProgramaDestino .= "   from programas ";
 
   $rsListaProgramaDestino    = db_query($connDestino,$sSqlListaProgramaDestino);
-  $iRowsListaProgramaDestino = pg_num_rows($rsListaProgramaDestino);
+  $iRowsListaProgramaDestino = $rsListaProgramaDestino === false || $rsListaProgramaDestino === null ? 0 : pg_num_rows($rsListaProgramaDestino);
 
   if ( $iRowsListaProgramaDestino == 0 ) {
     throw new Exception('Nenhum registro encontrado');
@@ -1146,7 +1146,7 @@ try {
  $rsModalidades = db_query($connOrigem, $sSqlModalidade );
 if ( pg_num_rows($rsModalidades) > 0 ) {
 
-  $iRowsModalidades =  pg_num_rows($rsModalidades);  
+  $iRowsModalidades =  $rsModalidades === false || $rsModalidades === null ? 0 : pg_num_rows($rsModalidades);  
   for($iModalidade = 0; $iModalidade < $iRowsModalidades;$iModalidade++  ) {
 
     logProcessamento($iModalidade,$iRowsModalidades,$iParamLog);  
@@ -1187,7 +1187,7 @@ if ( pg_num_rows($rsModalidades) > 0 ) {
  $rsModalidades = db_query($connOrigem, $sSqlModalidade );
 if ( pg_num_rows($rsModalidades) > 0 ) {
 
-    $iRowsSubvencoes = pg_num_rows($rsModalidades);
+    $iRowsSubvencoes = $rsModalidades === false || $rsModalidades === null ? 0 : pg_num_rows($rsModalidades);
     for($iModalidade = 0; $iModalidade < $iRowsSubvencoes;$iModalidade++  ) {
 
         
@@ -1355,7 +1355,7 @@ $rsTransferencias = db_query($connOrigem,  $sSqlTransferencias  );
 if (pg_num_rows($rsTransferencias ) > 0 ) {
 
 
-    $iRowsTransferencias = pg_num_rows($rsTransferencias);
+    $iRowsTransferencias = $rsTransferencias === false || $rsTransferencias === null ? 0 : pg_num_rows($rsTransferencias);
 
     try {
 
@@ -1409,7 +1409,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
   $sSqlRecurso .= "   from orctiporec                ";
 
   $rsRecurso    = db_query($connOrigem,$sSqlRecurso);
-  $iRowsRecurso = pg_num_rows($rsRecurso);
+  $iRowsRecurso = $rsRecurso === false || $rsRecurso === null ? 0 : pg_num_rows($rsRecurso);
 
   if ( $iRowsRecurso ==  0 ) {
     throw new Exception('Nenhum recurso encontrado!');
@@ -1454,7 +1454,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
   $sSqlListaRecursoDestino .= "   from recursos ";
 
   $rsListaRecursoDestino    = db_query($connDestino,$sSqlListaRecursoDestino);
-  $iRowsListaRecursoDestino = pg_num_rows($rsListaRecursoDestino);
+  $iRowsListaRecursoDestino = $rsListaRecursoDestino === false || $rsListaRecursoDestino === null ? 0 : pg_num_rows($rsListaRecursoDestino);
 
   if ( $iRowsListaRecursoDestino == 0 ) {
     throw new Exception('Nenhum registro encontrado');
@@ -1500,7 +1500,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
   }
 
   $rsPlanoConta    = db_query($connOrigem,$sSqlPlanoConta);
-  $iRowsPlanoConta = pg_num_rows($rsPlanoConta);
+  $iRowsPlanoConta = $rsPlanoConta === false || $rsPlanoConta === null ? 0 : pg_num_rows($rsPlanoConta);
 
   if ( $iRowsPlanoConta ==  0 ) {
     throw new Exception('Nenhum recurso encontrado!');
@@ -1545,7 +1545,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
   $sSqlListaPlanoContaDestino .= "   from planocontas ";
 
   $rsListaPlanoContaDestino    = db_query($connDestino,$sSqlListaPlanoContaDestino);
-  $iRowsListaPlanoContaDestino = pg_num_rows($rsListaPlanoContaDestino);
+  $iRowsListaPlanoContaDestino = $rsListaPlanoContaDestino === false || $rsListaPlanoContaDestino === null ? 0 : pg_num_rows($rsListaPlanoContaDestino);
 
   if ( $iRowsListaPlanoContaDestino == 0 ) {
     throw new Exception('Nenhum registro encontrado');
@@ -1578,7 +1578,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlReceita .= "   where o70_anousu >= {$iExercicioBase}";
 
     $rsReceita    = db_query($connOrigem,$sSqlReceita);
-    $iRowsReceita = pg_num_rows($rsReceita);
+    $iRowsReceita = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
 
     if ( $iRowsReceita ==  0 ) {
       throw new Exception('Nenhum recurso encontrado!');
@@ -1629,7 +1629,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlListaReceitaDestino .= "   from receitas ";
 
     $rsListaReceitaDestino    = db_query($connDestino,$sSqlListaReceitaDestino);
-    $iRowsListaReceitaDestino = pg_num_rows($rsListaReceitaDestino);
+    $iRowsListaReceitaDestino = $rsListaReceitaDestino === false || $rsListaReceitaDestino === null ? 0 : pg_num_rows($rsListaReceitaDestino);
 
     if ( $iRowsListaReceitaDestino == 0 ) {
       throw new Exception('Nenhum registro encontrado');
@@ -1711,7 +1711,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
 
     $rsReceitaMovimentacao    = db_query($connOrigem,$sSqlReceitaMovimentacao);
-    $iRowsReceitaMovimentacao = pg_num_rows($rsReceitaMovimentacao);
+    $iRowsReceitaMovimentacao = $rsReceitaMovimentacao === false || $rsReceitaMovimentacao === null ? 0 : pg_num_rows($rsReceitaMovimentacao);
 
     if ( $iRowsReceitaMovimentacao ==  0 ) {
       throw new Exception('Nenhum recurso encontrado!');
@@ -1730,7 +1730,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       $oReceitaMovimentacao = (new db_utils())->fieldsMemory($rsReceitaMovimentacao, $iInd);
       $sSqlReceitaSaldo = "EXECUTE stmt_receitasaldo({$oReceitaMovimentacao->exercicio}, {$oReceitaMovimentacao->codreceita})";
       $rsReceitaSaldo = db_query($connOrigem, $sSqlReceitaSaldo);
-      $iRowsReceitaSaldo = pg_num_rows($rsReceitaSaldo);
+      $iRowsReceitaSaldo = $rsReceitaSaldo === false || $rsReceitaSaldo === null ? 0 : pg_num_rows($rsReceitaSaldo);
       if ( $iRowsReceitaSaldo ==  0 ) {
         $oReceitaMovimentacao->valor_previsao_atualizada = 0;
       } else {
@@ -1801,7 +1801,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlDotacao .= "   from orcdotacao   where  o58_anousu >= {$iExercicioBase} ";
 
     $rsDotacao    = db_query($connOrigem, $sSqlDotacao);
-    $iRowsDotacao = pg_num_rows($rsDotacao);
+    $iRowsDotacao = $rsDotacao === false || $rsDotacao === null ? 0 : pg_num_rows($rsDotacao);
 
     if ($iRowsDotacao == 0) {
       throw new Exception('Nenhum recurso encontrado!');
@@ -1864,7 +1864,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlListaDotacaoDestino .= "   from dotacoes ";
 
     $rsListaDotacaoDestino    = db_query($connDestino, $sSqlListaDotacaoDestino);
-    $iRowsListaDotacaoDestino = pg_num_rows($rsListaDotacaoDestino);
+    $iRowsListaDotacaoDestino = $rsListaDotacaoDestino === false || $rsListaDotacaoDestino === null ? 0 : pg_num_rows($rsListaDotacaoDestino);
 
     if ($iRowsListaDotacaoDestino == 0) {
       throw new Exception('Nenhum registro encontrado');
@@ -1903,7 +1903,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
   $sSqlClassificacaoCredor .= " from classificacaocredores  order by cc30_codigo ";
 
   $rsClassificacaoCredor    = db_query($connOrigem,$sSqlClassificacaoCredor);
-  $iRowsClassificaocaoCredor = pg_num_rows($rsClassificacaoCredor);
+  $iRowsClassificaocaoCredor = $rsClassificacaoCredor === false || $rsClassificacaoCredor === null ? 0 : pg_num_rows($rsClassificacaoCredor);
 
   db_logNumReg($iRowsClassificaocaoCredor,$sArquivoLog,$iParamLog);
 
@@ -2038,7 +2038,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
   ";
 
   $rsPessoas    = db_query($connOrigem,$sSqlPessoas);
-  $iRowsPessoas = pg_num_rows($rsPessoas);
+  $iRowsPessoas = $rsPessoas === false || $rsPessoas === null ? 0 : pg_num_rows($rsPessoas);
 
   if ( $iRowsPessoas ==  0 ) {
     throw new Exception('Nenhuma pessoa encontrada!');
@@ -2101,7 +2101,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlLic .= "   INNER JOIN empautoriza          ON empautoriza.e54_autori          = empautitem.e55_autori           ";
 
     $rsLic    = db_query($connOrigem,$sSqlLic);
-    $iRowsLic = pg_num_rows($rsLic);
+    $iRowsLic = $rsLic === false || $rsLic === null ? 0 : pg_num_rows($rsLic);
 
     /**
      * Se a consulta retornar dados preenche o array $aListaLic utilizando
@@ -2180,7 +2180,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlEmpenho .= "                   where empempitem.e62_numemp = empempenho.e60_numemp )                        ";
 
     $rsEmpenho    = db_query($connOrigem, $sSqlEmpenho);
-    $iRowsEmpenho = pg_num_rows($rsEmpenho);
+    $iRowsEmpenho = $rsEmpenho === false || $rsEmpenho === null ? 0 : pg_num_rows($rsEmpenho);
 
     if ($iRowsEmpenho == 0) {
       throw new Exception('Nenhum empenho encontrado!');
@@ -2295,7 +2295,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlItensEmpenho .= "   e62_numemp IN ($filtroCodigosEmpenhos)                         ";
 
     $rsItensEmpenho = db_query($connOrigem, $sSqlItensEmpenho);
-    $iLinhasItensEmpenho = pg_num_rows($rsItensEmpenho);
+    $iLinhasItensEmpenho = $rsItensEmpenho === false || $rsItensEmpenho === null ? 0 : pg_num_rows($rsItensEmpenho);
 
     if ($iLinhasItensEmpenho == 0) {
       throw new Exception('Nenhum item de empenho encontrado!');
@@ -2348,7 +2348,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlProcessoEmpenho .= "   e61_numemp IN ($filtroCodigosEmpenhos)                     ";
 
     $rsProcessosEmpenho = db_query($connOrigem, $sSqlProcessoEmpenho);
-    $iLinhasProcessosEmpenho = pg_num_rows($rsProcessosEmpenho);
+    $iLinhasProcessosEmpenho = $rsProcessosEmpenho === false || $rsProcessosEmpenho === null ? 0 : pg_num_rows($rsProcessosEmpenho);
 
     if ($iLinhasProcessosEmpenho == 0) {
       db_Log('Nenhum processo de empenho encontrado!', $sArquivoLog, $iParamLog);
@@ -2403,7 +2403,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlTiposMovEmp  .= "        and e60_anousu >= {$iExercicioBase} order by codtipo, codgrupo";
 
     $rsTiposMovEmp    = db_query($connOrigem,$sSqlTiposMovEmp);
-    $iRowsTiposMovEmp = pg_num_rows($rsTiposMovEmp);
+    $iRowsTiposMovEmp = $rsTiposMovEmp === false || $rsTiposMovEmp === null ? 0 : pg_num_rows($rsTiposMovEmp);
 
     if ( $iRowsTiposMovEmp ==  0 ) {
       throw new Exception('Nenhuma tipo de movimentação de empenho encontrado!');
@@ -2481,7 +2481,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlEmpenhoMovimentacao .= "    and conlancamemp.c75_numemp IN ($filtroCodigosEmpenhos)";
 
     $rsEmpenhoMovimentacao    = db_query($connOrigem, $sSqlEmpenhoMovimentacao);
-    $iRowsEmpenhoMovimentacao = pg_num_rows($rsEmpenhoMovimentacao);
+    $iRowsEmpenhoMovimentacao = $rsEmpenhoMovimentacao === false || $rsEmpenhoMovimentacao === null ? 0 : pg_num_rows($rsEmpenhoMovimentacao);
 
     if ($iRowsEmpenhoMovimentacao == 0) {
       throw new Exception('Nenhuma movimentação encontrada!');
@@ -2549,7 +2549,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlEmpenhoMovimentacaoJustificativa .= "    and pagordem.e50_codord IN ($filtroMovEmpenhoOp)                              ";
 
     $rsEmpenhoMovimentacaoJustificativa    = db_query($connOrigem, $sSqlEmpenhoMovimentacaoJustificativa);
-    $iRowsEmpenhoMovimentacaoJustificativa = pg_num_rows($rsEmpenhoMovimentacaoJustificativa);
+    $iRowsEmpenhoMovimentacaoJustificativa = $rsEmpenhoMovimentacaoJustificativa === false || $rsEmpenhoMovimentacaoJustificativa === null ? 0 : pg_num_rows($rsEmpenhoMovimentacaoJustificativa);
 
     if ( $iRowsEmpenhoMovimentacaoJustificativa ==  0 ) {
 
@@ -2630,7 +2630,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
 
     $rsInformacaoDiaria    = db_query($connOrigem, $sSqlInformacaoDiaria);
-    $iRowsInformacaoDiaria = pg_num_rows($rsInformacaoDiaria);
+    $iRowsInformacaoDiaria = $rsInformacaoDiaria === false || $rsInformacaoDiaria === null ? 0 : pg_num_rows($rsInformacaoDiaria);
 
     if ( $iRowsInformacaoDiaria ==  0 ) {
 
@@ -2718,7 +2718,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
     $rsCargos    = db_query($connOrigem, $sSqlDadosCargos);
 
-    $iRowsCargos = pg_num_rows($rsCargos);
+    $iRowsCargos = $rsCargos === false || $rsCargos === null ? 0 : pg_num_rows($rsCargos);
 
     if ($iRowsCargos == 0) {
 
@@ -2825,7 +2825,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlDadosCadastraisServidor .= "  group by id, nome, cpf, instit_servidor, admissao ";
     $rsServidores                 = db_query($connOrigem, $sSqlDadosCadastraisServidor);
 
-    $iRowsServidores = pg_num_rows($rsServidores);
+    $iRowsServidores = $rsServidores === false || $rsServidores === null ? 0 : pg_num_rows($rsServidores);
 
     if ($iRowsServidores == 0) {
       throw new Exception('Nenhum cadastro de servidor encontrado!');
@@ -2875,7 +2875,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception("ERRO-1: Erro ao buscar movimentacoes dos servidores.!".pg_last_error());
     }
 
-    $iRowsServidores = pg_num_rows($rsServidoresMovimentacao);
+    $iRowsServidores = $rsServidoresMovimentacao === false || $rsServidoresMovimentacao === null ? 0 : pg_num_rows($rsServidoresMovimentacao);
 
     db_logNumReg($iRowsServidores, $sArquivoLog, $iParamLog);
 
@@ -2906,7 +2906,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlMatrizServidorMovimentacao .= "   from {$sSchema}.servidor_movimentacoes ";
 
     $rsListaServidorMovimentacao     = db_query($connDestino, $sSqlMatrizServidorMovimentacao);
-    $iRowsListaServidorMovimentacao  = pg_num_rows($rsListaServidorMovimentacao);
+    $iRowsListaServidorMovimentacao  = $rsListaServidorMovimentacao === false || $rsListaServidorMovimentacao === null ? 0 : pg_num_rows($rsListaServidorMovimentacao);
 
     for ( $iInd=0; $iInd < $iRowsListaServidorMovimentacao; $iInd++ ) {
 
@@ -3077,7 +3077,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
     $sSqlDadosServidores = "select distinct ano, mes from dados_servidor";
     $rsDadosServidores   = db_query($connOrigem, $sSqlDadosServidores);
-    $iDadosServidores    = pg_num_rows($rsDadosServidores);
+    $iDadosServidores    = $rsDadosServidores === false || $rsDadosServidores === null ? 0 : pg_num_rows($rsDadosServidores);
 
     for ($iServidor = 0; $iServidor < $iDadosServidores; $iServidor++) {
 
@@ -3159,7 +3159,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         throw new Exception("ERRO-1: Erro ao buscar dados de rubricas!");
       }
 
-      $iRowsFolhaPagamento = pg_num_rows($rsFolhaPagamento);
+      $iRowsFolhaPagamento = $rsFolhaPagamento === false || $rsFolhaPagamento === null ? 0 : pg_num_rows($rsFolhaPagamento);
 
       db_logNumReg($iRowsFolhaPagamento, $sArquivoLog, $iParamLog);
 
@@ -3218,7 +3218,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception("ERRO-1: Erro ao buscar dados recursos humanos.!");
     }
 
-    $iRowsRecursosHumanos = pg_num_rows($rsRecursosHumanos);
+    $iRowsRecursosHumanos = $rsRecursosHumanos === false || $rsRecursosHumanos === null ? 0 : pg_num_rows($rsRecursosHumanos);
 
     db_logNumReg($iRowsRecursosHumanos, $sArquivoLog, $iParamLog);
 
@@ -3260,7 +3260,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     ";
 
     $rsBemClassificacao    = db_query($connOrigem, $sSqlBemClassificacao);
-    $iRowsBemClassificacao = pg_num_rows($rsBemClassificacao);
+    $iRowsBemClassificacao = $rsBemClassificacao === false || $rsBemClassificacao === null ? 0 : pg_num_rows($rsBemClassificacao);
 
     if ($iRowsBemClassificacao == 0) {
 
@@ -3299,7 +3299,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     ";
 
     $rsBemTipo    = db_query($connOrigem, $sSqlBemTipo);
-    $iRowsBemTipo = pg_num_rows($rsBemTipo);
+    $iRowsBemTipo = $rsBemTipo === false || $rsBemTipo === null ? 0 : pg_num_rows($rsBemTipo);
 
     if ($iRowsBemTipo == 0) {
 
@@ -3338,7 +3338,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     ";
 
     $rsBemAquisicaoTipo    = db_query($connOrigem, $sSqlBemAquisicaoTipo);
-    $iRowsBemAquisicaoTipo = pg_num_rows($rsBemAquisicaoTipo);
+    $iRowsBemAquisicaoTipo = $rsBemAquisicaoTipo === false || $rsBemAquisicaoTipo === null ? 0 : pg_num_rows($rsBemAquisicaoTipo);
 
     if ($iRowsBemTipo == 0) {
 
@@ -3377,7 +3377,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     ";
 
     $rsDepartamento    = db_query($connOrigem, $sSqlDepartamento);
-    $iRowsDepartamento = pg_num_rows($rsDepartamento);
+    $iRowsDepartamento = $rsDepartamento === false || $rsDepartamento === null ? 0 : pg_num_rows($rsDepartamento);
 
     if ($iRowsDepartamento == 0) {
 
@@ -3416,7 +3416,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     ";
 
     $rsDivisaoDepartamento    = db_query($connOrigem, $sSqlDivisaoDepartamento);
-    $iRowsDivisaoDepartamento = pg_num_rows($rsDivisaoDepartamento);
+    $iRowsDivisaoDepartamento = $rsDivisaoDepartamento === false || $rsDivisaoDepartamento === null ? 0 : pg_num_rows($rsDivisaoDepartamento);
 
     if ($iRowsDivisaoDepartamento == 0) {
 
@@ -3455,7 +3455,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     ";
 
     $rsBemTipoDepreciacao    = db_query($connOrigem, $sSqlBemTipoDepreciacao);
-    $iRowsBemTipoDepreciacao = pg_num_rows($rsBemTipoDepreciacao);
+    $iRowsBemTipoDepreciacao = $rsBemTipoDepreciacao === false || $rsBemTipoDepreciacao === null ? 0 : pg_num_rows($rsBemTipoDepreciacao);
 
     if ($iRowsBemTipoDepreciacao == 0) {
 
@@ -3487,7 +3487,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlInstituicao = "select id, codinstit from instituicoes;";
 
     $rsInstituicoes    = db_query($connDestino, $sSqlInstituicao);
-    $iRowsInstituicoes = pg_num_rows($rsInstituicoes);
+    $iRowsInstituicoes = $rsInstituicoes === false || $rsInstituicoes === null ? 0 : pg_num_rows($rsInstituicoes);
     if ($iRowsInstituicoes == 0) {
       throw new Exception('Nenhuma instituicao encontrada!');
     }
@@ -3548,7 +3548,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     order by t52_depart";
 
     $rsPatrimonio    = db_query($connOrigem, $sSqlPatrimonio);
-    $iRowsPatrimonio = pg_num_rows($rsPatrimonio);
+    $iRowsPatrimonio = $rsPatrimonio === false || $rsPatrimonio === null ? 0 : pg_num_rows($rsPatrimonio);
     if ($iRowsPatrimonio > 0) {
 
       db_logNumReg($iRowsPatrimonio, $sArquivoLog, $iParamLog);
@@ -3713,7 +3713,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       ";
 
     $rsVeiculoUtilizacao    = db_query($connOrigem, $sSqlVeiculoUtilizacao);
-    $iRowsVeiculoUtilizacao = pg_num_rows($rsVeiculoUtilizacao);
+    $iRowsVeiculoUtilizacao = $rsVeiculoUtilizacao === false || $rsVeiculoUtilizacao === null ? 0 : pg_num_rows($rsVeiculoUtilizacao);
 
     if ( $iRowsVeiculoUtilizacao ==  0 ) {
       db_Log('Nenhuma tipo de utilizacao de veiculo encontrado!', $sArquivoLog, $iParamLog);
@@ -3766,7 +3766,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       ";
 
       $rsVeiculoTipo    = db_query($connOrigem, $sSqlVeiculoTipo);
-      $iRowsVeiculoTipo = pg_num_rows($rsVeiculoTipo);
+      $iRowsVeiculoTipo = $rsVeiculoTipo === false || $rsVeiculoTipo === null ? 0 : pg_num_rows($rsVeiculoTipo);
 
       if ( $iRowsVeiculoTipo ==  0 ) {
 
@@ -3804,7 +3804,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       ";
 
       $rsVeiculoMarca    = db_query($connOrigem, $sSqlVeiculoMarca);
-      $iRowsVeiculoMarca = pg_num_rows($rsVeiculoMarca);
+      $iRowsVeiculoMarca = $rsVeiculoMarca === false || $rsVeiculoMarca === null ? 0 : pg_num_rows($rsVeiculoMarca);
 
       if ( $iRowsVeiculoMarca ==  0 ) {
 
@@ -3843,7 +3843,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       ";
 
       $rsVeiculoModelo    = db_query($connOrigem, $sSqlVeiculoModelo);
-      $iRowsVeiculoModelo = pg_num_rows($rsVeiculoModelo);
+      $iRowsVeiculoModelo = $rsVeiculoModelo === false || $rsVeiculoModelo === null ? 0 : pg_num_rows($rsVeiculoModelo);
 
       if ( $iRowsVeiculoModelo ==  0 ) {
 
@@ -3923,7 +3923,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       ";
 
       $rsVeiculo    = db_query($connOrigem, $sSqlVeiculo);
-      $iRowsVeiculo = pg_num_rows($rsVeiculo);
+      $iRowsVeiculo = $rsVeiculo === false || $rsVeiculo === null ? 0 : pg_num_rows($rsVeiculo);
 
       if ( $iRowsVeiculo ==  0 ) {
         db_logTitulo(" Nenhum veiculo encontrado! ", $sArquivoLog, $iParamLog);
@@ -4031,7 +4031,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
                                  offset {$iNroBasesAntigas} ";
 
   $rsSchemasAntigos      = db_query($connDestino,$sSqlConsultaSchemasAntigos);
-  $iLinhasSchemasAntigos = pg_num_rows($rsSchemasAntigos);
+  $iLinhasSchemasAntigos = $rsSchemasAntigos === false || $rsSchemasAntigos === null ? 0 : pg_num_rows($rsSchemasAntigos);
 
   for ($iInd=0; $iInd < $iLinhasSchemasAntigos; $iInd++ ) {
 
@@ -4079,7 +4079,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception("ERRO-0: Erro ao consultar tabela glossarios_tipos !");
     }
 
-    $iLinhasGlossariosTipos = pg_num_rows($rsDadosGlossariosTipos);
+    $iLinhasGlossariosTipos = $rsDadosGlossariosTipos === false || $rsDadosGlossariosTipos === null ? 0 : pg_num_rows($rsDadosGlossariosTipos);
 
     for ( $iInd=0; $iInd < $iLinhasGlossariosTipos; $iInd++ ) {
 
@@ -4114,7 +4114,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception("ERRO-0: Erro ao consultar tabela glossarios !");
     }
 
-    $iLinhasGlossarios = pg_num_rows($rsDadosGlossarios);
+    $iLinhasGlossarios = $rsDadosGlossarios === false || $rsDadosGlossarios === null ? 0 : pg_num_rows($rsDadosGlossarios);
 
     for ( $iInd=0; $iInd < $iLinhasGlossarios; $iInd++ ) {
 

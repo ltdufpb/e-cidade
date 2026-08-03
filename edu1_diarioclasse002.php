@@ -195,7 +195,7 @@ var TREE_ITEMS = [
                            ORDER BY ed52_i_ano,ed52_c_descr
                            ";
                    $query = db_query($sql);
-                   $linhas = pg_num_rows($query);
+                   $linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
                    if($linhas==0){
                     ?>
                     ['Calendário: <b>Nenhuma turma com matrículas</b>', ''],
@@ -218,7 +218,7 @@ var TREE_ITEMS = [
                               ORDER BY ed10_c_abrev
                              ";
                      $query1 = db_query($sql1);
-                     $linhas1 = pg_num_rows($query1);
+                     $linhas1 = $query1 === false || $query1 === null ? 0 : pg_num_rows($query1);
                      for($b=0;$b<$linhas1;$b++){
                      ?>
                        ['Curso: <b><?=trim(pg_fetch_result($query1,$b,"ed29_c_descr"))?></b>', 'edu1_diarioclasse003.php?ed29_i_codigo=<?=pg_fetch_result($query1,$b,"ed29_i_codigo")?>&proximo=<?=trim(pg_fetch_result($query1,$b,"ed29_c_descr"))?>&calendario=<?=pg_fetch_result($query,$a,"ed52_i_codigo")?>&ed52_c_descr=<?=trim(pg_fetch_result($query,$a,"ed52_c_descr"))?>',
@@ -235,7 +235,7 @@ var TREE_ITEMS = [
                                  ORDER BY ed218_i_codigo
                                 ";
                        $query11 = db_query($sql11);
-                       $linhas11 = pg_num_rows($query11);
+                       $linhas11 = $query11 === false || $query11 === null ? 0 : pg_num_rows($query11);
                        for($bb=0;$bb<$linhas11;$bb++){
                        ?>
                          ['Regime de Matrícula: <b><?=trim(pg_fetch_result($query11,$bb,"ed218_c_nome"))?></b>', 'edu1_diarioclasse003.php?ed218_i_codigo=<?=pg_fetch_result($query11,$bb,"ed218_i_codigo")?>&ed29_i_codigo=<?=pg_fetch_result($query1,$b,"ed29_i_codigo")?>&proximo=<?=trim(pg_fetch_result($query11,$bb,"ed218_c_nome"))?>&calendario=<?=pg_fetch_result($query,$a,"ed52_i_codigo")?>&ed52_c_descr=<?=trim(pg_fetch_result($query,$a,"ed52_c_descr"))?>&',
@@ -252,7 +252,7 @@ var TREE_ITEMS = [
                                   ORDER BY ed31_c_descr desc
                                  ";
                          $query2 = db_query($sql2);
-                         $linhas2 = pg_num_rows($query2);
+                         $linhas2 = $query2 === false || $query2 === null ? 0 : pg_num_rows($query2);
                          for($c=0;$c<$linhas2;$c++){
                          ?>
                            ['Base Curricular: <b><?=trim(pg_fetch_result($query2,$c,"ed31_c_descr"))?></b>', 'edu1_diarioclasse003.php?ed31_i_codigo=<?=pg_fetch_result($query2,$c,"ed31_i_codigo")?>&ed31_i_regimemat=<?=pg_fetch_result($query2,$c,"ed31_i_regimemat")?>&proximo=<?=trim(pg_fetch_result($query2,$c,"ed31_c_descr"))?>&calendario=<?=pg_fetch_result($query,$a,"ed52_i_codigo")?>&ed52_c_descr=<?=trim(pg_fetch_result($query,$a,"ed52_c_descr"))?>&',
@@ -278,7 +278,7 @@ var TREE_ITEMS = [
                                     ORDER BY ed11_i_sequencia
                                    ";
                            $query4 = db_query($sql4);
-                           $linhas4 = pg_num_rows($query4);
+                           $linhas4 = $query4 === false || $query4 === null ? 0 : pg_num_rows($query4);
                            for($d=0;$d<$linhas4;$d++){
                            ?>
                              ['Etapa: <b><?=trim(pg_fetch_result($query4,$d,"ed11_c_descr"))?></b>', 'edu1_diarioclasse003.php?ed11_i_codigo=<?=pg_fetch_result($query4,$d,"ed11_i_codigo")?>&ed31_i_regimemat=<?=pg_fetch_result($query2,$c,"ed31_i_regimemat")?>&proximo=<?=trim(pg_fetch_result($query4,$d,"ed11_c_descr"))?>&ed52_c_descr=<?=trim(pg_fetch_result($query,$a,"ed52_c_descr"))?>&calendario=<?=pg_fetch_result($query,$a,"ed52_i_codigo")?>',
@@ -305,7 +305,7 @@ var TREE_ITEMS = [
                                      ";
 
                              $query5 = db_query($sql5);
-                             $linhas5 = pg_num_rows($query5);
+                             $linhas5 = $query5 === false || $query5 === null ? 0 : pg_num_rows($query5);
                              for($e=0;$e<$linhas5;$e++){
 
                               if ( pg_fetch_result($query5, $e, "n_procedimentos") > 0) {

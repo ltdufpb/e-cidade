@@ -65,7 +65,7 @@ switch ($oParam->exec) {
           throw new DBException("Ocorreu erro ao buscar os dados dos municípios.");
         }
         
-        $iRowsPaises = pg_num_rows($rsPaises);
+        $iRowsPaises = $rsPaises === false || $rsPaises === null ? 0 : pg_num_rows($rsPaises);
         for ($iRow = 0; $iRow < $iRowsPaises; $iRow++) {
       
           $oDadosPais          = db_utils::fieldsMemory($rsPaises,$iRow);

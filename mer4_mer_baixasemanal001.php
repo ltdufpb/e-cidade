@@ -103,7 +103,7 @@ if (isset($incluir)) {
   db_inicio_transacao(); 
   $sql    = "select me12_i_cardapio,me12_i_diasemana from mer_cardapiodia";
   $result = db_query($sql);
-  $linhas = pg_num_rows($result);
+  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
   for ($x=0;$x<$linhas;$x++) {
   	
   	db_fieldsmemory($result,$x);

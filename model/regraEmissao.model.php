@@ -69,7 +69,7 @@ class regraEmissao {
     $sSqlTipoExecessao .= "        left  join modcarneexcessao   on modcarneexcessao.k36_modcarnepadrao   = modcarnepadrao.k48_sequencial ";
     $sSqlTipoExecessao .= $sWhereModCarne;
     $rsConsultaTipoExcessao = db_query($sSqlTipoExecessao);
-    $iNroLinhasTipoExcessao = pg_num_rows($rsConsultaTipoExcessao);
+    $iNroLinhasTipoExcessao = $rsConsultaTipoExcessao === false || $rsConsultaTipoExcessao === null ? 0 : pg_num_rows($rsConsultaTipoExcessao);
 
     $iCodModCarnePadrao     = '';
 
@@ -172,7 +172,7 @@ class regraEmissao {
 	  $sSql .= "   where k48_sequencial = {$iCodModCarnePadrao}                                                                                             ";
 
 		$rsConsultaRegra = db_query($sSql);
-		$iNroLinhas		   = pg_num_rows($rsConsultaRegra);
+		$iNroLinhas		   = $rsConsultaRegra === false || $rsConsultaRegra === null ? 0 : pg_num_rows($rsConsultaRegra);
 
 		if ( $iNroLinhas > 0 ) {
 

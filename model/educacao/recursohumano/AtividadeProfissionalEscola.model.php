@@ -402,7 +402,7 @@ class AtividadeProfissionalEscola
             return [];
         }
 
-        $iLinha = pg_num_rows($rsValida);
+        $iLinha = $rsValida === false || $rsValida === null ? 0 : pg_num_rows($rsValida);
         $aConflitos = [];
         for ($i = 0; $i < $iLinha; $i++) {
 

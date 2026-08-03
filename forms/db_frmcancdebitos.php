@@ -109,7 +109,7 @@ $clrotulo->label("nome");
 		  $sql = $clcancdebitos->sql_pendentes("k21_sequencia,k21_numpre,k21_numpar,sum(k00_valor) as k00_valor,k21_receit,(select k00_numcgm from arrenumcgm where k00_numpre = k21_numpre limit 1) as k00_numcgm, (select k00_matric from arrematric where k00_numpre = k21_numpre limit 1) as k00_matric, (select k00_inscr from arreinscr where k00_numpre = k21_numpre limit 1) as k00_inscr","k21_numpre,k21_numpar"," k20_codigo = $chavepesquisa  and k20_instit = ".db_getsession("DB_instit")."GROUP BY k21_sequencia,k21_numpre,k21_numpar,k21_receit");
 		  
 		  $result = db_query($sql);
-		  $linhas = pg_num_rows($result);
+		  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 		  if($linhas>0){
 		    $total = 0;
 		    ?>
@@ -124,7 +124,7 @@ $clrotulo->label("nome");
 				<td><strong>Tipo de cancelamento:</strong></td>
 				<td><?php 
 				  $resulttipo = db_query("select k73_sequencial,k73_descricao from cancdebitostipo order by k73_sequencial");
-				  $linhasTipo = pg_num_rows($resulttipo);
+				  $linhasTipo = $resulttipo === false || $resulttipo === null ? 0 : pg_num_rows($resulttipo);
 				  $tipo = [];
 				  if($linhasTipo > 0 ){
 				    for($t=0;$t<$linhasTipo;$t++){

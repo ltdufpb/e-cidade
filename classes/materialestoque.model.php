@@ -1112,7 +1112,7 @@ class materialEstoque {
     $sSqlPosterior .= " group by 1 order by 1                                                                         ";
 
     $rsDadosPosterior     = db_query($sSqlPosterior);
-    $iTotaLinhasPosterior = pg_num_rows($rsDadosPosterior);
+    $iTotaLinhasPosterior = $rsDadosPosterior === false || $rsDadosPosterior === null ? 0 : pg_num_rows($rsDadosPosterior);
     for ($iPosterior = 0; $iPosterior < $iTotaLinhasPosterior; $iPosterior++) {
 
       $oValorPosterior     = db_utils::fieldsMemory($rsDadosPosterior, $iPosterior);

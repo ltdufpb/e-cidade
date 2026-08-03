@@ -281,7 +281,7 @@ class GeradorArquivoOBN {
     $sSqlGeracaoArquivo         = MovimentoArquivoTransmissao::getSqlDadosMovimentacao($iRemessa, $iInstituicao, $iAno);
     $rsBuscaDadosGeracaoArquivo = db_query($sSqlGeracaoArquivo);
     $iCodigoConvenio            = db_utils::fieldsMemory($rsBuscaDadosGeracaoArquivo, 0)->convenio;
-    $iTotalMovimentos           = pg_num_rows($rsBuscaDadosGeracaoArquivo);
+    $iTotalMovimentos           = $rsBuscaDadosGeracaoArquivo === false || $rsBuscaDadosGeracaoArquivo === null ? 0 : pg_num_rows($rsBuscaDadosGeracaoArquivo);
 
     if (empty($iTotalMovimentos) || $iTotalMovimentos == 0) {
       $sMensagemGeracao  = "Não foi possível gerar o arquivo de remessa.\n";

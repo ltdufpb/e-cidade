@@ -34,11 +34,11 @@ if($sqlerro==false) {
   // orcparamelemento
   $sqldeporigem = "select * from orcparamelemento where o44_anousu= $anoorigem limit 1";
   $resultdeporigem = db_query($sqldeporigem);
-  $linhasdeporigem = pg_num_rows($resultdeporigem);
+  $linhasdeporigem = $resultdeporigem === false || $resultdeporigem === null ? 0 : pg_num_rows($resultdeporigem);
 
   $sqldepdestino = "select * from orcparamelemento where o44_anousu=  $anodestino limit 1";
   $resultdepdestino = db_query($sqldepdestino);
-  $linhasdepdestino = pg_num_rows($resultdepdestino);
+  $linhasdepdestino = $resultdepdestino === false || $resultdepdestino === null ? 0 : pg_num_rows($resultdepdestino);
 
   if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
     
@@ -76,11 +76,11 @@ if($sqlerro==false) {
     // orcparamfunc
     $sqldeporigem = "select * from  orcparamfunc where o45_anousu = $anoorigem limit 1";
     $resultdeporigem = db_query($sqldeporigem);
-    $linhasdeporigem = pg_num_rows($resultdeporigem);
+    $linhasdeporigem = $resultdeporigem === false || $resultdeporigem === null ? 0 : pg_num_rows($resultdeporigem);
 
     $sqldepdestino = "select * from  orcparamfunc where o45_anousu = $anodestino limit 1";
     $resultdepdestino = db_query($sqldepdestino);
-    $linhasdepdestino = pg_num_rows($resultdepdestino);
+    $linhasdepdestino = $resultdepdestino === false || $resultdepdestino === null ? 0 : pg_num_rows($resultdepdestino);
 
     if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
       
@@ -119,11 +119,11 @@ if($sqlerro==false) {
     // orcparamnivel
     $sqldeporigem = "select * from orcparamnivel where o44_anousu = $anoorigem limit 1";
     $resultdeporigem = db_query($sqldeporigem);
-    $linhasdeporigem = pg_num_rows($resultdeporigem);
+    $linhasdeporigem = $resultdeporigem === false || $resultdeporigem === null ? 0 : pg_num_rows($resultdeporigem);
 
     $sqldepdestino = "select * from orcparamnivel where o44_anousu = $anodestino limit 1";
     $resultdepdestino = db_query($sqldepdestino);
-    $linhasdepdestino = pg_num_rows($resultdepdestino);
+    $linhasdepdestino = $resultdepdestino === false || $resultdepdestino === null ? 0 : pg_num_rows($resultdepdestino);
 
     if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
       
@@ -162,11 +162,11 @@ if($sqlerro==false) {
     // orcparamrecurso
     $sqldeporigem = "select * from orcparamrecurso where o44_anousu = $anoorigem limit 1";
     $resultdeporigem = db_query($sqldeporigem);
-    $linhasdeporigem = pg_num_rows($resultdeporigem);
+    $linhasdeporigem = $resultdeporigem === false || $resultdeporigem === null ? 0 : pg_num_rows($resultdeporigem);
 
     $sqldepdestino = "select * from orcparamrecurso where o44_anousu = $anodestino limit 1";
     $resultdepdestino = db_query($sqldepdestino);
-    $linhasdepdestino = pg_num_rows($resultdepdestino);
+    $linhasdepdestino = $resultdepdestino === false || $resultdepdestino === null ? 0 : pg_num_rows($resultdepdestino);
 
     if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
       
@@ -205,11 +205,11 @@ if($sqlerro==false) {
     // orcparamsubfunc
     $sqldeporigem = "select * from orcparamsubfunc where o44_anousu = $anoorigem limit 1";
     $resultdeporigem = db_query($sqldeporigem);
-    $linhasdeporigem = pg_num_rows($resultdeporigem);
+    $linhasdeporigem = $resultdeporigem === false || $resultdeporigem === null ? 0 : pg_num_rows($resultdeporigem);
 
     $sqldepdestino = "select * from orcparamsubfunc where o44_anousu = $anodestino limit 1";
     $resultdepdestino = db_query($sqldepdestino);
-    $linhasdepdestino = pg_num_rows($resultdepdestino);
+    $linhasdepdestino = $resultdepdestino === false || $resultdepdestino === null ? 0 : pg_num_rows($resultdepdestino);
 
     if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
       $sqldepartorg = "select fc_duplica_exercicio('orcparamsubfunc', 'o44_anousu', ".$anoorigem.",".$anodestino.",null);";
@@ -246,11 +246,11 @@ if($sqlerro==false) {
     //orcparamrecursoval
     $sqldeporigem = "select * from orcparamrecursoval where o48_anousu = $anoorigem ";
     $resultdeporigem = db_query($sqldeporigem);
-    $linhasdeporigem = pg_num_rows($resultdeporigem);
+    $linhasdeporigem = $resultdeporigem === false || $resultdeporigem === null ? 0 : pg_num_rows($resultdeporigem);
 
     $sqldepdestino = "select * from orcparamrecursoval where o48_anousu =  $anodestino limit 1";
     $resultdepdestino = db_query($sqldepdestino);
-    $linhasdepdestino = pg_num_rows($resultdepdestino);
+    $linhasdepdestino = $resultdepdestino === false || $resultdepdestino === null ? 0 : pg_num_rows($resultdepdestino);
 
     if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
 

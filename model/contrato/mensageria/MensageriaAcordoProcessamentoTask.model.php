@@ -114,7 +114,7 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
     $sSqlUsuarios = $oDaoMensageriaUsuario->sql_query_usuariosNotificar('ac52_sequencial', 'ac52_dias');
 
     $rsUsuarios = db_query($sSqlUsuarios);
-    $iTotalUsuarios = pg_num_rows($rsUsuarios);
+    $iTotalUsuarios = $rsUsuarios === false || $rsUsuarios === null ? 0 : pg_num_rows($rsUsuarios);
 
     if ($iTotalUsuarios == 0) {
       throw new Exception("Nenhum usuário para notificar.");
@@ -211,7 +211,7 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
         throw new Exception("Erro ao buscar acordos a vencer.");
       }
 
-      $iTotalAcordos = pg_num_rows($rsAcordos);
+      $iTotalAcordos = $rsAcordos === false || $rsAcordos === null ? 0 : pg_num_rows($rsAcordos);
 
       if ($iTotalAcordos == 0) {
         continue;

@@ -173,7 +173,7 @@ if($processartodos == false){
   ";
 
   $resultinscricao = db_query($conn,$sqlinscricao);
-  $linhasinscricao = pg_num_rows($resultinscricao);
+  $linhasinscricao = $resultinscricao === false || $resultinscricao === null ? 0 : pg_num_rows($resultinscricao);
   if($linhasinscricao > 0){
     for($procalt=0;$procalt< $linhasinscricao;$procalt++){
       db_fieldsmemory($resultinscricao,$procalt);
@@ -225,7 +225,7 @@ if($cancelaProcessamento == false){
       order by q03_ativ 
       ";
   $resultAtiv = db_query($conn,$sqlAtiv);    
-  $linhasAtiv = pg_num_rows($resultAtiv);
+  $linhasAtiv = $resultAtiv === false || $resultAtiv === null ? 0 : pg_num_rows($resultAtiv);
 
   if ($linhasAtiv > 0){
     if(isset($mostrahtml) and $mostrahtml== true){
@@ -253,7 +253,7 @@ if($cancelaProcessamento == false){
       //verificar se ja existe esta atividade no siss
       $sqlAtiviSiss = "select * from tb_atividades where codativ = $q03_ativ";
       $resultAtivSiss = db_query($conn2,$sqlAtiviSiss);
-      $linhasAtivSiss = pg_num_rows($resultAtivSiss);
+      $linhasAtivSiss = $resultAtivSiss === false || $resultAtivSiss === null ? 0 : pg_num_rows($resultAtivSiss);
       if ($linhasAtivSiss == 0  ){
         $incluiCadAtiv = " Insert into tb_atividades (
                                                      codativ,
@@ -323,7 +323,7 @@ if($cancelaProcessamento == false){
           ";
 
   $resultissbase = db_query($conn,$sqlissbase);
-  $linhasissbase = pg_num_rows($resultissbase);
+  $linhasissbase = $resultissbase === false || $resultissbase === null ? 0 : pg_num_rows($resultissbase);
   if(isset($mostrahtml) and $mostrahtml== true){
     db_atutermometro(1,8, 'termometro2');
     echo"<script>document.getElementById('titulo').innerHTML='PROCESSANDO EMPRESAS'; </script>";
@@ -349,7 +349,7 @@ if($cancelaProcessamento == false){
       //verifica se ja processou hoje...
       $sqlverifica =" select * from tb_contribuintes where ccm = $inscricao and dt_exp = current_date";
       $resultverifica = db_query($conn2,$sqlverifica);
-      $linhasverifica = pg_num_rows($resultverifica);
+      $linhasverifica = $resultverifica === false || $resultverifica === null ? 0 : pg_num_rows($resultverifica);
       if($linhasverifica > 0   ){
         if(isset($mostrahtml) and $mostrahtml== true){
           db_msgbox("Empresa ja incluida para esta data.");
@@ -381,7 +381,7 @@ if($cancelaProcessamento == false){
                     inner join varfixval on q33_codigo = q34_codigo
                     where q33_inscr = $inscricao limit 1 ";
       $resultValfix = db_query($conn,$sqlValfix );
-      $linhasValfix = pg_num_rows($resultValfix );
+      $linhasValfix = $resultValfix === false || $resultValfix === null ? 0 : pg_num_rows($resultValfix );
       if($linhasValfix > 0){
         db_fieldsmemory($resultValfix,0);
         $val_fixo = $q01_valor;
@@ -442,7 +442,7 @@ if($cancelaProcessamento == false){
 
      $sqlTavativ = " select q07_ativ,q07_datain,q07_datafi from tabativ where q07_inscr = $inscricao ";
      $resultTabativ = db_query($conn , $sqlTavativ);
-     $linhasTabativ = pg_num_rows($resultTabativ);
+     $linhasTabativ = $resultTabativ === false || $resultTabativ === null ? 0 : pg_num_rows($resultTabativ);
      if($linhasTabativ > 0){
 
        for($ta=0;$ta<$linhasTabativ;$ta++){
@@ -451,7 +451,7 @@ if($cancelaProcessamento == false){
          //verificar se ja tem esta atividade gravada no SISS
          $sqlAtiv_contrib = " select * from tb_ativ_contrib where ccm = $inscricao  and codativ = $q07_ativ ";
          $resultAtiv_contrib = db_query($conn2 , $sqlAtiv_contrib );
-         $linhasAtiv_contrib = pg_num_rows($resultAtiv_contrib);
+         $linhasAtiv_contrib = $resultAtiv_contrib === false || $resultAtiv_contrib === null ? 0 : pg_num_rows($resultAtiv_contrib);
          if($linhasAtiv_contrib == 0){
            $incluiAtiv_contrib = "
                                  insert into tb_ativ_contrib ( ccm,     
@@ -491,7 +491,7 @@ if($cancelaProcessamento == false){
 
      $sqlAidof = "select  q09_nota, y08_dtlanc,y08_notain,y08_notafi from aidof inner join notasiss on q09_codigo = y08_nota where y08_inscr = $inscricao";
      $resultAidof = db_query($conn, $sqlAidof);
-     $linhasAidof = pg_num_rows($resultAidof);
+     $linhasAidof = $resultAidof === false || $resultAidof === null ? 0 : pg_num_rows($resultAidof);
      if($linhasAidof > 0){
        for($ad=0;$ad<$linhasAidof;$ad++){
          db_fieldsmemory($resultAidof,$ad);
@@ -502,7 +502,7 @@ if($cancelaProcessamento == false){
                                         and num_fim = $y08_notafi
                                         and serie   =".dbValida( $q09_nota,'string') ." " ; 
          $resultAidofSiss = db_query($conn2,$sqlVerAidofSiss);
-         $linhasAidofSiss = pg_num_rows($resultAidofSiss);
+         $linhasAidofSiss = $resultAidofSiss === false || $resultAidofSiss === null ? 0 : pg_num_rows($resultAidofSiss);
          if($linhasAidofSiss ==0){
 
            $incluiAidof = " Insert into tb_contrib_aidof (ccm,num_ini,num_fim,serie,dt_lib,controle,dt_exp)
@@ -544,7 +544,7 @@ if($cancelaProcessamento == false){
                      where k00_inscr = {$inscricao} and z01_cgccpf is not null
                      group by z01_cgccpf,q23_mesusu,q23_anousu";
        $resultSimples = db_query($conn , $sqlSimples );
-       $linhasSimples = pg_num_rows($resultSimples);
+       $linhasSimples = $resultSimples === false || $resultSimples === null ? 0 : pg_num_rows($resultSimples);
        if($linhasSimples >0){
           for($si=0;$si<$linhasSimples;$si++){
             db_fieldsmemory($resultSimples,$si);
@@ -555,7 +555,7 @@ if($cancelaProcessamento == false){
                                          and mes = $q23_mesusu
                                          and ano = $q23_anousu ";
               $resultSimplesSiss = db_query($conn2,$sqlVerSimplesSiss);
-              $linhasSimplesSiss = pg_num_rows($resultSimplesSiss);
+              $linhasSimplesSiss = $resultSimplesSiss === false || $resultSimplesSiss === null ? 0 : pg_num_rows($resultSimplesSiss);
               if($linhasSimplesSiss == 0 ){
 
                 $IncluiSimples = "insert into tb_simples (cnpj,mes,ano,valor,controle,dt_exp)
@@ -593,7 +593,7 @@ if($cancelaProcessamento == false){
                      from escrito 
                      inner join cgm on q10_numcgm = z01_numcgm";
   $resultEscritorio = db_query($conn , $sqlEscritorio);
-  $linhasEscritorio = pg_num_rows($resultEscritorio);
+  $linhasEscritorio = $resultEscritorio === false || $resultEscritorio === null ? 0 : pg_num_rows($resultEscritorio);
   if($linhasEscritorio > 0){
 
 
@@ -621,7 +621,7 @@ if($cancelaProcessamento == false){
 
       $sqlEscrSiss = "select * from tb_escritorios where codescr = $q10_numcgm ";
       $resultEscrSiss = db_query($conn2,$sqlEscrSiss);
-      $linhasEscrSiss = pg_num_rows($resultEscrSiss);
+      $linhasEscrSiss = $resultEscrSiss === false || $resultEscrSiss === null ? 0 : pg_num_rows($resultEscrSiss);
       if($linhasEscrSiss == 0){
         if( $z01_cgccpf==""  ){
           $z01_cgccpf = "0000000000000";
@@ -664,14 +664,14 @@ if($cancelaProcessamento == false){
 
          $sqlEscrInsc = "select * from escrito where q10_numcgm = $q10_numcgm ";
          $resultEscrInsc = db_query($conn, $sqlEscrInsc);
-         $linhasEscrInsc = pg_num_rows($resultEscrInsc);
+         $linhasEscrInsc = $resultEscrInsc === false || $resultEscrInsc === null ? 0 : pg_num_rows($resultEscrInsc);
          if($linhasEscrInsc > 0){
            for($ei=0; $ei<$linhasEscrInsc; $ei++){
              db_fieldsmemory($resultEscrInsc ,$ei);
              // verificar se ja esta cadastrado no SISS  
              $sqlEscrInscSiss = " select * from tb_escrit_contrib where ccm = $q10_inscr and codescr= $q10_numcgm ";
              $resultEscrInscSiss = db_query($conn2,$sqlEscrInscSiss);
-             $linhasEscrInscSiss = pg_num_rows($resultEscrInscSiss);
+             $linhasEscrInscSiss = $resultEscrInscSiss === false || $resultEscrInscSiss === null ? 0 : pg_num_rows($resultEscrInscSiss);
              if($linhasEscrInscSiss == 0){
                $incluiEscrInsc = "
                                    insert into tb_escrit_contrib (ccm,codescr,controle,dt_exp )
@@ -714,7 +714,7 @@ $sqlerro = false;
 $inscricaoSemIssbase = "";
 $sqlBuscaBoleto = "select * from tb_controle_boletos where controle is false order by ccm,documento ";
 $rsBuscaBoleto = db_query($conn2,$sqlBuscaBoleto); 
-$linhasBuscaBoleto = pg_num_rows($rsBuscaBoleto);
+$linhasBuscaBoleto = $rsBuscaBoleto === false || $rsBuscaBoleto === null ? 0 : pg_num_rows($rsBuscaBoleto);
 if(isset($mostrahtml) and $mostrahtml== true){
     db_atutermometro(8,9, 'termometro2');
       echo"<script>document.getElementById('titulo').innerHTML='PROCESSANDO ... gerar issvar apartir de boletos'; </script>";
@@ -755,7 +755,7 @@ if($linhasBuscaBoleto > 0){
     //validar se a inscrição esta na issbase
     $sqlValidaIssbase = "select q02_inscr from issbase where q02_inscr = $ccm ";
     $rsValidaIssbase  = db_query($conn, $sqlValidaIssbase);
-    $linhasValidaIssbase = pg_num_rows($rsValidaIssbase);
+    $linhasValidaIssbase = $rsValidaIssbase === false || $rsValidaIssbase === null ? 0 : pg_num_rows($rsValidaIssbase);
 
     if($linhasValidaIssbase == 0) {
       $lProcessaInscricao = false;
@@ -780,7 +780,7 @@ if($linhasBuscaBoleto > 0){
                              and q05_ano = $ano
                              and q05_mes = $mes ";
       $rsBuscarAbertos = db_query($conn , $sqlBuscarAbertos);
-      $linhasBuscarAbertos = pg_num_rows($rsBuscarAbertos);
+      $linhasBuscarAbertos = $rsBuscarAbertos === false || $rsBuscarAbertos === null ? 0 : pg_num_rows($rsBuscarAbertos);
       $naoProcessaBoletoSimples = false;
       if($linhasBuscarAbertos > 0 ){
 
@@ -797,7 +797,7 @@ if($linhasBuscaBoleto > 0){
             left  join disbanco           on disbanco.idret = q44_disbanco
             where q68_issvar = $cod_issvar ";
           $rsSimples = db_query($sqlSimples);								
-          $linhasSimples = pg_num_rows($rsSimples);
+          $linhasSimples = $rsSimples === false || $rsSimples === null ? 0 : pg_num_rows($rsSimples);
           if($linhasSimples > 0 ){
             db_fieldsmemory($rsSimples , 0);
             db_log("ISS não processado ... Boleto giss documento = $documento importado para simples (issvar = $cod_issvar, Remessa = $q17_nroremessa, Arquivo = $q17_nomearq).", $sArquivoLog);

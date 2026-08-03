@@ -118,7 +118,7 @@ class ItinerarioVinculoAlunoRepository {
     
     if ( $rsVinculoAluno && pg_num_rows($rsVinculoAluno) > 0) {
 
-      $iLinhas = pg_num_rows($rsVinculoAluno);
+      $iLinhas = $rsVinculoAluno === false || $rsVinculoAluno === null ? 0 : pg_num_rows($rsVinculoAluno);
 
       for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
 

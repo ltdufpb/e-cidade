@@ -265,7 +265,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
     {
         $iCodDiverImporta = $this->salvarDiverImporta(ImportacaoDiversos::PROCESSAMENTO_GERAL);
         $rsBuscaDebitos = $this->buscarDebitos($sWhere);
-        $iTotalRegistros = pg_num_rows($rsBuscaDebitos);
+        $iTotalRegistros = $rsBuscaDebitos === false || $rsBuscaDebitos === null ? 0 : pg_num_rows($rsBuscaDebitos);
 
         for ($iRowDebitos = 0; $iRowDebitos < $iTotalRegistros; $iRowDebitos++) {
 

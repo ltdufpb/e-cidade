@@ -680,7 +680,7 @@ if (isset($excluir) && $excluir == "Excluir") {
     //die($sql_saltes);
 
           $res_saltes = @db_query($sql_saltes);
-          $numrows    = @pg_num_rows($res_saltes);
+          $numrows    = $res_saltes === false || $res_saltes === null ? 0 : @pg_num_rows($res_saltes);
           if ($numrows > 0) {
 
             db_msgbox("Conta não pode ser excluida. Conta com movimentacao!");
@@ -702,7 +702,7 @@ if (isset($excluir) && $excluir == "Excluir") {
     //die($sql_saltes);
 
           $res_saltes = @db_query($sql_saltes);
-          $numrows    = @pg_num_rows($res_saltes);
+          $numrows    = $res_saltes === false || $res_saltes === null ? 0 : @pg_num_rows($res_saltes);
           if ($numrows > 0) {
 
             db_msgbox("Conta não pode ser excluida. Conta com movimentacao!");

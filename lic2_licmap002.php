@@ -502,7 +502,7 @@ if ($modelo == 1) {
     $sql = $clpcorcamval->sql_query_julg(null, null, $campos, null, "pc23_orcamitem=$pc22_orcamitem");
     $rs = db_query($sql);
 
-    $totalLinhas = pg_num_rows($rs);
+    $totalLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
     for ($contador = 0; $contador < $totalLinhas; $contador++) {
         $fornecedor = db_utils::fieldsMemory($rs, $contador);

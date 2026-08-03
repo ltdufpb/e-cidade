@@ -309,7 +309,7 @@ function getEmpenhosSuprimentoFundos($oParam) {
   $sSqlQuerySuprimentosIncosistentes .= "   or (pagamento < suprimento_fundos)";
 
   $rsQuerySuprimentos = db_query($sSqlQuerySuprimentosIncosistentes);
-  $iTotalEmpenhos     = pg_num_rows($rsQuerySuprimentos);
+  $iTotalEmpenhos     = $rsQuerySuprimentos === false || $rsQuerySuprimentos === null ? 0 : pg_num_rows($rsQuerySuprimentos);
 
   $aEmpenhos = [];
   for ($iEmpenho = 0; $iEmpenho < $iTotalEmpenhos; $iEmpenho++) {

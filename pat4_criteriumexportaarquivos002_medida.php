@@ -33,7 +33,7 @@ $sSqlMedida .= "       t67_descricao as nome_da_medida";
 $sSqlMedida .= "      from bensmedida ";
 
 $rsMedida    = db_query($sSqlMedida);
-$iNumeroLinhas 	= pg_num_rows($rsMedida);
+$iNumeroLinhas 	= $rsMedida === false || $rsMedida === null ? 0 : pg_num_rows($rsMedida);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oMedida     = db_utils::fieldsMemory($rsMedida,$i);

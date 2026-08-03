@@ -58,7 +58,7 @@ order by k02_estorc
 on k02_estorc::char(13) = o02_codigo and o02_anousu =  ".$GLOBALS["DB_anousu"]."
 ");
 
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 set_time_limit(0);
 $clabre_arquivo =  new cl_abre_arquivo();
 if($clabre_arquivo->arquivo!=false){

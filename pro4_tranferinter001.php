@@ -250,7 +250,7 @@ if (isset($incluir)) {
                     $sql .= " WHERE x.p68_codproc IS NULL ";
                     $sql .= " ORDER BY p58_codproc DESC ";
                     $result = db_query($sql);
-                    $numrows = pg_num_rows($result);
+                    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
                     if ($numrows > 0) {
                     } else {
                         echo "<br><br><b>Sem Processos!!</b>";

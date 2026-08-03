@@ -134,7 +134,7 @@ if (isset($lancar)) {
 			$sqlinscr .= "  where arreinscr.k00_numpre = {$numpre}																							 "; 
 
 			$resultinscr = db_query($sqlinscr);
-      $linhasinscr = pg_num_rows($resultinscr);
+      $linhasinscr = $resultinscr === false || $resultinscr === null ? 0 : pg_num_rows($resultinscr);
 
 			if ($linhasinscr > 0) {
 

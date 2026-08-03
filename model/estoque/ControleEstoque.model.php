@@ -218,7 +218,7 @@ class ControleEstoque {
         $aParametrosQuery[] = $this->oPeriodoFinal->getDate();
 
         $rsBuscaMovimentacaoDoItem = pg_execute("busca_movimentacao_material", $aParametrosQuery);
-        $iTotalMovimentacao        = pg_num_rows($rsBuscaMovimentacaoDoItem);
+        $iTotalMovimentacao        = $rsBuscaMovimentacaoDoItem === false || $rsBuscaMovimentacaoDoItem === null ? 0 : pg_num_rows($rsBuscaMovimentacaoDoItem);
 
         /**
          * Nao encontrou movimentacao

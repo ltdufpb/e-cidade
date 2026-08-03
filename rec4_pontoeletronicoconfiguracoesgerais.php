@@ -46,7 +46,7 @@ if(!$rsSqlConfiguracoesGerais) {
     throw new DBException("Ocorreu um erro ao buscar as configurações gerais para a instituição.");
 }
 
-$iQtdeConfiguracoesGerais = pg_num_rows($rsSqlConfiguracoesGerais);
+$iQtdeConfiguracoesGerais = $rsSqlConfiguracoesGerais === false || $rsSqlConfiguracoesGerais === null ? 0 : pg_num_rows($rsSqlConfiguracoesGerais);
 
 if($iQtdeConfiguracoesGerais > 0) {
 

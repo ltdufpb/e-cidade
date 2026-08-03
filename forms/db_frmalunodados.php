@@ -36,7 +36,7 @@ $clrotulo->label("ed47_municipioestrangeiro");
 if($db_opcao!=1 && @$ed47_i_codigo!=""){
  $sql = "SELECT ed56_i_escola as cod_escola FROM alunocurso WHERE ed56_i_aluno = $ed47_i_codigo";
  $query = db_query($sql);
- $linhas4 = pg_num_rows($query);
+ $linhas4 = $query === false || $query === null ? 0 : pg_num_rows($query);
  if($linhas4==0){
   $db_botao = true;
  }elseif(db_getsession("DB_coddepto")!=pg_fetch_result($query,0,0)){
@@ -147,7 +147,7 @@ if($db_opcao!=1 && @$ed47_i_codigo!=""){
             $oDaoTipoSanguineo   = new cl_tiposanguineo();
             $sSqlTipoSanguineo   = $oDaoTipoSanguineo->sql_query_file();
             $rsTipoSanguineo     = db_query( $sSqlTipoSanguineo );
-            $iTotalTipoSanguineo = pg_num_rows( $rsTipoSanguineo );
+            $iTotalTipoSanguineo = $rsTipoSanguineo === false || $rsTipoSanguineo === null ? 0 : pg_num_rows( $rsTipoSanguineo );
 
             for( $iContador = 0; $iContador < $iTotalTipoSanguineo; $iContador++ ) {
 

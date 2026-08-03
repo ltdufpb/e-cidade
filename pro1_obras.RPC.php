@@ -80,7 +80,7 @@ switch ($oParam->acao) {
         $retorno = $cl_obrasoutrosprop->sql_query_outrosprop(null, "ob32_numcgm, z01_nome", null, "ob32_codobra = {$oParam->codigo_obra}");
         $rsOutrosProp = $cl_obrasoutrosprop->sql_record($retorno);
 
-        $numeroProp = pg_num_rows($rsOutrosProp);
+        $numeroProp = $rsOutrosProp === false || $rsOutrosProp === null ? 0 : pg_num_rows($rsOutrosProp);
 
         if ($numeroProp > 0) {
 

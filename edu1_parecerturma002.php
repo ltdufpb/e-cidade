@@ -108,7 +108,7 @@ if (isset($alterar)) {
                   AND ed52_c_passivo = 'N'
                ORDER BY ed52_i_ano DESC";
        $sql_result = db_query($sql);
-       $linhas_result = pg_num_rows($sql_result);
+       $linhas_result = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
        while($row=pg_fetch_array($sql_result)){
         $cod_curso=$row["ed52_i_codigo"];
         $desc_curso=$row["ed52_c_descr"];
@@ -157,7 +157,7 @@ if (isset($alterar)) {
               ";
        $result = db_query($sql);
        //db_criatabela($result);
-       $linhas = pg_num_rows($result);
+       $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
        $ensino = "";
        $serie = "";
        $turma = "";

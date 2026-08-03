@@ -752,7 +752,7 @@ final class ProgressaoParcialAluno {
       throw new DBException( _M( URL_MENSAGEM_PROGRESSAOPARCIALALUNO . 'erro_buscar_vinculos_turma', $oErro ) );
     }
 
-    $iLinhasVinculos = pg_num_rows( $rsVinculos );
+    $iLinhasVinculos = $rsVinculos === false || $rsVinculos === null ? 0 : pg_num_rows( $rsVinculos );
 
     for ($iVinculos = 0; $iVinculos < $iLinhasVinculos; $iVinculos++) {
 

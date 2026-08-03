@@ -43,7 +43,7 @@ $sSqlFamilia .= "			where t64_analitica is false order by t64_codcla";
 //$sSqlFamilia .= "	order by t64_class asc";
 
 $rsFamilia     = db_query($sSqlFamilia);
-$iNumeroLinhas = pg_num_rows($rsFamilia);
+$iNumeroLinhas = $rsFamilia === false || $rsFamilia === null ? 0 : pg_num_rows($rsFamilia);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oFamilia = db_utils::fieldsMemory($rsFamilia,$i);

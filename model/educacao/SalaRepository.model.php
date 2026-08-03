@@ -129,7 +129,7 @@ class SalaRepository {
     }
 
     $aSalas  = [];
-    $iLinhas = pg_num_rows($rsDependencia);
+    $iLinhas = $rsDependencia === false || $rsDependencia === null ? 0 : pg_num_rows($rsDependencia);
 
     for ( $i = 0; $i < $iLinhas; $i++ ) {
       $aSalas[] = SalaRepository::getByCodigo(db_utils::fieldsMemory($rsDependencia, $i)->ed57_i_sala);

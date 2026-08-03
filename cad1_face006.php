@@ -44,7 +44,7 @@ if(isset($excluir)){
 
   $sql = "select * from testada where j36_face = $j37_face";
   $result = db_query($sql);
-  $linhas = pg_num_rows($result);
+  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
   if($linhas>0){
       $sqlerro=true;
       $erro_msg = "A face selecionada não pode ser excluida por estar ligada a $linhas testadas";

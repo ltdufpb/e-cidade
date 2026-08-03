@@ -425,7 +425,7 @@ $sSql .= "   where {$sWhere} {$sOrder}                                          
 $sSql .= "   ) as x                                                                                                   ";
 
 $rsSql = db_query($sSql);
-$iNumRownsSql = pg_num_rows($rsSql);
+$iNumRownsSql = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
 
 if ($iNumRownsSql == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.');
@@ -546,7 +546,7 @@ $sSqlDebitosPago .= "           divida.v01_exerc,                               
 $sSqlDebitosPago .= "           divida.v01_proced;                                              ";
 
 $rsDebitosPagos = db_query($sSqlDebitosPago);
-$iNroDebitosPagos = pg_num_rows($rsDebitosPagos);
+$iNroDebitosPagos = $rsDebitosPagos === false || $rsDebitosPagos === null ? 0 : pg_num_rows($rsDebitosPagos);
 
 for ($iInd = 0; $iInd < $iNroDebitosPagos; $iInd++) {
     $oDebitosPagos = db_utils::fieldsMemory($rsDebitosPagos, $iInd);

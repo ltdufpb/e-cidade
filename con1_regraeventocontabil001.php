@@ -382,7 +382,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                                         $sqlTipoRetencaoCalc = $daoTipoRetencaoCalc->sql_query_file(null,
                                             "e32_sequencial, e32_descricao");
                                         $rsTipoRetencaoCalc = $daoTipoRetencaoCalc->sql_record($sqlTipoRetencaoCalc);
-                                        $totalLinhas = pg_num_rows($rsTipoRetencaoCalc);
+                                        $totalLinhas = $rsTipoRetencaoCalc === false || $rsTipoRetencaoCalc === null ? 0 : pg_num_rows($rsTipoRetencaoCalc);
                                         $tipoCalculoRetencao[0] = "Selecione..";
                                         for ($i = 0; $i < $totalLinhas; $i++) {
 

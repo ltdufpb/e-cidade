@@ -119,7 +119,7 @@ function db_fputs($variavel,$conteudo){
 		  	     on s.codsequencia = a.codsequencia
 			     where codarq = ".$codarq.
 			  "order by a.seqarq");
-	  $Ncampos = pg_num_rows($campo);
+	  $Ncampos = $campo === false || $campo === null ? 0 : pg_num_rows($campo);
 	  if ($Ncampos > 0) {
              db_fputs($fd, "\n-- Módulo: ".trim((string) $nomemod)."\n");
              db_fputs($fd, "CREATE TABLE ".trim((string) $nomearq)."(\n");      
@@ -140,7 +140,7 @@ function db_fputs($variavel,$conteudo){
 				}else{
                   db_fputs($fd,trim(pg_fetch_result($campo,$j,"nomecam"))."\t\t".trim(pg_fetch_result($campo,$j,"conteudo"))." ".(trim(pg_fetch_result($campo,$j,"valorinicial"))!=""?"default '".pg_fetch_result($campo,$j,"valorinicial")."'":(pg_fetch_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_fetch_result($campo,$j,"nomesequencia")."')":"")).",\n");
                 }
-                $Npk = pg_num_rows($pk);
+                $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
                 $primary_key = "(";
                 $nomePK = trim((string) $nomearq)."_";
                 for($p = 0;$p < $Npk;$p++) {
@@ -196,7 +196,7 @@ function db_fputs($variavel,$conteudo){
                             where codarq = $codarq
                             group by referen");
           $nome = db_query("select nomearq from db_sysarquivo where codarq = $codarq");
-    $Ngrupo = pg_num_rows($grupo);
+    $Ngrupo = $grupo === false || $grupo === null ? 0 : pg_num_rows($grupo);
     for($j = 0;$j < $Ngrupo;$j++) {
       $fk = db_query("select pai.nomearq as t_pai,c.nomecam
                      from db_sysforkey f
@@ -208,7 +208,7 @@ function db_fputs($variavel,$conteudo){
                      and f.referen = ".pg_fetch_result($grupo,$j,"referen")."
                      order by f.sequen,f.referen");
       $NomeFK = trim(pg_fetch_result($nome,0,"nomearq"))."_";
-      $_f_ = pg_num_rows($fk);
+      $_f_ = $fk === false || $fk === null ? 0 : pg_num_rows($fk);
       $CampFK = "(";
       for($f = 0;$f < $_f_;$f++) {
         if($f == $_f_ - 1)

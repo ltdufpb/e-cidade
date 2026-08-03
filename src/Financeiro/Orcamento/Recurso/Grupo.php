@@ -19,7 +19,7 @@ class Grupo
         $dao = new \cl_recursogrupo();
         $busca = $dao->sql_query_file(null, "*", 2, "upper(o204_estado) = '{$estado}'");
         $resBusca = db_query($busca);
-        $totalRegistros = pg_num_rows($resBusca);
+        $totalRegistros = $resBusca === false || $resBusca === null ? 0 : pg_num_rows($resBusca);
         self::$itens = [];
         if ($totalRegistros > 0) {
             for ($row = 0; $row < $totalRegistros; $row++) {

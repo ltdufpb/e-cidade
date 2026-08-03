@@ -112,7 +112,7 @@
       throw new DBException("Erro ao consultar acordos.\n".pg_last_error());
     }
     $acordos       = [];
-    $iTotalAcordos = pg_num_rows($rsAcordos);
+    $iTotalAcordos = $rsAcordos === false || $rsAcordos === null ? 0 : pg_num_rows($rsAcordos);
     for ($iAcordo  = 0; $iAcordo < $iTotalAcordos; $iAcordo++) {
        $acordos[] = AcordoRepository::getByCodigo(db_utils::fieldsMemory($rsAcordos, $iAcordo)->ac16_sequencial);
     }

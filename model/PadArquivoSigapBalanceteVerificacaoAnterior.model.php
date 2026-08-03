@@ -79,7 +79,7 @@ final class PadArquivoSigapBalanceteVerificacaoAnterior extends PadArquivoSigap 
     if (PostgreSQLUtils::isTableExists("work_pl")) {
       db_query("drop table work_pl");
     }                                                
-    $iTotalLinhas  = pg_num_rows($rsBalancete);                                            
+    $iTotalLinhas  = $rsBalancete === false || $rsBalancete === null ? 0 : pg_num_rows($rsBalancete);                                            
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oBalancete = db_utils::fieldsMemory($rsBalancete, $i);

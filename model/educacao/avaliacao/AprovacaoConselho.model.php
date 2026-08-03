@@ -319,7 +319,7 @@ class AprovacaoConselho {
       throw new DBException( _M( URL_APROVCONSELHO . 'erro_buscar_aprovacao', $oErro ) );
     }
 
-    $iLinhasAprovConselho = pg_num_rows( $rsAprovConselho );
+    $iLinhasAprovConselho = $rsAprovConselho === false || $rsAprovConselho === null ? 0 : pg_num_rows( $rsAprovConselho );
 
 		$oDaoAprovConselho->ed253_i_diario    = $this->oAvaliacaoResultadoFinal->getCodigoDiario();
 		$oDaoAprovConselho->ed253_i_rechumano = '';
@@ -416,7 +416,7 @@ class AprovacaoConselho {
         throw new DBException( _M( URL_APROVCONSELHO . 'erro_buscar_tipo_aprovacao', $oErro ) );
       }
 
-	    $iLinhas = pg_num_rows( $rsAprovConselho );
+	    $iLinhas = $rsAprovConselho === false || $rsAprovConselho === null ? 0 : pg_num_rows( $rsAprovConselho );
 
 	    if ($iLinhas == 0) {
 	      throw new DBException( _M( URL_APROVCONSELHO . "base_desconfigurada_sem_tipo" ) );

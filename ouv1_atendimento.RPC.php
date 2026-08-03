@@ -364,7 +364,7 @@ if ( $oPost->sMethod == 'consultaDadosTipoProcesso') {
       $sWhereCidadaoTipoRet .= " and ov04_seq     = {$oCidadao->ov02_seq}        ";
       $sSqlCidadaoTipoRet    = $clCidadaoTipoRetorno->sql_query_file(null,"*",null,$sWhereCidadaoTipoRet);
       $rsCidadaoTipoRetorno  = $clCidadaoTipoRetorno->sql_record($sSqlCidadaoTipoRet);
-      $iNroCidadaoTipoRet    = pg_num_rows($rsCidadaoTipoRetorno);
+      $iNroCidadaoTipoRet    = $rsCidadaoTipoRetorno === false || $rsCidadaoTipoRetorno === null ? 0 : pg_num_rows($rsCidadaoTipoRetorno);
       $lIncluiEnder          = true;
       
       if ( $iNroCidadaoTipoRet > 0 ) {

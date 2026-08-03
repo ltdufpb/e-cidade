@@ -71,7 +71,7 @@ if ($opcao == 'erros') {
 $sSql .= " order by idret, numpre, k00_numpar ";
 
 $result = db_query($sSql) or die($sSql);
-$num    = pg_num_rows($result);
+$num    = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $sSqlInstituicao = " select disarq.*, nome
                        from disarq
@@ -205,7 +205,7 @@ order by debitos.k00_numpre,
          debitos.k00_receit";
 
 $resultrec = db_query($sqlrec);
-$linhasrec = pg_num_rows($resultrec);
+$linhasrec = $resultrec === false || $resultrec === null ? 0 : pg_num_rows($resultrec);
 
   if($pdf->GetY() > ( $pdf->h - 30 )||($primeiro ==0)){
 

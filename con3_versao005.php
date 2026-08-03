@@ -159,7 +159,7 @@ $sql .= "
 
 $res = db_query($sql);
 
-$numrows = pg_num_rows($res);
+$numrows = $res === false || $res === null ? 0 : pg_num_rows($res);
 
 
 for($i=0;$i<$numrows;$i++){

@@ -125,7 +125,7 @@ if( $dt_fim != db_getsession('DB_anousu')."-01-01" ){
 
   $result1 = db_receitasaldo(11,2,3,true," o70_codrec in $w ",$anousu,$dt_ini,$dt_fim);
 
-  $rows = pg_num_rows($result1);
+  $rows = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
   if( $rows == 0 ) {
     db_redireciona("db_erros.php?fechar=true&db_erro=Não existem dados para gerar a consulta ! ok  in $w $anousu,$dt_ini,$dt_fim");
   }
@@ -142,7 +142,7 @@ if( $dt_fim != db_getsession('DB_anousu')."-01-01" ){
 $result2 = db_receitasaldo(11,2,3,true," o70_codrec in $w ",$anousu,$data1,$data2);
 
 
-$rows = pg_num_rows($result2);
+$rows = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 if( $rows == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dados para gerar a consulta ! ');
 }

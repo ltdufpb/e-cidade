@@ -74,7 +74,7 @@
   $pdf->setX(5);
 
   $clrotulolov = new rotulolov; 
-  $fm_numfields = pg_num_fields($resultsql); //campos de cada linha do resultser
+  $fm_numfields = $resultsql === false || $resultsql === null ? 0 : pg_num_fields($resultsql); //campos de cada linha do resultser
    
   $linha = 0;
   for ($xi=0;$xi<pg_num_rows($resultsql);$xi++)

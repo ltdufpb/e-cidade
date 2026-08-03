@@ -79,7 +79,7 @@ final class PadArquivoSigapCredor extends PadArquivoSigap {
     $sSqlCredor .= "  from cgm";
     $sSqlCredor .= "       inner join empempenho on e60_numcgm = z01_numcgm";
     $rsCredor    = db_query($sSqlCredor);
-    $iTotalLinhas = pg_num_rows($rsCredor);
+    $iTotalLinhas = $rsCredor === false || $rsCredor === null ? 0 : pg_num_rows($rsCredor);
 
     $aCnpjsIncluidos = [];
     $this->addLog("\n".str_repeat("-", 30)."\nCredor\n");

@@ -54,7 +54,7 @@ $buscaParcelamento = db_query($sqlParcelamento);
 if (!$buscaParcelamento) {
     die("Não foi possível pesquisar os dados do parcelamento. " . pg_last_error());
 }
-$totalRegistros = pg_num_rows($buscaParcelamento);
+$totalRegistros = $buscaParcelamento === false || $buscaParcelamento === null ? 0 : pg_num_rows($buscaParcelamento);
 
 try {
     $custas = buscarCustas($codigosParcelamentos);
@@ -944,7 +944,7 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
             $rsTotalInicial = db_query($sqlTotal);
 
             if ($rsTotalInicial != false) {
-                $intNumrows = pg_num_rows($rsTotalInicial);
+                $intNumrows = $rsTotalInicial === false || $rsTotalInicial === null ? 0 : pg_num_rows($rsTotalInicial);
 
                 if ($rsTotalInicial != false && $intNumrows > 0) {
                     $totalInicial = pg_fetch_object($rsTotalInicial, 0);

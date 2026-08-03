@@ -136,7 +136,7 @@ if ($oParam->exec == "isExtra") {
   $sSqlTabPlan     .= "   where k02_reduz  = {$oParam->conta}                                                         ";
   $sSqlTabPlan     .= "     and k02_anousu = {$iAnoUsu}                                                               ";
   $rsSqlTabPlan     = db_query($sSqlTabPlan);
-  $iNumRows         = pg_num_rows($rsSqlTabPlan);
+  $iNumRows         = $rsSqlTabPlan === false || $rsSqlTabPlan === null ? 0 : pg_num_rows($rsSqlTabPlan);
   if ($iNumRows == 0) {
     $oRetorno->status = 2;
   } else {
@@ -618,7 +618,7 @@ if ($oParam->exec == "isExtra") {
   $sSqlSaldoConta  .= "    and k02_anousu = {$iAnoUsu}                                                                ";
 
   $rsSqlSaldoConta  = db_query($sSqlSaldoConta);
-  $iNumRows         = pg_num_rows($rsSqlSaldoConta);
+  $iNumRows         = $rsSqlSaldoConta === false || $rsSqlSaldoConta === null ? 0 : pg_num_rows($rsSqlSaldoConta);
   if ($iNumRows == 0) {
   	$oRetorno->status = 2;
   } else {

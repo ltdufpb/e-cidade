@@ -102,7 +102,7 @@ $sql="select issbase.*,
       order by issalvara.q123_sequencial desc limit 1 ";
 
 $result  = db_query($sql) or die($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 if($numrows>0){
   db_fieldsmemory($result,0,true);
@@ -466,7 +466,7 @@ for ($i = 0;$i < $numrows;$i++){
 
      $sqlzona    = "select * from isszona inner join zonas on j50_zona = q35_zona where q35_inscr = $q02_inscr";
      $resultzona = db_query($sqlzona);
-     $linhaszona = pg_num_rows($resultzona);
+     $linhaszona = $resultzona === false || $resultzona === null ? 0 : pg_num_rows($resultzona);
      if($linhaszona>0){
        db_fieldsmemory($resultzona,0);
      }
@@ -573,7 +573,7 @@ $sql = "select q07_ativ,
         ";
 
 $result  = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $pdf->setX(5);
 $pdf->SetFont('Arial','B',9);
@@ -642,7 +642,7 @@ $sql="select cgmsocio.z01_numcgm,
 	     inner join cgm cgmempresa on cgmempresa.z01_numcgm = q02_numcgm where q95_tipo in (1,2,3) and q02_inscr =$inscr";
 
 $result = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $pdf->Cell(200,2,"","",1,"C",0);
 $pdf->setX(5);
@@ -681,7 +681,7 @@ else{
 
 $sql     = "select * from aidof left join aidofproc on y02_aidof = y08_codigo where y08_inscr = $inscr";
 $result  = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $pdf->Cell(200,2,"","",1,"C",0);
 $pdf->setX(5);
@@ -750,7 +750,7 @@ $sql .= "       LEFT JOIN issmotivobaixa     ON issmotivobaixa.q42_sequencial = 
 $sql .= " WHERE isscadsimples.q38_inscr = {$inscr}                                                                     ";
 
 $result  = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $pdf->Cell(200,2,"","",1,"C",0);
 $pdf->setX(5);
 $pdf->SetFont('Arial','B',$titulo);
@@ -810,7 +810,7 @@ $sSqlMovAlvara .= "       where q123_inscr = {$inscr}                           
 $sSqlMovAlvara .= "      order by q120_sequencial desc                                                                          ";
 
 $result = db_query($sSqlMovAlvara);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $pdf->Cell(200,2,"","",1,"C",0);
 $pdf->setX(5);
@@ -860,7 +860,7 @@ $sSqlParalisacoes = "select
                     where q140_issbase = $inscr";
 
 $result = db_query($sSqlParalisacoes);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $pdf->Cell(200,2,"","",1,"C",0);
 $pdf->setX(5);

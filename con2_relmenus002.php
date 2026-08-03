@@ -56,7 +56,7 @@ $sql = "select m.id_item,nome_modulo
 
 $res = db_query($sql);
 
-$numrows = pg_num_rows($res);
+$numrows = $res === false || $res === null ? 0 : pg_num_rows($res);
 
 for($i=0;$i<$numrows;$i++){
     
@@ -94,7 +94,7 @@ for($i=0;$i<$numrows;$i++){
                   where id_item = ".$impmat[$imp]." and itemativo = 1";
           //echo "$sql";
           $resi = db_query($sql);
-          $linhas = pg_num_rows($resi);
+          $linhas = $resi === false || $resi === null ? 0 : pg_num_rows($resi);
           if($linhas >0){
             $descr = pg_fetch_result($resi,0,0);
 	          //$pdf->Cell($imp*5,4,$matriz_item_seleciona[$x],0,0,"L");

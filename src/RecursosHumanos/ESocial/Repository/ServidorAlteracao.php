@@ -78,7 +78,7 @@ class ServidorAlteracao extends \BaseClassRepository
         if (!$rs) {
             throw new DBException("Erro ao buscar informações de datas de alteração da matícula {$matricula}.");
         }
-        $total = pg_num_rows($rs);
+        $total = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         $retorno = [];
         for ($i = 0; $i < $total; $i++) {
             $retorno[] = self::get(db_utils::fieldsMemory($rs, $i)->eso38_sequencial);

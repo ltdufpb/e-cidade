@@ -176,7 +176,7 @@ $textodt = strtoupper(db_mes($dtd1[1]))." A ".strtoupper(db_mes($dtd2[1]))." DE 
  */
 $sTodasInstit  = '';
 $rsResultInst  = db_query("select codigo, munic, db21_tipoinstit from db_config");
-$numrowsinstit = pg_num_rows($rsResultInst);
+$numrowsinstit = $rsResultInst === false || $rsResultInst === null ? 0 : pg_num_rows($rsResultInst);
 $virgula       = "";
 for ($x = 0; $x < $numrowsinstit; $x ++) {
 	

@@ -367,8 +367,8 @@ if ($modelo == 1) {
 	
 	$denominacaoexercicio = $anos;
 	$exercicio = $anos;
-	$totalopcoespagamento = pg_num_rows ( $resulttipoparc );
-	$parcelamentoreceb = pg_num_rows ( $resulttipoparc );
+	$totalopcoespagamento = $resulttipoparc === false || $resulttipoparc === null ? 0 : pg_num_rows ( $resulttipoparc );
+	$parcelamentoreceb = $resulttipoparc === false || $resulttipoparc === null ? 0 : pg_num_rows ( $resulttipoparc );
 	$valorminimo = 0;
 	$juros = 0;
 	$quantidadedatas = 0;
@@ -825,8 +825,8 @@ if ($modelo == 1) {
 			$identificacaoguia = $processados;
 			$emissaoguia = date ( "Y-m-d", db_getsession ( "DB_datausu" ) );
 			$validadeguia = $maxvenc;
-			$totalopcoespag = pg_num_rows ( $resulttipoparc );
-			$parcelasrecebimento = pg_num_rows ( $resulttipoparc );
+			$totalopcoespag = $resulttipoparc === false || $resulttipoparc === null ? 0 : pg_num_rows ( $resulttipoparc );
+			$parcelasrecebimento = $resulttipoparc === false || $resulttipoparc === null ? 0 : pg_num_rows ( $resulttipoparc );
 			$valortotalreceb = $k22_vlrcor + $k22_encargos;
 			$indicadorendcorresp = "C";
 			$codatividadecontrib = "";

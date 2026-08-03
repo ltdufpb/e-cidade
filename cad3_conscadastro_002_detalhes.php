@@ -343,7 +343,7 @@ table.form-container tr td {
 		                         where j47_codigo = $j46_codigo
                           order by j47_anousu ");
 
-	  $numrows = pg_num_rows($result_lim);
+	  $numrows = $result_lim === false || $result_lim === null ? 0 : pg_num_rows($result_lim);
 
 	  if ($numrows > 0) {
   ?>
@@ -2264,7 +2264,7 @@ order by iptucalc.j23_anousu desc
   <?php
    $sqlreg = " select * from iptubaseregimovel inner join setorregimovel on j69_sequencial = j04_setorregimovel where j04_sequencial = $parametro";
 					    $resultreg = db_query($sqlreg);
-					    $linhasreg = pg_num_rows($resultreg);
+					    $linhasreg = $resultreg === false || $resultreg === null ? 0 : pg_num_rows($resultreg);
 					    if($linhasreg>0){
 					      db_fieldsmemory($resultreg,0);
 					      ?>

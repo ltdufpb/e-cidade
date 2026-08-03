@@ -96,7 +96,7 @@ class DotacaoConLicitaCon extends ArquivoLicitaCon {
       throw new DBException($sMensagem);
     }
 
-    $iQuantidadeContratos = pg_num_rows($rsContratos);
+    $iQuantidadeContratos = $rsContratos === false || $rsContratos === null ? 0 : pg_num_rows($rsContratos);
     for ($iContrato = 0; $iContrato < $iQuantidadeContratos; $iContrato++) {
 
       $oStdContrato  = db_utils::fieldsMemory($rsContratos, $iContrato);

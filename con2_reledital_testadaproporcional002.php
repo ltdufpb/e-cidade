@@ -194,7 +194,7 @@ for( $i = 0; $i < $iNumrows; $i++ ) {
       $total_testada   = $objSomaTestada->total_testada;
     }
 
-    $iNumrowsMatricula = pg_num_rows($rsMatriculas);
+    $iNumrowsMatricula = $rsMatriculas === false || $rsMatriculas === null ? 0 : pg_num_rows($rsMatriculas);
 
     $linha = 60;
 

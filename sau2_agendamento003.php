@@ -68,7 +68,7 @@ $sSqlAgendamento = $oDaoAgendamentos->sql_query_ext('', '*', $sOrderBy, $sWhere)
 $rsAgendamento   = $oDaoAgendamentos->sql_record($sSqlAgendamento);
 
 $aAgendas = [];
-$iLinhas  = pg_num_rows($rsAgendamento);
+$iLinhas  = $rsAgendamento === false || $rsAgendamento === null ? 0 : pg_num_rows($rsAgendamento);
 for ($i = 0; $i < $iLinhas; $i++ ) {
 
   $oDados = db_utils::fieldsMemory($rsAgendamento, $i);

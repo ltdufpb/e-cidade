@@ -132,7 +132,7 @@ if (0 == count($clpostgresqlutils->getTableIndexes('debitos'))) {
             $arrayDatas = [];
             $sqlDataDebitos = "select distinct k115_data from datadebitos where k115_instit = $instit order by k115_data desc";
             $rsDataDebitos = db_query($sqlDataDebitos);
-            $intDatas = pg_num_rows($rsDataDebitos);
+            $intDatas = $rsDataDebitos === false || $rsDataDebitos === null ? 0 : pg_num_rows($rsDataDebitos);
 
             if ($intDatas > 0) {
                 for ($i = 0; $i < $intDatas; ++$i) {

@@ -92,7 +92,7 @@ try {
   	  }
 
   	  $oRetorno->aContasAnterior = [];
-  	  $iTotalContas              = pg_num_rows( $rsContasPlanoAnterior );
+  	  $iTotalContas              = $rsContasPlanoAnterior === false || $rsContasPlanoAnterior === null ? 0 : pg_num_rows( $rsContasPlanoAnterior );
 
   	  for ( $iContador = 0; $iContador < $iTotalContas; $iContador++ ) {
 

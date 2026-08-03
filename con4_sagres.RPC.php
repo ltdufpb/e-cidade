@@ -219,7 +219,7 @@ switch($oParam->exec) {
             $oRetorno->rows = [];
 
             if($rsRows) {   
-                $numrows = pg_num_rows($rsRows);
+                $numrows = $rsRows === false || $rsRows === null ? 0 : pg_num_rows($rsRows);
                 for($i = 0; $i < $numrows; $i++) {
                     $oDados = db_utils::fieldsMemory($rsRows, $i);
 
@@ -374,7 +374,7 @@ switch($oParam->exec) {
             $oRetorno->rows = [];
 
             if($rsRows) {
-                $numrows = pg_num_rows($rsRows);
+                $numrows = $rsRows === false || $rsRows === null ? 0 : pg_num_rows($rsRows);
                 for($i = 0; $i < $numrows; $i++) {
                     $oDados = db_utils::fieldsMemory($rsRows, $i);
 

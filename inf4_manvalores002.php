@@ -96,7 +96,7 @@ function mo_camada(camada,mostra){
             }
           $matriz = [];
           
-          $iNumRows = pg_num_rows($result);
+          $iNumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
           if ($dias_mes > $iNumRows) {
           	$dias_mes = $iNumRows;          	
           }

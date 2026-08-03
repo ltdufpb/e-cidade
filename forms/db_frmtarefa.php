@@ -111,7 +111,7 @@ else {
 	<table border="0">
 		<tr><td colspan="3" height="20"><b>Solicitante(s):</b></td></tr>
 <?php 
-		$NumFields = pg_num_fields($result);
+		$NumFields = $result === false || $result === null ? 0 : pg_num_fields($result);
 		for($i = 0; $i < $cltarefasolic->numrows; $i++) {
 			db_fieldsmemory($result,$i);
 			for($j = 0; $j < $NumFields; $j++) {
@@ -243,7 +243,7 @@ if (@$codmod != 0) {
 		$sqlproced = "select * from tarefasyscadproced where at37_tarefa = $at40_sequencial";
 		
 		$resultproced = db_query($sqlproced);
-		$linhasproced= pg_num_rows($resultproced);
+		$linhasproced= $resultproced === false || $resultproced === null ? 0 : pg_num_rows($resultproced);
 		if ($linhasproced>0){
 			db_fieldsmemory($resultproced, 0);
 			$codproced = $at37_syscadproced;
@@ -744,8 +744,8 @@ function retorna_diafinal($mes,$ano) {
 
 function db_grid($sql) {
 	$result    = @db_query($sql);
-	$NumRows   = @pg_num_rows($result);
-	$NumFields = @pg_num_fields($result);
+	$NumRows   = $result === false || $result === null ? 0 : @pg_num_rows($result);
+	$NumFields = $result === false || $result === null ? 0 : @pg_num_fields($result);
 	
 //	echo $sql;
 

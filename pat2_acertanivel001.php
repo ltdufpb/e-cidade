@@ -54,7 +54,7 @@ if(isset($emite2)){
                   from clabens 
                   where t64_class ilike '$estrutural%' and t64_instit = $iInstituicao ";
     $res_nivel = db_query($sql_nivel) or die($sql_nivel);
-    $num_nivel = pg_num_rows($res_nivel);
+    $num_nivel = $res_nivel === false || $res_nivel === null ? 0 : pg_num_rows($res_nivel);
     for($yy = 0; $yy < $num_nivel ; $yy++){
       db_fieldsmemory($res_nivel, $yy);
       $sql_ins_nivel = "insert into clabensconplano values(nextval('clabensconplano_t86_sequencial_seq'),
@@ -86,7 +86,7 @@ function nivel_conta($estrutura){
   
   $res_nivel = db_query($sql_nivel);
 
-  $num_nivel = pg_num_rows($res_nivel);
+  $num_nivel = $res_nivel === false || $res_nivel === null ? 0 : pg_num_rows($res_nivel);
      
   
   for($x = 0 ; $x < $num_nivel ; $x++ ){

@@ -1866,7 +1866,7 @@ class lancamentoContabil
             throw new DBException("Houve um erro ao verificar os lançamentos de apropriação.");
         }
 
-        $iLinhas = pg_num_rows($rsApropriacao);
+        $iLinhas = $rsApropriacao === false || $rsApropriacao === null ? 0 : pg_num_rows($rsApropriacao);
         $aTesourariaExcluida = [];
         for ($i = 0; $i < $iLinhas; $i++) {
 

@@ -409,7 +409,7 @@ class ContraChequeWebService {
     }
 
     $rsResult = db_query($sSql);
-    $iNumRow  = pg_num_rows($rsResult);
+    $iNumRow  = $rsResult === false || $rsResult === null ? 0 : pg_num_rows($rsResult);
 
     /**
      * Se n?o trazer nenhum registro.
@@ -567,7 +567,7 @@ class ContraChequeWebService {
     $oPDF->url              = $sUrl;
     $oPDF->estrutural         = $oServidor->estrutural;
     $oPDF->recordenvelope   = $rsResult;
-    $oPDF->linhasenvelope   = pg_num_rows($rsResult);
+    $oPDF->linhasenvelope   = $rsResult === false || $rsResult === null ? 0 : pg_num_rows($rsResult);
     $oPDF->valor            = 'valor';
     $oPDF->quantidade       = 'quantidade';
     $oPDF->tipo             = 'tipoevento';

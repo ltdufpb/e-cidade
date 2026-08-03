@@ -418,7 +418,7 @@ try {
                     if (!$rs) {
                         throw new DBException("Erro ao buscar informações da matrículas da seleção.");
                     }
-                    $qtd = pg_num_rows($rs);
+                    $qtd = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
                     for ($i = 0; $i < $qtd; $i++) {
                         $registro = \db_utils::fieldsMemory($rs, $i);
                         $matriculas[] = $registro->matricula;

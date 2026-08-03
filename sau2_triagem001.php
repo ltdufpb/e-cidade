@@ -46,7 +46,7 @@ $sql_pront = "select *
                order by sd24_i_unidade, sd24_i_codigo";
 
 $query_pront = @db_query($sql_pront) or die(pg_last_error());
-$linhas = @pg_num_rows($query_pront);
+$linhas = $query_pront === false || $query_pront === null ? 0 : @pg_num_rows($query_pront);
 if($linhas == 0){
  echo "<table width='100%'>
         <tr>

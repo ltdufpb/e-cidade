@@ -682,7 +682,7 @@ try{
   	$alt = 4;
   	$b = 0;
   	$rsRecibo = db_query("select * from recibo inner join tabrec on k00_receit = k02_codigo where k00_numpre = $k03_numpre");
-  	$intNumrows = pg_num_rows($rsRecibo);
+  	$intNumrows = $rsRecibo === false || $rsRecibo === null ? 0 : pg_num_rows($rsRecibo);
   	if ($intNumrows == 0) {
   		throw new BusinessException("Recibo não cadastrado");
   	}

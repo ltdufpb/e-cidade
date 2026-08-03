@@ -115,7 +115,7 @@ class AdministracaoMedicamentoRepository {
       throw new Exception("Erro ao consultar dados da administração");
     }
     $aAdministracoesNAFaa = [];
-    $iTotalLinhas = pg_num_rows($rsAdministracoesMedicamento);
+    $iTotalLinhas = $rsAdministracoesMedicamento === false || $rsAdministracoesMedicamento === null ? 0 : pg_num_rows($rsAdministracoesMedicamento);
     for ($iAdministracao = 0; $iAdministracao < $iTotalLinhas; $iAdministracao++) {
 
       $iCodigoAdministracao   = db_utils::fieldsMemory($rsAdministracoesMedicamento, $iAdministracao)->sd106_administracaomedicamento;

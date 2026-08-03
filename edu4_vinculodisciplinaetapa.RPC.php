@@ -92,7 +92,7 @@ try {
                 throw new DBException(_M(URLMSG_VINCULODISCIPLINAETAPA . "nenhuma_serie_encontrada", $oMsgErro));
             }
 
-            $iLinhas = pg_num_rows($rsSeries);
+            $iLinhas = $rsSeries === false || $rsSeries === null ? 0 : pg_num_rows($rsSeries);
             $oRetorno->aEtapas = [];
 
             for ($i = 0; $i < $iLinhas; $i++) {
@@ -146,7 +146,7 @@ try {
 
             $oRetorno->lTemDisciplinaGlobalizada = false;
 
-            $iLinhas      = pg_num_rows($rsBaseMps);
+            $iLinhas      = $rsBaseMps === false || $rsBaseMps === null ? 0 : pg_num_rows($rsBaseMps);
             $aDisciplinas = [];
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDados      = db_utils::fieldsMemory($rsBaseMps, $i);
@@ -363,7 +363,7 @@ try {
           /**
            * Armazena os dados das disciplinas inclusas para base curricular
            */
-            $iLinhas      = pg_num_rows($rsBaseMps);
+            $iLinhas      = $rsBaseMps === false || $rsBaseMps === null ? 0 : pg_num_rows($rsBaseMps);
             $aDisciplinasBase   = [];
             $aCodigoDisciplinas = [];
             for ($i = 0; $i < $iLinhas; $i++) {

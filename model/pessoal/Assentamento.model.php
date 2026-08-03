@@ -935,7 +935,7 @@ class Assentamento
         }
 
         /* caso não exista horas lançadas para o assentamento de natureza HE Manual */
-        $totalRegistrosLancados = pg_num_rows($resBuscaHorasExtras);
+        $totalRegistrosLancados = $resBuscaHorasExtras === false || $resBuscaHorasExtras === null ? 0 : pg_num_rows($resBuscaHorasExtras);
         if ($totalRegistrosLancados === 0) {
             return $horasRetorno;
         }
@@ -965,7 +965,7 @@ class Assentamento
         }
 
         /* caso não exista horas lançadas para o assentamento de natureza HE Manual */
-        $totalRegistrosLancados = pg_num_rows($rsBuscaHorasExtras);
+        $totalRegistrosLancados = $rsBuscaHorasExtras === false || $rsBuscaHorasExtras === null ? 0 : pg_num_rows($rsBuscaHorasExtras);
         if ($totalRegistrosLancados > 0) {
 
             return db_utils::makeFromRecord($rsBuscaHorasExtras, fn($retorno) => (object)[

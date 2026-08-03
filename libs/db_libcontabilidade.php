@@ -1928,7 +1928,7 @@ class cl_translan extends cl_contranslan
             $sSqlContaCreditoLiquidacao .= "   and c47_instit  = {$iInstituicaoSessao}";
             $sSqlContaCreditoLiquidacao .= "  {$sWhereConta}";
             $result = @db_query($sSqlContaCreditoLiquidacao);
-            $numrows = @pg_num_rows($result);
+            $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
             if ($numrows == 0) {
                 throw new Exception('Lançamento de ordem 1 sem conta a credito para lançamento. Verifique conta PCASP ' . $codele);
             }
@@ -2349,7 +2349,7 @@ class cl_translan extends cl_contranslan
             $sSqlContaCreditoLiquidacao .= "   and c47_instit  = {$iInstituicaoSessao}";
             $sSqlContaCreditoLiquidacao .= "  {$sWhereConta}";
             $result = @db_query($sSqlContaCreditoLiquidacao);
-            $numrows = @pg_num_rows($result);
+            $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
             if ($numrows == 0) {
                 throw new Exception('Lançamento de ordem 1 sem conta a credito para lançamento. Verifique conta PCASP ' . $codele);
             }
@@ -2559,7 +2559,7 @@ class cl_translan extends cl_contranslan
         //----------------------------------------------------------------------
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
         if ($numrows > 0) {
             $e91_codtipo = @pg_fetch_result($result, 0, 0);
         } else {
@@ -2676,7 +2676,7 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
         if ($numrows > 0) {
             $e91_codtipo = @pg_fetch_result($result, 0, 0);
         } else {
@@ -2773,7 +2773,7 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
         if ($numrows > 0) {
             $e91_codtipo = @pg_fetch_result($result, 0, 0);
         } else {
@@ -2818,7 +2818,7 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu = " . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
         if ($numrows > 0) {
             $e91_codtipo = @pg_fetch_result($result, 0, 0);
         } else {
@@ -2867,7 +2867,7 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e60_anousu from empempenho where e60_numemp=$numemp";
         $result = @db_query($sql);
-        $numrows = @pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
         if ($numrows > 0) {
             $anousu = @pg_fetch_result($result, 0, 0);
         } else {
@@ -2877,7 +2877,7 @@ class cl_translan extends cl_contranslan
 
         $sql = "select e91_codtipo from empresto where e91_numemp=$numemp and e91_anousu=" . db_getsession("DB_anousu");
         $result = @db_query($sql);
-        $numrows = @pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
         if ($numrows > 0) {
             $e91_codtipo = @pg_fetch_result($result, 0, 0);
         } else {
@@ -2897,7 +2897,7 @@ class cl_translan extends cl_contranslan
 
         // db_criatabela($result);
 
-        $numrows = @pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
         if ($numrows > 0) {
             $cont = 0;
             for ($i = 0; $i < $numrows; $i++) {
@@ -2951,7 +2951,7 @@ class cl_translan extends cl_contranslan
       c46_obrigatorio ='t'
       ";
             $result = @db_query($sql);
-            $numrows = pg_num_rows($result);
+            $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
             if ($numrows > 0) {
                 $qtd_obrigatoria = pg_fetch_result($result, 0, 0);
                 if ($qtd_obrigatoria != sizeof($arr_obrigatorio)) {
@@ -6100,7 +6100,7 @@ function db_conplano_grupo($anousu = null, $estrut = "", $grupo = 0)
 
     $sql_result = analiseQueryPlanoOrcamento("select fc_conplano_grupo($anousu, '$estrut', $grupo) as retorno");
     $result = db_query($sql_result);
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     if ($numrows != 0) {
         $retorno = pg_fetch_result($result, 0, 0);
         if ($retorno == 't') {
@@ -6213,7 +6213,7 @@ function db_varPatrimoniaisRpps($anousu, $dataini, $datafin, $iInstit)
     //
     $sSqlFiltro = ' o70_instit = ' . $iInstit;
     $rsReceitaSaldo = db_receitasaldo(3, 1, 3, true, $sSqlFiltro, $anousu, $dataini, $datafin);
-    $iNumrowsReceita = pg_num_rows($rsReceitaSaldo);
+    $iNumrowsReceita = $rsReceitaSaldo === false || $rsReceitaSaldo === null ? 0 : pg_num_rows($rsReceitaSaldo);
     //   db_criatabela($rsReceitaSaldo);exit;
 
     for ($i = 0; $i < $iNumrowsReceita; $i++) {
@@ -6243,7 +6243,7 @@ function db_varPatrimoniaisRpps($anousu, $dataini, $datafin, $iInstit)
     //
     $sCondicaoDotacao = 'w.o58_instit = ' . $iInstit;
     $rsDotacaoSaldo = db_dotacaosaldo(7, 3, 4, true, $sCondicaoDotacao, $anousu, $dataini, $datafin);
-    $iNumRowsDotacaoSaldo = pg_num_rows($rsDotacaoSaldo);
+    $iNumRowsDotacaoSaldo = $rsDotacaoSaldo === false || $rsDotacaoSaldo === null ? 0 : pg_num_rows($rsDotacaoSaldo);
     //db_criatabela($rsDotacaoSaldo); exit;
 
     for ($i = 0; $i < $iNumRowsDotacaoSaldo; $i++) {
@@ -6266,7 +6266,7 @@ function db_varPatrimoniaisRpps($anousu, $dataini, $datafin, $iInstit)
     //
     $sCondicaoConta = ' c61_instit = ' . $iInstit;
     $rsContaSaldo = db_planocontassaldo_matriz($anousu, $dataini, $datafin, false, $sCondicaoConta);
-    $iNumRowsContaSaldo = pg_num_rows($rsContaSaldo);
+    $iNumRowsContaSaldo = $rsContaSaldo === false || $rsContaSaldo === null ? 0 : pg_num_rows($rsContaSaldo);
     //db_criatabela($rsContaSaldo); exit;
 
     for ($i = 0; $i < $iNumRowsContaSaldo; $i++) {

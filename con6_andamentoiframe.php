@@ -74,7 +74,7 @@
   					 o.codordem not in(select codordem from db_ordemfim) order by dataprev ".(@$ordem==""?"desc":@$ordem)."");
 							   
 							   
-  $num = pg_num_rows($result);
+  $num = $result === false || $result === null ? 0 : pg_num_rows($result);
   if ($num==0) {
     echo "
           <table width=\"100%\" border=\"1\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">
@@ -108,7 +108,7 @@
 													    where o.codordem = $ordemAtual
 														order by o.dtini, o.codandam
 													   ");
-	   $numReg = pg_num_rows($selecionaDestinatarioUltimoAndamento);
+	   $numReg = $selecionaDestinatarioUltimoAndamento === false || $selecionaDestinatarioUltimoAndamento === null ? 0 : pg_num_rows($selecionaDestinatarioUltimoAndamento);
 	   if ($numReg > 1) {
 	     $nomeUltimoDestinatario = pg_fetch_result($selecionaDestinatarioUltimoAndamento,$numReg-2,"nome");
 		 $tag = "<td onclick=\"abreJanelaAndamentos($ordemAtual)\">+</td>";
@@ -125,7 +125,7 @@
 	   if ($i%2==0) {$cor="#97B5E6";} else {$cor="#E796A4";}
 	   // mostra imagem com link sinalizando que esta ordem tem arquivo anexo.
 	   $pesquisaImagem = db_query("select codordem from db_ordemimagens where codordem = $ordemAtual limit 1");
-	   $numPesquisaImagem = pg_num_rows($pesquisaImagem);
+	   $numPesquisaImagem = $pesquisaImagem === false || $pesquisaImagem === null ? 0 : pg_num_rows($pesquisaImagem);
 	   if ($numPesquisaImagem == 0) {
 	     $tagAnexo = "<td>&nbsp;</td>";
 	   } else {

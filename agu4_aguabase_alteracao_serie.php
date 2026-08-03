@@ -118,7 +118,7 @@ if(isset($processa)) {
 		and     caracter.j31_grupo  in (82, 83)";
 
 	$result = db_query($sql);
-	$rows = pg_num_rows($result);
+	$rows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 	if($rows == 0) {
 		termo("Nenhum registro encontrado com base nos criterios selecionados");

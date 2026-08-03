@@ -929,7 +929,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
         $sql3 .= " ORDER BY ed62_i_anoref DESC, ed11_i_sequencia desc";
 
         $result3 = db_query($sql3);
-        $linhas3 = pg_num_rows($result3);
+        $linhas3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
         ?>
         <tr>
           <td valign="top" >

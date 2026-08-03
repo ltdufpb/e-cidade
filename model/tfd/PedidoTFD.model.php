@@ -400,7 +400,7 @@ final class PedidoTFD {
     }
 
     $aDadosSaida  = [];
-    $iTotalSaidas = pg_num_rows( $rsPedidoTFD );
+    $iTotalSaidas = $rsPedidoTFD === false || $rsPedidoTFD === null ? 0 : pg_num_rows( $rsPedidoTFD );
 
     for( $iContador = 0; $iContador < $iTotalSaidas; $iContador++ ) {
 

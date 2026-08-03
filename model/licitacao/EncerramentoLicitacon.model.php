@@ -84,7 +84,7 @@ class EncerramentoLicitacon {
       throw new DBException("Houve um erro ao buscar as licitações para o encerramento do LicitaCon.");
     }
 
-    $iTotalLicitacoes = pg_num_rows($rsLicitacoesEncerrar);
+    $iTotalLicitacoes = $rsLicitacoesEncerrar === false || $rsLicitacoesEncerrar === null ? 0 : pg_num_rows($rsLicitacoesEncerrar);
 
     if(empty($iTotalLicitacoes)) {
       throw new BusinessException("Não há licitações a confirmar o envio.");
@@ -131,7 +131,7 @@ class EncerramentoLicitacon {
       throw new DBException("Houve um error ao buscar os Acordos para o encerramento do LicitaCon.");
     }
 
-    $iTotalAcordos = pg_num_rows($rsAcordoEncerados);
+    $iTotalAcordos = $rsAcordoEncerados === false || $rsAcordoEncerados === null ? 0 : pg_num_rows($rsAcordoEncerados);
     for ($iIndice = 0; $iIndice < $iTotalAcordos; $iIndice++) {
 
       $oAcordo = db_utils::fieldsMemory($rsAcordoEncerados, $iIndice);

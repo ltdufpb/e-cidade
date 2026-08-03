@@ -55,13 +55,13 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 
     $sql1="select c71_codlan from conlancamdoc where c71_codlan=$c70_codlan";
     $result1=db_query($sql1);
-    $linhas1=pg_num_rows($result1);
+    $linhas1=$result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
     if ($linhas1 > 0){
 
         $sql2="select * from conlancamdoc inner join conhistdoc on c71_coddoc=c53_coddoc where c71_codlan=$c70_codlan";
         $result2=db_query($sql2);
-        $linhas2=pg_num_rows($result2);
+        $linhas2=$result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
         if ($linhas2>0){
 
             $oResultado  = db_utils::fieldsMemory($result2, 0);

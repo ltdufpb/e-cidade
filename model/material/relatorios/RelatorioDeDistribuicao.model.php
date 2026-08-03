@@ -401,7 +401,7 @@ class RelatorioDeDistribuicao {
       }
 
       $rsDistribuicao = pg_execute("dados_movimentacao", $aParametros);
-      $iTotalLinhas   = pg_num_rows($rsDistribuicao);
+      $iTotalLinhas   = $rsDistribuicao === false || $rsDistribuicao === null ? 0 : pg_num_rows($rsDistribuicao);
       $aDistribuicao  = [];
 
       for ($iDistribuicao = 0; $iDistribuicao < $iTotalLinhas; $iDistribuicao++) {

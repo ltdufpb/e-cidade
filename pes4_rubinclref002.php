@@ -159,7 +159,7 @@ if($ponto2 != $sigla_ponto[$ponto1] || $rh27_rub1 != $rh27_rubric || $ano2 != $a
    $sql_dados  = $clgerasql->gerador_sql($ponto1,$ano1,$mes1,null,null,$camposSQL,"",$whereRESC1,db_getsession("DB_instit"));
    $result     = db_query($sql_dados);
 
-   $xxnum      = pg_num_rows($result);
+   $xxnum      = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 
    /**
@@ -204,7 +204,7 @@ if($ponto2 != $sigla_ponto[$ponto1] || $rh27_rub1 != $rh27_rubric || $ano2 != $a
        $whereRESC1 =  $whereRESC.$andwhere." #s#_rubric = '".$rh27_rub1."'";
        $sql_dados2 = $clgerasql->gerador_sql($sigla[$ponto2],$ano2,$mes2,null,null,"#s#_regist","",$whereRESC1,db_getsession("DB_instit"));
        $result     = db_query($sql_dados2);
-       $xxnum      = pg_num_rows($result);
+       $xxnum      = $result === false || $result === null ? 0 : pg_num_rows($result);
         
        if($xxnum > 0){
 

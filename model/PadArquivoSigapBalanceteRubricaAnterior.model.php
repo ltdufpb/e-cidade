@@ -142,7 +142,7 @@ final class PadArquivoSigapBalanceteRubricaAnterior extends PadArquivoSigap {
     $sSqlDadosRubrica .= "o56_elemento, ";
     $sSqlDadosRubrica .= "         o58_codigo";
     $rsBalancete   = db_query($sSqlDadosRubrica);
-    $iTotalLinhas  = pg_num_rows($rsBalancete);
+    $iTotalLinhas  = $rsBalancete === false || $rsBalancete === null ? 0 : pg_num_rows($rsBalancete);
     for ($i = 1; $i < $iTotalLinhas; $i++) {
       
       $oDespesa   = db_utils::fieldsMemory($rsBalancete, $i);

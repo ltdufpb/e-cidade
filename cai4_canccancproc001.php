@@ -127,7 +127,7 @@ if (isset ($chavepesquisa)){
 	    $sqlPeculiar .= "  where k72_cancdebitos = $k20_codigo                                      ";
 	    
 	    $rsPeculiar     = db_query($sqlPeculiar);
-	    $linhasPeculiar = pg_num_rows($rsPeculiar);
+	    $linhasPeculiar = $rsPeculiar === false || $rsPeculiar === null ? 0 : pg_num_rows($rsPeculiar);
 	    if($linhasPeculiar > 0 ){
     
 	      db_fieldsmemory($rsPeculiar, 0);
@@ -150,7 +150,7 @@ if (isset ($chavepesquisa)){
 	    $sqlPeculiarproc .= "  where k74_cancdebitosproc =$k23_codigo                                         ";
       
 	    $rsPeculiarproc     = db_query($sqlPeculiarproc);
-	    $linhasPeculiarproc = pg_num_rows($rsPeculiarproc);
+	    $linhasPeculiarproc = $rsPeculiarproc === false || $rsPeculiarproc === null ? 0 : pg_num_rows($rsPeculiarproc);
 	    if($linhasPeculiarproc > 0 ){
 	      db_fieldsmemory($rsPeculiarproc,0);
 	    }

@@ -138,7 +138,7 @@ if (isset($excluir)) {
           inner join arretipo on k00_tipo = k79_arretipo
         where k79_receit = $chavepesquisa";
     $resultarretipo = db_query($sqlarretipo);
-    $linhasarretipo = pg_num_rows($resultarretipo);
+    $linhasarretipo = $resultarretipo === false || $resultarretipo === null ? 0 : pg_num_rows($resultarretipo);
     if ($linhasarretipo > 0) {
         db_fieldsmemory($resultarretipo, 0);
     }

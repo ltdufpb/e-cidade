@@ -860,7 +860,7 @@ if(isset($matricula) && !empty($matricula)) {
 
 $sqltiporetido = "select w10_tipo from db_confplan";
 $resultretido = db_query($sqltiporetido);
-$linhasretido = pg_num_rows($resultretido);
+$linhasretido = $resultretido === false || $resultretido === null ? 0 : pg_num_rows($resultretido);
 if($linhasretido > 0){
 	db_fieldsmemory($resultretido,0);
 }else{
@@ -981,7 +981,7 @@ if(isset($tipo)) {
 
   // echo "x: " . pg_numrows($result) . "\n";
   // db_criatabela($result);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
   echo "<form name=\"form1\" id=\"form1\" method=\"post\" target=\"reciboweb2\">\n";
   echo "<input type=\"hidden\" name=\"H_ANOUSU\" value=\"".db_getsession("DB_anousu")."\">\n";

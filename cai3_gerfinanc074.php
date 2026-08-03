@@ -162,7 +162,7 @@ if ( isset($oPost->incluir)  ) {
 	      $sSqlArrecad .= "     and k00_numpar   = {$iNumpar}       ";
 	      $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}'   ";
 	      $rsSqlArrecad = db_query($sSqlArrecad);
-	      $iNumRows     = pg_num_rows($rsSqlArrecad);
+	      $iNumRows     = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
 	      if ($iNumRows == 0) {		      
 		      $sNumpres .= "N".$iNumpre."P".$iNumpar."R".$iReceit;
 	      }
@@ -306,7 +306,7 @@ $db_opcao = 1;
 				  if (!$rsDebitosNovos) {
 				  	$iLinhasDebitosNovos = 0;
 				  } else {
-		            $iLinhasDebitosNovos = pg_num_rows($rsDebitosNovos);
+		            $iLinhasDebitosNovos = $rsDebitosNovos === false || $rsDebitosNovos === null ? 0 : pg_num_rows($rsDebitosNovos);
 				  } 
 				  
 				  for ($x=0; $x < $iLinhasDebitosNovos; $x++) {

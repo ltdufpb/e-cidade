@@ -129,7 +129,7 @@ function js_imprime(){
   }
 //  die("$sqlarrejustreg");
   $resultarrejustreg = db_query($sqlarrejustreg);
-	$linhasarrejustreg = pg_num_rows($resultarrejustreg);
+	$linhasarrejustreg = $resultarrejustreg === false || $resultarrejustreg === null ? 0 : pg_num_rows($resultarrejustreg);
 
   $ConfCor1 = "#EFE029";
   $ConfCor2 = "#E4F471";

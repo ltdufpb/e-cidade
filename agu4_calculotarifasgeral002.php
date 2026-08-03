@@ -145,7 +145,7 @@ try {
     throw new DBException('Não foi possível obter informações de contrato.');
   }
 
-  $iTotalContratos = pg_num_rows($rsContratos);
+  $iTotalContratos = $rsContratos === false || $rsContratos === null ? 0 : pg_num_rows($rsContratos);
   $iTotalContratosProcessados = 0;
   $oProgressBar->updateMaxProgress($iTotalContratos);
 

@@ -167,7 +167,7 @@ if(isset($mostra)){
 	 ";
 //	 die($sql);
     $result  =  @db_query($sql);
-    $numrows =  @pg_num_rows($result);
+    $numrows =  $result === false || $result === null ? 0 : @pg_num_rows($result);
     if($numrows==0){
       $sqlerro =true;
       $erro_msg = "Erro. Contate suporte";

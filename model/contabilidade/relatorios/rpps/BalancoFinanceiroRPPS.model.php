@@ -118,7 +118,7 @@ class BalancoFinanceiroRPPS extends RelatoriosLegaisBase {
      */
     $nValorExtraOrcamentarioIngresso = 0;
 
-    $iTotalLinhasDespesa = pg_num_rows($rsBalanceteDespesa);
+    $iTotalLinhasDespesa = $rsBalanceteDespesa === false || $rsBalanceteDespesa === null ? 0 : pg_num_rows($rsBalanceteDespesa);
     for ($iDespesa = 0; $iDespesa < $iTotalLinhasDespesa; $iDespesa++) {
 
       $oDespesa = db_Utils::fieldsMemory($rsBalanceteDespesa, $iDespesa);
@@ -132,7 +132,7 @@ class BalancoFinanceiroRPPS extends RelatoriosLegaisBase {
      * Esse valor será somados na linha 'Dispendios'
      */
     $nValorExtraOrcamentarioDispendio = 0;
-    $iTotalLinhasResto                = pg_num_rows($rsRestosPagar);
+    $iTotalLinhasResto                = $rsRestosPagar === false || $rsRestosPagar === null ? 0 : pg_num_rows($rsRestosPagar);
     for ($iResto = 0; $iResto < $iTotalLinhasResto; $iResto++) {
 
       $oDespesaRp                        = db_utils::fieldsMemory($rsRestosPagar, $iResto);

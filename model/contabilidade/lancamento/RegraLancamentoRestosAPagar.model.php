@@ -54,7 +54,7 @@ class RegraLancamentoRestosAPagar implements IRegraLancamentoContabil {
     }
 
     $rsTransacao = DBRegistry::get($chaveRegistrada);
-    $iTotalLancamentos = pg_num_rows($rsTransacao);
+    $iTotalLancamentos = $rsTransacao === false || $rsTransacao === null ? 0 : pg_num_rows($rsTransacao);
 
     if ($iTotalLancamentos > 1) {
       throw new BusinessException("Mais de uma regra cadastrada para o documento {$iCodigoDocumento}.");

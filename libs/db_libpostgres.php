@@ -36,7 +36,7 @@ class PostgreSQLUtils {
 		} else {
 			$result = db_query($sql);
 		}
-		$this->_numrows = pg_num_rows($result);
+		$this->_numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		return $result;
 	}
 
@@ -129,7 +129,7 @@ class PostgreSQLUtils {
   	$sSqlTableIndex  = "select indexname from pg_indexes where tablename = '{$sNomeTabela}'";
   	$rsSqlTableIndex = db_query($sSqlTableIndex);
   	$aIndexes        = [];
-  	$iNumRows        = pg_num_rows($rsSqlTableIndex);
+  	$iNumRows        = $rsSqlTableIndex === false || $rsSqlTableIndex === null ? 0 : pg_num_rows($rsSqlTableIndex);
   	for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
   		
   		$oIndexName = db_utils::fieldsMemory($rsSqlTableIndex, $iInd);

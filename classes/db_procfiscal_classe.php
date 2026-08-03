@@ -66,7 +66,7 @@ class cl_procfiscal {
                  y100_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_procfiscal() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procfiscal"); 
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
@@ -493,7 +493,7 @@ class cl_procfiscal {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = $result === false || $result === null ? 0 : pg_numrows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procfiscal";

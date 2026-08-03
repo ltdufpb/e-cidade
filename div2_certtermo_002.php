@@ -86,7 +86,7 @@ if (!isset($certid) || empty($certid)) {
   and v01_instit = {$instit}";
 
   $rsDivida = db_query($sql);
-  $numeroDiv = pg_num_rows($rsDivida);
+  $numeroDiv = $rsDivida === false || $rsDivida === null ? 0 : pg_num_rows($rsDivida);
 
   if ($numeroDiv > 0) {
     for ($iNumero = 0; $iNumero < $numeroDiv; $iNumero++) {       
@@ -99,7 +99,7 @@ if (!isset($certid) || empty($certid)) {
             where v01_numpre = $numpre";
 
         $rsDiv = db_query($sqlDiv);
-        $registrosDiv = pg_num_rows($rsDiv);
+        $registrosDiv = $rsDiv === false || $rsDiv === null ? 0 : pg_num_rows($rsDiv);
 
         for ($iCodDiv = 0; $iCodDiv < $registrosDiv; $iCodDiv++) {
 

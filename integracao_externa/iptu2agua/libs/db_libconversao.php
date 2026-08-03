@@ -116,7 +116,7 @@ function db_busca_usuario( $conn1, $str_login ) {
          $str_sql = "select id_usuario from DB_USUARIOS
                       where login = '" . trim((string) $str_login) . "'";
          $res_db_usuarios = db_query( $conn1, $str_sql ) or die ( "FALHA: $str_sql \n" );
-         $int_linhas = pg_num_rows( $res_db_usuarios );
+         $int_linhas = $res_db_usuarios === false || $res_db_usuarios === null ? 0 : pg_num_rows( $res_db_usuarios );
          if( $int_linhas == 0 )
              $id_usuario = 1;
          else{
@@ -213,7 +213,7 @@ function db_numrows($rsResultSet, $sArquivoLog="") {
     return 0;
   }
 
-  $iNumRows = @pg_num_rows($rsResultSet);
+  $iNumRows = $rsResultSet === false || $rsResultSet === null ? 0 : @pg_num_rows($rsResultSet);
 
   $sErro = pg_result_error($rsResultSet);
 
@@ -290,7 +290,7 @@ function db_converte_tabela($pConexaoOrigem, $pConexaoDestino, $sArquivoLog, $sT
 
     $sVirgula = "";
 
-    $iContaCampos = pg_num_fields($rsTabela);
+    $iContaCampos = $rsTabela === false || $rsTabela === null ? 0 : pg_num_fields($rsTabela);
     for($iCont=0; $iCont<$iContaCampos; $iCont++) {
 
       $sNomeCampo  = pg_field_name($rsTabela, $iCont);
@@ -455,7 +455,7 @@ db_log("\n \n ", null, 1, false, false);
   $iNumRowsDados = db_numrows($rsDados);
   if($iNumRowsDados>0){
     // pega nome dos campo da tabelaorigem para usar no insert
-    $iContaCamposOri = pg_num_fields($rsDados);
+    $iContaCamposOri = $rsDados === false || $rsDados === null ? 0 : pg_num_fields($rsDados);
     for($iCampo=0; $iCampo<$iContaCamposOri; $iCampo++) {
       $sNomeCampoOri[$iCampo]  = pg_field_name($rsDados, $iCampo);
     }
@@ -482,7 +482,7 @@ db_log("\n \n ", null, 1, false, false);
           if($iSequencial == 0){
             $sSqlSeq         = "select nextval('$iSomaOuSeq')";
             $rsSeq           = db_query($pConexaoDes, $sSqlSeq, $sArquivoLog);
-            $iContaCamposSeq = pg_num_fields($rsSeq);
+            $iContaCamposSeq = $rsSeq === false || $rsSeq === null ? 0 : pg_num_fields($rsSeq);
             $sNomeCampoSeq   = pg_field_name($rsSeq, 0);
             $oSeq            = (new db_utils())->fieldsmemory($rsSeq, $iCampo2);
             $iSequencial     = $oSeq->$sNomeCampoSeq;
@@ -787,7 +787,7 @@ function dbCriaIndicesWork($pConexao, $sTabela, $sArquivoLog) {
   $sSql     = "select * from {$sTabela} limit 1";
   $rsTabela = db_query($pConexao, $sSql);
 
-  $iContaCampos = pg_num_fields($rsTabela);
+  $iContaCampos = $rsTabela === false || $rsTabela === null ? 0 : pg_num_fields($rsTabela);
 
   for($iCont=0; $iCont<$iContaCampos; $iCont++) {
 
@@ -830,7 +830,7 @@ function dbPreparaConsulta($pConexao, $sTabelaWork, $sArquivoLog) {
   $sSql     = "select * from {$sTabelaWork} limit 1";
   $rsTabelaWork = db_query($pConexao, $sSql);
 
-  $iContaCampos = pg_num_fields($rsTabelaWork);
+  $iContaCampos = $rsTabelaWork === false || $rsTabelaWork === null ? 0 : pg_num_fields($rsTabelaWork);
 
   for($iCont=0; $iCont<$iContaCampos; $iCont++) {
 
@@ -881,7 +881,7 @@ function dbPreparaInsert($pConexaoOrigem, $pConexaoDestino, $sTabela, $sArquivoL
   $sSql     = "select * from {$sTabela} limit 1";
   $rsTabela = db_query($pConexaoOrigem, $sSql);
 
-  $iContaCampos = pg_num_fields($rsTabela);
+  $iContaCampos = $rsTabela === false || $rsTabela === null ? 0 : pg_num_fields($rsTabela);
 
   $aCampos  = [];
   $aTipos   = [];
@@ -951,7 +951,7 @@ function dbSelectTabela($pConexaoOrigem,$sTabela,$aCamposTrocar,$sArquivoInfos='
   $sSql     = "select * from {$sTabela} limit 1";
   $rsTabela = db_query($pConexaoOrigem, $sSql);
 
-  $iContaCampos = pg_num_fields($rsTabela);
+  $iContaCampos = $rsTabela === false || $rsTabela === null ? 0 : pg_num_fields($rsTabela);
 
   $aCampos = [];
   $aJoins  = [];

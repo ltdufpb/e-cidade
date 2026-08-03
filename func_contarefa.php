@@ -780,8 +780,8 @@ global $semagenda;
 
 function db_grid($sql, $leitura, $opcoes, $funcao_js,$todasprocedencias) {
   $result    = db_query($sql) or die($sql);
-  $NumRows   = pg_num_rows($result);
-  $NumFields = pg_num_fields($result);
+  $NumRows   = $result === false || $result === null ? 0 : pg_num_rows($result);
+  $NumFields = $result === false || $result === null ? 0 : pg_num_fields($result);
   $codtarefa = 0;
   
   //cria nome da funcao com parametros

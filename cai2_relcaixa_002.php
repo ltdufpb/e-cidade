@@ -108,7 +108,7 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $sql = "select * from ($sql) as x where (o70_instit = " . db_getsession("DB_instit") . " or c61_instit = " . db_getsession("DB_instit") . ")" . $where;
     //  echo $sql;exit;
     $result = db_query($sql);
-    $num = pg_num_rows($result);
+    $num = $result === false || $result === null ? 0 : pg_num_rows($result);
     $linha = 0;
     $TPagina = 27;
     $preenc = 0;
@@ -192,7 +192,7 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(80, 4, "Descricao", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_num_rows($result);
+    $num = $result === false || $result === null ? 0 : pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
@@ -259,7 +259,7 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(85, 4, "Recurso", "LTB", 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_num_rows($result);
+    $num = $result === false || $result === null ? 0 : pg_num_rows($result);
     $pdf->SetFont('Arial', '', 7);
     $linha = 0;
 
@@ -321,7 +321,7 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(80, 4, "Nome do Banco", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_num_rows($result);
+    $num = $result === false || $result === null ? 0 : pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
@@ -368,7 +368,7 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(80, 4, "Descricao", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_num_rows($result);
+    $num = $result === false || $result === null ? 0 : pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
     for ($i = 0; $i < $num; $i++) {
@@ -417,7 +417,7 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(14, 4, "Tipo", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_num_rows($result);
+    $num = $result === false || $result === null ? 0 : pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
@@ -472,7 +472,7 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(20, 4, "Local", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_num_rows($result);
+    $num = $result === false || $result === null ? 0 : pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 

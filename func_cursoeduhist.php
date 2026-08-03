@@ -132,7 +132,7 @@ $clcurso->rotulo->label("ed29_c_descr");
              AND ed29_c_historico = 'S'
             ";
      $result = db_query($sql);
-     $linhas = pg_num_rows($result);
+     $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
      if($linhas!=0){
       db_fieldsmemory($result,0);
       echo "<script>".$funcao_js."('$ed29_c_descr',false);</script>";

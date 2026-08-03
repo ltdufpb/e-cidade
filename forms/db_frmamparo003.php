@@ -46,7 +46,7 @@ $clrotulo->label("ed06_i_codigo");
            ORDER BY ed47_v_nome
           ";
    $result = db_query($sql);
-   $linhas = pg_num_rows($result);
+   $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
    ?>
    <b>Alunos:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" style="font-size:9px;width:330px;height:200px" multiple>

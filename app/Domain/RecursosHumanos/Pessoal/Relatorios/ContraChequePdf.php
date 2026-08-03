@@ -281,7 +281,7 @@ class ContraChequePdf
         ";
 
         $rsResult = db_query($sSql);
-        $iNumRow = pg_num_rows($rsResult);
+        $iNumRow = $rsResult === false || $rsResult === null ? 0 : pg_num_rows($rsResult);
         if (!$iNumRow) {
             throw new Exception("Não existe Cálculo no período de {$this->mes}/{$this->ano}.");
         }
@@ -427,7 +427,7 @@ class ContraChequePdf
             $oPDF->lotacao_idade = 'quantidade';
             $oPDF->estrutural = $oServidor->estrutural;
             $oPDF->recordenvelope = $rsResult;
-            $oPDF->linhasenvelope = pg_num_rows($rsResult);
+            $oPDF->linhasenvelope = $rsResult === false || $rsResult === null ? 0 : pg_num_rows($rsResult);
             $oPDF->valor = 'valor';
             $oPDF->quantidade = 'quantidade';
             $oPDF->tipo = 'tipoevento';

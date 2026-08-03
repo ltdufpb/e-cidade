@@ -611,7 +611,7 @@ class cl_conlancamval
 
             return false;
         }
-        $this->numrows = pg_num_rows($result);
+        $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:conlancamval";
@@ -630,7 +630,7 @@ class cl_conlancamval
     {
         // pesquisa todos os sequenc do codlan informado
         $res = db_query($this->sql_query_file(null, "c69_sequen", null, "c69_codlan=$codlan"));
-        $rows = pg_num_rows($res);
+        $rows = $res === false || $res === null ? 0 : pg_num_rows($res);
         if ($rows > 0) {
             for ($x = 0; $x < $rows; $x++) {
                 $seq = pg_fetch_result($res, $x, 0);

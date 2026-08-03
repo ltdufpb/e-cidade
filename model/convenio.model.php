@@ -238,7 +238,7 @@ class convenio {
 	  $sSqlBanco .= "  where db90_codban = '{$this->getCodBanco()}' ";
 
     $rsBanco    	   = db_query($sSqlBanco);
-    $iNroLinhasBanco = pg_num_rows($rsBanco);
+    $iNroLinhasBanco = $rsBanco === false || $rsBanco === null ? 0 : pg_num_rows($rsBanco);
 
     if($iNroLinhasBanco > 0 ){
 

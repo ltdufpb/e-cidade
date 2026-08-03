@@ -249,7 +249,7 @@ class AutenticacaoArrecadacao extends Autenticacao {
 
       $sql                          = self::getSqlAutenticacoes($iId, $dtAutenticacao, $iAutent, $lEstorno, $lDesconto);
       $resultorcamentaria           = db_query($sql);
-      $iTotalLinhasReceitaOrcamento = pg_num_rows($resultorcamentaria);
+      $iTotalLinhasReceitaOrcamento = $resultorcamentaria === false || $resultorcamentaria === null ? 0 : pg_num_rows($resultorcamentaria);
       if ($iTotalLinhasReceitaOrcamento == 0) {
 
         return false;
@@ -452,7 +452,7 @@ class AutenticacaoArrecadacao extends Autenticacao {
       throw new BusinessException($sErroMensagem);
     }
 
-    $iTotalReceitasExtras = pg_num_rows($rsBuscaReceitaExtra);
+    $iTotalReceitasExtras = $rsBuscaReceitaExtra === false || $rsBuscaReceitaExtra === null ? 0 : pg_num_rows($rsBuscaReceitaExtra);
     if ($iTotalReceitasExtras == 0) {
       return false;
     }

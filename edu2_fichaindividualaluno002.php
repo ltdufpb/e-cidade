@@ -474,7 +474,7 @@ for ($ww = 0; $ww < $clmatricula->numrows; $ww++) {
     $sql .= "    AND ed59_c_condicao   = 'OB' and (trim(ed72_t_obs) !='' or  trim(ed72_t_parecer) !='')";
     $sql .= "  ORDER BY ed41_i_sequencia,ed59_i_ordenacao ";
     $result = db_query($sql);
-    $linhas0 = pg_num_rows($result);
+    $linhas0 = $result === false || $result === null ? 0 : pg_num_rows($result);
     $u = 0;
 
     for ($r = 0; $r < $linhas0; $r++) {
@@ -525,7 +525,7 @@ for ($ww = 0; $ww < $clmatricula->numrows; $ww++) {
     $sql .= "    AND calendario.ed52_i_codigo = {$oGet->calendario} ";
     $sql .= "  ORDER BY ed59_i_ordenacao ";
     $result = db_query($sql);
-    $linhas1 = pg_num_rows($result);
+    $linhas1 = $result === false || $result === null ? 0 : pg_num_rows($result);
     $s = 0;
 
     $lUtilizaProporcionalidade = false;

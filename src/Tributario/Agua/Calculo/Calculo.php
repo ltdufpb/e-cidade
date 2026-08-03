@@ -691,7 +691,7 @@ class Calculo {
       throw new DBException('Ocorreu um erro ao preparar os dados das receitas.');
     }
 
-    $iQtdReceitas = pg_num_rows($rsReceitas);
+    $iQtdReceitas = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
     for ($iReceita = 0; $iReceita < $iQtdReceitas; $iReceita++) {
 
       $iCodigoResponsavel = $this->oContrato->getCodigoCgm();

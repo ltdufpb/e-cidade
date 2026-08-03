@@ -258,7 +258,7 @@ $sql3 = "SELECT ed41_i_codigo,
          ORDER BY ed41_i_sequencia
         ";
 $result3 = db_query($sql3);
-$linhas3 = pg_num_rows($result3);
+$linhas3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
 $nabas = $linhas3+2;
 $ident["G"] = "Geral";
 $tamcampo["G"] = 3;

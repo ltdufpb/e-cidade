@@ -157,7 +157,7 @@ $sDesabilitaBotao = $db_opcao ? null : 'disabled="true"';
 				ORDER BY q162_data_fim DESC
 		";
 		$result = db_query($sql);
-		$num = pg_num_rows($result);
+		$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 		?>
 		<br><br>
 		<fieldset>

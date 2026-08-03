@@ -247,7 +247,7 @@ input {
              return "";
 		  }
 		  $result = db_query("select codmod,nomemod from db_sysmodulo where ativo is true order by nomemod");
-		  $numrows = pg_num_rows($result);
+		  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		  for($i = 0;$i < $numrows;$i++)
 		    echo "<option value=\"".pg_fetch_result($result,$i,"codmod")."\" ".db_retSelected(pg_fetch_result($result,$i,"codmod")).">".pg_fetch_result($result,$i,"nomemod")."</option>\n";
 		  ?>
@@ -285,7 +285,7 @@ input {
 		  $result = db_query("select codarq,nomearq 
 		                     from db_sysarquivo  
 							 order by nomearq");
-		  $numrows = pg_num_rows($result);
+		  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		  for($i = 0;$i < $numrows;$i++)
 		    echo "<option value=\"".pg_fetch_result($result,$i,"codarq")."\" ".db_retSelecteda(pg_fetch_result($result,$i,"codarq")).">".pg_fetch_result($result,$i,"nomearq")."</option>\n";
 		  ?>

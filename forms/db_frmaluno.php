@@ -36,7 +36,7 @@ if ($db_opcao != 1 && $chavepesquisa != "") {
 
   $sql     = "SELECT ed56_i_escola as cod_escola FROM alunocurso WHERE ed56_i_aluno = $chavepesquisa";
   $query   = db_query($sql);
-  $linhas4 = pg_num_rows($query);
+  $linhas4 = $query === false || $query === null ? 0 : pg_num_rows($query);
 
   if ($linhas4 == 0) {
     $db_botao = true;

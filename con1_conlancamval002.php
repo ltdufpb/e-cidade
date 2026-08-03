@@ -183,7 +183,7 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
                                 "c69_codlan = {$codigoLancamentoNovo}"
                             );
                             $resBuscaConlancamval = db_query($buscaConlancamval);
-                            $totalRegistros = pg_num_rows($resBuscaConlancamval);
+                            $totalRegistros = $resBuscaConlancamval === false || $resBuscaConlancamval === null ? 0 : pg_num_rows($resBuscaConlancamval);
                             if (!$resBuscaConlancamval || $totalRegistros === 0) {
                                 throw new Exception('Ocorreu um erro ao consultar os valores do lançamentos. ->'.pg_last_error());
                             }

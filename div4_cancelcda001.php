@@ -422,7 +422,7 @@ document.form1.submit();
 				  $cliframe_seleciona->campos  = "";
 				}
 				$result_num=db_query($sql);
-				$numreg=pg_num_rows($result_num);
+				$numreg=$result_num === false || $result_num === null ? 0 : pg_num_rows($result_num);
 				db_input("numreg",6,'',true,"hidden",3);
 				$cliframe_seleciona->legenda="Débitos a Cancelar";
 				$cliframe_seleciona->alignlegenda="left";

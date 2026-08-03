@@ -158,7 +158,7 @@ class Efetividade {
       throw new DBException( _M( self::MENSAGENS_EFETIVIDADE . "erro_buscar_profissional_escola", $oErro ) );
     }
 
-    $iQuantidadeProfissionais = pg_num_rows($rsEfetividade);
+    $iQuantidadeProfissionais = $rsEfetividade === false || $rsEfetividade === null ? 0 : pg_num_rows($rsEfetividade);
 
     if ( $iQuantidadeProfissionais > 0 ) {
 

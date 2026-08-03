@@ -63,7 +63,7 @@ $pdf->Cell(12,4,'MATR.',1,0,"C",0);
 $pdf->Cell(80,4,'NOME',1,0,"C",0);
 $pdf->Cell(100,4,'ENDEREÇO',1,1,"C",0);
 $total = 0;
-$num = pg_num_rows($principal);
+$num = $principal === false || $principal === null ? 0 : pg_num_rows($principal);
 for($i = 0;$i < $num ;$i++) {
    db_fieldsmemory($principal,$i) ;
    if($pdf->GetY() > ( $pdf->h - 30 )){

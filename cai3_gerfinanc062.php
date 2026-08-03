@@ -359,7 +359,7 @@ if ((isset($ver_matric) or isset($ver_inscr) or (!empty($ver_numcgm))) and (!iss
                 $sSqlArrecad .= "     and k00_numpar   = {$iNumpar}       ";
                 $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}'   ";
                 $rsSqlArrecad = db_query($sSqlArrecad);
-                $iNumRows = pg_num_rows($rsSqlArrecad);
+                $iNumRows = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
                 if ($iNumRows == 0) {
                     if ($_POST["tipo_debito"] == 3 || $_POST["tipo_debito"] == 5) {
                         if (empty($sNumPreAnt) || $sNumPreAnt != $iNumpre) {
@@ -490,7 +490,7 @@ $whereReceita = " not exists (select k180_estorc
                                  WHERE k00_numpre IN ($inNumpre)";
 
     $rsReceitaDebito = db_query($sqlReceitaDebito);
-    $nReceitaDebito  = pg_num_rows($rsReceitaDebito);
+    $nReceitaDebito  = $rsReceitaDebito === false || $rsReceitaDebito === null ? 0 : pg_num_rows($rsReceitaDebito);
 
     for ($bcd = 0; $bcd < $nReceitaDebito; $bcd++) {
         db_fieldsmemory($rsReceitaDebito, $bcd);
@@ -785,7 +785,7 @@ if ((isset($inicial) && $inicial != "") and ($entra == false)) {
            where v59_inicial in ($numpre) ";
 
     $result = db_query($sql) or die($sql);
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     $virgula = "";
     $numpar1 = "";
     $numpre1 = "";

@@ -60,7 +60,7 @@ try {
         throw new DBException( _M( MENSAGENS_RESULTADOEXAME_RPC . "erro_buscar_tipos_documentos", $oMensagem ) );
       }
 
-      $iTotalTipoDocumento = pg_num_rows( $rsTipoDocumento );
+      $iTotalTipoDocumento = $rsTipoDocumento === false || $rsTipoDocumento === null ? 0 : pg_num_rows( $rsTipoDocumento );
       if( $iTotalTipoDocumento == 0 ) {
         throw new DBException( _M( MENSAGENS_RESULTADOEXAME_RPC . "tipos_documentos_nao_encontrados" ) );
       }

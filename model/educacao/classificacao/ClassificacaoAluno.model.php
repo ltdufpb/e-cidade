@@ -415,7 +415,7 @@ final class ClassificacaoAluno {
       	throw new DBException(_M(URL_MENSAGEM_CLASSIFICACAOALUNO . "erro_ao_buscar_avaliacoes"));
       }
 
-      $iLinhas = pg_num_rows( $rsAvaliacao );
+      $iLinhas = $rsAvaliacao === false || $rsAvaliacao === null ? 0 : pg_num_rows( $rsAvaliacao );
 
       if ($iLinhas > 0) {
 
@@ -456,7 +456,7 @@ final class ClassificacaoAluno {
     	throw new DBException(_M(URL_MENSAGEM_CLASSIFICACAOALUNO . "erro_ao_buscar_alunos_classificados"));
     }
 
-    $iLinhas = pg_num_rows($rsAlunos);
+    $iLinhas = $rsAlunos === false || $rsAlunos === null ? 0 : pg_num_rows($rsAlunos);
 
     if ($iLinhas == 0) {
     	throw new BusinessException(_M(URL_MENSAGEM_CLASSIFICACAOALUNO . "nenhum_aluno_classificado"));

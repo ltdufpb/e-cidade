@@ -103,7 +103,7 @@ class AvaliacaoAlternativaRepository {
 
     $aAvaliacaoAlternativa = [];
 
-    $iAlternativas = pg_num_rows($rsAlternativa);
+    $iAlternativas = $rsAlternativa === false || $rsAlternativa === null ? 0 : pg_num_rows($rsAlternativa);
     for ( $i = 0; $i < $iAlternativas; $i++ ) {
 
       $oDados                  = db_utils::fieldsMemory($rsAlternativa, $i);

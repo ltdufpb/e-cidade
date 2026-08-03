@@ -46,7 +46,7 @@ class RequisicaoExameRepository
         );
 
         $rs = db_query($sql);
-        $numeroRegistros = pg_num_rows($rs);
+        $numeroRegistros = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
         if (!$rs || $numeroRegistros === 0) {
             return false;

@@ -92,7 +92,7 @@ if (1==0) {
   
   db_fieldsmemory($resultverifica, 0);
   
-  $processados = pg_num_rows($resultverifica);
+  $processados = $resultverifica === false || $resultverifica === null ? 0 : pg_num_rows($resultverifica);
   
   $jaexiste = 1;
   
@@ -344,7 +344,7 @@ if (1==0) {
       
       $valortotal = 0;
       
-      $numrowsprinc = pg_num_rows($resultprinc);
+      $numrowsprinc = $resultprinc === false || $resultprinc === null ? 0 : pg_num_rows($resultprinc);
       for ($i = 0; $i < $numrowsprinc; $i++) {
         db_fieldsmemory($resultprinc, $i);
         
@@ -494,7 +494,7 @@ if (1==0) {
       $sqlfim = "commit;";
       $resultfim = pg_exec($sqlfim) or die($sqlfim);
       
-      $processados = pg_num_rows($resultprinc);
+      $processados = $resultprinc === false || $resultprinc === null ? 0 : pg_num_rows($resultprinc);
       
     }
     

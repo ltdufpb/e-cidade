@@ -63,7 +63,7 @@ class tceLivroDiarioGeral extends tceEstruturaBasica
                 implode(" and ", $where)
             );
             $rsCodigoLayout = db_query($sqlDadosCampo);
-            $totalLinhas = pg_num_rows($rsCodigoLayout);
+            $totalLinhas = $rsCodigoLayout === false || $rsCodigoLayout === null ? 0 : pg_num_rows($rsCodigoLayout);
             if ($totalLinhas == 0) {
                 throw new \Exception("Não foi encontrado campo 'complemento do recurso no layout.");
             }
@@ -99,7 +99,7 @@ class tceLivroDiarioGeral extends tceEstruturaBasica
         $sWhere = "where lan.c69_data between '{$this->dataInicio}' and '{$this->dataFim}' ";
         $sSqlDados = $this->sqlDiarioGeral($sWhere);
         $rsLancamentos = db_query($sSqlDados);
-        $iNumRows = pg_num_rows($rsLancamentos);
+        $iNumRows = $rsLancamentos === false || $rsLancamentos === null ? 0 : pg_num_rows($rsLancamentos);
         $iTotalRegistros = 0;
 
         /**

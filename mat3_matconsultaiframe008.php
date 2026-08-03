@@ -110,7 +110,7 @@ db_postmemory($_POST);
   }
   }
   $resultado = @db_query($sql);
-  $numrows   = @pg_num_rows($resultado);
+  $numrows   = $resultado === false || $resultado === null ? 0 : @pg_num_rows($resultado);
 
   if ($numrows == 0){
        $sql= "select distinct m91_depto,

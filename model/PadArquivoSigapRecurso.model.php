@@ -73,7 +73,7 @@ final class PadArquivoSigapRecurso extends PadArquivoSigap {
     $sSqlRecurso .= " order by o15_codigo";
 
     $rsRecurso    = db_query($sSqlRecurso);
-    $iTotalLinhas = pg_num_rows($rsRecurso);
+    $iTotalLinhas = $rsRecurso === false || $rsRecurso === null ? 0 : pg_num_rows($rsRecurso);
     for ($i = 0; $i < $iTotalLinhas; $i++) {
 
       $sDiaMesAno =  "{$iAno}-".str_pad($iMes, 2, "0", STR_PAD_LEFT)."-".str_pad($iDia, 2, "0", STR_PAD_LEFT);

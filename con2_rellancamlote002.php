@@ -79,7 +79,7 @@ if(@pg_num_rows($resultado)==0) {
     exit;
 }
 
-$numrows = pg_num_rows($resultado);
+$numrows = $resultado === false || $resultado === null ? 0 : pg_num_rows($resultado);
 
 $xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");

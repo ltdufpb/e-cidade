@@ -149,7 +149,7 @@ abstract class RelatorioProfessorEscola {
       throw new Exception( _M(self::MSG_RELATORIOPROFESSORESCOLA . "sem_registros_para_filtro_selecionado") );
     }
 
-    $iLinhas = pg_num_rows($rs);
+    $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
     for ($i = 0; $i < $iLinhas; $i++) {
 
       $oDados = db_utils::fieldsMemory($rs, $i);

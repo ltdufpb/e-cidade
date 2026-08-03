@@ -140,7 +140,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
 								and y100_sequencial = $pesquisa_chave
 							order by y100_sequencial";
 					$result = db_query($sql);
-					$linhas = pg_num_rows($result);
+					$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 					
 					
           if($linhas!=0){

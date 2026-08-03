@@ -44,7 +44,7 @@ $sql = "select ag30_codigo,ag30_codage,ag30_data,ag30_hora,j01_nome,w03_nome,ag3
 					 and ag30_data = '$dataini'
 					 ";
   $result = db_query($sql);
-  $numrows = pg_num_rows($result);		 
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);		 
   if($numrows == 0) {
     $DB_MSG = "Não existe atendimento para esta agenda.";
 	$DB_VOLTA = 1;

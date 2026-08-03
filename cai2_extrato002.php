@@ -157,7 +157,7 @@ $pre           = 0;
 $alt = 5 ; //altura da celula
 $numero_pagina=0; // o contador de hp do pdf começa em 1
 
-$numrows = pg_num_rows($resultcontasmovimento);
+$numrows = $resultcontasmovimento === false || $resultcontasmovimento === null ? 0 : pg_num_rows($resultcontasmovimento);
 for($linha=0;$linha<$numrows;$linha++){
     db_fieldsmemory($resultcontasmovimento,$linha);   
  

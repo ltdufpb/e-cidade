@@ -226,7 +226,7 @@ for($i = 0; $i < $oDaoMatMater->numrows; $i ++) {
                         $oMaterial->codigo, 
                         $sDataInicial 
   ]);
-  $iNumRowsSaldoIni   = pg_num_rows($rsPrepare);
+  $iNumRowsSaldoIni   = $rsPrepare === false || $rsPrepare === null ? 0 : pg_num_rows($rsPrepare);
   
   $nPrecoMedioInicial = 0;
   for($iIni = 0; $iIni < $iNumRowsSaldoIni; $iIni ++) {
@@ -245,7 +245,7 @@ for($i = 0; $i < $oDaoMatMater->numrows; $i ++) {
                         $sDataInicial, 
                         $sDataFinal 
   ]);
-  $iTotalMov = pg_num_rows($rsPeparare);
+  $iTotalMov = $rsPeparare === false || $rsPeparare === null ? 0 : pg_num_rows($rsPeparare);
 
   for($iMov = 0; $iMov < $iTotalMov; $iMov ++) {
     

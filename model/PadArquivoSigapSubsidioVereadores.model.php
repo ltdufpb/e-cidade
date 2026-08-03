@@ -78,7 +78,7 @@ final class PadArquivoSigapSubsidioVereadores extends PadArquivoSigap {
     $sSqlSubsidio .= "   and c16_instit  = {$sListaInstit}";
     $sSqlSubsidio .= "   order by c16_ano, c16_mes";
     $rsSubsidio    = db_query($sSqlSubsidio); 
-    $iTotalLinhas  = pg_num_rows($rsSubsidio);
+    $iTotalLinhas  = $rsSubsidio === false || $rsSubsidio === null ? 0 : pg_num_rows($rsSubsidio);
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $sDiaMesAno =  "{$iAno}-".str_pad($iMes, 2, "0", STR_PAD_LEFT)."-".str_pad($iDia, 2, "0", STR_PAD_LEFT);

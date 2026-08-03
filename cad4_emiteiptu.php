@@ -1094,7 +1094,7 @@ if (isset($geracarnes)) {
     $querystring = "&proc=".@$proc."&entregavalido=".@$entregavalido."&zerado=$zerado&local=$local&cidadebranco=".@$cidadebranco."&parcobrig=$parcobrig&quantidadeparcelas=$quantidadeparcelas&listamatrics=$listamatrics&unica=".@$unica."&anousu=$anousu&quantidade=$quantidade&processarmovimentacao=$processarmovimentacao&mensagemanosanteriores=$mensagemanosanteriores&ordem=$ordem&especie=$especie&imobiliaria=$imobiliaria&loteamento=$loteamento&filtroprinc=$filtroprinc&barrasparc=$barrasparc&barrasunica=$barrasunica&totcheck=$totcheck&vlrminunica=$vlrminunica&intervalo=$intervalo&vlrmaxunica=$vlrmaxunica&vlrmin=$vlrmin&vlrmax=$vlrmax&capa=$imprimecapa&j34_setor=$j34_setor";
     $sqlmunic    = "select munic from db_config where prefeitura is true";
     $resultmunic = db_query($sqlmunic);
-    $linhasmunic = pg_num_rows($resultmunic);
+    $linhasmunic = $resultmunic === false || $resultmunic === null ? 0 : pg_num_rows($resultmunic);
 
     if($linhasmunic > 0){
 

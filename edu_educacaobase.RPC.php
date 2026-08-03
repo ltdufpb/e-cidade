@@ -1125,7 +1125,7 @@ try {
             $aPeriodosAvaliacao = [];
             if ($rsPeriodos && pg_num_rows($rsPeriodos) > 0) {
 
-                $iLinhas = pg_num_rows($rsPeriodos);
+                $iLinhas = $rsPeriodos === false || $rsPeriodos === null ? 0 : pg_num_rows($rsPeriodos);
                 for ($i = 0; $i < $iLinhas; $i++) {
 
                     $oDado = db_utils::fieldsMemory($rsPeriodos, $i);
@@ -1366,7 +1366,7 @@ function buscaCursos($iEscola)
         throw new Exception(pg_last_error());
     }
 
-    $iTotalCursoEscola = pg_num_rows($rsCursoEscola);
+    $iTotalCursoEscola = $rsCursoEscola === false || $rsCursoEscola === null ? 0 : pg_num_rows($rsCursoEscola);
     for ($iContador = 0; $iContador < $iTotalCursoEscola; $iContador++) {
 
         $oDadosCursoEscola = db_utils::fieldsMemory($rsCursoEscola, $iContador);

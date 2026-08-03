@@ -54,7 +54,7 @@ $sql02 = "
 		where db_ordemmod.codordem= $cod_ord_and;
 	   ";
 $result02 = db_query($sql02);
-$numrows02 = pg_num_rows($result02);
+$numrows02 = $result02 === false || $result02 === null ? 0 : pg_num_rows($result02);
 echo "     <br>
 		<table width=80% border=1 align=\"center\" cellpadding=0 cellspacing=0>
 		  <tr> 
@@ -109,7 +109,7 @@ echo " </td>
   $nomeUsuario = pg_fetch_result($resultPesquisaNome,0,0); 
 
   $departamentos = db_query("select * from db_depart");
-  $numeroDepartamentos = pg_num_rows($departamentos);
+  $numeroDepartamentos = $departamentos === false || $departamentos === null ? 0 : pg_num_rows($departamentos);
 
     echo "\n\n<script>\n";
     for ($i=0;$i<$numeroDepartamentos;$i++) {
@@ -118,7 +118,7 @@ echo " </td>
         	           inner join db_depusu du 
 		        	   on du.id_usuario = us.id_usuario
         			   where coddepto = ".pg_fetch_result($departamentos,$i,"coddepto"));
-	  $numusu = pg_num_rows($usu);
+	  $numusu = $usu === false || $usu === null ? 0 : pg_num_rows($usu);
 	  $aux= '';
 	  $c = '';
  	  echo strtolower(str_replace(" ","_",pg_fetch_result($departamentos,$i,"descrdepto")))." = new Array(";
@@ -190,7 +190,7 @@ echo " </td>
 				  <?php  
 				    $descratual = pg_fetch_result($result,0,"descrdepto");
 					$listaDepartamentos = db_query("select * from db_depart where descrdepto not like '$descratual'");
-					$numdep = pg_num_rows($listaDepartamentos);
+					$numdep = $listaDepartamentos === false || $listaDepartamentos === null ? 0 : pg_num_rows($listaDepartamentos);
  				    echo "<option selected value=\"".strtolower(str_replace(" ","_",pg_fetch_result($result,0,"descrdepto")))."\">".pg_fetch_result($result,0,"descrdepto")."</option>";
 					for ($i=0;$i<$numdep;$i++) {
 					  echo "<option value=\"".strtolower(str_replace(" ","_",pg_fetch_result($listaDepartamentos,$i,"descrdepto")))."\">".pg_fetch_result($listaDepartamentos,$i,"descrdepto")."</option>";
@@ -214,7 +214,7 @@ echo " </td>
 			 on d.id_usuario = u.id_usuario
 		 where u.coddepto = $coddepartamento
 		 ");
-	$numnomes = pg_num_rows($listanomes); 
+	$numnomes = $listanomes === false || $listanomes === null ? 0 : pg_num_rows($listanomes); 
 	for ($i=0;$i<$numnomes;$i++) {
   if (pg_fetch_result($listanomes,$i,"nome")==$nome) 
       {$estado="selected";
@@ -303,7 +303,7 @@ $selecionaAndamento = db_query(
   			where o.codordem = $cod_ord_and
 		        order by codandam
 								");
-  $numSelecionaAndamento = pg_num_rows($selecionaAndamento);
+  $numSelecionaAndamento = $selecionaAndamento === false || $selecionaAndamento === null ? 0 : pg_num_rows($selecionaAndamento);
   
   
   

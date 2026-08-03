@@ -57,7 +57,7 @@ $sSqlReceitas .= "union ";
 $sSqlReceitas .= "select distinct j23_recorg as j18_receit, j23_recdst as oneracao from iptucalcconfrec where j23_anousu = $anousu and j23_tipo = 1";
 
 $rsReceitas = db_query($sSqlReceitas);
-$iLinhasRec = pg_num_rows($rsReceitas);
+$iLinhasRec = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 $aRecIptu   = [];
 $aRecOnera  = [];
 $sRecIptu   = "";
@@ -150,7 +150,7 @@ $sql = "
 ";
 
 $result = db_query($sql) or die($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $sqlemdia = "
   select
@@ -317,7 +317,7 @@ order by
 ";
 
 $resultemdia = db_query($sqlemdia) or die($sqlemdia);
-$linhasemdia = pg_num_rows($resultemdia);
+$linhasemdia = $resultemdia === false || $resultemdia === null ? 0 : pg_num_rows($resultemdia);
 
 $sqlporparcela = "
 select
@@ -404,7 +404,7 @@ if ($zona != 0 || $zona != "") {
 }
 $sqlzona    = " select * from zonas " . $where_zona;
 $resultzona = db_query($sqlzona);
-$linhaszona = pg_num_rows($resultzona);
+$linhaszona = $resultzona === false || $resultzona === null ? 0 : pg_num_rows($resultzona);
 
 $head1 = "ESTATÍSTICAS DO IPTU CALCULADO E PAGO ";
 $head2 = "Exercício:" . $anousu;

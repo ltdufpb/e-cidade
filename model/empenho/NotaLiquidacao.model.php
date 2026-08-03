@@ -476,7 +476,7 @@ class NotaLiquidacao
             throw new DBException('Erro ao buscar a programação financeira da nota.');
         }
 
-        $iTotalRegistros        = pg_num_rows($rsConlancamnota);
+        $iTotalRegistros        = $rsConlancamnota === false || $rsConlancamnota === null ? 0 : pg_num_rows($rsConlancamnota);
         $aProgramacaoFinanceira = [];
 
         for ($iContador = 0; $iContador < $iTotalRegistros; $iContador++) {

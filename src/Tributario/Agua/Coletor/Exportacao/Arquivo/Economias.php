@@ -89,7 +89,7 @@ class Economias extends Arquivo {
     }
 
     $aEconomias = [];
-    $iQtdEconomias = pg_num_rows($rsDados);
+    $iQtdEconomias = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
     for ($iEconomia = 0; $iEconomia < $iQtdEconomias; $iEconomia++) {
 
       $oStdEconomia = pg_fetch_object($rsDados, $iEconomia);

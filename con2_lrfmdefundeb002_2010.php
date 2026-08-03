@@ -757,7 +757,7 @@ $sqlperiodo = " select e91_recurso,o15_descr,e60_anousu,sum(vlranu) as vlranu, s
                 group by e91_recurso,o15_descr,e60_anousu
 	          		order by e91_recurso,e60_anousu";
 $result_restos_mde1  = db_query($sqlperiodo);
-$numrows_restos_mde1 = @pg_num_rows($result_restos_mde1);
+$numrows_restos_mde1 = $result_restos_mde1 === false || $result_restos_mde1 === null ? 0 : @pg_num_rows($result_restos_mde1);
 
 $cancelado = $m_restos_mde["cancelado"];
 $saldo     = $m_restos_mde["saldo"];

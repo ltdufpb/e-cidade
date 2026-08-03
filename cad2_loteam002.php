@@ -176,7 +176,7 @@ $sql .=" inner join lote lote2 on lote2.j34_idbql = iptubase.j01_idbql\n
 group by iptubase.j01_matric, lote2.j34_setor, lote2.j34_quadra, lote2.j34_lote, arretipo.k00_descr,z01_nome $ordem $modo";
 
 $result = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $matric = "";
 $idcons = "";
 $area   = "";

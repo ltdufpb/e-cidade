@@ -231,7 +231,7 @@ class EmissaoDocumento
 
             $oPdf->datacalc             = date('d-m-Y');
             $oPdf->predatacalc          = date('d-m-Y');
-            $oPdf->linhasdadospagto   = pg_num_rows($rsDadosReceita);
+            $oPdf->linhasdadospagto   = $rsDadosReceita === false || $rsDadosReceita === null ? 0 : pg_num_rows($rsDadosReceita);
             $oPdf->recorddadospagto   = $rsDadosReceita;
             $oPdf->receita                = 'k00_receit';
             $oPdf->receitared         = 'codreduz';

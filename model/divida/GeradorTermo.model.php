@@ -145,7 +145,7 @@ class GeradorTermo
         if (!isset($certid) || empty($certid)) {
             $sql = $this->getSqlListaCertidoes($certid, $certid1, $count_certid, $instit, $proced, $dataInicial, $dataFinal, $anoexerc, $origemtipo, $origem);
             $rsCertidao = db_query($sql);
-            $numero = pg_num_rows($rsCertidao);                      
+            $numero = $rsCertidao === false || $rsCertidao === null ? 0 : pg_num_rows($rsCertidao);                      
         } else { 
             $numero = ($certid1 - $certid) + 1;
         }
@@ -462,7 +462,7 @@ class GeradorTermo
             if ($lGerarFundamentacao) {
 
                 $rsFundamentacao = db_query($sSqlFundamentacao);
-                $iTotalFundamentacao = pg_num_rows($rsFundamentacao);
+                $iTotalFundamentacao = $rsFundamentacao === false || $rsFundamentacao === null ? 0 : pg_num_rows($rsFundamentacao);
 
                 if ($iTotalFundamentacao > 0) {
 
@@ -509,7 +509,7 @@ class GeradorTermo
             $resMetCalculo = db_query($sMetCalculo);
             if ($resMetCalculo) {
 
-                $iNumRows = pg_num_rows($resMetCalculo);
+                $iNumRows = $resMetCalculo === false || $resMetCalculo === null ? 0 : pg_num_rows($resMetCalculo);
                 for ($v = 0; $v < $iNumRows; $v++) {
 
                     $oMetodologia = db_utils::fieldsmemory($resMetCalculo, $v);

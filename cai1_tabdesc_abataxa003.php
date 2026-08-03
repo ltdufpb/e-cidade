@@ -101,7 +101,7 @@ if(isset($excluir)){
           left join cgm              on z01_numcgm  = k15_numcgm  
 					where codsubrec = $chavepesquisa ";
 	$rs = db_query($sql);
-	$linhas = pg_num_rows($rs);
+	$linhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 	if($linhas > 0){
 		db_fieldsmemory($rs,0);
 	}

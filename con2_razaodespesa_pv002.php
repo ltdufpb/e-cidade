@@ -117,7 +117,7 @@ $troca = 1;
 $alt   = 4;
 
 
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 for( $dotacao = 0; $dotacao < $numrows ; $dotacao ++ ){
 	

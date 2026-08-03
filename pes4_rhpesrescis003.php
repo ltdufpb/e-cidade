@@ -171,7 +171,7 @@ if (isset($excluir)) {
       $sSqlPensao  .= "  order by r52_regist                                                                          ";
 
       $rsPensao     = db_query($sSqlPensao);
-      $iNumrows     = pg_num_rows($rsPensao);
+      $iNumrows     = $rsPensao === false || $rsPensao === null ? 0 : pg_num_rows($rsPensao);
 
       if ($iNumrows > 0) {
       	

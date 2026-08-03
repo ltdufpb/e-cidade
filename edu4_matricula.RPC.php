@@ -113,7 +113,7 @@ try {
 
       $iLinhas = 0;
       if ($rsTurmaTurnoReferente && pg_num_rows($rsTurmaTurnoReferente) > 0) {
-        $iLinhas = pg_num_rows($rsTurmaTurnoReferente);
+        $iLinhas = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows($rsTurmaTurnoReferente);
       }
 
       $sWhereExcluiVinculos        = " ed337_matricula = ". $oMatricula->getCodigo();

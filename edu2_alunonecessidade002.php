@@ -129,7 +129,7 @@ $sSql .= " aluno.ed47_v_nome       ";
 
 $rsAlunos = db_query($sSql);
 
-$iLinhasMatricula = pg_num_rows($rsAlunos);
+$iLinhasMatricula = $rsAlunos === false || $rsAlunos === null ? 0 : pg_num_rows($rsAlunos);
 
 if ($iLinhasMatricula == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado para os filtros selecionados.");

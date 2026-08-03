@@ -182,7 +182,7 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
 
 	  	    $resultjadivida  = db_query($sqljadivida);
 	  	    $jaexiste        = false;
-          $numrowsjadivida = pg_num_rows($resultjadivida);
+          $numrowsjadivida = $resultjadivida === false || $resultjadivida === null ? 0 : pg_num_rows($resultjadivida);
 
           // Trata tipo de Debito 20 - Saneamento Basico
           if ($numrowsjadivida == 0 || ( $numrowsjadivida > 0 && $k03_tipo == 20) ) {

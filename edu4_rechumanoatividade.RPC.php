@@ -369,7 +369,7 @@ function buscaTodasAgendasProfissional($iVinculoEscola)
     }
 
     $aAgendaAtividade = [];
-    $iLinhas = pg_num_rows($rsValidaConflito);
+    $iLinhas = $rsValidaConflito === false || $rsValidaConflito === null ? 0 : pg_num_rows($rsValidaConflito);
     for ($i = 0; $i < $iLinhas; $i++) {
         $aAgendaAtividade[] = db_utils::fieldsMemory($rsValidaConflito, $i);
     }

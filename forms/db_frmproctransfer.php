@@ -202,7 +202,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
 
     $sqlParametro = "select p90_traminic from protparam where p90_instit = {$iInstituicao}";
     $rsParametro  = db_query($sqlParametro);
-    $linhasParametro = pg_num_rows($rsParametro);
+    $linhasParametro = $rsParametro === false || $rsParametro === null ? 0 : pg_num_rows($rsParametro);
     if($linhasParametro > 0){
       db_fieldsmemory($rsParametro,0);
     }
@@ -294,7 +294,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
     $sql .= "   order by $ordem desc                                                                        ";
     
     $rs = db_query($sql) or die($sql);
-    $numrows = pg_num_rows($rs);
+    $numrows = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
     // dd($numrows);
 
     if ($numrows > 0){  ?>
@@ -333,7 +333,7 @@ $tipoControleNumeracao = ProcessoProtocoloNumeracao::getTipoConfiguracao();
 					                       order by ov15_dtfim";
 
 					$rsPrazoPrevisto      = db_query($sSqlPrazoPrevisto);
-					$iLinhasPrazoPrevisto = pg_num_rows($rsPrazoPrevisto);
+					$iLinhasPrazoPrevisto = $rsPrazoPrevisto === false || $rsPrazoPrevisto === null ? 0 : pg_num_rows($rsPrazoPrevisto);
 					$lProximoDepto        = false;
 
 					if ( $iLinhasPrazoPrevisto > 0 ) {

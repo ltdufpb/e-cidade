@@ -240,7 +240,7 @@ class EtapaRepository {
       throw new DBException(_M(URL_MENSAGEM_ETAPAREPOSITORY."erro_query_etapas_ensino"));
     }
 
-    $iLinhas = pg_num_rows($rsEtapas);
+    $iLinhas = $rsEtapas === false || $rsEtapas === null ? 0 : pg_num_rows($rsEtapas);
 
     $aEtapasEnsino = [];
     for ( $i = 0; $i < $iLinhas; $i++ ) {

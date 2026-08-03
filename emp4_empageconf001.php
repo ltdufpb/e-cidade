@@ -178,7 +178,7 @@ if(isset($atualizar) || isset($prever)){
      
         $sqlpar = "select k29_saldoemitechq from caiparametro where k29_instit = ".db_getsession("DB_instit");
         $resultpar = db_query($sqlpar);
-        $linhaspar = pg_num_rows($resultpar);
+        $linhaspar = $resultpar === false || $resultpar === null ? 0 : pg_num_rows($resultpar);
         if($linhaspar>0){
           db_fieldsmemory($resultpar, 0);
           if($k29_saldoemitechq == 1){
@@ -222,7 +222,7 @@ if(isset($atualizar) || isset($prever)){
       // Dados do fornecedor
       $sql04 = "select * from pcfornecon where pc63_numcgm=$numcgm_cre";
       $result04 = @ db_query($sql04);
-      $numrows04 = @ pg_num_rows($result04);
+      $numrows04 = $result04 === false || $result04 === null ? 0 : @ pg_num_rows($result04);
       $dad_verso = '\n';
       if($numrows04 > 0){
 	db_fieldsmemory($result04, 0);

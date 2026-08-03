@@ -76,7 +76,7 @@ db_postmemory($_POST);
       			  	<?php 
       			  	$sqlano = "select distinct j23_anousu from iptucalc order by j23_anousu desc";
                       $resultano = db_query($sqlano);
-                      $linhasano = pg_num_rows($resultano);
+                      $linhasano = $resultano === false || $resultano === null ? 0 : pg_num_rows($resultano);
                       for($i = 0;$i < $linhasano;$i++){
       	              db_fieldsmemory($resultano,$i);
       	              echo "<option value=$j23_anousu>$j23_anousu</option>\n";

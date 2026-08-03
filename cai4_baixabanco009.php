@@ -56,7 +56,7 @@ $sql    .= "      and discla.instit = $iInstit                                  
 $sql    .= "order by disrec.k00_receit                                                              \n";
 $result  = db_query($sql);
 
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $pdf = new PDF();
 $pdf->Open();

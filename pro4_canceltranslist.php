@@ -100,7 +100,7 @@ function js_marca(obj){
                  where p63_codtran = {$cod} {$where} ";
        //die($sql);
        $result  = db_query($sql);
-       $numrows = pg_num_rows($result);
+       $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
        if($numrows>0){
           echo "
 	           <table style='border:2px inset white; width:100%;background-color:white' cellspacing='0'' cellpadding='0'>

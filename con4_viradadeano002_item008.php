@@ -37,7 +37,7 @@ if($sqlerro==false) {
   // se tem em 2007
   $sqlorigem = "select db20_codperm from db_permemp where db20_anousu =  $anoorigem ";
   $resultorigem = db_query($sqlorigem);
-  $linhasorigem = pg_num_rows($resultorigem);
+  $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
   if ($linhasorigem > 0) {
     for ($pe=0; $pe<$linhasorigem; $pe++) {
@@ -47,7 +47,7 @@ if($sqlerro==false) {
       // se tem em 2008
       $sqldestino = "select * from db_permemp where db20_anousu = $anodestino and db20_codperm = ".$db20_codperm ;
       $resultdestino = db_query($sqldestino);
-      $linhasdestino = pg_num_rows($resultdestino);
+      $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
       if ($linhasdestino==0) {
         //se não tiver dados em 2008 pode incluir
 
@@ -67,7 +67,7 @@ if($sqlerro==false) {
           inner join orcorgao on o40_anousu = ".$anodestino." and o40_orgao = db20_orgao
           where db20_anousu = ".$anoorigem." and db20_codperm = ".$db20_codperm." and db20_tipoperm is not null";
         $resultpermemp = db_query($sqlpermemp);
-        $linhaspermemp = pg_num_rows($resultpermemp);
+        $linhaspermemp = $resultpermemp === false || $resultpermemp === null ? 0 : pg_num_rows($resultpermemp);
         if ($linhaspermemp>0) {
           db_fieldsmemory($resultpermemp,0);
           $clpermemp->db20_anousu    = $anodestino;

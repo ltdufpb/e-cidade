@@ -218,7 +218,7 @@ if($modelo!="completo"){
 
 $result = @db_query($sql);
 if($result){
- $numrows = pg_num_rows($result);
+ $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 }else{
  $numrows ='0';
 }
@@ -314,7 +314,7 @@ $pdf->cell(60,3,"Total de registros: $numrows",0,0,"L",0);
    ";
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_num_rows($result);
+     $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    }else{
      $numrows ='0';
    }  
@@ -401,14 +401,14 @@ for ($i = 0;$i < $numrows;$i++){
   
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_num_rows($result);
+     $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    }else{
      $numrows ='0';
    }  
 
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_num_rows($result);
+     $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    }else{
      $numrows ='0';
    }  
@@ -496,14 +496,14 @@ for ($i = 0;$i < $numrows;$i++){
   
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_num_rows($result);
+     $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    }else{
      $numrows ='0';
    }  
 
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_num_rows($result);
+     $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    }else{
      $numrows ='0';
    }
@@ -591,7 +591,7 @@ for ($i = 0;$i < $numrows;$i++){
   
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_num_rows($result);
+     $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    }else{
      $numrows ='0';
    } 

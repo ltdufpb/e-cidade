@@ -590,7 +590,7 @@ class cl_cancdebitos {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_num_rows($result);
+     $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cancdebitos";
@@ -815,7 +815,7 @@ class cl_cancdebitos {
       $this->numpar;
     //echo "<br>".$sqlarrecad;
     $resultarrecad = db_query($sqlarrecad);
-    $linhasarrecad = pg_num_rows($resultarrecad);
+    $linhasarrecad = $resultarrecad === false || $resultarrecad === null ? 0 : pg_num_rows($resultarrecad);
     if ($linhasarrecad > 0) {
 
       for($i = 0; $i < $linhasarrecad; $i ++) {
@@ -840,7 +840,7 @@ class cl_cancdebitos {
         if ($erro == false) {
 
           $resultdebito = debitos_numpre($this->numpre, 0, $this->tipo, strtotime(date("Y-m-d")), date("Y"));
-          $linhasdebito = pg_num_rows($resultdebito);
+          $linhasdebito = $resultdebito === false || $resultdebito === null ? 0 : pg_num_rows($resultdebito);
 
           $vlrhis = pg_fetch_result($resultdebito, 0, "vlrhis");
           $vlrcor = pg_fetch_result($resultdebito, 0, "vlrcor");

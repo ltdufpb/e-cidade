@@ -106,7 +106,7 @@ function atualiza_cadsus($termometro = 0, $conn = null, $cod_cgs = null ,$DB_SER
 
         $sql_cgs    = "select * from cgs_und where z01_i_cgsund = $cod_cgs";
         $result_cgs = db_query($conn, $sql_cgs);
-        $linhas_cgs = pg_num_rows($result_cgs);
+        $linhas_cgs = $result_cgs === false || $result_cgs === null ? 0 : pg_num_rows($result_cgs);
 
         if($linhas_cgs > 0){
 
@@ -233,7 +233,7 @@ function atualiza_cadsus($termometro = 0, $conn = null, $cod_cgs = null ,$DB_SER
         $row    = ibase_fetch_object ( $ib_linhas );
         $limite = $row->LINHAS;
       }else{
-        $limite = pg_num_rows($ib_result);
+        $limite = $ib_result === false || $ib_result === null ? 0 : pg_num_rows($ib_result);
       }
 
       $ini  = date ( "h:i:s" );

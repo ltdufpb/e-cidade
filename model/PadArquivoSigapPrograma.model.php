@@ -63,7 +63,7 @@ final class PadArquivoSigapPrograma extends PadArquivoSigap {
     $sSqlProgramas .= "                            and o58_anousu   = o54_anousu";
     $sSqlProgramas .= "    and o54_anousu <= " . db_getsession("DB_anousu"); 
     $rsPrograma     = db_query($sSqlProgramas);
-    $iTotalLinhas = pg_num_rows($rsPrograma);
+    $iTotalLinhas = $rsPrograma === false || $rsPrograma === null ? 0 : pg_num_rows($rsPrograma);
      
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       

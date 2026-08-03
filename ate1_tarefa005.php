@@ -229,7 +229,7 @@ if(isset($alterar)||isset($autorizar)) {
       // pega a area.....
       $sqlteste = "select codarea from db_syscadproced where codproced = $codproced";
       $resultteste = db_query($sqlteste) or die($sqlteste);
-      $linhasteste = pg_num_rows($resultteste);
+      $linhasteste = $resultteste === false || $resultteste === null ? 0 : pg_num_rows($resultteste);
       if ($linhasteste>0){
         db_fieldsmemory($resultteste, 0);
       }
@@ -247,7 +247,7 @@ if(isset($alterar)||isset($autorizar)) {
         where at33_tarefacadmotivo = $at54_sequencial 
         and at33_atendcadarea = $codarea";
         $resultmotarea = db_query($sqlmotarea) or die($sqlmotarea);
-        $linhasmotarea = pg_num_rows($resultmotarea);
+        $linhasmotarea = $resultmotarea === false || $resultmotarea === null ? 0 : pg_num_rows($resultmotarea);
         if ($linhasmotarea>0){
           db_fieldsmemory($resultmotarea, 0);
         }
@@ -460,7 +460,7 @@ if(isset($alterar)||isset($autorizar)) {
       $sqlproced = "select * from tarefasyscadproced where at37_tarefa = $at40_sequencial";
 
       $resultproced = db_query($sqlproced);
-      $linhasproced = pg_num_rows($resultproced);
+      $linhasproced = $resultproced === false || $resultproced === null ? 0 : pg_num_rows($resultproced);
       if ($linhasproced>0){
         db_fieldsmemory($resultproced, 0);
         //$cl_tarefasyscadproced->at37_sequencial=$at37_sequencial;
@@ -771,7 +771,7 @@ if (($db_opcao == 22 || $db_opcao == 33) && ($trocamodulo!='t')&&(@$abrefunc!='f
 function testa_horarios($result, $cltarefa) {
   $retorno    = false;
   $NumRows    = $cltarefa->numrows;
-  $NumFields  = pg_num_fields($result);
+  $NumFields  = $result === false || $result === null ? 0 : pg_num_fields($result);
   $db_diaini  = "";
   $db_diafim  = "";
   $db_horaini = "";

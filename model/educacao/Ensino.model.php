@@ -291,7 +291,7 @@ class Ensino {
     $aTermos = [];
     if ( $rsTermos && pg_num_rows($rsTermos) > 0 ) {
 
-      $iLinhas = pg_num_rows($rsTermos);
+      $iLinhas = $rsTermos === false || $rsTermos === null ? 0 : pg_num_rows($rsTermos);
 
       for ( $i = 0; $i < $iLinhas; $i ++ ) {
         $aTermos[] = db_utils::fieldsMemory($rsTermos, $i);
@@ -351,7 +351,7 @@ class Ensino {
       if (!$rs) {
         throw new Exception("Error Processing Request", 1);
       }
-      $iLinhas = pg_num_rows($rs);
+      $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
       if ( $iLinhas > 0 ) {
 
         for ( $i = 0; $i < $iLinhas; $i++) {

@@ -63,7 +63,7 @@ try {
     throw new Exception("Erro ao consultar dados dos medicamentos");
   }
 
-  $iTotalMedicamento = pg_num_rows($rsCadastroMedicamentos);
+  $iTotalMedicamento = $rsCadastroMedicamentos === false || $rsCadastroMedicamentos === null ? 0 : pg_num_rows($rsCadastroMedicamentos);
   $oDtInicio = new DBDate($oGet->dtInicial);
   $oDtFinal  = new DBDate($oGet->dtFinal);
 
@@ -140,7 +140,7 @@ try {
       throw new Exception(_M(MSG_SAU2_CONFERENCIAADMINISTRACAOMEDICAMENTO002 . "erro_buscar_medicamentos"));
     }
 
-    $iLinhasMedicamentosSolicitados = pg_num_rows($rsMedicamentos);
+    $iLinhasMedicamentosSolicitados = $rsMedicamentos === false || $rsMedicamentos === null ? 0 : pg_num_rows($rsMedicamentos);
 
     $oEntradaMedicamento            = db_utils::fieldsMemory($rsMedicamentos, 0);
     $oMedicamento->entradas_anterior = $oEntradaMedicamento->entradas_anterior;
@@ -156,7 +156,7 @@ try {
     }
     if ($rsAdministracao && pg_num_rows($rsAdministracao) > 0) {
 
-      $iLinhasAdministracao = pg_num_rows($rsAdministracao);
+      $iLinhasAdministracao = $rsAdministracao === false || $rsAdministracao === null ? 0 : pg_num_rows($rsAdministracao);
       for ($iAdministracao = 0; $iAdministracao < $iLinhasAdministracao; $iAdministracao++) {
 
         $oAdministracao = db_utils::fieldsMemory($rsAdministracao, $iAdministracao);
@@ -174,7 +174,7 @@ try {
 
     if ($rsDescarte && pg_num_rows($rsDescarte) > 0) {
 
-      $iLinhasDescarte = pg_num_rows($rsDescarte);
+      $iLinhasDescarte = $rsDescarte === false || $rsDescarte === null ? 0 : pg_num_rows($rsDescarte);
       for ($iDescarte = 0; $iDescarte < $iLinhasDescarte; $iDescarte++) {
 
         $oDescarte = db_utils::fieldsMemory($rsDescarte, $iDescarte);

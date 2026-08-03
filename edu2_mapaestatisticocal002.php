@@ -99,7 +99,7 @@ try {
         $aWherePrimeiroQuadro[] = " ed10_i_tipoensino in (1,3) ";
 
         $rsPrimeiroQuadro = buscaDadosEnsinosMinistrados($aWherePrimeiroQuadro);
-        $iLinhas = pg_num_rows($rsPrimeiroQuadro);
+        $iLinhas = $rsPrimeiroQuadro === false || $rsPrimeiroQuadro === null ? 0 : pg_num_rows($rsPrimeiroQuadro);
         if ($iLinhas == 0) {
             throw new Exception("Não há turmas cadastradas para o ano: " . $oDtInicio->getAno());
         }
@@ -173,7 +173,7 @@ try {
         $aWhereSegundoQuadro[] = " ed10_i_codigo in ({$sEnsinosSegundoQuandro}) ";
         $rsSegundoQuandro = buscaDadosEnsinosMinistrados($aWhereSegundoQuadro);
 
-        $iLinhas = pg_num_rows($rsSegundoQuandro);
+        $iLinhas = $rsSegundoQuandro === false || $rsSegundoQuandro === null ? 0 : pg_num_rows($rsSegundoQuandro);
         if ($iLinhas == 0) {
             throw new Exception("Não há turmas cadastradas para o ano: " . $oDtInicio->getAno());
         }
@@ -1136,7 +1136,7 @@ function buscaCursosMinistradoAno($aFiltros)
         throw new Exception("Erro busca ensinos." . pg_last_error());
     }
 
-    $iLinhas = pg_num_rows($rs);
+    $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
     $aEnsinos = [];
 
     for ($i = 0; $i < $iLinhas; $i++) {
@@ -1549,7 +1549,7 @@ function buscaEscolas()
     }
 
     $aEscolas = [];
-    $iEscolas = pg_num_rows($rsEscolas);
+    $iEscolas = $rsEscolas === false || $rsEscolas === null ? 0 : pg_num_rows($rsEscolas);
 
     for ($i = 0; $i < $iEscolas; $i++) {
 

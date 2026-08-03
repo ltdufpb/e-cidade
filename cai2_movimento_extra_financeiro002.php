@@ -100,7 +100,7 @@ $sSqlRecursos .= "                                and c61_anousu = c60_anousu ";
 $sSqlRecursos .= "{$sWhere}"; 
 $sSqlRecursos .= "order by o15_codigo";
 $rsRecursos      = db_query($sSqlRecursos);
-$iTotalRecursos  = pg_num_rows($rsRecursos);
+$iTotalRecursos  = $rsRecursos === false || $rsRecursos === null ? 0 : pg_num_rows($rsRecursos);
 $oLinhas           = new stdClass();
 $oLinhas->recursos = [];
 

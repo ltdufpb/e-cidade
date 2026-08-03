@@ -746,7 +746,7 @@ class cl_inssirf
          $this->erro_status = "0";
          return false;
        }
-       $this->numrows = pg_num_rows($result);
+       $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
        if ($this->numrows == 0) {
           $this->erro_banco = "";
           $this->erro_sql   = "Record Vazio na Tabela:inssirf";
@@ -932,7 +932,7 @@ function sql_query_dados ($r33_codigo = null, $campos = "*", $ordem = null, $dbw
     $sValoresPatronais .= "    and r33_instit = {$iInstituicao} ";
 
     $rsValoresPatronais    = db_query($sValoresPatronais);
-    $iRowsValoresPatronais = pg_num_rows($rsValoresPatronais);
+    $iRowsValoresPatronais = $rsValoresPatronais === false || $rsValoresPatronais === null ? 0 : pg_num_rows($rsValoresPatronais);
 
     if( !$rsValoresPatronais || $iRowsValoresPatronais == 0 ) {
       throw new BusinessException("Sem Valores Patronais Configurados!");

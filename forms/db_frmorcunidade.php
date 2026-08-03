@@ -98,7 +98,7 @@ db_input('o40_descr',50,$Io40_descr,true,'text',3,'');
 		 }
 		 $sqlInstit       = "select codigo,nomeinst from db_config ";
      $rsInstit        = db_query($sqlInstit);
-     $intInstit       = pg_num_rows($rsInstit);
+     $intInstit       = $rsInstit === false || $rsInstit === null ? 0 : pg_num_rows($rsInstit);
      $arraycadtipo[0] = 'Selecione a Instituição';
      for($i = 0; $i < $intInstit; $i++){
        db_fieldsmemory($rsInstit,$i);

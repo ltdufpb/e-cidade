@@ -532,7 +532,7 @@ class ReciboAvulsoPortalDoacoes {
       // Identificações recibo
       $oPdf->datacalc           = date('d-m-Y',$dDataUsu);
       $oPdf->predatacalc        = date('d-m-Y',$dDataUsu);
-      $oPdf->linhasdadospagto   = pg_num_rows($rsDadosPagamento);
+      $oPdf->linhasdadospagto   = $rsDadosPagamento === false || $rsDadosPagamento === null ? 0 : pg_num_rows($rsDadosPagamento);
       $oPdf->recorddadospagto   = $rsDadosPagamento;
       $oPdf->receita            = 'k00_receit';
       $oPdf->receitared         = 'codreduz';

@@ -30,7 +30,7 @@ db_postmemory($_POST);
 
 $sqlcgm="select z01_numcgm ,z01_nome, z01_cgccpf from cgm where z01_numcgm = $cgm";
 $resultcgm = db_query($sqlcgm);
-$linhascgm=pg_num_rows($resultcgm);
+$linhascgm=$resultcgm === false || $resultcgm === null ? 0 : pg_num_rows($resultcgm);
 
 
 $pdf = new PDF(); // abre a classe
@@ -71,7 +71,7 @@ $sqlprestador = "
 				";
 
 $resultprestador = db_query($sqlprestador);
-$linhasprestador = pg_num_rows($resultprestador);
+$linhasprestador = $resultprestador === false || $resultprestador === null ? 0 : pg_num_rows($resultprestador);
 
 $Letra = 'arial';
 $pdf->SetFont($Letra,'B',8);

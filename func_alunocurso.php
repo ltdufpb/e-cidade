@@ -152,7 +152,7 @@ $clcurso->rotulo->label("ed29_c_descr");
               $sql .= " ORDER BY ed29_c_descr ";
               
               $result = db_query( $sql );
-              $linhas = pg_num_rows( $result );
+              $linhas = $result === false || $result === null ? 0 : pg_num_rows( $result );
               
               if ( $linhas != 0 ) {
 

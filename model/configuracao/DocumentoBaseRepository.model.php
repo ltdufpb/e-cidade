@@ -96,7 +96,7 @@ class DocumentoBaseRepository {
       throw new DBException( _M( MENSAGENS_DDOCUMENTOBASE_REPOSITORY . 'erro_buscar_caddocumento', $oMensagem ) );
     }
 
-    $iLinhasCadDocumento = pg_num_rows( $rsCadDocumento );
+    $iLinhasCadDocumento = $rsCadDocumento === false || $rsCadDocumento === null ? 0 : pg_num_rows( $rsCadDocumento );
 
     if( $iLinhasCadDocumento == 0 ) {
       return null;
@@ -131,7 +131,7 @@ class DocumentoBaseRepository {
     }
 
     DocumentoBaseRepository::getAllDocumentoBase();
-    $iLinhasCgsValor = pg_num_rows( $rsCgsValor );
+    $iLinhasCgsValor = $rsCgsValor === false || $rsCgsValor === null ? 0 : pg_num_rows( $rsCgsValor );
 
     for( $iContador = 0; $iContador < $iLinhasCgsValor; $iContador++ ) {
 

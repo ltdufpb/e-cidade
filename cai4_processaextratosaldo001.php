@@ -87,7 +87,7 @@ if (isset($processar)) {
     if (!$rsContas) {
       throw new Exception("Não foi possível buscar o saldo do extrato da conta bancária.");
     }
-    $iNumRowsContas = pg_num_rows($rsContas);
+    $iNumRowsContas = $rsContas === false || $rsContas === null ? 0 : pg_num_rows($rsContas);
 
     for ($iContas = 0 ; $iContas < $iNumRowsContas; $iContas++) {
 
@@ -110,7 +110,7 @@ if (isset($processar)) {
         throw new Exception("Erro buscando registros da Extrato Saldo");
       }
 
-      $iQtdNumRows = pg_num_rows($rsSaldo);
+      $iQtdNumRows = $rsSaldo === false || $rsSaldo === null ? 0 : pg_num_rows($rsSaldo);
       for ($i = 0; $i < $iQtdNumRows; $i++) {
 
         $oPesquisa = db_utils::fieldsMemory($rsSaldo,$i);

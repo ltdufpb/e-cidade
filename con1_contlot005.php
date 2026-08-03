@@ -120,7 +120,7 @@ class cl_fate extends cl_testada {
     if($numrows>0){
       static $pri=true;
       $re=db_query("select d03_tipos,d03_descr,d04_quant,d04_vlrcal,d04_vlrval from editalserv inner join editaltipo on d03_tipos=d04_tipos where d04_contri=$numcontri");  
-      $numlinhas= pg_num_rows($re);
+      $numlinhas= $re === false || $re === null ? 0 : pg_num_rows($re);
       if($pri){
         echo "
           <tr>
@@ -316,7 +316,7 @@ if(isset($face)){
     inner join editalrua on d02_codedi=d01_codedi
     where d02_contri=$contri";
   $result=db_query($sql);  
-  $num=pg_num_rows($result);
+  $num=$result === false || $result === null ? 0 : pg_num_rows($result);
   if($num>0){
     for($d=0; $d<$num; $d++){
       db_fieldsmemory($result,$d);

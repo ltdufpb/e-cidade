@@ -140,7 +140,7 @@ try {
       $oRetorno->aSetores = [];
       if ( pg_num_rows($rsSetores) > 0 ) {
 
-        $iLinhas = pg_num_rows($rsSetores);
+        $iLinhas = $rsSetores === false || $rsSetores === null ? 0 : pg_num_rows($rsSetores);
         for ( $i = 0; $i < $iLinhas; $i++) {
 
           $oDados             = db_utils::fieldsMemory($rsSetores, $i);
@@ -356,7 +356,7 @@ try {
 
       $oRetorno->aProcedimentos = [];
 
-      $iLinhas  = pg_num_rows( $rsProcedimento );
+      $iLinhas  = $rsProcedimento === false || $rsProcedimento === null ? 0 : pg_num_rows( $rsProcedimento );
       for ( $i = 0; $i < $iLinhas; $i++) {
 
         $oDados        = db_utils::fieldsMemory( $rsProcedimento, $i );

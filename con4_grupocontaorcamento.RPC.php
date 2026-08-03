@@ -164,7 +164,7 @@ switch ($oParam->exec) {
       $sSqlBuscaContasOrcamento .= "       left  join orcdotacao  on orcdotacao.o58_codele    = orcelemento.o56_codele                      ";
       $sSqlBuscaContasOrcamento .= " where {$sWhereBuscaContaOrcamento}                                                                     ";
       $rsBuscaContaOrcamento     = db_query($sSqlBuscaContasOrcamento);
-      $iTotalContasOrcamento     = pg_num_rows($rsBuscaContaOrcamento);
+      $iTotalContasOrcamento     = $rsBuscaContaOrcamento === false || $rsBuscaContaOrcamento === null ? 0 : pg_num_rows($rsBuscaContaOrcamento);
       
       $sWhereBuscaContaReceita = implode(" and ", $aClausulaWhereReceita);
       $sSqlBuscaContasReceita  = "select distinct                                                                         ";
@@ -176,7 +176,7 @@ switch ($oParam->exec) {
       $sSqlBuscaContasReceita .= " where {$sWhereBuscaContaReceita}                                                       ";
       
       $rsBuscaContaReceita     = db_query($sSqlBuscaContasReceita);
-      $iTotalContasReceita     = pg_num_rows($rsBuscaContaReceita);
+      $iTotalContasReceita     = $rsBuscaContaReceita === false || $rsBuscaContaReceita === null ? 0 : pg_num_rows($rsBuscaContaReceita);
       
       
       if ($iTotalContasOrcamento == 0 && $iTotalContasReceita == 0) {

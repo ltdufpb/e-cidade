@@ -85,7 +85,7 @@ final class PadArquivoSigapBalanceteReceitaAnterior extends PadArquivoSigap {
     $sSqlAgrupado .= "      left join orcreceita on orcreceita.o70_codrec = x.o70_codrec and o70_anousu={$iAnoUsu} ";
     $sSqlAgrupado .= " order by o57_fonte "; 
     $rsBalancete   = db_query($sSqlAgrupado);
-    $iTotalLinhas  = pg_num_rows($rsBalancete);
+    $iTotalLinhas  = $rsBalancete === false || $rsBalancete === null ? 0 : pg_num_rows($rsBalancete);
     for ($i = 1; $i < $iTotalLinhas; $i++) {
       
       $oReceita   = db_utils::fieldsMemory($rsBalancete, $i);

@@ -39,7 +39,7 @@ $sSqlEspecie	.= 	" from clabens ";
 $sSqlEspecie	.= 	" 	where t64_analitica is true order by t64_codcla"; //t64_class ilike '%000000' ORDER BY t64_class";  // where t64_analitica is true
 
 $rsEspecie 		 =	db_query($sSqlEspecie);
-$iNumeroLinhas =	pg_num_rows($rsEspecie);
+$iNumeroLinhas =	$rsEspecie === false || $rsEspecie === null ? 0 : pg_num_rows($rsEspecie);
 
 for ($i=0;$i<$iNumeroLinhas;$i++)	{
 

@@ -158,7 +158,7 @@ if(isset($verifica)){
 													// para pegaro codigo da tabela
 													$sqltab = "select codarq from db_sysarquivo where nomearq = '$tabela'";
 													$resulttab = db_query($sqltab);
-													$linhatab = pg_num_rows($resulttab);
+													$linhatab = $resulttab === false || $resulttab === null ? 0 : pg_num_rows($resulttab);
 													if($linhatab>0){
 
 														db_fieldsmemory($resulttab,0);
@@ -183,7 +183,7 @@ if(isset($verifica)){
 
 														// ver tabela db_sysclasses
 														$result = db_query($sql);
-														$linhasres = pg_num_rows($result);
+														$linhasres = $result === false || $result === null ? 0 : pg_num_rows($result);
 														if($linhasres>0){
 															db_fieldsmemory($result,0);
 															// tem no banco

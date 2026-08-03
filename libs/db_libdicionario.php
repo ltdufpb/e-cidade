@@ -44,7 +44,7 @@ function getValoresPadroesCampo($sNomeCam) {
   $rsCampos     = db_query($sSqlDefault);
   if (pg_num_rows($rsCampos) > 0) {
     
-    $iTotRows = pg_num_rows($rsCampos);
+    $iTotRows = $rsCampos === false || $rsCampos === null ? 0 : pg_num_rows($rsCampos);
     for ($i = 0; $i < $iTotRows; $i++) {
 
        $aRetorno[pg_fetch_result($rsCampos,$i,0)] = pg_fetch_result($rsCampos,$i,1); 

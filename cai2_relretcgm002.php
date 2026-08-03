@@ -103,7 +103,7 @@ $sql1 = "select distinct x.e60_anousu,
 		 		";
 
 $result1 = db_query($sql1) or die($sql1);
-$numrows = pg_num_rows($result1);
+$numrows = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
  if ( $cgm != "" && $numrows > 0) {
    db_fieldsmemory($result1,0);
@@ -159,7 +159,7 @@ for ( $i=0; $i<$numrows; $i++ ) {
     $anospgto = $k12_anopgto;
 	
 	$result2  = db_query($sql2);
-	$numrows2 = pg_num_rows($result2);
+	$numrows2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 
 	if ( $numrows2 > 0) {
 	  $imprime     = "";
@@ -339,7 +339,7 @@ if ($numcgm_salvos != "") {
 					 
  if($cgm != $numcgm_salvos || $numcgm_salvos == "" ){
   $result3  = db_query($sql3);
-  $numrows3 = pg_num_rows($result3);
+  $numrows3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
  } else{
   $numrows3 = 0;	
  }

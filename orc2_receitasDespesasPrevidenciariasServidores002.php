@@ -278,7 +278,7 @@ if (!empty($oLinhaRelatorio)) {
 }
 $db_filtro          = " o70_instit in ({$sListaInstit})";
 $rsRecExeAno4       = db_receitasaldo(11, 1, 3, true, $db_filtro, $iAnoUsu1, "{$iAnoUsu1}-01-01", "{$iAnoUsu1}-12-31");
-$iLinhasRecExeAtual = pg_num_rows($rsRecExeAno4);
+$iLinhasRecExeAtual = $rsRecExeAno4 === false || $rsRecExeAno4 === null ? 0 : pg_num_rows($rsRecExeAno4);
 @db_query("drop table work_receita");
 
 for ($iInd = 0; $iInd < $iLinhasRecExeAtual; $iInd++) {
@@ -296,7 +296,7 @@ for ($iInd = 0; $iInd < $iLinhasRecExeAtual; $iInd++) {
 }
 $db_filtro          = " o70_instit in ({$sListaInstit})";
 $rsRecExeAno3       = db_receitasaldo(11, 1, 3, true, $db_filtro, $iAnoUsu2, "{$iAnoUsu2}-01-01", "{$iAnoUsu2}-12-31");
-$iLinhasRecExeAtual = pg_num_rows($rsRecExeAno3);
+$iLinhasRecExeAtual = $rsRecExeAno3 === false || $rsRecExeAno3 === null ? 0 : pg_num_rows($rsRecExeAno3);
 @db_query("drop table work_receita");
 
 for ($iInd = 0; $iInd < $iLinhasRecExeAtual; $iInd++) {
@@ -315,7 +315,7 @@ for ($iInd = 0; $iInd < $iLinhasRecExeAtual; $iInd++) {
 
 $db_filtro          = " o70_instit in ({$sListaInstit})";
 $rsRecExeAno3       = db_receitasaldo(11, 1, 3, true, $db_filtro, $iAnoUsu3, "{$iAnoUsu3}-01-01", "{$iAnoUsu3}-12-31");
-$iLinhasRecExeAtual = pg_num_rows($rsRecExeAno3);
+$iLinhasRecExeAtual = $rsRecExeAno3 === false || $rsRecExeAno3 === null ? 0 : pg_num_rows($rsRecExeAno3);
 @db_query("drop table work_receita");
 
 for ($iInd = 0; $iInd < $iLinhasRecExeAtual; $iInd++) {
@@ -360,7 +360,7 @@ for ($linha = 21; $linha <= 28; $linha++) {
                                            $iAnoUsu1,
                                            "{$iAnoUsu1}-01-01",
                                            "{$iAnoUsu1}-12-31");
-  $iLinhaDespFuncaoAtual = pg_num_rows($rsDespFuncaoAtual);
+  $iLinhaDespFuncaoAtual = $rsDespFuncaoAtual === false || $rsDespFuncaoAtual === null ? 0 : pg_num_rows($rsDespFuncaoAtual);
 
   for ($iInd = 0; $iInd < $iLinhaDespFuncaoAtual; $iInd++) {
 
@@ -401,7 +401,7 @@ for ($linha = 21; $linha <= 28; $linha++) {
                                            $iAnoUsu2,
                                            "{$iAnoUsu2}-01-01",
                                            "{$iAnoUsu2}-12-31");
-  $iLinhaDespFuncaoAtual = pg_num_rows($rsDespFuncaoAtual);
+  $iLinhaDespFuncaoAtual = $rsDespFuncaoAtual === false || $rsDespFuncaoAtual === null ? 0 : pg_num_rows($rsDespFuncaoAtual);
 
   for ($iInd = 0; $iInd < $iLinhaDespFuncaoAtual; $iInd++) {
 
@@ -442,7 +442,7 @@ for ($linha = 21; $linha <= 28; $linha++) {
                                            $iAnoUsu3,
                                            "{$iAnoUsu3}-01-01",
                                            "{$iAnoUsu3}-12-31");
-  $iLinhaDespFuncaoAtual = pg_num_rows($rsDespFuncaoAtual);
+  $iLinhaDespFuncaoAtual = $rsDespFuncaoAtual === false || $rsDespFuncaoAtual === null ? 0 : pg_num_rows($rsDespFuncaoAtual);
 
   for ($iInd = 0; $iInd < $iLinhaDespFuncaoAtual; $iInd++) {
 
@@ -474,7 +474,7 @@ $rsDispAtual      = db_planocontassaldo_matriz($iAnoUsu1,
                                                "{$iAnoUsu1}-12-31",
                                                false,
                                                $db_filtro_disponivel);
-$iLinhasDispAtual = pg_num_rows($rsDispAtual);
+$iLinhasDispAtual = $rsDispAtual === false || $rsDispAtual === null ? 0 : pg_num_rows($rsDispAtual);
 @db_query("drop table work_receita");
 @db_query("drop table work_pl");
 @db_query("drop table work_pl_estrut");
@@ -498,7 +498,7 @@ $rsDispAtual      = db_planocontassaldo_matriz($iAnoUsu2,
                                                "{$iAnoUsu2}-12-31",
                                                false,
                                                $db_filtro_disponivel);
-$iLinhasDispAtual = pg_num_rows($rsDispAtual);
+$iLinhasDispAtual = $rsDispAtual === false || $rsDispAtual === null ? 0 : pg_num_rows($rsDispAtual);
 @db_query("drop table work_receita");
 @db_query("drop table work_pl");
 @db_query("drop table work_pl_estrut");
@@ -522,7 +522,7 @@ $rsDispAtual      = db_planocontassaldo_matriz($iAnoUsu3,
                                                "{$iAnoUsu3}-12-31",
                                                false,
                                                $db_filtro_disponivel);
-$iLinhasDispAtual = pg_num_rows($rsDispAtual);
+$iLinhasDispAtual = $rsDispAtual === false || $rsDispAtual === null ? 0 : pg_num_rows($rsDispAtual);
 @db_query("drop table work_receita");
 @db_query("drop table work_pl");
 @db_query("drop table work_pl_estrut");

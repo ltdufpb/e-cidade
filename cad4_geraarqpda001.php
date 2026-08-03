@@ -141,7 +141,7 @@ if (isset ($gerar)) {
            
 	        $result = db_query($sql);
 
-			$numrows = pg_num_rows($result);
+			$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			if ($result == false || $numrows == 0) {
 				$erro = true;
 				$descricao_erro .= "Não existe matricula cadastrada!";

@@ -129,7 +129,7 @@ require_once(modification("std/DBDate.php"));
       throw new DBException( _M( self::MENSAGENS . 'nenhuma_empresa_encontrada' ) );
     }
 
-    $iTotalEmpresas = pg_num_rows($rsEmpresas);
+    $iTotalEmpresas = $rsEmpresas === false || $rsEmpresas === null ? 0 : pg_num_rows($rsEmpresas);
 
     for ($iEmpresa = 0; $iEmpresa < $iTotalEmpresas; $iEmpresa++) {
 

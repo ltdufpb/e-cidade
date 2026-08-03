@@ -246,7 +246,7 @@ class AnexoV extends \RelatoriosLegaisBase
                 if (!$resBuscaReduzido) {
                     throw new \DBException("Ocorreu um erro ao consultar o reduzido.");
                 }
-                $totalReduzidos = pg_num_rows($resBuscaReduzido);
+                $totalReduzidos = $resBuscaReduzido === false || $resBuscaReduzido === null ? 0 : pg_num_rows($resBuscaReduzido);
                 if ($totalReduzidos === 0) {
                     continue;
                 }

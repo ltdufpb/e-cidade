@@ -201,7 +201,7 @@ $at05_solicitado=stripslashes((string) @$at05_solicitado);
 						//echo"<br>$sqlusu<br>";
 					}	
 					$rs_atend = $clatendimento->sql_record($sqlusu);	
-					$linhas =pg_num_rows($rs_atend);
+					$linhas =$rs_atend === false || $rs_atend === null ? 0 : pg_num_rows($rs_atend);
 					?>   
 					<select name="usuorigem[]" multiple size="5">
 					<?php 
@@ -466,7 +466,7 @@ $at05_solicitado=stripslashes((string) @$at05_solicitado);
   				";
 //  				die($sqltarefa);
 					$resulttarefa = db_query($sqltarefa);
-					$linhastarefa = pg_num_rows($resulttarefa);
+					$linhastarefa = $resulttarefa === false || $resulttarefa === null ? 0 : pg_num_rows($resulttarefa);
 					if ($linhastarefa>0){
 					  db_selectrecord('at40_sequencial',$resulttarefa,true,$db_opcao,"","","","0-Nenhum","js_disablebotao(this.value);");
 				?>

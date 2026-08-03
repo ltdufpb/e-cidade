@@ -43,7 +43,7 @@ if(isset($excluir)) {
   $db_opcao     = 3;
   $sqlregras    = "select * from tabrecregrasjm where k04_codjm = $k02_codjm";
   $resultregras = db_query($sqlregras);
-  $linhasregras = pg_num_rows($resultregras);
+  $linhasregras = $resultregras === false || $resultregras === null ? 0 : pg_num_rows($resultregras);
   
   if($linhasregras > 0) {
     db_msgbox("Exclusão não realizada. Existe regra cadastrada para este tipo de juro e multa.");

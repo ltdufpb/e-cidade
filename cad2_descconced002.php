@@ -56,7 +56,7 @@ $oDaoReciboPaga = new cl_recibopaga();
 $sSqldescontoConcedUnica = $oDaoReciboPaga->sql_query_descontoConced_cotaUnica($iRegra, $oGet->anoexe, $oGet->datai, $oGet->dataf);
 
 $rsSql        = db_query($sSqldescontoConcedUnica);
-$iNumRownsSql = pg_num_rows($rsSql);
+$iNumRownsSql = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
 
 if ($iNumRownsSql == 0) {
    db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.');

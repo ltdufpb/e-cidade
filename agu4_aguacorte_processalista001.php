@@ -89,7 +89,7 @@ flush();
 		$sql = $claguacortetipodebito->sql_query(null,"*",null,"x40_codcorte=$x40_codcorte");
 
 		$res = db_query($sql); 
-		$qtd = pg_num_rows($res);
+		$qtd = $res === false || $res === null ? 0 : pg_num_rows($res);
 
 		$sql_proc = "select k22_matric, sum(k22_total) as k22_total from ( ";
 
@@ -282,7 +282,7 @@ flush();
 		//echo $sql_proc;exit;
 
 		$res_proc = db_query($sql_proc);
-		$qtd2 = pg_num_rows($res_proc);
+		$qtd2 = $res_proc === false || $res_proc === null ? 0 : pg_num_rows($res_proc);
 
 		if($qtd2==0) {
 		    $gerou = false;

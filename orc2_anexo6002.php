@@ -170,7 +170,7 @@ if ($origem == "O") {
 $result = db_dotacaosaldo(8, 1, 3, true, $sele_work, $anousu, $dataini, $datafin, $grupoini, $grupofin,false,$tipo_balanco);
 //$result = db_dotacaosaldo(8,1,2,true,$sele_work,$anousu,$dataini,$datafin,1,6);
 //db_criatabela($result);exit;
-$iTotalLinhas     = pg_num_rows($result);
+$iTotalLinhas     = $result === false || $result === null ? 0 : pg_num_rows($result);
 $aLinhasRelatorio = [];
 if ($tipo_agrupa == 1) {
 

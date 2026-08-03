@@ -33,7 +33,7 @@ try {
 
             $sSqlRhPessoal = $clrhpessoal->sql_query_file(null,"rh01_regist",null,"rh01_numcgm  ='$parametros->iCgm'");
             $rsRHPessoal = db_query($sSqlRhPessoal);
-            $iQtdLinhas = pg_num_rows($rsRHPessoal);
+            $iQtdLinhas = $rsRHPessoal === false || $rsRHPessoal === null ? 0 : pg_num_rows($rsRHPessoal);
 
             $aMatriculas = [];
             for($i = 0; $i < $iQtdLinhas; $i++){

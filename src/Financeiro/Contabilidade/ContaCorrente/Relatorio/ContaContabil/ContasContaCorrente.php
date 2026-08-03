@@ -83,7 +83,7 @@ class ContasContaCorrente
             throw new \DBException("Ocorreu um erro ao verificar os atributos existentes para a conta contábil.");
         }
 
-        $totalRegistros = pg_num_rows($buscarAtributos);
+        $totalRegistros = $buscarAtributos === false || $buscarAtributos === null ? 0 : pg_num_rows($buscarAtributos);
         if ($totalRegistros === 0){
             throw new \BusinessException("Não foram encontrados atributos para o filtro selecionado.");
         }
@@ -137,7 +137,7 @@ class ContasContaCorrente
             throw new \DBException("Ocorreu um erro ao processar os filtros do relatório.");
         }
 
-        $totalRegistros = pg_num_rows($buscaContas);
+        $totalRegistros = $buscaContas === false || $buscaContas === null ? 0 : pg_num_rows($buscaContas);
         if ($totalRegistros === 0){
             throw new \BusinessException("Não foram encontrados registros para o filtro selecionado.");
         }

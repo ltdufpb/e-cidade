@@ -222,7 +222,7 @@ $sSqlAlunos .= "       inner join diariofinal         on  diariofinal.ed74_i_dia
 $sSqlAlunos .= "       {$sWhere} {$sWhereEscola}                                                                                        ";
 $sSqlAlunos .= " order by ed18_i_codigo;                                                                                                ";
 $rsAlunos    = db_query($sSqlAlunos);
-$iTotalTurma = pg_num_rows($rsAlunos);
+$iTotalTurma = $rsAlunos === false || $rsAlunos === null ? 0 : pg_num_rows($rsAlunos);
 
 if ($iTotalTurma == 0) {
 

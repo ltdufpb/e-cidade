@@ -71,7 +71,7 @@ class GeracaoArquivoEconsig{
   public function gerarArquivoMargem() {
 
     $rsMargens     = $this->getMargens();
-    $iTotalMargens = pg_num_rows($rsMargens);
+    $iTotalMargens = $rsMargens === false || $rsMargens === null ? 0 : pg_num_rows($rsMargens);
 
     $this->validaMargens();
 

@@ -211,7 +211,7 @@ foreach ($aSiglas as $sSigla) {
 	$sSqlDadosFolha .= "  limit 1 																			\n";
 	
 	$rsDadosFolha      = db_query($sSqlDadosFolha);
-	$iLinhasDadosFolha = pg_num_rows($rsDadosFolha);                          
+	$iLinhasDadosFolha = $rsDadosFolha === false || $rsDadosFolha === null ? 0 : pg_num_rows($rsDadosFolha);                          
 	if ( $iLinhasDadosFolha > 0 ) {
 		$sDisabled = '';
 	} 

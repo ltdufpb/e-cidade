@@ -206,7 +206,7 @@ if ($oParam->exec == 'duplicarControleFisFin') {
     $mAno = $oParam->iAno ?? 'null';
     $mMes = $oParam->iMes ?? 'null';
     $rs = db_query("select fc_get_valor_procedimento('" . $oParam->sProcedimento . "', $mAno, $mMes) as valor;");
-    $iLin = pg_num_rows($rs);
+    $iLin = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
     if ($iLin > 0) {
         $oRetorno->nValor = db_utils::fieldsmemory($rs, 0)->valor;
     } else {

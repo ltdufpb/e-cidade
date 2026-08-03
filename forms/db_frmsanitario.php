@@ -79,7 +79,7 @@ if (@$y80_codsani!="") {
 				 inner join cgm     on z01_numcgm = q02_numcgm
 				 where y18_codsani=$y80_codsani";
 	$resultsani = db_query($sqlsani);
-	$linhassani = pg_num_rows($resultsani);
+	$linhassani = $resultsani === false || $resultsani === null ? 0 : pg_num_rows($resultsani);
 
 	if($linhassani>0){
 		db_fieldsmemory($resultsani,0);

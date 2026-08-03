@@ -94,7 +94,7 @@ $sql = "select distinct
           and m80_coddepto=$departamento";
 $result = db_query ( $sql );
 //die("SQL = [ $sql ]");
-$linhas=pg_num_rows ( $result );
+$linhas=$result === false || $result === null ? 0 : pg_num_rows ( $result );
 if ($linhas == 0) {
 	echo "<table width='100%'>
         <tr>

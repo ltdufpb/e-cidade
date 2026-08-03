@@ -202,7 +202,7 @@ select y100_sequencial,y100_dtinicial, y101_numcgm,z01_nome ,y103_inscr,y102_mat
 //						echo "$sql"	;
 							
 					$result = db_query($sql);
-					$linhas = pg_num_rows($result);
+					$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 					
 					
           if($linhas!=0){

@@ -141,7 +141,7 @@ if ( trim((string) $sMunicipio) == trim($sBaseSessao) ) {
       $sSqlDadosRefeisul .= "                              and rh02_mesusu = {$iMesFolha}; ";    
       
       $rsDadosRefeisul      = db_query($sSqlDadosRefeisul);
-      $iLinhasDadosRefeisul = pg_num_rows($rsDadosRefeisul);
+      $iLinhasDadosRefeisul = $rsDadosRefeisul === false || $rsDadosRefeisul === null ? 0 : pg_num_rows($rsDadosRefeisul);
       
       db_criatermometro('termometro');
       

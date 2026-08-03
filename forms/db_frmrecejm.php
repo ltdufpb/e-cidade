@@ -74,7 +74,7 @@ if(isset($_POST)) {
 							<option value="null">Nenhum...</option>
 							<?php 
 					  $result = db_query("select i01_codigo,i01_descr from inflan");
-					  $numrows = pg_num_rows($result);
+					  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 					  for($i = 0;$i < $numrows;$i++)
 					  echo "<option value=\"".pg_fetch_result($result,$i,"i01_codigo")."\" ".(isset($k02_corr)?($k02_corr==pg_fetch_result($result,$i,"i01_codigo")?"selected":""):"").">".pg_fetch_result($result,$i,"i01_codigo")." - ".pg_fetch_result($result,$i,"i01_descr")."</option>\n";
 					  ?>

@@ -300,7 +300,7 @@ function js_marca(tag,inp) {
                                                           and u.usuext = 2 ) as x
 							 order by lower(login)");
 		}				
-		$numrows = pg_num_rows($result);
+		$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
 		  echo "<option style='text-align:left;color:black;letter-spacing:normal;' value=\"".pg_fetch_result($result,$i,"id_usuario")."\" onClick=\"document.form1.perfil.value='".pg_fetch_result($result,$i,"nome")."'\">".pg_fetch_result($result,$i,"nome")."</option>\n";
 		  //echo "<option ".(pg_result($result,$i,"usuext") == 2?"style='color: blue;font-weight:bold'":"")." value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
@@ -365,7 +365,7 @@ function js_marca(tag,inp) {
 							 and u.usuext <> 2
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_num_rows($result);
+		$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
 		  db_fieldsmemory($result,$i);
 		  echo "<option ".(in_array($id_usuario,$usuarios)?"selected":"" )." style='text-align:left;color:black;letter-spacing:normal;' value=\"".pg_fetch_result($result,$i,"id_usuario")."\" >".pg_fetch_result($result,$i,"login")." - ".pg_fetch_result($result,$i,"nome")."</option>\n";
@@ -481,7 +481,7 @@ function js_marca(tag,inp) {
                               where m.modulo = $mod
 							  and m.id_item = $item
 							  and i.itemativo = $ambiente order by id_item,menusequencia"  );			  
-			  $numrows = pg_num_rows($sub);
+			  $numrows = $sub === false || $sub === null ? 0 : pg_num_rows($sub);
               if($numrows > 0) {
                 for($x = 0;$x < $numrows;$x++) {                  
 				  $valor = pg_fetch_result($sub,$x,"id_item_filho");

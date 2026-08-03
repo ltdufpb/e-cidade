@@ -84,7 +84,7 @@ function getCarateristicasdoLote($idbql)
                                 order by j32_grupo";
 
     $rsCaracteristica = db_query($sSqlCaractetiscasLote);
-    $iTotalLinhas = pg_num_rows($rsCaracteristica);
+    $iTotalLinhas = $rsCaracteristica === false || $rsCaracteristica === null ? 0 : pg_num_rows($rsCaracteristica);
     $caracteristicas = [];
 
     for ($contador = 0; $contador < $iTotalLinhas; $contador++) {
@@ -118,7 +118,7 @@ function getCarateristicasdosImoveisDaMatricula($matricula, $idConstr = null)
     $sSqlCaractetiscasLote .= " order by j48_idcons, j32_grupo";
 
     $rsCaracteristica = db_query($sSqlCaractetiscasLote);
-    $iTotalLinhas = pg_num_rows($rsCaracteristica);
+    $iTotalLinhas = $rsCaracteristica === false || $rsCaracteristica === null ? 0 : pg_num_rows($rsCaracteristica);
     $caracteristicas = [];
 
     for ($contador = 0; $contador < $iTotalLinhas; $contador++) {
@@ -408,7 +408,7 @@ if (pg_num_rows($result) != 0) {
                                  WHERE j01_matric = $parametro";
             // dump_sql($sqlTestada);
             $rsTestada = db_query($sqlTestada);
-            $totalLinhasTestada = pg_num_rows($rsTestada);
+            $totalLinhasTestada = $rsTestada === false || $rsTestada === null ? 0 : pg_num_rows($rsTestada);
             if (!$rsTestada || $totalLinhasTestada == 0) {
                 echo " Sem informações da testada";
             } else {
@@ -457,7 +457,7 @@ if (pg_num_rows($result) != 0) {
                               j01_matric = $parametro";
                 // dump_sql($sqlLote);
                 $rsLote = db_query($sqlLote);
-                $totalLinhasLote = pg_num_rows($rsLote);
+                $totalLinhasLote = $rsLote === false || $rsLote === null ? 0 : pg_num_rows($rsLote);
                 if (!$rsLote || $totalLinhasLote == 0) {
                     echo " Sem informações do lote";
                 } else {
@@ -659,7 +659,7 @@ if (pg_num_rows($result) != 0) {
 		        order by j39_idcons  ";
                 // dump_sql($sqlConstrucoes);
                 $rsConstrucoes = db_query($sqlConstrucoes);
-                $totalLinhas = pg_num_rows($rsConstrucoes);
+                $totalLinhas = $rsConstrucoes === false || $rsConstrucoes === null ? 0 : pg_num_rows($rsConstrucoes);
                 if (!$rsConstrucoes && $totalLinhas == 0) {
                     echo " Sem construções.";
                 } else {

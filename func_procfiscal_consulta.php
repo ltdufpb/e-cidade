@@ -165,7 +165,7 @@ $clprocfiscal->rotulo->label("y100_coddepto");
 								and y100_sequencial = $pesquisa_chave
 							order by y100_sequencial";
 					$result = db_query($sql);
-					$linhas = pg_num_rows($result);
+					$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 					
 					
           if($linhas!=0){
@@ -200,7 +200,7 @@ js_tabulacaoforms("form2","chave_y100_coddepto",true,1,"chave_y100_coddepto",tru
 <?php 
 
 $rs = db_query($sql);
-$linhas = pg_num_rows($rs);
+$linhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
 if($linhas==0){
 	if(isset($cgm) and $cgm!=""){

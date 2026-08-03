@@ -106,7 +106,7 @@ class EscalaTrabalho {
             throw new \DBException("Erro ao buscar a escala de trabalho do servidor");
         }
 
-        $iLinhasEscalaServidor = pg_num_rows($rsEscalaServidor);
+        $iLinhasEscalaServidor = $rsEscalaServidor === false || $rsEscalaServidor === null ? 0 : pg_num_rows($rsEscalaServidor);
 
         for($iContador = 0; $iContador < $iLinhasEscalaServidor; $iContador++) {
 

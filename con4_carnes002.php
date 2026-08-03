@@ -102,7 +102,7 @@ tr {
 							   inner join db_sysarquivo t on a.codarq = t.codarq
 							 order by c.nomecam");
 							 //where a.codarq = 204");
-		  $numrows = pg_num_rows($result);
+		  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		  for($i = 0;$i < $numrows;$i++){
 		    $conteudo = pg_fetch_result($result,$i,0);
 		    echo "<option value=\"".pg_fetch_result($result,$i,1)."\">".$conteudo."</option>\n";
@@ -114,7 +114,7 @@ tr {
             <option>&nbsp;</option>
             <?php 
 			    $result = db_query("select codmodelo,nomemodelo from db_carnesimg");
-				$numrows = pg_num_rows($result);
+				$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
 				  echo "<option value=\"".pg_fetch_result($result,$i,"codmodelo")."\" ".(isset($_POST["formulario"])?($_POST["formulario"]==pg_fetch_result($result,$i,"codmodelo")?"selected":""):"").">".pg_fetch_result($result,$i,"nomemodelo")."</option>\n";
 				}
@@ -146,7 +146,7 @@ tr {
 		                     from db_carnesdados 
 							 order by txcampo");
 							 //where a.codarq = 204");
-		  $numrows = pg_num_rows($result);
+		  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		  for($i = 0;$i < $numrows;$i++){
 		    $conteudo = pg_fetch_result($result,$i,0).'->'.pg_fetch_result($result,$i,1);
 		    $tamanho  = strlen(trim(pg_fetch_result($result,$i,1)));

@@ -58,7 +58,7 @@
     $pdf->Cell(5,4,"Cod.Juros","LRBT",1,"C",0);
 
     $result = db_query($sql);
-    $num = pg_num_rows($result);
+    $num = $result === false || $result === null ? 0 : pg_num_rows($result);
     $pdf->SetFont('Arial','B',9);
 	for ($i=0;$i<$num;$i++) {
       $pdf->setX(5);
@@ -89,7 +89,7 @@
       $pdf->Cell(30,4,"Codigo","LRBT",0,"C",0);
       $pdf->Cell(30,4,"Codigo Anterior","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_num_rows($result);
+      $num = $result === false || $result === null ? 0 : pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
@@ -112,7 +112,7 @@
       $pdf->Cell(140,4,"Nome do bairro","LRBT",0,"C",0);
       $pdf->Cell(30,4,"Codigo Anterior","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_num_rows($result);
+      $num = $result === false || $result === null ? 0 : pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
@@ -143,7 +143,7 @@
       $pdf->Cell(20,4,"j30_alipre","LRBT",0,"C",0);
       $pdf->Cell(20,4,"j30_aliter","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_num_rows($result);
+      $num = $result === false || $result === null ? 0 : pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
@@ -168,7 +168,7 @@
       $pdf->Cell(20,4,"j30_alipre","LRBT",0,"C",0);
       $pdf->Cell(20,4,"j30_aliter","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_num_rows($result);
+      $num = $result === false || $result === null ? 0 : pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
@@ -199,7 +199,7 @@
       $pdf->Cell(20,4,"Grupo","LRBT",0,"C",0);
       $pdf->Cell(20,4,"Tipo","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_num_rows($result);
+      $num = $result === false || $result === null ? 0 : pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
@@ -222,7 +222,7 @@
       $pdf->Cell(140,4,"Característica","LRBT",0,"C",0);
       $pdf->Cell(20,4,"Tipo","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_num_rows($result);
+      $num = $result === false || $result === null ? 0 : pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
@@ -253,7 +253,7 @@
       $pdf->Cell(20,4,"Código","LRBT",0,"C",0);
       $pdf->Cell(20,4,"j31_pontos","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_num_rows($result);
+      $num = $result === false || $result === null ? 0 : pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
@@ -278,7 +278,7 @@
       $pdf->Cell(20,4,"Grupo","LRBT",0,"C",0);
       $pdf->Cell(20,4,"j31_pontos","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_num_rows($result);
+      $num = $result === false || $result === null ? 0 : pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
@@ -303,7 +303,7 @@
       $pdf->Cell(20,4,"Código","LRBT",0,"C",0);
       $pdf->Cell(20,4,"j31_pontos","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_num_rows($result);
+      $num = $result === false || $result === null ? 0 : pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);

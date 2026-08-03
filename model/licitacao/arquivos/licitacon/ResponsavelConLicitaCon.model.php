@@ -103,7 +103,7 @@ class ResponsavelConLicitaCon extends ArquivoLicitaCon
     private function processarResponsaveis()
     {
         $rsResponsaveis = $this->getResponsavel();
-        $iTotalResponsaveis = pg_num_rows($rsResponsaveis);
+        $iTotalResponsaveis = $rsResponsaveis === false || $rsResponsaveis === null ? 0 : pg_num_rows($rsResponsaveis);
         $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
         $aResponsaveis = [];
 

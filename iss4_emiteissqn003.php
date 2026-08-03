@@ -299,7 +299,7 @@ $rsNumpres = db_query($sql) or die($sql);
 
 $H_ANOUSU = db_getsession("DB_anousu");
 $H_DATAUSU = db_getsession('DB_datausu');
-$intNumrowsNumpre = pg_num_rows($rsNumpres);
+$intNumrowsNumpre = $rsNumpres === false || $rsNumpres === null ? 0 : pg_num_rows($rsNumpres);
 
 if ($intNumrowsNumpre == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem inscrições com calculo efetuado.');
@@ -320,7 +320,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
     }
     $sqlnumpar = " select * from arrecad where $inti = $inti and k00_numpre = $q01_numpre and k00_tipo = $tipo_debito {$sWhereNumPar} order by k00_numpar";
     $rsNumpar = db_query($sqlnumpar);
-    $rsNumrowspar = pg_num_rows($rsNumpar);
+    $rsNumrowspar = $rsNumpar === false || $rsNumpar === null ? 0 : pg_num_rows($rsNumpar);
     if ($rsNumrowspar == 0) {
         continue;
     }
@@ -490,7 +490,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
             $sqlUnicas = " select * from recibounica where k00_numpre = $k00_numpre ";
             $rsUnicas = db_query($sqlUnicas);
 
-            $intNumRowsUnica = pg_num_rows($rsUnicas);
+            $intNumRowsUnica = $rsUnicas === false || $rsUnicas === null ? 0 : pg_num_rows($rsUnicas);
 
             if (isset($intNumRowsUnica) && $intNumRowsUnica > 0 && $k00_numpre != $ultimoNumpreProcessado) {
 
@@ -881,7 +881,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                                 $pdf1->nome = $z01_numcgm . "-" . $z01_nome;
                                 $pdf1->ender = $z01_ender . ", " . $z01_numero . " " . (!$z01_compl ? " " : ", " . $z01_compl);
                                 $pdf1->tipobairro = "Bairro:";
-                                $pdf1->linhasdadospagto = pg_num_rows($rsDetalhePgto);
+                                $pdf1->linhasdadospagto = $rsDetalhePgto === false || $rsDetalhePgto === null ? 0 : pg_num_rows($rsDetalhePgto);
                                 $pdf1->recorddadospagto = $rsDetalhePgto;
                                 $pdf1->receita = 'k00_receit';
                                 $pdf1->valor = 'valor';
@@ -1061,7 +1061,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
                                 $sqlaliq = "select q05_aliq,q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
                                 $rsIssvarano = db_query($sqlaliq);
-                                $intNumrows = pg_num_rows($rsIssvarano);
+                                $intNumrows = $rsIssvarano === false || $rsIssvarano === null ? 0 : pg_num_rows($rsIssvarano);
 
                                 if ($intNumrows == 0) {
 
@@ -1281,7 +1281,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                 if ($k03_tipo == 3) {
 
                     $rsAnoissvar = db_query("select q05_ano from issvar where q05_numpre = $k00_numpre");
-                    $intAnoissvar = pg_num_rows($rsAnoissvar);
+                    $intAnoissvar = $rsAnoissvar === false || $rsAnoissvar === null ? 0 : pg_num_rows($rsAnoissvar);
 
                     db_fieldsmemory($rsAnoissvar, 0);
 
@@ -1428,7 +1428,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
             $pdf1->descr12_2 = "";
             $pdf1->descr4_2 = "";
 
-            $intnumrows = pg_num_rows($rsReceitas);
+            $intnumrows = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 
             for ($x = 0; $x < $intnumrows; $x++) {
                 db_fieldsmemory($rsReceitas, $x);
@@ -1574,7 +1574,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                 $pdf1->nome = $z01_numcgm . "-" . $z01_nome;
                 $pdf1->ender = $z01_ender . ", " . $z01_numero . " " . (!$z01_compl ? " " : ", " . $z01_compl);
                 $pdf1->tipobairro = "Bairro:";
-                $pdf1->linhasdadospagto = pg_num_rows($rsDetalhePgto);
+                $pdf1->linhasdadospagto = $rsDetalhePgto === false || $rsDetalhePgto === null ? 0 : pg_num_rows($rsDetalhePgto);
                 $pdf1->recorddadospagto = $rsDetalhePgto;
                 $pdf1->receita = 'k00_receit';
                 $pdf1->valor = 'valor';
@@ -1815,7 +1815,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                     $pdf1->tipodebito = $k00_descr . " " . $q01_anousu;
                     $sqlaliq = "select q05_aliq,q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
                     $rsIssvarano = db_query($sqlaliq);
-                    $intNumrows = pg_num_rows($rsIssvarano);
+                    $intNumrows = $rsIssvarano === false || $rsIssvarano === null ? 0 : pg_num_rows($rsIssvarano);
 
                     if ($intNumrows == 0) {
 
@@ -2037,7 +2037,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                     throw new DBException("Erro ao buscar o valor corrigido, juros, multa e desconto.");
                 }
 
-                $linhas = pg_num_rows($rs);
+                $linhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
                 $uvlrjuros = 0;
                 $uvlrmulta = 0;

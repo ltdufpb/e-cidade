@@ -68,7 +68,7 @@ $escola = db_getsession("DB_coddepto");
                             )
               ORDER BY anoatest DESC";
       $result = db_query($sql);
-      $linhas = pg_num_rows($result);
+      $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
       ?>
       <select name="ano"  style="font-size:9px;width:200px;height:18px;">
        <option></option>
@@ -104,7 +104,7 @@ $escola = db_getsession("DB_coddepto");
            ORDER BY ed47_v_nome
           ";
    $result = db_query($sql);
-   $linhas = pg_num_rows($result);
+   $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
    ?>
    <b>Alunos:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" style="font-size:9px;width:330px;height:120px" multiple>

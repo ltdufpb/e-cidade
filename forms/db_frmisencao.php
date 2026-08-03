@@ -83,7 +83,7 @@ if($db_opcao==1){
 	  	}
 //			echo $sqlNome;
       $rsNome = db_query($sqlNome);
-		  $intNumrows = pg_num_rows($rsNome);
+		  $intNumrows = $rsNome === false || $rsNome === null ? 0 : pg_num_rows($rsNome);
 		  if($intNumrows > 0){
   	    db_fieldsmemory($rsNome,0);
 	  	}else{

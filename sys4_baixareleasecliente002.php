@@ -60,7 +60,7 @@ $psql="$DB_CMD_PSQL";
 
 $sql    = "select db30_codversao,db30_codrelease from db_versao order by db30_codver desc limit 1";
 $result = db_query($sql);
-$numrows= pg_num_rows($result);
+$numrows= $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $db30_codversao = pg_fetch_result($result,0,0);
 $db30_codrelease= pg_fetch_result($result,0,1);
@@ -92,7 +92,7 @@ db_atutermometro(4,100,'termometro');
 db_atutermometro(6,100,'termometro');
      $sql    = "select db21_codcli from db_config where prefeitura=true";
      $result = db_query($sql);
-     $numrows= pg_num_rows($result);
+     $numrows= $result === false || $result === null ? 0 : pg_num_rows($result);
      if ($numrows==0){
           #db_msgbox("Verificar registro na tabela db_config.");
           $aborta=2;

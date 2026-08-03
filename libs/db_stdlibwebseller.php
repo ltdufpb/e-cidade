@@ -570,7 +570,7 @@ function ResultadoFinal($ed60_i_codigo,$ed60_i_aluno,$ed60_i_turma,$ed60_c_situa
                            and ed59_i_serie = $ed221_i_serie
                            and ed59_i_disciplina = ed65_i_disciplina)";
   $ResultReg = db_query($sSqlReg);
-  $iLinhasReg = pg_num_rows($ResultReg);
+  $iLinhasReg = $ResultReg === false || $ResultReg === null ? 0 : pg_num_rows($ResultReg);
   if ( in_array( trim((string) $ed60_c_situacao), ["CLASSIFICADO", "AVANÇADO", "RECLASSIFICADO"] ) ) {
     $resultado = trim((string) $ed60_c_situacao);
   } elseif (trim((string) $ed60_c_situacao)=="TRANSFERIDO FORA" || trim((string) $ed60_c_situacao)=="TRANSFERIDO REDE") {
@@ -597,7 +597,7 @@ function ResultadoFinal($ed60_i_codigo,$ed60_i_aluno,$ed60_i_turma,$ed60_c_situa
            ";
 
     $result4 = db_query($sql4);
-    $linhas4 = pg_num_rows($result4);
+    $linhas4 = $result4 === false || $result4 === null ? 0 : pg_num_rows($result4);
     if ($linhas4 == 0) {
 
       if ($ed60_c_concluida=="S") {
@@ -646,7 +646,7 @@ function ResultadoFinal($ed60_i_codigo,$ed60_i_aluno,$ed60_i_turma,$ed60_c_situa
                                             and ed59_i_serie = $ed221_i_serie
                                             and ed59_c_condicao = 'OB')";
       $result41 = db_query($sql41);
-      $linhas41 = pg_num_rows($result41);
+      $linhas41 = $result41 === false || $result41 === null ? 0 : pg_num_rows($result41);
       $res_final = "";
       $sep = "";
       for($f = 0; $f < $linhas4; $f++) {
@@ -833,7 +833,7 @@ function RFanterior($matricula) {
          ";
 
   $result1 = db_query($sql1);
-  $linhas1 = pg_num_rows($result1);
+  $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
   if ($linhas1>0) {
     $codigo = pg_fetch_result($result1,0,0);
     $turma = pg_fetch_result($result1,0,1);
@@ -4548,7 +4548,7 @@ function trocaTurma($iSeqMatricula, $iCodigoTurmaDestino, $lAproveitamento = fal
       $sWhereTurmaTurnoReferente
     );
     $rsTurmaTurnoReferente     = db_query( $sSqlTurmaTurnoReferente );
-    $iTotalTurmaTurnoReferente = pg_num_rows( $rsTurmaTurnoReferente );
+    $iTotalTurmaTurnoReferente = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows( $rsTurmaTurnoReferente );
 
     for( $iContador = 0; $iContador < $iTotalTurmaTurnoReferente; $iContador++ ) {
 

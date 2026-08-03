@@ -73,7 +73,7 @@ class BuildClass {
 					$sSql .= "  where nomearq = '{$sTableName}' ";
 
 					$rsExternalMethods = pg_query($sSql);
-					$iTotalMetodos     = pg_num_rows($rsExternalMethods);
+					$iTotalMetodos     = $rsExternalMethods === false || $rsExternalMethods === null ? 0 : pg_num_rows($rsExternalMethods);
 
 					$sExternalMethods  = "";
 

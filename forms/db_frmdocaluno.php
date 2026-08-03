@@ -60,7 +60,7 @@ if ($ed49_i_aluno != "") {
 	
   $sql4 = "SELECT ed56_i_escola as cod_escola FROM alunocurso WHERE ed56_i_aluno = $ed49_i_aluno";
   $query4 = db_query($sql4);
-  $linhas4 = pg_num_rows($query4);
+  $linhas4 = $query4 === false || $query4 === null ? 0 : pg_num_rows($query4);
   if ($linhas4 == 0) {
     $db_botao = true;
   } else if (db_getsession("DB_coddepto") != pg_fetch_result($query4,0,0)) {

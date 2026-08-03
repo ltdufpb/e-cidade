@@ -152,7 +152,7 @@ class AlteracaoLancamento
             throw new Exception("Erro ao verificar lancamentos para processamento.");
         }
 
-        $totalLinhas = pg_num_rows($rsLancamentos);
+        $totalLinhas = $rsLancamentos === false || $rsLancamentos === null ? 0 : pg_num_rows($rsLancamentos);
         if ($totalLinhas == 0) {
             $sMensagem = "Nenhum lançamento encontrado com os filtros informados. ";
             $sMensagem .= "Revise os filtros e execute novamente a consulta.";

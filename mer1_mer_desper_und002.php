@@ -66,7 +66,7 @@ if (isset($alterar)) {
         db_fieldsmemory($result1,0);   
         $sql    = $clmer_desper_und->sql_query(null,'*',null,"me23_i_codigo=$me23_i_codigo");
         $result = db_query($sql);
-        $linhas = pg_num_rows($result);
+        $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
         if ($linhas>0) {
           db_fieldsmemory($result,0);
         }

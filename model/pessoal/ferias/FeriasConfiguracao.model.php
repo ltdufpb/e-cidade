@@ -46,7 +46,7 @@ class FeriasConfiguracao {
     $oDaoConfiguracao = new cl_rhferiasconfiguracao();
     $sSqlConfiguracao = $oDaoConfiguracao->sql_query_file();
     $rsConfiguracao = db_query($sSqlConfiguracao);
-    $iTotalLinhas   = pg_num_rows($rsConfiguracao);
+    $iTotalLinhas   = $rsConfiguracao === false || $rsConfiguracao === null ? 0 : pg_num_rows($rsConfiguracao);
     if (!$rsConfiguracao) {
       throw new DBException("Erro ao pesquisar os dados de configuração das férias");
     }

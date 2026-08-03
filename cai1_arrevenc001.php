@@ -60,7 +60,7 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 											 and (k00_dtini,k00_dtfim) overlaps ( DATE '{$dataini}' - '1 day'::interval, DATE '{$datafim}' + '1 day'::interval)"; 
 		
 		$rsPeriodo = db_query($sqlPeriodo);
-		$linhasPeriodo = pg_num_rows($rsPeriodo);
+		$linhasPeriodo = $rsPeriodo === false || $rsPeriodo === null ? 0 : pg_num_rows($rsPeriodo);
 		 if($linhasPeriodo > 0){
 		 	// não pode incluir
 			$sqlerro = true;
@@ -81,7 +81,7 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 			if($k00_numpar == 0 ){
 				$sqlPar = "select distinct k00_numpar as parc from arrecad where k00_numpre = {$k00_numpre}";
 				$rsPar  = db_query($sqlPar);
-				$linhaPar = pg_num_rows($rsPar);
+				$linhaPar = $rsPar === false || $rsPar === null ? 0 : pg_num_rows($rsPar);
 				if($linhaPar>0){
 					for($i=0;$i<$linhaPar;$i++){
 						db_fieldsmemory($rsPar,$i);

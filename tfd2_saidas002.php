@@ -56,7 +56,7 @@ function buscaAcompanhantes($iPedido)
     $aAcompanhante = [];
 
     if ($rsAcompanhante && pg_num_rows($rsAcompanhante) > 0) {
-        $iLinhas = pg_num_rows($rsAcompanhante);
+        $iLinhas = $rsAcompanhante === false || $rsAcompanhante === null ? 0 : pg_num_rows($rsAcompanhante);
         for ($i = 0; $i < $iLinhas; $i++) {
             $oAcompanhante = db_utils::fieldsMemory($rsAcompanhante, $i);
             $aAcompanhante[] = $oAcompanhante;

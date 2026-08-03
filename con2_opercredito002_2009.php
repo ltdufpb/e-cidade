@@ -152,7 +152,7 @@ for ($i = 1; $i <=16;$i++) {
 $where            = "  c61_instit in (".str_replace('-',', ',$db_selinstit).")   "; 
 $rsDadosRelatorio = db_planocontassaldo_matriz($anousu,$dt_ini_plano,$dt_fim,false,$where);
 @db_query("drop table work_pl");
-$iNumRows = pg_num_rows($rsDadosRelatorio);
+$iNumRows = $rsDadosRelatorio === false || $rsDadosRelatorio === null ? 0 : pg_num_rows($rsDadosRelatorio);
 for ($iParam = 1; $iParam <= 16; $iParam++) {
   
   if ($iParam == 10) {

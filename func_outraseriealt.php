@@ -96,7 +96,7 @@ if (isset($serie_codigos)) {
             ORDER BY ed11_i_sequencia
            ";
    $result1 = db_query($sql1);
-   $linhas1 = pg_num_rows($result1);
+   $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
    if($linhas1==0){
     ?>
     <script>

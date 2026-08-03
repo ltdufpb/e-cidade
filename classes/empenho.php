@@ -1679,7 +1679,7 @@ class empenho
                                   where empempitem.e62_sequencial = {$objNotas->e62_sequencial}
                               ";
                                 $result = db_query($Ssql);
-                                $numRows = pg_num_rows($result);
+                                $numRows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
                                 if ($numRows > 0) {
                                     $objItens = DB_UTILS::fieldsMemory($result, 0);
@@ -1737,7 +1737,7 @@ class empenho
                                 where empempitem.e62_sequencial = {$objNotas->e62_sequencial}
                             ";
                             $result = db_query($Ssql);
-                            $numRows = pg_num_rows($result);
+                            $numRows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
                             if ($numRows > 0) {
                                 $objItens = DB_UTILS::fieldsMemory($result, 0);
@@ -2132,7 +2132,7 @@ class empenho
         $sqlItensEmpenho .= " order by e62_sequen ";
         $rsItems = $this->clempempitem->sql_record($sqlItensEmpenho);
         if ($rsItems) {
-            $this->iNumRowsItens = pg_num_rows($rsItems);
+            $this->iNumRowsItens = $rsItems === false || $rsItems === null ? 0 : pg_num_rows($rsItems);
 
             return $rsItems;
         } else {

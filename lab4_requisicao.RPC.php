@@ -59,7 +59,7 @@ try {
       if (!$rsExames) {
         throw new DBException("Erro ao executar a query.\n".pg_last_error(), 1);
       }
-      $iLinhas = pg_num_rows($rsExames);
+      $iLinhas = $rsExames === false || $rsExames === null ? 0 : pg_num_rows($rsExames);
       if ($iLinhas == 0) {
         throw new Exception("Requisição sem exames para digitação.");
       }
@@ -78,7 +78,7 @@ try {
         );
         $rsPermissaoLaboratorio       = db_query($sql);
 
-        $iLinhasPermissaoLaboratorio = pg_num_rows($rsPermissaoLaboratorio);
+        $iLinhasPermissaoLaboratorio = $rsPermissaoLaboratorio === false || $rsPermissaoLaboratorio === null ? 0 : pg_num_rows($rsPermissaoLaboratorio);
 
         if($iLinhasPermissaoLaboratorio == 0){
           $oDaoLaboratorio = new cl_lab_laboratorio();

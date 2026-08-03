@@ -77,7 +77,7 @@ if (isset($valor)) {
   $sSqlAcervoAutor .= "   order by bi06_titulo, bi06_subtitulo                           ";
 
   $rsAcervoAutor = db_query($sSqlAcervoAutor);
-  $iLinhas       = pg_num_rows($rsAcervoAutor);
+  $iLinhas       = $rsAcervoAutor === false || $rsAcervoAutor === null ? 0 : pg_num_rows($rsAcervoAutor);
 
  ?>
 
@@ -136,7 +136,7 @@ if (isset($valor)) {
                      WHERE bi23_acervo = $bi06_seq
                      ORDER BY bi23_codigo";
          $rsAcervoAutor_emp = db_query($sql_emp);
-         $iLinhas_emp = pg_num_rows($rsAcervoAutor_emp);
+         $iLinhas_emp = $rsAcervoAutor_emp === false || $rsAcervoAutor_emp === null ? 0 : pg_num_rows($rsAcervoAutor_emp);
      ?>
        <tr bgcolor="<?=$cor?>">
         <td></td>
@@ -187,7 +187,7 @@ if (isset($valor)) {
                        AND bi23_codigo = {$bi23_codigo}
                       ";
               $rsAcervoAutor1 = db_query($sql1);
-              $iLinhas1 = pg_num_rows($rsAcervoAutor1);
+              $iLinhas1 = $rsAcervoAutor1 === false || $rsAcervoAutor1 === null ? 0 : pg_num_rows($rsAcervoAutor1);
               if($iLinhas1==0 || $bi23_situacao=='N'){
                echo "Indisponível";
               }else{

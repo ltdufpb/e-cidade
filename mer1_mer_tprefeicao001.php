@@ -57,7 +57,7 @@ if (isset($incluir)) {
 	
   $sqltp    = "select me03_i_orden as anterior from mer_tprefeicao order by me03_i_orden desc";
   $resulttp = db_query($sqltp);
-  $linhastp = pg_num_rows($resulttp);
+  $linhastp = $resulttp === false || $resulttp === null ? 0 : pg_num_rows($resulttp);
   if($linhastp == 0){
     $orden = 1;
   } else {

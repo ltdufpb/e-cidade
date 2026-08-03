@@ -663,7 +663,7 @@ class BalancoPatrimonialDCASP2017 extends RelatoriosLegaisBase
             throw new DBException("Ocorreu um erro ao buscar os valores lançados para a conta 82111.");
         }
 
-        $iTotalRegistros = pg_num_rows($rsBuscaContas);
+        $iTotalRegistros = $rsBuscaContas === false || $rsBuscaContas === null ? 0 : pg_num_rows($rsBuscaContas);
         $aRecursos = [];
         for ($iRow = 0; $iRow < $iTotalRegistros; $iRow++) {
 

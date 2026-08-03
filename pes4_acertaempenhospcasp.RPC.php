@@ -44,7 +44,7 @@
     
 //    db_criatabela($result);
 
-    $quantidade = pg_num_rows($result);
+    $quantidade = $result === false || $result === null ? 0 : pg_num_rows($result);
     for($yy = 0; $yy < $quantidade ; $yy++){ 
       db_fieldsmemory($result, $yy);
 
@@ -97,7 +97,7 @@
            ";
 
          $result1 = db_query($sql) or die($sql);
-         $quant = pg_num_rows($result1);
+         $quant = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
          if($quant>0){
 
            // se existe, pegar codigo do sequencial para troca no rhempenhofolharhemprubrica

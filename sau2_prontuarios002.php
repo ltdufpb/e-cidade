@@ -50,7 +50,7 @@ $clunidades->rotulo->label("sd02_c_nome");
           order by sd24_i_unidade";
 //echo $SQL; exit;
  $Query = db_query($SQL);
- $Linhas = pg_num_rows($Query);
+ $Linhas = $Query === false || $Query === null ? 0 : pg_num_rows($Query);
 $pdf = new PDF();
 $pdf->Open();
 $pdf->AliasNbPages();

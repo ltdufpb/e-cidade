@@ -69,7 +69,7 @@ try {
   
   echo "-> Inicio do Processamento\n";  
 
-  $iTotalLinhas = pg_num_rows($rsBuscaAutorizacao);
+  $iTotalLinhas = $rsBuscaAutorizacao === false || $rsBuscaAutorizacao === null ? 0 : pg_num_rows($rsBuscaAutorizacao);
   for ($iRow = 0; $iRow < $iTotalLinhas; $iRow++) {
 
     pg_query("begin");

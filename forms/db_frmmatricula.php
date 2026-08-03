@@ -218,7 +218,7 @@ if ($db_opcao == 2) {
                      $sSqlReg .= "                  and ed59_i_serie      = {$ed79_i_serie}";
                      $sSqlReg .= "                  and ed59_i_disciplina = ed65_i_disciplina)";
                    	 $rsReg    = db_query( $sSqlReg );
-                     $iLinhas  = pg_num_rows( $rsReg );
+                     $iLinhas  = $rsReg === false || $rsReg === null ? 0 : pg_num_rows( $rsReg );
                      if ( $iLinhas > 0 ) {
                        $mostra = false;
                      }
@@ -338,7 +338,7 @@ if ($db_opcao == 2) {
                   <?php 
                     $sql1    = "SELECT * FROM motivoexclusao order by ed249_c_motivo";
                     $result1 = db_query( $sql1 );
-                    $linhas1 = pg_num_rows( $result1 );
+                    $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows( $result1 );
                   ?>
                   <select name="ed248_i_motivo" style="height:16px;font-size:9px;">
                     <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>

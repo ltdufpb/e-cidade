@@ -167,7 +167,7 @@ class calendario{
                                                                         $this->sem[$diasem],
                                                                         "");
           $result_undmedhorario = db_query( $str_query ) or die( "ERRO: <p> $str_query ");
-          $iTam                 = pg_num_rows($result_undmedhorario);
+          $iTam                 = $result_undmedhorario === false || $result_undmedhorario === null ? 0 : pg_num_rows($result_undmedhorario);
         } else {
 
           $str_query = "select sd30_i_turno,
@@ -219,7 +219,7 @@ class calendario{
                            and (    sd30_d_valinicial is null
                                  or ( sd30_d_valinicial is not null and sd30_d_valinicial <= '$ano/$mes/$s' ) )";
           $result_undmedhorario = db_query( $str_query ) or die( "ERRO: <p> $str_query ");
-          $iTam                 = pg_num_rows($result_undmedhorario);
+          $iTam                 = $result_undmedhorario === false || $result_undmedhorario === null ? 0 : pg_num_rows($result_undmedhorario);
 
           if ($iTam > 0) {
 

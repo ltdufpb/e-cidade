@@ -178,7 +178,7 @@ if( !is_resource( $result_undmedhorario ) ) {
   exit;
 }
 
-$iLinhasUndMedHorario = pg_num_rows( $result_undmedhorario );
+$iLinhasUndMedHorario = $result_undmedhorario === false || $result_undmedhorario === null ? 0 : pg_num_rows( $result_undmedhorario );
 
 if( $iLinhasUndMedHorario == 0  ){
 
@@ -247,7 +247,7 @@ if( !is_resource( $rsParalisado ) ) {
   exit;
 }
 
-$iLinhasUnidadeParalisada = pg_num_rows( $rsParalisado );
+$iLinhasUnidadeParalisada = $rsParalisado === false || $rsParalisado === null ? 0 : pg_num_rows( $rsParalisado );
 
 //Ausências
 $sCampos  = " s139_c_descr as sd06_c_tipo, ";
@@ -269,7 +269,7 @@ if( !is_resource( $result_ausencias ) ) {
   exit;
 }
 
-$iLinhasAusencias       = pg_num_rows( $result_ausencias );
+$iLinhasAusencias       = $result_ausencias === false || $result_ausencias === null ? 0 : pg_num_rows( $result_ausencias );
 $iIndicePeriodoAusencia = 0;
 $iGradePorTempo         = 0;
 $sMotivosausencias      = "";
@@ -388,7 +388,7 @@ if( $in == true ) {
         exit;
       }
 
-      $linhas = pg_num_rows( $res_agenda );
+      $linhas = $res_agenda === false || $res_agenda === null ? 0 : pg_num_rows( $res_agenda );
       $linha  = 0;
 
       if( $linhas >= $nro_fichas ) {

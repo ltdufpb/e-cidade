@@ -87,7 +87,7 @@
         $sql   .= "    AND ed56_c_situacao = 'CONCLUÍDO' ";
         $sql   .= "  ORDER BY ed47_v_nome ";
         $result = db_query( $sql );
-        $linhas = pg_num_rows( $result );
+        $linhas = $result === false || $result === null ? 0 : pg_num_rows( $result );
         ?>
         <label class="bold">Alunos:</label>
         <br>

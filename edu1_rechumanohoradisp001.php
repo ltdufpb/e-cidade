@@ -682,7 +682,7 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
         $sql_tur .= "      GROUP BY ed15_i_codigo,ed15_c_nome,ed15_i_sequencia ";
         $sql_tur .= "      ORDER BY ed15_i_sequencia ";
         $result_tur = db_query($sql_tur);
-        $linhas_tur = pg_num_rows($result_tur);
+        $linhas_tur = $result_tur === false || $result_tur === null ? 0 : pg_num_rows($result_tur);
 
         for ($x = 0; $x < $linhas_tur; $x++) {
             db_fieldsmemory($result_tur, $x);
@@ -759,7 +759,7 @@ for ($x = 0; $x < $cldiasemana->numrows; $x++) {
         $sSqlTipoHora = $clrechumanoativ->sql_query_tipohoratrabalho("", $sCamposTipoHora, "", $sWhereTipoHora);
         $rsTipoHora = db_query($sSqlTipoHora);
 
-        $iLinhas = pg_num_rows($rsTipoHora);
+        $iLinhas = $rsTipoHora === false || $rsTipoHora === null ? 0 : pg_num_rows($rsTipoHora);
         if ($iLinhas > 0) {
             for ($iContador = 0; $iContador < $iLinhas; $iContador++) {
                 $oDadosTipoHoraTrabalho = db_utils::fieldsMemory($rsTipoHora, $iContador);

@@ -783,7 +783,7 @@ $sql3                    .= "   inner join escolaproc on ed82_i_codigo = ed99_i_
 $sql3                    .= " WHERE ed61_i_aluno = $chavepesquisa ";
 $sql3                    .= " ORDER BY ed11_i_ensino,ed11_i_sequencia DESC  ";
 $result3                  = db_query($sql3);
-$linhas3                  = pg_num_rows($result3);
+$linhas3                  = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
 $contador                 = 0;
 if ($linhas3 > 0) {
 	

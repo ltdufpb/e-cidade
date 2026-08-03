@@ -78,7 +78,7 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 	// exclui e inclui no procfiscalvistorias
 	 $sqlprocfiscalv    = "select y111_sequencial from procfiscalauto where y111_auto = $y50_codauto";
 	 $resultprocfiscalv = db_query($sqlprocfiscalv);
-	 $linhasprocfiscalv = pg_num_rows($resultprocfiscalv);
+	 $linhasprocfiscalv = $resultprocfiscalv === false || $resultprocfiscalv === null ? 0 : pg_num_rows($resultprocfiscalv);
 	 if($linhasprocfiscalv>0){
 
 	 	 db_fieldsmemory($resultprocfiscalv,0);
@@ -193,7 +193,7 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
                           inner join cgm           on y101_numcgm     = z01_numcgm
                     where y111_auto = $chavepesquisa ";
 	 $resultprocfiscal = db_query($sqlprocfiscal);
-	 $linhasprocfiscal = pg_num_rows($resultprocfiscal);
+	 $linhasprocfiscal = $resultprocfiscal === false || $resultprocfiscal === null ? 0 : pg_num_rows($resultprocfiscal);
 	 if($linhasprocfiscal>0){
 	 	db_fieldsmemory($resultprocfiscal,0);
 	 }else{

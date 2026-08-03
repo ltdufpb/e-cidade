@@ -1424,7 +1424,7 @@ abstract class CgmBase {
     $sSqlDebitosEmAberto .= " order by arrecad.k00_numpre, arrecad.k00_numpar, arrecad.k00_receit                                             ";
     $aDebitosEmAberto        = [];
     $rsSqlDebitosEmAberto    = db_query($sSqlDebitosEmAberto);
-    $iNumRowsDebitosEmAberto = pg_num_rows($rsSqlDebitosEmAberto);
+    $iNumRowsDebitosEmAberto = $rsSqlDebitosEmAberto === false || $rsSqlDebitosEmAberto === null ? 0 : pg_num_rows($rsSqlDebitosEmAberto);
     for ($iDebitosEmAberto   = 0; $iDebitosEmAberto < $iNumRowsDebitosEmAberto; $iDebitosEmAberto++) {
 
       $oDadosDebitosEmAberto = db_utils::fieldsMemory($rsSqlDebitosEmAberto, $iDebitosEmAberto);

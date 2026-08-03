@@ -198,7 +198,7 @@ $sSqlIntegraRecibo .= "           integra_recibo_detalhe.ano_competencia_origem,
 $sSqlIntegraRecibo .= "           integra_recibo_detalhe.mes_competencia_origem                                                                   \n";
 
 $rsIntegraRecibo      = db_query($connDestino,$sSqlIntegraRecibo);
-$iLinhasIntegraRecibo = pg_num_rows($rsIntegraRecibo);
+$iLinhasIntegraRecibo = $rsIntegraRecibo === false || $rsIntegraRecibo === null ? 0 : pg_num_rows($rsIntegraRecibo);
 $iNumdocAnterior      = 0;
 $aIssVarSemLancamento = [];
 if ( $iLinhasIntegraRecibo > 0 ) {
@@ -603,7 +603,7 @@ $sSqlIntegraReciboAnulado   .= "                on integra_recibo_detalhe.integr
 $sSqlIntegraReciboAnulado   .= "  where integra_recibo_anulado.processado is false                                              ";
 
 $rsIntegraReciboAnulado      = db_query($connDestino,$sSqlIntegraReciboAnulado);
-$iLinhasIntegraReciboAnulado = pg_num_rows($rsIntegraReciboAnulado);
+$iLinhasIntegraReciboAnulado = $rsIntegraReciboAnulado === false || $rsIntegraReciboAnulado === null ? 0 : pg_num_rows($rsIntegraReciboAnulado);
 
 if ( $iLinhasIntegraReciboAnulado > 0 ) {
 
@@ -669,7 +669,7 @@ $sSqlReciboSemBaixa .= "        left join integra_recibo_baixa_detalhe on integr
 $sSqlReciboSemBaixa .= "  where integra_recibo_baixa_detalhe.sequencial is null;                             ";
 
 $rsReciboSemBaixa      = db_query($connDestino,$sSqlReciboSemBaixa);
-$iLinhasReciboSemBaixa = pg_num_rows($rsReciboSemBaixa);
+$iLinhasReciboSemBaixa = $rsReciboSemBaixa === false || $rsReciboSemBaixa === null ? 0 : pg_num_rows($rsReciboSemBaixa);
 
 if ( $iLinhasReciboSemBaixa > 0 ) {
 

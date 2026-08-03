@@ -40,7 +40,7 @@ $sql0 .= "   AND ed38_i_escola = $iEscola ";
 $sql0 .= "   ORDER BY ed52_i_codigo ";
 $sql0 .= "   LIMIT 1 ";
 $result0 = db_query($sql0);
-$linhas0 = pg_num_rows($result0);
+$linhas0 = $result0 === false || $result0 === null ? 0 : pg_num_rows($result0);
 
 if ($linhas0 > 0) {
     $datarel = pg_fetch_result($result0, 0, 0);
@@ -72,7 +72,7 @@ $sql .= " GROUP BY ed11_c_descr,ed11_i_codigo,ed11_i_sequencia,ed11_i_ensino,ed1
 $sql .= " ed10_c_abrev,ed31_i_codigo,ed31_c_descr ";
 $sql .= " ORDER BY ed11_i_ensino,ed11_i_sequencia ";
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($linhas == 0) { ?>
 
     <table width='100%'>
@@ -184,7 +184,7 @@ for ($c = 0; $c < $linhas; $c++) {
         $sql_disc .= " AND ed59_c_condicao = 'OB' ";
         $sql_disc .= " ORDER BY ed232_c_descr ";
         $result_disc = db_query($sql_disc);
-        $linhas_disc = pg_num_rows($result_disc);
+        $linhas_disc = $result_disc === false || $result_disc === null ? 0 : pg_num_rows($result_disc);
         $tamanhoDisciplinas = 117/$linhas_disc;
         for ($w = 0; $w < $linhas_disc; $w++) {
             db_fieldsmemory($result_disc, $w);
@@ -404,7 +404,7 @@ for ($c = 0; $c < $linhas; $c++) {
     $sql3 .= " AND ed221_c_origem = 'S' ";
     $sql3 .= " AND ed60_c_situacao = 'MATRICULADO' ";
     $result3 = db_query($sql3);
-    $linhas3 = pg_num_rows($result3);
+    $linhas3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
     $aprovados = 0;
     $reprovados = 0;
     for ($x = 0; $x < $linhas3; $x++) {

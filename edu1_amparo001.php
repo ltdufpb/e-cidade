@@ -61,7 +61,7 @@ function excluiRecuperacaoPeriodoAmparado($iDiario, $iProcedimentoAvaliacao) {
   $rsVerificaRecuperacao = db_query($sSqlVerificaRecuperacao);
   if ( pg_num_rows($rsVerificaRecuperacao) > 0 ) {
 
-    $iLinha = pg_num_rows($rsVerificaRecuperacao);
+    $iLinha = $rsVerificaRecuperacao === false || $rsVerificaRecuperacao === null ? 0 : pg_num_rows($rsVerificaRecuperacao);
 
     for ( $iContador = 0; $iContador < $iLinha; $iContador ++ ) {
 
@@ -206,7 +206,7 @@ if (isset( $incluir ) || isset( $alterar ) || isset( $excluir )) {
   $sql .= "    WHERE ed95_i_regencia = {$regencia} ";
 
   $query  = db_query ($sql);
-  $linhas = pg_num_rows ($query);
+  $linhas = $query === false || $query === null ? 0 : pg_num_rows ($query);
   for ($y = 0; $y < $linhas; $y++) {
 
     db_fieldsmemory ($query, $y);

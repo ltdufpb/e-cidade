@@ -69,7 +69,7 @@ if (isset($db_opcao)) {
 	where descrtexto = '$db_opcao'
 	";//
 	$result_db_opcao = db_query($sql_db_opcao);
-	$num_db_opcao = pg_num_rows($result_db_opcao);
+	$num_db_opcao = $result_db_opcao === false || $result_db_opcao === null ? 0 : pg_num_rows($result_db_opcao);
 	if ($num_db_opcao!=0){
 		$habilita_alteracao = true;
 	}else{
@@ -125,7 +125,7 @@ if (isset($db_opcao)){// parametro db_opcao responsavel por localizar qual o tex
 		from db_config
 	";
 	$result = db_query($sql);
-	$num = pg_num_rows($result);
+	$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 	for ($i=0;$i<$num;$i++){
   if(($num_db_opcao!=0)&&(pg_fetch_result($result,$i,"codigo")==pg_fetch_result($result_db_opcao,0,"id_instit"))){
   $selected = true;

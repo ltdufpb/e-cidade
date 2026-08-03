@@ -46,7 +46,7 @@ if ( !$rsLinhaTransporte ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não foi possível buscar as linhas de transporte.');
 }
 
-$iLinhas = pg_num_rows($rsLinhaTransporte);
+$iLinhas = $rsLinhaTransporte === false || $rsLinhaTransporte === null ? 0 : pg_num_rows($rsLinhaTransporte);
 
 $aDadosAnalitico = [];
 $aDadosSintetico = [];

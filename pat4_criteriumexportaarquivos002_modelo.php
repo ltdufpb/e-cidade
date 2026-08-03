@@ -34,7 +34,7 @@ $sSqlModelo .= "     from bensmodelo ";
 
 
 $rsModelo    		= db_query($sSqlModelo);
-$iNumeroLinhas 	= pg_num_rows($rsModelo);
+$iNumeroLinhas 	= $rsModelo === false || $rsModelo === null ? 0 : pg_num_rows($rsModelo);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oModelo     = db_utils::fieldsMemory($rsModelo,$i);

@@ -218,7 +218,7 @@ if ( isset($oPost->method) && $oPost->method == "gerarCheques")  {
   $sSqlConsultaReg .= "           {$sCampoCGM}                                                                  ";
 
   $rsConsultaReg = db_query($sSqlConsultaReg);
-  $iLinhasReg    = pg_num_rows($rsConsultaReg);
+  $iLinhasReg    = $rsConsultaReg === false || $rsConsultaReg === null ? 0 : pg_num_rows($rsConsultaReg);
 
   if ( $iLinhasReg > 0 ) {
   	

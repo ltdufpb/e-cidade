@@ -146,7 +146,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 					<td colspan="2" id="tiporetorno">
 						<?php 
 							$rsTipoRetorno = $cltiporetorno->sql_record($cltiporetorno->sql_query_file());
-							$iNumRowsTipoRetorno = pg_num_rows($rsTipoRetorno);
+							$iNumRowsTipoRetorno = $rsTipoRetorno === false || $rsTipoRetorno === null ? 0 : pg_num_rows($rsTipoRetorno);
 							if($iNumRowsTipoRetorno > 0){
 								for($i=0; $i < $iNumRowsTipoRetorno; $i++){
 									db_fieldsmemory($rsTipoRetorno,$i);

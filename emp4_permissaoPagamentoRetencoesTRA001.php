@@ -103,7 +103,7 @@ if (isset($oPost->salvar)) {
                                  and o41_instit = ".db_getsession("DB_instit")."
                                order by o41_orgao, o41_unidade";
          $rsOrgaoUnidade = db_query($sSqlOrgaoUnidade);
-         $iQtdLinhasOrgaoUnidade = pg_num_rows($rsOrgaoUnidade);
+         $iQtdLinhasOrgaoUnidade = $rsOrgaoUnidade === false || $rsOrgaoUnidade === null ? 0 : pg_num_rows($rsOrgaoUnidade);
          for ($iInd = 0; $iInd < $iQtdLinhasOrgaoUnidade; $iInd++) {
              
            $oDados = db_utils::fieldsMemory($rsOrgaoUnidade, $iInd);

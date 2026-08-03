@@ -1894,7 +1894,7 @@ class Servidor
             throw new BusinessException("Erro ao buscar afastamentos para o servidor");
         }
 
-        $iLinhasAfastamento = pg_num_rows($rsAfastamentos);
+        $iLinhasAfastamento = $rsAfastamentos === false || $rsAfastamentos === null ? 0 : pg_num_rows($rsAfastamentos);
         for ($iAfastamento = 0; $iAfastamento < $iLinhasAfastamento; $iAfastamento++) {
             $oAfastamentoStd = db_utils::fieldsMemory($rsAfastamentos, $iAfastamento);
             $oAfastamento = AfastamentoRepository::getInstanciaPorCodigo($oAfastamentoStd->r45_codigo);

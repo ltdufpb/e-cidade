@@ -81,7 +81,7 @@ try {
 SQL;
 
     $rs          = db_query($sql);
-    $qtdRegistros = pg_num_rows($rs);
+    $qtdRegistros = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
     if ($qtdRegistros == 0) {
         throw new BusinessException("Nenhuma informação encontrada para a matrícula " . $oParam->matricula);

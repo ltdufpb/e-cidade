@@ -168,7 +168,7 @@ input {
                      ".$qr."
                      order by codmod";
   $result = db_query($sql);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   $RecordsetTabMod = $result;
   if($numrows == 0) {
     if($tabmod == "t")
@@ -230,7 +230,7 @@ input {
 		  	     on s.codsequencia = a.codsequencia
                           where codarq = ".pg_fetch_result($result,$i,"codarq").
 			  "order by a.seqarq");
-	  $Ncampos = pg_num_rows($campo);
+	  $Ncampos = $campo === false || $campo === null ? 0 : pg_num_rows($campo);
 	  if($Ncampos > 0) {
         fputs($fd,"\n-- Módulo: ".trim(pg_fetch_result($result,$i,"nomemod"))."\n");
         fputs($fd,"CREATE TABLE ".trim(pg_fetch_result($result,$i,"nomearq"))."(\n");      
@@ -250,7 +250,7 @@ input {
 				}else{
                   fputs($fd,trim(pg_fetch_result($campo,$j,"nomecam"))."\t\t".trim(pg_fetch_result($campo,$j,"conteudo"))." ".(trim(pg_fetch_result($campo,$j,"valorinicial"))!=""?"default '".pg_fetch_result($campo,$j,"valorinicial")."'":(pg_fetch_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_fetch_result($campo,$j,"nomesequencia")."')":"")).",\n");
                 }
-                $Npk = pg_num_rows($pk);
+                $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
                 $primary_key = "(";
                 $nomePK = trim(pg_fetch_result($result,$i,"nomearq"))."_";
                 for($p = 0;$p < $Npk;$p++) {
@@ -309,7 +309,7 @@ if(isset($fk)) {
                       from db_sysforkey
                       where codarq = ".pg_fetch_result($result,$i,"codarq")."
                       group by referen");
-    $Ngrupo = pg_num_rows($grupo);
+    $Ngrupo = $grupo === false || $grupo === null ? 0 : pg_num_rows($grupo);
     for($j = 0;$j < $Ngrupo;$j++) {
       $fk = db_query("select pai.nomearq as t_pai,c.nomecam
                      from db_sysforkey f
@@ -321,7 +321,7 @@ if(isset($fk)) {
                      and f.referen = ".pg_fetch_result($grupo,$j,"referen")."
                      order by f.sequen,f.referen");
       $NomeFK = trim(pg_fetch_result($result,$i,"nomearq"))."_";
-      $_f_ = pg_num_rows($fk);
+      $_f_ = $fk === false || $fk === null ? 0 : pg_num_rows($fk);
       $CampFK = "(";
       for($f = 0;$f < $_f_;$f++) {
         if($f == $_f_ - 1)
@@ -358,7 +358,7 @@ if(isset($indice)) {
                     inner join db_sysarquivo a
                     on a.codarq = i.codarq
                     where a.codarq = ".pg_fetch_result($result,$i,"codarq"));
-    if(($Ni = pg_num_rows($ind)) > 0) {
+    if(($Ni = $ind === false || $ind === null ? 0 : pg_num_rows($ind)) > 0) {
       for($j = 0;$j < $Ni;$j++) {
         $Ncam = db_query("select c.nomecam
                          from db_syscampo c
@@ -385,7 +385,7 @@ if(isset($indice)) {
 if(isset($funcoes)) {
   fputs($fd,"\n\n\n-- FUNÇÕES\n\n\n");
   $result = db_query("select triggerfuncao,nomefuncao,corpofuncao from db_sysfuncoes where triggerfuncao = '0'");
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,"DROP FUNCTION ".trim(pg_fetch_result($result,$i,"nomefuncao")).";\n");	
   }  
@@ -398,7 +398,7 @@ if(isset($funcoes)) {
 if(isset($views)) {
   fputs($fd,"\n\n\n-- VISÕES\n\n\n");
   $result = db_query("select triggerfuncao,nomefuncao,corpofuncao from db_sysfuncoes where triggerfuncao = '2'");
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,"DROP VIEW ".trim(pg_fetch_result($result,$i,"nomefuncao")).";\n");
   }  
@@ -410,7 +410,7 @@ if(isset($views)) {
 //triggers
 if(isset($triggers)) {
   fputs($fd,"\n\n\n-- TRIGGERS\n\n\n");
-  $numrows = pg_num_rows($RecordsetTabMod);
+  $numrows = $RecordsetTabMod === false || $RecordsetTabMod === null ? 0 : pg_num_rows($RecordsetTabMod);
   $c = "";
   $str = "";
   for($i = 0;$i < $numrows;$i++) {
@@ -425,7 +425,7 @@ if(isset($triggers)) {
 					 on tab.codarq = t.codarq
 					 where triggerfuncao = '1'
 					 and t.codarq in(".$str.")");
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   //drop trigger
   for($i = 0;$i < $numrows;$i++) {
     fputs($fd,"DROP TRIGGER ".trim(pg_fetch_result($result,$i,"nometrigger"))." ON ".trim(pg_fetch_result($result,$i,"nomearq")).";\n");

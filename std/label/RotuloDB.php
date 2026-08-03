@@ -49,7 +49,7 @@ class RotuloDB
                                  join db_sysarquivo a on a.codarq = s.codarq
                             where a.nomearq = '" . $this->tabela . "'
                         " . ($sCampoTrim != "" ? "and c.nomecam = '{$sCampoTrim}'" : ""));
-        $numrows = pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
         for ($i = 0; $i < $numrows; $i++) {
             /// variavel para colocar como label de campo
             $variavel = "RL" . trim(pg_fetch_result($result, $i, "nomecam"));
@@ -87,7 +87,7 @@ class RotuloDB
                                  join db_syscampo c on c.codcam = s.codcam
                             where a.nomearq = '" . $this->tabela . "'
                         " . ($sCampoTrim != "" ? "and c.nomecam = '{$sCampoTrim}'" : ""));
-        $numrows = pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
         for ($i = 0; $i < $numrows; $i++) {
             /// variavel com o tipo de campo
             $variavel = trim("I" . pg_fetch_result($result, $i, "nomecam"));
@@ -167,7 +167,7 @@ class RotuloDB
         $result = db_query("select c.nomearq,c.descricao,c.nomearq,c.rotulo
                             from db_sysarquivo c
                             where c.nomearq = '" . $this->tabela . "'");
-        $numrows = pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
         if ($numrows > 0) {
             $variavel = trim("L" . pg_fetch_result($result, 0, "nomearq"));
             global ${$variavel};

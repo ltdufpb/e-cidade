@@ -303,7 +303,7 @@ while ($p < $linhas1 || $x < $linhas) {
         $sConteudo .= str_pad('Dosagem', 15);
         $sConteudo .= str_pad('Data/Hora', 15);
 
-        $iTotalLinhasAdministracao = pg_num_rows($rsProntuarioAdministracao);
+        $iTotalLinhasAdministracao = $rsProntuarioAdministracao === false || $rsProntuarioAdministracao === null ? 0 : pg_num_rows($rsProntuarioAdministracao);
         for ($iAdministracao = 0; $iAdministracao < $iTotalLinhasAdministracao; $iAdministracao++) {
 
           $oDadosAdministracao = db_utils::fieldsMemory($rsProntuarioAdministracao, $iAdministracao);
@@ -423,7 +423,7 @@ while ($p < $linhas1 || $x < $linhas) {
         db_redireciona('db_erros.php?fechar=true&db_erro=Erro ao buscar os dados da Requisição de Exames.');
       }
 
-      $iLinhasRequisicaoExame = pg_num_rows($rsRequisicao);
+      $iLinhasRequisicaoExame = $rsRequisicao === false || $rsRequisicao === null ? 0 : pg_num_rows($rsRequisicao);
       $oDadosRequisicao       = new stdClass();
 
       for ($i = 0; $i < $iLinhasRequisicaoExame; $i++) {

@@ -575,7 +575,7 @@ class ProcessamentoPontoEletronico
         }
 
         if (pg_num_rows($rsPontoData) > 0) {
-            $iTotalRegistros = pg_num_rows($rsPontoData);
+            $iTotalRegistros = $rsPontoData === false || $rsPontoData === null ? 0 : pg_num_rows($rsPontoData);
             $aRegistrosExcluir = \db_utils::makeCollectionFromRecord($rsPontoData, fn($oRetorno) => $oRetorno->rh198_sequencial);
 
             $oDaoRegistroJustificativa->excluir(

@@ -236,7 +236,7 @@ input {
 								                        order by lower(m.nome_modulo)");
 			            }
 
-			            $numrows = pg_num_rows($result);
+			            $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			            for($i = 0;$i < $numrows;$i++) {
 
 			              echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."##".pg_fetch_result($result,$i,"descr_modulo")."||".pg_fetch_result($result,$i,"nome_modulo")."\">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";

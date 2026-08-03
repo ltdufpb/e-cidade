@@ -396,7 +396,7 @@ class Cedencia
             throw new DBException("Erro ao Buscar Cedência.");
         }
 
-        $totalRegistros = pg_num_rows($result);
+        $totalRegistros = $result === false || $result === null ? 0 : pg_num_rows($result);
 
         $sequenciais = [];
 

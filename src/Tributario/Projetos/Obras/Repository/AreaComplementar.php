@@ -173,7 +173,7 @@ class AreaComplementar
             return $areaComplementarRepository->getCollection();
         }
 
-        $totalLinhas = pg_num_rows($rs);
+        $totalLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
         for ($contador = 0; $contador < $totalLinhas; $contador++) {
             $retorno = db_utils::fieldsMemory($rs, $contador);

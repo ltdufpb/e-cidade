@@ -245,7 +245,7 @@ input {
 					   where substr(db_syscampo.nomecam,1,2) != 'DB' and db_sysarqcamp.codcam is null
                                            order by db_syscampo.codcam desc
  				          ");
-                $numrows = pg_num_rows($result);
+                $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		        if($numrows > 0) {
 		          for($i = 0;$i < $numrows;$i++) {
 			        echo "<option value=\"".pg_fetch_result($result,$i,"codcam")."\">".pg_fetch_result($result,$i,"nomecam")."</option>\n";
@@ -258,7 +258,7 @@ input {
               <?php 
 		      if(isset($_POST["dbh_tabela"])) {
 		        $result = db_query("select c.codcam,c.nomecam from db_syscampo c inner join db_sysarqcamp ac on ac.codcam = c.codcam where ac.codarq = $dbh_tabela order by ac.seqarq");
-                $numrows = pg_num_rows($result);
+                $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		        if($numrows > 0) {
 		          for($i = 0;$i < $numrows;$i++) {
 			        echo "<option value=\"".pg_fetch_result($result,$i,"codcam")."\">".pg_fetch_result($result,$i,"nomecam")."</option>\n";

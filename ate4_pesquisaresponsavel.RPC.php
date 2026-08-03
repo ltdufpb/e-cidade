@@ -37,7 +37,7 @@ $oJson         = new services_json();
 $sName    = $_POST["string"];
 $sql      = "SELECT id_usuario as cod,nome as label FROM db_usuarios WHERE nome ilike '".$sName."%'";
 $result   = db_query($sql);
-$iNumRows = pg_num_rows($result);
+$iNumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $array    = db_utils::getCollectionByRecord($result);
 

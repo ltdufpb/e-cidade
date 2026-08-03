@@ -561,7 +561,7 @@ class Matricula {
     $sCampos         = "ed59_i_disciplina, ed300_datalancamento, ed58_i_codigo, ed301_sequencial";
     $sSqlFaltas      = $oDaoAlunoFalta->sql_query_falta_regencia(null, $sCampos, "ed59_i_ordenacao", $sWhere);
     $rsFaltas        = $oDaoAlunoFalta->sql_record($sSqlFaltas);
-    $iTotalFaltas    = pg_num_rows($rsFaltas);
+    $iTotalFaltas    = $rsFaltas === false || $rsFaltas === null ? 0 : pg_num_rows($rsFaltas);
     for ($iFalta = 0; $iFalta < $iTotalFaltas; $iFalta++) {
 
       $oFaltaBase = db_utils::fieldsMemory($rsFaltas, $iFalta);
@@ -1164,7 +1164,7 @@ class Matricula {
                                                                             "ed337_matricula = {$this->getCodigo()}"
                                                                           );
     $rsMatriculaTurnoReferente     = db_query( $sSqlMatriculaTurnoReferente );
-    $iTotalMatriculaTurnoReferente = pg_num_rows( $rsMatriculaTurnoReferente );
+    $iTotalMatriculaTurnoReferente = $rsMatriculaTurnoReferente === false || $rsMatriculaTurnoReferente === null ? 0 : pg_num_rows( $rsMatriculaTurnoReferente );
 
     for ( $iContador = 0; $iContador < $iTotalMatriculaTurnoReferente; $iContador++ ) {
       $aTurnosReferentes = db_utils::getCollectionByRecord( $rsMatriculaTurnoReferente );

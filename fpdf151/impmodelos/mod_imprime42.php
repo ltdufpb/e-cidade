@@ -149,7 +149,7 @@ $sql_doc = "select p81_doc,p56_descr from procprocessodoc
                inner join procdoc on p81_coddoc = p56_coddoc
 	        where p81_codproc=".$this->p58_codproc ;
 $result_doc = db_query($sql_doc);
-$numrows_doc = pg_num_rows($result_doc);
+$numrows_doc = $result_doc === false || $result_doc === null ? 0 : pg_num_rows($result_doc);
 if ($numrows_doc > 0) {
 	$m = 0;
 	$this->objpdf->cell(180, 2, '', 0, 1, "C");

@@ -135,7 +135,7 @@ $sVirg = '';
 $bFlagAbrev = false;
 $sSqlInstit = "select codigo,nomeinst,nomeinstabrev from db_config where codigo in ({$sDbInstit}) ";
 $resInst = db_query($sSqlInstit);
-$iInstit = pg_num_rows($resInst);
+$iInstit = $resInst === false || $resInst === null ? 0 : pg_num_rows($resInst);
 
 if ($iInstit > 0) {
     for ($i = 0; $i < $iInstit; $i++) {

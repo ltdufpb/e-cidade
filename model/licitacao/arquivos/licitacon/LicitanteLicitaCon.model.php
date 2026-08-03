@@ -89,7 +89,7 @@ class LicitanteLicitaCon extends ArquivoLicitaCon
             throw new Exception("Ocorreu um erro ao buscar o autor dos eventos da licitação {$oDadosLicitacao->CODIGO_LICITACAO}.");
         }
 
-        $iTotalRegistros = pg_num_rows($rsBuscaEvento);
+        $iTotalRegistros = $rsBuscaEvento === false || $rsBuscaEvento === null ? 0 : pg_num_rows($rsBuscaEvento);
         if ($iTotalRegistros == 0) {
             return [];
         }

@@ -171,7 +171,7 @@ if (isset($excluir)) {
         }
 
         if (!$lErro) {
-            $linhas_exc = pg_num_rows($result_exc);
+            $linhas_exc = $result_exc === false || $result_exc === null ? 0 : pg_num_rows($result_exc);
             for ($z = 0; $z < $linhas_exc; $z++) {
                 db_fieldsmemory($result_exc, $z);
                 $clamparo->excluir("", " ed81_i_diario = {$coddiario}");
@@ -198,7 +198,7 @@ if (isset($excluir)) {
                     break;
                 }
 
-                $linhas5 = pg_num_rows($result5);
+                $linhas5 = $result5 === false || $result5 === null ? 0 : pg_num_rows($result5);
                 for ($t = 0; $t < $linhas5; $t++) {
 
                     db_fieldsmemory($result5, $t);
@@ -238,7 +238,7 @@ if (isset($excluir)) {
                     break;
                 }
 
-                $linhas6 = pg_num_rows($result6);
+                $linhas6 = $result6 === false || $result6 === null ? 0 : pg_num_rows($result6);
                 for ($t = 0; $t < $linhas6; $t++) {
 
                     db_fieldsmemory($result6, $t);
@@ -417,7 +417,7 @@ if (isset($excluir)) {
 
             if (!$lErro) {
 
-                $linhas1 = pg_num_rows($query1);
+                $linhas1 = $query1 === false || $query1 === null ? 0 : pg_num_rows($query1);
 
                 if ($linhas1 > 0) {
 
@@ -452,7 +452,7 @@ if (isset($excluir)) {
 
                     if (!$lErro) {
 
-                        $linhas0 = pg_num_rows($result0);
+                        $linhas0 = $result0 === false || $result0 === null ? 0 : pg_num_rows($result0);
                         if ($linhas0 > 0) {
 
                             db_fieldsmemory($result0, 0);

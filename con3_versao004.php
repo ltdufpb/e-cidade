@@ -222,7 +222,7 @@ $sql .= " order by nome_modulo";
 
 $res = db_query($sql);
 
-$numrows = pg_num_rows($res);
+$numrows = $res === false || $res === null ? 0 : pg_num_rows($res);
 
 if( $numrows > 0 ) {
 

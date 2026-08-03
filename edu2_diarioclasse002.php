@@ -424,7 +424,7 @@ for ($x = 0; $x < $iLinhasRegencia; $x++) {
     $sSqlDiarioAval   .= "            AND ed95_i_regencia = $ed59_i_codigo ";
     $sSqlDiarioAval   .= "            AND ed72_i_procavaliacao = $periodo ";
     $sResultDiarioAval = db_query($sSqlDiarioAval);
-    $iLinhasDiarioAval = pg_num_rows($sResultDiarioAval);
+    $iLinhasDiarioAval = $sResultDiarioAval === false || $sResultDiarioAval === null ? 0 : pg_num_rows($sResultDiarioAval);
     if ($iLinhasDiarioAval > 0) {
       db_fieldsmemory($sResultDiarioAval,0);
     } else {

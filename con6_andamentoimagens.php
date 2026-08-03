@@ -44,7 +44,7 @@
 <?php 
   db_query("begin");
   $result = db_query("select * from db_ordemimagens where codordem = $ordem");
-  $num = pg_num_rows($result);
+  $num = $result === false || $result === null ? 0 : pg_num_rows($result);
   for ($i=0;$i<$num;$i++) {
     $nomeTemporario = tempnam("../tmp/","");
     $oid = pg_fetch_result($result,$i,"arquivo");

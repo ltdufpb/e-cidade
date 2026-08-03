@@ -117,7 +117,7 @@ class Leitura {
     }
 
     $aResultados = [];
-    $iQtdResultados = pg_num_rows($rsResultados);
+    $iQtdResultados = $rsResultados === false || $rsResultados === null ? 0 : pg_num_rows($rsResultados);
     for ($iLinha = 0; $iLinha < $iQtdResultados; $iLinha++) {
       $aResultados[] = $this->hydrate($rsResultados, $iLinha);
     }

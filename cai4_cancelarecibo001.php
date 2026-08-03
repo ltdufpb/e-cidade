@@ -55,7 +55,7 @@ if(isset($excluir)){
 	$sqlerro = false;
   $sql     = "select * from recibo where k00_numpre=$k00_numpre and k00_receit=$k00_receit and k00_numcgm=$k00_numcgm";
   $result  = db_query($sql);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   for($i=0; $i<$numrows; $i++){
     db_fieldsmemory($result,$i);
 		 $k00_codsubrec =  $k00_codsubrec == ''?'0':$k00_codsubrec;

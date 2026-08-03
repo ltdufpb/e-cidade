@@ -299,7 +299,7 @@ for($i = 0;$i < $clpagordem->numrows;$i++){
    $pdf1->outrasordens     = $outrasordens;
    $pdf1->recorddositens   = $resultitem;
    $pdf1->ano		   = $e60_anousu;
-   $pdf1->linhasdositens   = pg_num_rows($resultitem);
+   $pdf1->linhasdositens   = $resultitem === false || $resultitem === null ? 0 : pg_num_rows($resultitem);
    $pdf1->elementoitem     = "o56_elemento";
    $pdf1->descr_elementoitem = "o56_descr";
    $pdf1->vlremp           = "e53_valor";

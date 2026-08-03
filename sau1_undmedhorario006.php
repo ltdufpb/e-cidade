@@ -97,7 +97,7 @@ if (isset($incluir) || isset($alterar) && $lAgendamentos) {
 
     if ($rsValidaConflitoDia && pg_num_rows($rsValidaConflitoDia) > 0 && $rad_periodo == 1 ) {
 
-      $iTotalConflitos = pg_num_rows($rsValidaConflitoDia);
+      $iTotalConflitos = $rsValidaConflitoDia === false || $rsValidaConflitoDia === null ? 0 : pg_num_rows($rsValidaConflitoDia);
 
       for( $iContador = 0; $iContador < $iTotalConflitos; $iContador++ ) {
 

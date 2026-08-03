@@ -136,7 +136,7 @@ $pdf->Text($X + 18 + 45,$Y + 16,pg_fetch_result($dados,0,"z01_uf"));
 
 //DEBITOS
 $pdf->SetXY(10,60);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $TamMatric = 10;
 $TamNumpar = 4;

@@ -78,7 +78,7 @@ class DocumentoConLicitaCon extends ArquivoLicitaCon {
   public function getDados() {
 
     $rsDocumentos      = $this->getDocumentos();
-    $iTotalDocumentos  = pg_num_rows($rsDocumentos);
+    $iTotalDocumentos  = $rsDocumentos === false || $rsDocumentos === null ? 0 : pg_num_rows($rsDocumentos);
     $aTiposDocumento   = LicitaConTipoDocumentoAcordo::getSiglas();
     $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
 

@@ -61,7 +61,7 @@ if($resumido == 't'){
 			from massamat group by j59_matric,j59_codigo) as x 
 			inner join massafalida on x.j59_codigo = j58_codigo group by totmat,j58_numcgm";
   $result = db_query($sql);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   $pdf->Cell(50,$tam,"CGM",1,0,"C",1);
   $pdf->Cell(70,$tam,"QUANTIDADE DE MATRÍCULAS",1,1,"C",1);
   for($s=0;$s<$numrows;$s++){
@@ -81,7 +81,7 @@ if($resumido == 't'){
                         inner join massafalida on j58_codigo = j59_codigo 
 			inner join proprietario_nome on j59_matric = j01_matric $where order by $ordem $modo";
   $result = db_query($sql);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   $pdf->Cell(35,$tam,"CGM",1,0,"C",1);
   $pdf->Cell(35,$tam,"MATRÍCULA",1,0,"C",1);
   $pdf->Cell(100,$tam,"NOME/RAZÃO SOCIAL",1,0,"C",1);

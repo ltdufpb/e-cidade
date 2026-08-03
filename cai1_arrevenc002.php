@@ -74,7 +74,7 @@ if ( isset( $alterar ) ) {
 
   		$sqlPar   = "select distinct k00_numpar as parc from arrecad where k00_numpre = {$k00_numpre}";
   		$rsPar    = db_query($sqlPar);
-  		$linhaPar = pg_num_rows($rsPar);
+  		$linhaPar = $rsPar === false || $rsPar === null ? 0 : pg_num_rows($rsPar);
 
   		if ( $linhaPar > 0 ) {
 
@@ -172,7 +172,7 @@ if ( isset ( $incluir ) ) {
 
   	  $sqlPar   = "select distinct k00_numpar as parc from arrecad where k00_numpre = {$k00_numpre}";
   	  $rsPar    = db_query($sqlPar);
-  	  $linhaPar = pg_num_rows($rsPar);
+  	  $linhaPar = $rsPar === false || $rsPar === null ? 0 : pg_num_rows($rsPar);
 
   	  if ( $linhaPar > 0 ) {
 
@@ -268,7 +268,7 @@ if ( isset($k75_sequencial) and $k75_sequencial!="" ) {
 	$sqlCarrega .= "  where k75_sequencial = {$k75_sequencial}                         ";
 
   $rsCarrega     = db_query($sqlCarrega);
-  $linhasCarrega = pg_num_rows($rsCarrega);
+  $linhasCarrega = $rsCarrega === false || $rsCarrega === null ? 0 : pg_num_rows($rsCarrega);
 
   if ( $linhasCarrega > 0 ) {
 	  db_fieldsmemory($rsCarrega,0);
@@ -291,7 +291,7 @@ if ( isset($k00_sequencial) && $k00_sequencial!="" ) {
 
   $sqlAlt    = "select * from arrevenc where k00_sequencial =$k00_sequencial";
   $rsAlt     = db_query($sqlAlt);
-  $linhasAlt = pg_num_rows($rsAlt);
+  $linhasAlt = $rsAlt === false || $rsAlt === null ? 0 : pg_num_rows($rsAlt);
 
   if ( $linhasAlt > 0 ) {
     db_fieldsmemory($rsAlt,0);
@@ -309,7 +309,7 @@ function db_verificaData($k00_dtini,$k00_dtfim,$k00_numpre,$k00_numpar){
 							      and (k00_dtini,k00_dtfim) overlaps ( DATE '{$dataini}' - '1 day'::interval, DATE '{$datafim}' + '1 day'::interval)";
 
   $rsPeriodo     = db_query($sqlPeriodo);
-  $linhasPeriodo = pg_num_rows($rsPeriodo);
+  $linhasPeriodo = $rsPeriodo === false || $rsPeriodo === null ? 0 : pg_num_rows($rsPeriodo);
 
   if ( $linhasPeriodo > 0 ) {
     return true;

@@ -92,7 +92,7 @@ from orcsubfuncao
 
 	    $sql .= "  and not o58_anousu in ($exercicios) ";
       $res=db_query($sql);
-      $rows = pg_num_rows($res);
+      $rows = $res === false || $res === null ? 0 : pg_num_rows($res);
       for ($x=0;$x < $rows;$x++){
           $anousu = formatar(pg_fetch_result($res,$x,"anousu"),4);
           $codigo = formatar(pg_fetch_result($res,$x,"codigo"),3);

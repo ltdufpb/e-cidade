@@ -73,7 +73,7 @@ final class PadArquivoSigapBalanceteMovimentacaoAnterior extends PadArquivoSigap
     if (PostgreSQLUtils::isTableExists("work_pl")) {
       db_query("drop table work_pl");
     }
-    $iTotalLinhas  = pg_num_rows($rsBalancete);
+    $iTotalLinhas  = $rsBalancete === false || $rsBalancete === null ? 0 : pg_num_rows($rsBalancete);
     $aMeses = [ 1 => "janeiro",
                      2 => "fevereiro", 
                      3 => "marco",

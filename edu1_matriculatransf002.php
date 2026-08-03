@@ -266,7 +266,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                                                        and ed59_i_serie = $etapaorigem
                                                       )";
                     $result2 = db_query($sql2);
-                    $linhas2 = pg_num_rows($result2);
+                    $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
                   ?>
                     <select name="regenciadestino" style="padding:0px;width:75px;height:16px;font-size:12px;" onchange="js_eliminareg(this.value,<?=$t?>)">
                     <option value=""></option>
@@ -406,7 +406,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                                                           and ed223_i_serie = $etapaorigem)
                                  order by ed41_i_sequencia";
                         $result2 = db_query($sql2);
-                        $linhas2 = pg_num_rows($result2);
+                        $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
                   ?>
                       <select name="periododestino" style="padding:0px;width:75px;height:16px;font-size:12px;" onchange="js_eliminaper(this.value,<?=$t?>)">
                         <option value=""></option>
@@ -1629,7 +1629,7 @@ if (!isset($incluir) && !isset($incluir2)) {
       db_msgbox( $sMensagem );
     }
 
-    $iTotalTurmaTurnoReferente = pg_num_rows( $rsTurmaTurnoReferente );
+    $iTotalTurmaTurnoReferente = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows( $rsTurmaTurnoReferente );
 
     if ( $iTotalTurmaTurnoReferente > 0 ) {
 
@@ -1706,7 +1706,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                      FROM escola_sequencias
                     WHERE ed129_i_escola = {$escola}";
     $result10   = db_query($sql10);
-    $linhas10   = pg_num_rows($result10);
+    $linhas10   = $result10 === false || $result10 === null ? 0 : pg_num_rows($result10);
 
     if ($linhas10 > 0) {
 
@@ -1881,7 +1881,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                                                                                $sWhereTurmaTurnoReferente
                                                                            );
       $rsTurmaTurnoReferente     = db_query( $sSqlTurmaTurnoReferente );
-      $iTotalTurmaTurnoReferente = pg_num_rows( $rsTurmaTurnoReferente );
+      $iTotalTurmaTurnoReferente = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows( $rsTurmaTurnoReferente );
 
       if ( $rsTurmaTurnoReferente && $iTotalTurmaTurnoReferente > 0 ) {
 
@@ -1974,7 +1974,7 @@ if (!isset($incluir) && !isset($incluir2)) {
                      FROM escola_sequencias
                     WHERE ed129_i_escola = {$escola}";
     $result10   = db_query($sql10);
-    $linhas10   = pg_num_rows($result10);
+    $linhas10   = $result10 === false || $result10 === null ? 0 : pg_num_rows($result10);
 
     if ($linhas10 > 0) {
 

@@ -194,7 +194,7 @@ class ContaPlanoPCASP extends ContaPlano
                 throw new DBException("Ocorreu um erro ao consultar os reduzidos para esta conta.");
             }
 
-            $totalRegistros = pg_num_rows($buscaMaisReduzidos);
+            $totalRegistros = $buscaMaisReduzidos === false || $buscaMaisReduzidos === null ? 0 : pg_num_rows($buscaMaisReduzidos);
 
             for ($row = 0; $row < $totalRegistros; $row++) {
                 $stdDados = db_utils::fieldsMemory($buscaMaisReduzidos, $row);

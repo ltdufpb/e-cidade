@@ -66,7 +66,7 @@ $sql = "SELECT  distinct j14_codigo,
 
 //die($sql);
 $result = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 //db_criatabela($result);exit;
 

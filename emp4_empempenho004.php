@@ -552,7 +552,7 @@ if (isset($incluir)) {
               "c75_numemp = {$sequencialEmpenho}"
           );
           $resBuscaLancamento = db_query($sqlBuscaLancamentos);
-          $totalRegistros = pg_num_rows($resBuscaLancamento);
+          $totalRegistros = $resBuscaLancamento === false || $resBuscaLancamento === null ? 0 : pg_num_rows($resBuscaLancamento);
           for ($row = 0; $row < $totalRegistros; $row++) {
               $lancamento = db_utils::fieldsMemory($resBuscaLancamento, $row)->c75_codlan;
               $daoEmpenho->alterar($lancamento);

@@ -62,7 +62,7 @@ class ArredondamentoNotaSecretaria extends ArredondamentoNota implements IEducac
       throw new Exception("Erro ao buscar configuração da secretaria.");
     }
 
-    $iLinhas = pg_num_rows($rsConfiguracao);
+    $iLinhas = $rsConfiguracao === false || $rsConfiguracao === null ? 0 : pg_num_rows($rsConfiguracao);
 
     for ($i = 0; $i < $iLinhas; $i++) {
 

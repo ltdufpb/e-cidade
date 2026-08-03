@@ -279,7 +279,7 @@ if (isset($confirma) && !empty($confirma)) {
     $sSqlPesquisaDebCred .= "   where k131_slip = {$chavepesquisa};";
 
     $rsExecutaBuscaDebCred = db_query($sSqlPesquisaDebCred);
-    $iRowBuscaDebCred      = pg_num_rows($rsExecutaBuscaDebCred);
+    $iRowBuscaDebCred      = $rsExecutaBuscaDebCred === false || $rsExecutaBuscaDebCred === null ? 0 : pg_num_rows($rsExecutaBuscaDebCred);
 
     if ($iRowBuscaDebCred != 0) {
 

@@ -384,7 +384,7 @@ if(isset($processar)){
       if(!$result44){
        die("ERRO ESCOLA: ".$sql44."<br><br>");
       }
-      $linhas44 = pg_num_rows($result44);
+      $linhas44 = $result44 === false || $result44 === null ? 0 : pg_num_rows($result44);
       $codigoescola = pg_fetch_result($result44,0,'ed18_i_codigo');
 
       $sqlupdateescola = " UPDATE escola SET ed18_i_codigo = $codigoescola ";
@@ -431,7 +431,7 @@ if(isset($processar)){
        if(!$resultturma33){
         die("ERRO TURMA[1]: ".$sqlturma33."<br><br>");
        }
-       $linhasturma33 = pg_num_rows($resultturma33);
+       $linhasturma33 = $resultturma33 === false || $resultturma33 === null ? 0 : pg_num_rows($resultturma33);
        if($linhasturma33==0){
         if($primeiro_turma==false){
          fwrite($ponteiro_log,"Turma(s) abaixo relacionada(s), informada(s) no censo $anoletivo, não foram encontrada(s) no sistema.(Não existe ou o nome da turma informado no censo não coincide com o nome informado no sistema)\n");
@@ -465,7 +465,7 @@ if(isset($processar)){
        if(!$resultturma33){
         die("ERRO TURMA[3]: ".$sqlturma33."<br><br>");
        }
-       $linhasturma33 = pg_num_rows($resultturma33);
+       $linhasturma33 = $resultturma33 === false || $resultturma33 === null ? 0 : pg_num_rows($resultturma33);
        if($linhasturma33==0){
         if($primeiro_turma==false){
          fwrite($ponteiro_log,"Turma(s) abaixo relacionada(s), informada(s) no censo $anoletivo, não foram encontrada(s) no sistema.(Não existe ou o nome da turma informado no censo não coincide com o nome informado no sistema)\n");
@@ -531,7 +531,7 @@ if(isset($processar)){
       if(!$result22){
        die("ERRO DOCENTE[1]: ".$sql22."<br><br>");
       }
-      $linhas22 = pg_num_rows($result22);
+      $linhas22 = $result22 === false || $result22 === null ? 0 : pg_num_rows($result22);
       if($linhas22==0){
        if($primeiro_docente==false){
         fwrite($ponteiro_log,"\nDocente(s) abaixo relacionado(s), informado(s) no censo $anoletivo, não foram atualizado(s) no sistema.\n (Não existe no sistema ou o nome do docente informado no censo não coincide com o nome informado no sistema ou o docente não está mais vinculado a esta escola)\n");
@@ -578,7 +578,7 @@ if(isset($processar)){
                 WHERE to_ascii(translate(ed47_v_nome,'´`',''),'LATIN1') = '$nome_censo2'
                 ";
       $result11 = db_query($sql11);
-      $linhas11 = pg_num_rows($result11);
+      $linhas11 = $result11 === false || $result11 === null ? 0 : pg_num_rows($result11);
       if($linhas11==0){
        fwrite($ponteiro_log,"\nAluno [$ed47_c_codigoinep] $nome_censo2: Nome cadastrado no censo não existe no sistema.");
        $erro_naoencontrado = true;

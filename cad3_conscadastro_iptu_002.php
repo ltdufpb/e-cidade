@@ -57,7 +57,7 @@ $sql = "select proprietario.*, j50_descr,
  			   where $where limit 1";
 
 $matriculaSelecionada    = db_query($sql) or die($sql);
-$numMatriculaSelecionada = pg_num_rows($matriculaSelecionada);
+$numMatriculaSelecionada = $matriculaSelecionada === false || $matriculaSelecionada === null ? 0 : pg_num_rows($matriculaSelecionada);
 
 if($numMatriculaSelecionada > 0){
 
@@ -130,7 +130,7 @@ if ($numMatriculaSelecionada == 0) {
             ) as x";
 
   $resultareatotal = db_query($sqlareatotal);
-  $linhasareatotal = pg_num_rows($resultareatotal);
+  $linhasareatotal = $resultareatotal === false || $resultareatotal === null ? 0 : pg_num_rows($resultareatotal);
   if ($linhasareatotal>0){
 	db_fieldsmemory($resultareatotal,0);
   }
@@ -144,7 +144,7 @@ $sqlareaconst = "
    	and j01_baixa is null";
 
 $resultareaconst = db_query($sqlareaconst);
-$linhasareaconst = pg_num_rows($resultareaconst);
+$linhasareaconst = $resultareaconst === false || $resultareaconst === null ? 0 : pg_num_rows($resultareaconst);
 if ($linhasareaconst>0){
 	db_fieldsmemory($resultareaconst,0);
 }
@@ -193,7 +193,7 @@ if ($linhasareaconst>0){
   <?php 
   $sqlimo = "select * from imobil where j44_matric = $cod_matricula";
   $resultimo = db_query($sqlimo);
-  $linhasimo = pg_num_rows($resultimo);
+  $linhasimo = $resultimo === false || $resultimo === null ? 0 : pg_num_rows($resultimo);
   ?>
   <tr>
     <td width="73" align="right" bgcolor="#CCCCCC">
@@ -406,7 +406,7 @@ if (@$areatotal>0){
               <?php 
 					    $sqlreg = " select * from iptubaseregimovel where j04_matric = $j01_matric";
 					    $resultreg = db_query($sqlreg);
-					    $linhasreg = pg_num_rows($resultreg);
+					    $linhasreg = $resultreg === false || $resultreg === null ? 0 : pg_num_rows($resultreg);
 					    if($linhasreg>0){
 					      db_fieldsmemory($resultreg,0);
 					      ?>

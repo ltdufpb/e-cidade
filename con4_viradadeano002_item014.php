@@ -31,7 +31,7 @@ if ($sqlerro==false) {
   //TRANSAÇÕES";
   $sqldestino = "select * from contrans where c45_anousu = $anodestino limit 1";
   $resultdestino = db_query($sqldestino);
-  $linhasdestino = pg_num_rows($resultdestino);
+  $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
   $_where   = "";
   // Se existir contrans no destino significa que ja foi processada virada entao...
@@ -171,7 +171,7 @@ if ($sqlerro==false) {
 
     $sqlorigem = "select * from contrans where c45_anousu = $anoorigem $_where";
     $resultorigem = db_query($sqlorigem);
-    $linhasorigem = pg_num_rows($resultorigem);
+    $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
     //db_criatabela($resultorigem);
     //echo "<br>$sqlorigem";
@@ -210,7 +210,7 @@ if ($sqlerro==false) {
         $sqlcontranslan .= " inner join contrans on c45_seqtrans=c46_seqtrans ";
         $sqlcontranslan .= " where contrans.c45_anousu={$anoorigem} {$_where} ";
         $resultcontranslan = db_query($sqlcontranslan);
-        $linhascontranslan = pg_num_rows($resultcontranslan);
+        $linhascontranslan = $resultcontranslan === false || $resultcontranslan === null ? 0 : pg_num_rows($resultcontranslan);
         //db_criatabela($resultcontranslan);
         //die();
         for ($c=0; $c<$linhascontranslan; $c++) {
@@ -226,7 +226,7 @@ if ($sqlerro==false) {
           $sql2 .= "   and c45_anousu = {$anodestino} ";
           $sql2 .= "   and c45_instit = {$c45_instit} ";
           $result2 = db_query($sql2);
-          $linhas2 = pg_num_rows($result2);
+          $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
           db_fieldsmemory($result2,0);
           $c46_seqtrans_novo = $c45_seqtrans;
 
@@ -270,7 +270,7 @@ if ($sqlerro==false) {
           $sqlcontranslr .= "           true ";
           $sqlcontranslr .= "    end ";
           $resultcontranslr = db_query($sqlcontranslr);
-          $linhascontranslr = pg_num_rows($resultcontranslr);
+          $linhascontranslr = $resultcontranslr === false || $resultcontranslr === null ? 0 : pg_num_rows($resultcontranslr);
           if ($linhascontranslr > 0) {
             for ($h=0; $h < $linhascontranslr; $h++) {
 
@@ -350,7 +350,7 @@ if ($sqlerro==false) {
                                          from conhistdocregra
                                        where c92_anousu =  $anoorigem";
   $rsDocumentoContabilRegra         = db_query($sSqlDocumentoContabilRegra);
-  $iRegistrosDocumentoContabilRegra = pg_num_rows($rsDocumentoContabilRegra);
+  $iRegistrosDocumentoContabilRegra = $rsDocumentoContabilRegra === false || $rsDocumentoContabilRegra === null ? 0 : pg_num_rows($rsDocumentoContabilRegra);
   for ($iDocumento=0; $iDocumento<$iRegistrosDocumentoContabilRegra; $iDocumento++) {
     
     try {

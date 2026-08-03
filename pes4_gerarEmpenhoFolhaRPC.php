@@ -583,7 +583,7 @@ try {
 				$sSqlDesdobramentos .= "                             and orcelemento.o56_codele = {$oParam->iDesdobramento}               ";
 
 				$rsDesdobramento     = db_query($sSqlDesdobramentos);
-				$iNroDesdobramento   = pg_num_rows($rsDesdobramento);
+				$iNroDesdobramento   = $rsDesdobramento === false || $rsDesdobramento === null ? 0 : pg_num_rows($rsDesdobramento);
 
 				if ( $iNroDesdobramento > 0 ) {
 
@@ -664,7 +664,7 @@ try {
 			$sSqlEmpenhos  .= "                order by  rh01_regist) as x ";
 			//$sSqlEmpenhos  .= "        WHERE rh73_valor <> 0 ";
 			$rsDadosEmpenho = db_query($sSqlEmpenhos);
-			$iTotalEmpenhos = pg_num_rows($rsDadosEmpenho);
+			$iTotalEmpenhos = $rsDadosEmpenho === false || $rsDadosEmpenho === null ? 0 : pg_num_rows($rsDadosEmpenho);
 			$aEmpenhos = [];
 			for ($iEmpenho = 0; $iEmpenho < $iTotalEmpenhos; $iEmpenho++) {
 

@@ -461,7 +461,7 @@ if (isset($processar)) {
 
 
 
-                    $iTotalRegras = pg_num_rows($rRegrasTransacao);
+                    $iTotalRegras = $rRegrasTransacao === false || $rRegrasTransacao === null ? 0 : pg_num_rows($rRegrasTransacao);
                     for ($iRowRegras = 0; $iRowRegras < $iTotalRegras; $iRowRegras++) {
 
                         $oStdRegras = db_utils::fieldsMemory($rRegrasTransacao, $iRowRegras);

@@ -116,7 +116,7 @@ class EnsinoRepository
         $oDaoEnsino = new cl_ensino();
         $sSqlEnsino = $oDaoEnsino->sql_query_file(null, "ed10_i_codigo");
         $rsEnsino = db_query($sSqlEnsino);
-        $iTotalEnsino = pg_num_rows($rsEnsino);
+        $iTotalEnsino = $rsEnsino === false || $rsEnsino === null ? 0 : pg_num_rows($rsEnsino);
 
         if ($rsEnsino && $iTotalEnsino > 0) {
             for ($iContador = 0; $iContador < $iTotalEnsino; $iContador++) {

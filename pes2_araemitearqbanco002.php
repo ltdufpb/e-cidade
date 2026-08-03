@@ -249,7 +249,7 @@ if($sqlerro == false){
                $wherefolha";
           
   $result  = db_query($sql);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 //  die($sql);
 //  db_criatabela($result);exit;
   $nomeprefeitura = "PREF. MUN. ARAPIRACA";

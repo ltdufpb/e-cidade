@@ -460,7 +460,7 @@ if (isset($incluir)) {
         throw new BusinessException("Nenhum servidor encontrado na folha de pagamento selecinada.");
       }
 
-      $numrows_folha   = pg_num_rows($result_grsubsql);
+      $numrows_folha   = $result_grsubsql === false || $result_grsubsql === null ? 0 : pg_num_rows($result_grsubsql);
 
       if ($numrows_folha > 0) {
           

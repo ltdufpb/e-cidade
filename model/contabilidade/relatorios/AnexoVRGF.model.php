@@ -185,7 +185,7 @@ class AnexoVRGF extends RelatoriosLegaisBase  {
     /**
      * Calculamos os valores Cadastrados nos parametros para a coluna das disponibilidade bruta.
      */
-    $iLinhaBalancente = pg_num_rows($rsVerificacao);
+    $iLinhaBalancente = $rsVerificacao === false || $rsVerificacao === null ? 0 : pg_num_rows($rsVerificacao);
     for ($i = 0; $i < $iLinhaBalancente; $i++) {
 
       $oResultado = db_utils::fieldsMemory($rsVerificacao, $i);
@@ -244,7 +244,7 @@ class AnexoVRGF extends RelatoriosLegaisBase  {
      */
     if ($sListaInstituicoes != "") {
       
-      $iLinhaDespesa = pg_num_rows($rsDespesa);
+      $iLinhaDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
       for ($i = 0; $i < $iLinhaDespesa; $i++) {
         
         $oDespesa    = db_utils::fieldsmemory($rsDespesa, $i);
@@ -277,7 +277,7 @@ class AnexoVRGF extends RelatoriosLegaisBase  {
                                       );
                                       
                                              
-      $iLinhaDespesa = pg_num_rows($rsDespesa);
+      $iLinhaDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
       for ($i = 0; $i < $iLinhaDespesa; $i++) {
         
         $oDespesa    = db_utils::fieldsmemory($rsDespesa, $i);
@@ -304,7 +304,7 @@ class AnexoVRGF extends RelatoriosLegaisBase  {
      $sSqlRecursosRestos .= " group by e91_recurso,"; 
      $sSqlRecursosRestos .= "         db21_tipoinstit "; 
      $rsRecursosResto     = db_query($sSqlRecursosRestos);
-     $iNumRows            = pg_num_rows($rsRecursosResto);
+     $iNumRows            = $rsRecursosResto === false || $rsRecursosResto === null ? 0 : pg_num_rows($rsRecursosResto);
      for ($i = 0; $i < $iNumRows; $i++) {
        
         

@@ -78,7 +78,7 @@ class AcordoHomologacao extends AcordoMovimentacao {
     $sOrderBy                   = "ac10_sequencial desc limit 1                  ";
     $sSqlAcordoMovimentacao     = $oDaoAcordoMovimentacao->sql_query_acertaracordo(null, $sCampos, $sOrderBy, $sWhere);
     $rsSqlAcordoMovimentacao    = db_query($sSqlAcordoMovimentacao);
-    $iNumRowsAcordoMovimentacao = pg_num_rows($rsSqlAcordoMovimentacao);
+    $iNumRowsAcordoMovimentacao = $rsSqlAcordoMovimentacao === false || $rsSqlAcordoMovimentacao === null ? 0 : pg_num_rows($rsSqlAcordoMovimentacao);
     if ($iNumRowsAcordoMovimentacao > 0) {
       
       /**

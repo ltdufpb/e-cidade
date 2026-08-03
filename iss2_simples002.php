@@ -108,7 +108,7 @@ order by x.z01_cgccpf;
 ";
 //die($sql);
 $result = db_query($conn, $sql) or die($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 // GERA PDF
      if($cons_debvenc=="s"){
         $apto = " Sim.";

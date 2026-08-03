@@ -164,7 +164,7 @@ class EquipamentoProtecaoEpi
                 throw new \DBException($msg);
             }
 
-            $totalEpis = pg_num_rows($rs);
+            $totalEpis = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             for ($i = 0; $i < $totalEpis; $i++) {
                 $epi = \db_utils::fieldsMemory($rs, $i);
                 $epis[] = new EquipamentoProtecaoEpi($epi->rh259_sequencial);

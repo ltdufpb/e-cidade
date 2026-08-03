@@ -248,7 +248,7 @@ class ProgramaObjetivo {
       }
 
       $this->aMetas     = [];
-      $iQuantidadeMetas = pg_num_rows($rsBuscaMetas);
+      $iQuantidadeMetas = $rsBuscaMetas === false || $rsBuscaMetas === null ? 0 : pg_num_rows($rsBuscaMetas);
 
       for ($iMeta = 0; $iMeta < $iQuantidadeMetas; $iMeta++) {
 

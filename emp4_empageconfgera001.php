@@ -382,7 +382,7 @@ if (isset($atualizar)) {
         $sqlMov  = $sqlOrdem . " union " . $sqlSlip;
         $result  = @db_query($sqlMov);
 
-        $numrows = @pg_num_rows($result);
+        $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
 
         if ($numrows == 0) {
 

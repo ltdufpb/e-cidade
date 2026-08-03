@@ -350,7 +350,7 @@ class AfastamentoRepository {
             throw new BusinessException("Erro ao buscar afastamentos para o servidor");
         }
 
-        $iLinhasAfastamento = pg_num_rows($rsAfastamentos);
+        $iLinhasAfastamento = $rsAfastamentos === false || $rsAfastamentos === null ? 0 : pg_num_rows($rsAfastamentos);
         $dataInicial = new \DBDate($dataInicio);
         $dataFinal = new \DBDate($dataFim);
         for ($iAfastamento = 0; $iAfastamento < $iLinhasAfastamento; $iAfastamento++) {

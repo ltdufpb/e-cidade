@@ -401,7 +401,7 @@ if ($result == false || pg_num_rows($result) == 0) {
         $clabre_arquivo = new cl_abre_arquivo($nomedoarquivo);
 
         if ($clabre_arquivo->arquivo != false) {
-            $quantidade = pg_num_rows($result);
+            $quantidade = $result === false || $result === null ? 0 : pg_num_rows($result);
 
             global $contador;
             $contador = 0;
@@ -458,7 +458,7 @@ if ($result == false || pg_num_rows($result) == 0) {
 
                 $sqvalorMax = "select max(k00_numpar) as parcelamaxima, sum(k00_valor) as total_debito from arrecad where k00_numpre = $q01_numpre";
                 $rsValorMax = db_query($sqvalorMax) or die($sqvalorMax);
-                $intNumrowsValorMax = pg_num_rows($rsValorMax);
+                $intNumrowsValorMax = $rsValorMax === false || $rsValorMax === null ? 0 : pg_num_rows($rsValorMax);
                 $parcelamaxima = 0;
                 if ($intNumrowsValorMax > 0) {
                     db_fieldsmemory($rsValorMax, 0);
@@ -505,7 +505,7 @@ if ($result == false || pg_num_rows($result) == 0) {
                 $sqlVistorias .= "   and ( select count(*) from arrecad where arrecad.k00_numpre = vistorianumpre.y69_numpre ) > 0 ";
 
                 $rsVistorias = db_query($sqlVistorias) or die($sqlVistorias);
-                $intNumrowsVistorias = pg_num_rows($rsVistorias);
+                $intNumrowsVistorias = $rsVistorias === false || $rsVistorias === null ? 0 : pg_num_rows($rsVistorias);
 
                 if ($k03_tipo == 5 and $intNumrowsVistorias == 0) {
                     continue;
@@ -1412,7 +1412,7 @@ $sqlFindUnica .= " ) as unica                                                   
                     $sqlSanitario .= "   and (select count(*) from arrecad where arrecad.k00_numpre = vistorianumpre.y69_numpre) > 0";
 
                     $rsSanitario = db_query($sqlSanitario);
-                    $intNumrowsSanitario = pg_num_rows($rsSanitario);
+                    $intNumrowsSanitario = $rsSanitario === false || $rsSanitario === null ? 0 : pg_num_rows($rsSanitario);
 
                     if ($lGerarVistorias) {
                         if ($gerar == "dados") {

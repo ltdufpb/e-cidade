@@ -179,7 +179,7 @@ $sSqlDados .= $sWhereLotacoes;
 $sSqlDados .= "  {$sOrderBy} ";
 
 $rsDados = db_query($sSqlDados);
-$iQtdRegistros = pg_num_rows($rsDados);
+$iQtdRegistros = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
 if ($iQtdRegistros == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de ' . $mes . ' / ' . $ano);
 }

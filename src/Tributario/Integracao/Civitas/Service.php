@@ -436,7 +436,7 @@ class Service
     {
         $sql     = "select j142_dataarquivo from atualizacaoiptuschema where j142_dataarquivo = '{$data}';";
         $rs      = db_query($sql);
-        $numRows = pg_num_rows($rs);
+        $numRows = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
         if ($numRows < 1) {
             return true;

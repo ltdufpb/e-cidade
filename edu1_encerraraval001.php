@@ -224,7 +224,7 @@ if (strstr($embranco,"S")) {
   $sSqlMatricula    .= "       ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome) ";
 
   $rsResultMatricula = db_query($sSqlMatricula);
-  $iLinhasMatricula  = pg_num_rows($rsResultMatricula);
+  $iLinhasMatricula  = $rsResultMatricula === false || $rsResultMatricula === null ? 0 : pg_num_rows($rsResultMatricula);
   $naopode           = 0;
   $sep               = "";
   if ($iLinhasMatricula > 0) {
@@ -350,7 +350,7 @@ if (strstr($embranco,"S")) {
  $sSqlMatri    .= "              ORDER BY ed60_i_numaluno,ed47_v_nome ";
 
  $rsResultMatri = db_query($sSqlMatri);
- $iLinhasMatri  = pg_num_rows($rsResultMatri);
+ $iLinhasMatri  = $rsResultMatri === false || $rsResultMatri === null ? 0 : pg_num_rows($rsResultMatri);
 
   if ($iLinhasMatri > 0) {
 
@@ -413,7 +413,7 @@ if (strstr($embranco,"S")) {
        $sSqlDia    .= "                        else ed74_c_resultadofreq <> 'A' end)";
        $sSqlDia    .= "              ORDER BY to_ascii(ed47_v_nome) ";
        $rsResultDia = db_query($sSqlDia);
-       $iLinhasDia  = pg_num_rows($rsResultDia);
+       $iLinhasDia  = $rsResultDia === false || $rsResultDia === null ? 0 : pg_num_rows($rsResultDia);
 
        if ($iLinhasDia == 0) {
 

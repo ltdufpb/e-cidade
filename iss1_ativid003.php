@@ -110,7 +110,7 @@ if (isset($chavepesquisa)) {
         inner join rhcbo on q75_rhcbo = rh70_sequencial
         where q75_ativid = $chavepesquisa";
   $resultcbo = db_query($sqlcbo);
-  $linhascbo= pg_num_rows($resultcbo);
+  $linhascbo= $resultcbo === false || $resultcbo === null ? 0 : pg_num_rows($resultcbo);
 
   if ($linhascbo > 0) {
 
@@ -129,7 +129,7 @@ if (isset($chavepesquisa)) {
                 inner join cnae on q71_sequencial = q72_cnae
                 where q74_ativid = $chavepesquisa";
     $resultcnae = db_query($sqlcnae);
-    $linhascnae= pg_num_rows($resultcnae);
+    $linhascnae= $resultcnae === false || $resultcnae === null ? 0 : pg_num_rows($resultcnae);
 
     if ($linhascnae > 0) {
 

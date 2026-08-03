@@ -341,7 +341,7 @@ class ExportacaoCenso2015 implements IExportacaoCenso {
       throw new DBException("Erro ao buscar Turmas AC. \n" . pg_last_error());
     }
 
-    $iTotalTurmasAc  = pg_num_rows($sResultTurmaAc);
+    $iTotalTurmasAc  = $sResultTurmaAc === false || $sResultTurmaAc === null ? 0 : pg_num_rows($sResultTurmaAc);
 
     $iTurmasACAEEMatriculasAntesDataCenso = 0;
     for ($i = 0; $i < $iTotalTurmasAc; $i++) {
@@ -413,7 +413,7 @@ class ExportacaoCenso2015 implements IExportacaoCenso {
       throw new DBException ( _M( MSG_EXPORTACAO_CENSO_2015 . 'erro_buscar_turmas_unicas', $oErro ) );
     }
 
-    $iLinhas = pg_num_rows( $rsTurmaUnica );
+    $iLinhas = $rsTurmaUnica === false || $rsTurmaUnica === null ? 0 : pg_num_rows( $rsTurmaUnica );
 
     for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
 
@@ -475,7 +475,7 @@ class ExportacaoCenso2015 implements IExportacaoCenso {
   protected function getDadosAluno() {
 
     $rsMatricula  = $this->buscaAlunos();
-    $iTotalAlunos = pg_num_rows($rsMatricula);
+    $iTotalAlunos = $rsMatricula === false || $rsMatricula === null ? 0 : pg_num_rows($rsMatricula);
     for ($iAluno = 0; $iAluno < $iTotalAlunos; $iAluno++) {
 
       $oAluno       = db_utils::fieldsMemory($rsMatricula, $iAluno);

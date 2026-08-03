@@ -58,7 +58,7 @@ class tceCadastro extends tceEstruturaBasica {
     db_criatermometro('terTCECADASTRO', 'Arquivo CADASTRO...', 'blue', 1);
     $this->oTxtLayout->setByLineOfDBUtils($this->cabecalhoPadrao($this->iInstit, $this->sDataIni, $this->sDataFim, $this->sCodRemessa), 1);
     $rsCadastro      = db_query($this->sqlCadastro($this->iInstit));
-    $iNumRows        = pg_num_rows($rsCadastro);
+    $iNumRows        = $rsCadastro === false || $rsCadastro === null ? 0 : pg_num_rows($rsCadastro);
     $iTotalRegistros = 0;
     $iContador       = 0;
     $oResponsaveis   = db_utils::getDao('contcearquivoresp');

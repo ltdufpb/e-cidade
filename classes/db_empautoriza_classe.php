@@ -854,7 +854,7 @@ class cl_empautoriza
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_num_rows($result);
+        $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:empautoriza";
@@ -1168,7 +1168,7 @@ class cl_empautoriza
         if ($param_autori != null) {
             $sql_elemt = $clempautitem->sql_query_autoridot($param_autori, null, "distinct e73_pcprocitem as pc81_codprocitem, e56_coddot, e56_orctiporec");
             $result_elemt = @db_query($sql_elemt);
-            $numrows_elemt = @pg_num_rows($result_elemt);
+            $numrows_elemt = $result_elemt === false || $result_elemt === null ? 0 : @pg_num_rows($result_elemt);
 
             for ($x = 0; $x < $numrows_elemt; $x++) {
                 $lIncluiuReserva = false;
@@ -1197,7 +1197,7 @@ class cl_empautoriza
                 );
 
                 $result_item = @db_query($sql_item);
-                $numrows_procitem = @pg_num_rows($result_item);
+                $numrows_procitem = $result_item === false || $result_item === null ? 0 : @pg_num_rows($result_item);
 
                 for ($xx = 0; $xx < $numrows_procitem; $xx++) {
                     $total_a_reservar = 0;
@@ -1224,7 +1224,7 @@ class cl_empautoriza
                     );
 
                     $result_dotac = @db_query($sql_dotac);
-                    $numrows_dotac = @pg_num_rows($result_dotac);
+                    $numrows_dotac = $result_dotac === false || $result_dotac === null ? 0 : @pg_num_rows($result_dotac);
 
                     if ($numrows_dotac > 0) {
                         $o80_coddot = pg_fetch_result($result_dotac, 0, 0);
@@ -1248,7 +1248,7 @@ class cl_empautoriza
                     if ($verifica_saldo == true) {
                         if ($numrows_dotac > 0) {
                             $res_dotacao = db_dotacaosaldo(8, 2, 2, "true", "o58_coddot=" . $o80_coddot, db_getsession("DB_anousu"));
-                            $NumFields = pg_num_fields($res_dotacao);
+                            $NumFields = $res_dotacao === false || $res_dotacao === null ? 0 : pg_num_fields($res_dotacao);
                             for ($col = 0; $col < $NumFields; $col++) {
                                 $coluna = pg_field_name($res_dotacao, $col);
                                 if ($coluna == "atual_menos_reservado") {
@@ -1494,7 +1494,7 @@ class cl_empautoriza
 	                                                            e56_orctiporec"
             );
             $rsItens = db_query($sSqlItens);
-            $iNumRowsItens = pg_num_rows($rsItens);
+            $iNumRowsItens = $rsItens === false || $rsItens === null ? 0 : pg_num_rows($rsItens);
 
             for ($x = 0; $x < $iNumRowsItens; $x++) {
                 $oItem = db_utils::fieldsMemory($rsItens, $x);
@@ -1536,7 +1536,7 @@ class cl_empautoriza
                 );
 
                 $rsItensSolicitacao = db_query($sSqlItensSolicitacao);
-                $iTotalItensSolicitacao = pg_num_rows($rsItensSolicitacao);
+                $iTotalItensSolicitacao = $rsItensSolicitacao === false || $rsItensSolicitacao === null ? 0 : pg_num_rows($rsItensSolicitacao);
 
                 for ($xx = 0; $xx < $iTotalItensSolicitacao; $xx++) {
                     $oItensSolicitacao = db_utils::fieldsMemory($rsItensSolicitacao, $xx);

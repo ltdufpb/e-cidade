@@ -183,7 +183,7 @@ if($sqlerro == false){
       $erro_msg = "Sem dados para gerar arquivo";
     }
 
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   
 
     if($numrows > 0){

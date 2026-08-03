@@ -76,7 +76,7 @@ $sSqlOrgaos .= "                         o41_orgao = o40_orgao and o40_anousu = 
 $sSqlOrgaos .= "     where o41_anousu = {$dtAnousu} and o41_instit  in (" . str_replace('-', ',', $oGet->sOrigem) . ")";
 
 $res_orgaos    = @db_query($sSqlOrgaos);
-$iNumeroLinhas = @pg_num_rows($res_orgaos);
+$iNumeroLinhas = $res_orgaos === false || $res_orgaos === null ? 0 : @pg_num_rows($res_orgaos);
 $sOrgao        = "";
 $sSeparador    = "";
 
@@ -340,7 +340,7 @@ function contabilizarDespesa($oTipoDespesa,
 function construirArraysDespesas($sSql, $lDiferenciaTipo = true) {
 
   $rsSubfuncoes      = db_query($sSql);
-  $iNumeroResultados = pg_num_rows($rsSubfuncoes);
+  $iNumeroResultados = $rsSubfuncoes === false || $rsSubfuncoes === null ? 0 : pg_num_rows($rsSubfuncoes);
 
   $oRPPS         = inicializarDespesa();
   $oContingencia = inicializarDespesa();
@@ -404,7 +404,7 @@ function construirArraysDespesas($sSql, $lDiferenciaTipo = true) {
     $sSqlBuscaDotacaoTipo .= "     and o58_coddot = {$oDespesa->o58_coddot}                ";
 
     $rsBuscaDotacaoTipo = db_query($sSqlBuscaDotacaoTipo);
-    $iLinhasEncontradas = pg_num_rows($rsBuscaDotacaoTipo);
+    $iLinhasEncontradas = $rsBuscaDotacaoTipo === false || $rsBuscaDotacaoTipo === null ? 0 : pg_num_rows($rsBuscaDotacaoTipo);
 
     if ($iLinhasEncontradas > 0) {
       $sTipo = '37';

@@ -132,7 +132,7 @@ if (isset ($codproc) && $codproc != "") {
 							from	processosapensados 
 							where	p30_procprincipal = {$codproc} ";
 	$rsConsultaProcApen  = db_query($sqlConsultaProcApen);
-	$iLinhasProcApen     = pg_num_rows($rsConsultaProcApen);   
+	$iLinhasProcApen     = $rsConsultaProcApen === false || $rsConsultaProcApen === null ? 0 : pg_num_rows($rsConsultaProcApen);   
 
 	if ($clprotprocesso->numrows != 0) {
 		db_fieldsmemory($result_protprocesso, 0);

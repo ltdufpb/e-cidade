@@ -140,7 +140,7 @@ final class custoPlanilhaOutros implements iCustoPlanilha {
     $sSqlCustos .= " order by m52_numemp, ";
     $sSqlCustos .= "          m52_sequen ";
     $rsCustos      = db_query($sSqlCustos);
-    $iTotalCustos  = pg_num_rows($rsCustos);
+    $iTotalCustos  = $rsCustos === false || $rsCustos === null ? 0 : pg_num_rows($rsCustos);
     require_once(modification("model/custoPlanilhaLinha.model.php"));
     require_once(modification("model/custorateio.model.php"));
     require_once(modification("model/custoRegraRateio.model.php"));

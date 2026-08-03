@@ -198,7 +198,7 @@ input {
                 <?php 
                 if(isset($_POST["dbh_tabela"])) {
                   $result = db_query("select c.codcam,c.nomecam,ac.codsequencia from db_syscampo c inner join db_sysarqcamp ac on ac.codcam = c.codcam  where ac.codarq = $dbh_tabela");
-                  $numrows = pg_num_rows($result);
+                  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
                   if($numrows > 0) {
                     for($i = 0;$i < $numrows;$i++) {
                       echo "<option value=\"".pg_fetch_result($result,$i,"codcam")."#".pg_fetch_result($result,$i,"codsequencia")."#".trim(pg_fetch_result($result,$i,"nomecam"))."\" ".(pg_fetch_result($result,$i,"codsequencia")!=0?"selected":"").">".pg_fetch_result($result,$i,"nomecam")."</option>\n";

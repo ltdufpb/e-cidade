@@ -230,7 +230,7 @@ select * from
 	on kk.rec_parc5 = x.rec_pago
        "; 
 $result = db_query($sql);
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 // j23_matric, z01_nome, percentual, valordb, valorsap, diferenca
 $linha = 60;
 //$pdf->MultiCell(0,4,"teste",0,"J",0,0);

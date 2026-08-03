@@ -63,7 +63,7 @@ class tceFolhaTabelaTotalizadores extends tceEstruturaBasica {
                                                                  $this->sDataFim,
                                                                  $this->sCodRemessa), 1);
     $rsFolhaRubricas = db_query($this->sqlTabelaTotalizadores());
-    $iNumRows        = pg_num_rows($rsFolhaRubricas);
+    $iNumRows        = $rsFolhaRubricas === false || $rsFolhaRubricas === null ? 0 : pg_num_rows($rsFolhaRubricas);
     $iTotalRegistros = 0;
 
 

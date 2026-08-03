@@ -1279,7 +1279,7 @@ class EmpenhoFinanceiro {
       throw new BusinessException((_M("financeiro.empenho.EmpenhoFinanceiro.erro_retorno_cotas_mensais")));
     }
     $aCotas       = [];
-    $iTotalLinhas = pg_num_rows($rsCotasMensais);
+    $iTotalLinhas = $rsCotasMensais === false || $rsCotasMensais === null ? 0 : pg_num_rows($rsCotasMensais);
     for ($iCota = 0; $iCota < $iTotalLinhas; $iCota++) {
 
       $oDadosCota = db_utils::fieldsMemory($rsCotasMensais, $iCota);

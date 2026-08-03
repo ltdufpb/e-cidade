@@ -55,7 +55,7 @@ if ((isset($incluir))||(isset($excluir))) {
 			order by id_usuario
 		";
 		$result = db_query($sql);
-		$num = pg_num_rows($result);
+		$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 		if ($num!=0){
 			if (isset($usuarios)){
 				sort($usuarios);
@@ -81,7 +81,7 @@ if ((isset($incluir))||(isset($excluir))) {
 					and d51_impres = $impressoras[$a]
 				";
 				$result = db_query($sql);
-				$num = pg_num_rows($result);
+				$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 				if ($num == 0){
 					if (isset($incluir)){
 						$sql2 = "

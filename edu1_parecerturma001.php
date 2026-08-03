@@ -57,7 +57,7 @@ if(isset($alterar)) {
 
     $sql1    = "SELECT ed105_i_codigo FROM parecerturma where ed105_i_turma = $ed57_i_codigo AND ed105_i_parecer = $codigo";
     $result1 = db_query($sql1);
-    $linhas1 = pg_num_rows($result1);
+    $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
     db_inicio_transacao();
 

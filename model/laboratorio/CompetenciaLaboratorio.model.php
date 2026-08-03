@@ -423,7 +423,7 @@ class CompetenciaLaboratorio implements ICompetenciaSaude {
     $sSqlConferencia    = $oDaoConferencia->sql_query_file( null, " la47_i_codigo ", null, $sWhereConferencia);
     $rsConferencia      = db_query($sSqlConferencia);
 
-    $iLinha = pg_num_rows( $rsConferencia );
+    $iLinha = $rsConferencia === false || $rsConferencia === null ? 0 : pg_num_rows( $rsConferencia );
 
     if ( !$rsConferencia || $iLinha == 0 ) {
       throw new BusinessException( _M(MSG_COMPETENCIA."sem_exames_conferidos") );

@@ -426,7 +426,7 @@ function buscaConteudoDesenvolvidoDiario($oRegencia, $oPeriodoCalendario, $confi
             $turnoReferente = new cl_turmaturnoreferente();
             $sSqlTurmaTurnoReferente = $turnoReferente->sql_query_file(null, '*', '', "ed336_codigo = $codigoTurno");
             $rsSqlTurmaTurnoReferente = $turnoReferente->sql_record($sSqlTurmaTurnoReferente);
-            $iLinhas = pg_num_rows($rsSqlTurmaTurnoReferente);
+            $iLinhas = $rsSqlTurmaTurnoReferente === false || $rsSqlTurmaTurnoReferente === null ? 0 : pg_num_rows($rsSqlTurmaTurnoReferente);
             for ($i = 0; $i < $iLinhas; $i++) {
                 $turmaTurnoReferente = db_utils::fieldsmemory($rsSqlTurmaTurnoReferente, $i);
             }

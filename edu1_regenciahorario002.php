@@ -153,7 +153,7 @@ if (isset($chavepesquisa)) {
                 $sWhereRegencia = "ed59_i_turma in({$maisturmas}) and ( ed58_i_rechumano = {$rechumano} )";
                 $sSqlRegencia = $oDaoRegencia->sql_query_regenciahorario(null, 'distinct ed59_i_turma', null, $sWhereRegencia);
                 $rsRegencia = db_query($sSqlRegencia);
-                $iTotalRegencia = pg_num_rows($rsRegencia);
+                $iTotalRegencia = $rsRegencia === false || $rsRegencia === null ? 0 : pg_num_rows($rsRegencia);
 
                 $aTurmas = [];
                 for ($iContador = 0; $iContador < $iTotalRegencia; $iContador++) {
@@ -186,7 +186,7 @@ if (isset($chavepesquisa)) {
             $sWhere .= "AND ed52_i_ano = {$anocalendario} {$restrict}";
             $sSqlTurmaAC = $clturmaachorario->sql_query("", $sCampos, "", $sWhere);
             $result_sala = db_query($sSqlTurmaAC);
-            $iTotalTurmaAC = pg_num_rows($result_sala);
+            $iTotalTurmaAC = $result_sala === false || $result_sala === null ? 0 : pg_num_rows($result_sala);
 
             $aTurmasSimultaneas = [];
             $lTemConflito = false;
@@ -363,7 +363,7 @@ if (isset($disponibilidade)) {
 
       $result_sala = db_query( $sSqlTurma );
 
-      $iTotalTurma = pg_num_rows( $result_sala );
+      $iTotalTurma = $result_sala === false || $result_sala === null ? 0 : pg_num_rows( $result_sala );
 
       $sWhereRecHumanoAtiv = "ed20_i_codigo = {$rechumano} and ed75_i_escola = {$escola} AND ed75_i_saidaescola is null";
       $sSqlRecHumanoAtiv   = $clrechumanoativ->sql_query( "", "ed75_c_simultaneo", "", $sWhereRecHumanoAtiv );

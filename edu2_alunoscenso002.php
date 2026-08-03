@@ -126,7 +126,7 @@ try {
   if ( !empty($serie) ) {
     $oDadosRelatorio->sEtapa  = $oDados->ed11_c_descr;
   }
-  $iLinhas = pg_num_rows($rsAlunos);
+  $iLinhas = $rsAlunos === false || $rsAlunos === null ? 0 : pg_num_rows($rsAlunos);
 
   /**
    * Filtra os alunos que possam estar "duplicados" (ter mais de uma matrícula).

@@ -547,7 +547,7 @@ class DadosESocial
                 $rs = db_query($sql);
 
                 if ($rs) {
-                    $contador = pg_num_rows($rs);
+                    $contador = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
                     for ($i = 0; $i < $contador; $i++) {
                         $assentamento = \db_utils::fieldsMemory($rs, $i);
                         $codigosAssentamentos[] = $assentamento->identificador;

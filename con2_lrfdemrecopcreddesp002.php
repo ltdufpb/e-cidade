@@ -76,7 +76,7 @@ $aIncentivoFiscalInst['nivel']  = $orcparamrel->sql_nivel('25','4');
 
 $sWhereReceita 	   = " o70_instit in ({$sListaInstit})";
 $rsReceita  	   = db_receitasaldo(11,1,3,true,$sWhereReceita,$iAnousu,$sDataIni,$sDataFin);
-$iNroLinhasReceita = pg_num_rows($rsReceita);
+$iNroLinhasReceita = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
 
 
 
@@ -84,7 +84,7 @@ $iNroLinhasReceita = pg_num_rows($rsReceita);
 
 $sWhereDespesa 	   = " w.o58_instit in ({$sListaInstit}) ";
 $rsDespesa    	   = db_dotacaosaldo(8,2,3,true,$sWhereDespesa,$iAnousu,$sDataIni,$sDataFin);
-$iNroLinhasDespesa = pg_num_rows($rsDespesa);
+$iNroLinhasDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
 
 
 

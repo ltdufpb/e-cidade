@@ -40,7 +40,7 @@ $sSqlHistorico .= "			from histbensocorrencia";
 //$sSqlHistorico .= "				ocorrenciabens on t69_ocorrenciasbens = t68_sequencial";
 
 $rsHistorico    = db_query($sSqlHistorico);
-$iNumeroLinhas 	= pg_num_rows($rsHistorico);
+$iNumeroLinhas 	= $rsHistorico === false || $rsHistorico === null ? 0 : pg_num_rows($rsHistorico);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oHistorico     = db_utils::fieldsMemory($rsHistorico,$i);

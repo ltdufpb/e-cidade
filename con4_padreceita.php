@@ -80,7 +80,7 @@ class receita
         $valortotal = 0;
         $mesfim = substr($data_fim, 5, 2) + 0;
 
-        $totalLinhas = pg_num_rows($rsReceita);
+        $totalLinhas = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
         for ($i = 1; $i < $totalLinhas; $i++) {
             db_fieldsmemory($rsReceita, $i);
             $dadosReceita = db_utils::fieldsMemory($rsReceita, $i);

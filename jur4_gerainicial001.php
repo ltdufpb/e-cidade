@@ -328,7 +328,7 @@ if (isset($processar)) {
  			           ) as x {$order_by}";
 
 	$result  = db_query($sql);
-	$numrows = pg_num_rows($result);
+	$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
   $matric_ant = "";
 	$inscr_ant  = "";
@@ -491,7 +491,7 @@ if (isset($processar)) {
 							                   and v13_instit = ".db_getsession('DB_instit') ." ) as x ";
 
         $result_info  = db_query($sql_info);
-				$numrows_info = pg_num_rows($result_info);
+				$numrows_info = $result_info === false || $result_info === null ? 0 : pg_num_rows($result_info);
 
         for ($i = 0; $i < $numrows_info; $i++){
 

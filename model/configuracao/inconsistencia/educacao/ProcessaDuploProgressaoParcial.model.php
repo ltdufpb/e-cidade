@@ -133,7 +133,7 @@ class ProcessaDuploProgressaoParcial implements IExcecaoProcessamentoDependencia
         return false;
       }
       
-      $iLinhasAlunoMatricula = pg_num_rows( $rsAlunoMatricula );
+      $iLinhasAlunoMatricula = $rsAlunoMatricula === false || $rsAlunoMatricula === null ? 0 : pg_num_rows( $rsAlunoMatricula );
       if ( $iLinhasAlunoMatricula > 0 ) {
         
         for ( $iContador = 0; $iContador < $iLinhasAlunoMatricula; $iContador++ ) {

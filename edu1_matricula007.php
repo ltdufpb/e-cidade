@@ -74,7 +74,7 @@ if(isset($matricula_exc)){
              AND (ed72_i_valornota is not null OR ed72_c_valorconceito != '' OR ed72_t_parecer != '' OR ed72_i_numfaltas is not null)
             ";
  $result_ver = db_query($sql_ver);
- $linhas_ver = pg_num_rows($result_ver);
+ $linhas_ver = $result_ver === false || $result_ver === null ? 0 : pg_num_rows($result_ver);
  if($linhas_ver>0){
   db_msgbox("ATENÇÃO! Este aluno já possui avaliações e/ou faltas cadastradas nesta turma! Caso seja excluída esta matricula, todas as informações serão apagadas.");
  }

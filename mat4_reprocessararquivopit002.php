@@ -45,7 +45,7 @@ $sQueryArquivo .= "   from emparquivopit ";
 $sQueryArquivo .= "  where e14_sequencial =  ".$oGet->e14_sequencial;
 
 $rsQueryArquivo = $clEmpArquivoPit->sql_record($sQueryArquivo);
-$iNumRowsArquivo = pg_num_rows($rsQueryArquivo);
+$iNumRowsArquivo = $rsQueryArquivo === false || $rsQueryArquivo === null ? 0 : pg_num_rows($rsQueryArquivo);
 ?>
 <html>
   <head>

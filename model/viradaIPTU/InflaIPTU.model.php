@@ -258,7 +258,7 @@ class InflaIPTU implements iViradaIPTU {
 		$sSqlInfla    .= "    and extract (year from infla.i02_data) = {$this->getAnoAtual()}                         "; 
 		$sSqlInfla    .= "    and infla2.i02_codigo is null                                                           ";
 		$rsSqlInfla    = db_query($sSqlInfla);
-		$iNumRowsInfla = pg_num_rows($rsSqlInfla);
+		$iNumRowsInfla = $rsSqlInfla === false || $rsSqlInfla === null ? 0 : pg_num_rows($rsSqlInfla);
 		if ($iNumRowsInfla > 0) {
 			
 		  for ( $iInd=0; $iInd < $iNumRowsInfla; $iInd++ ) {

@@ -38,7 +38,7 @@
 			where ed57_i_escola=$escola";
 
 	$result = db_query($sql);
-	$linhas = pg_num_rows($result);
+	$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 	//db_criatabela($result);
 	//exit;
@@ -71,7 +71,7 @@ $sql = "select distinct ed11_i_codigo,ed11_c_abrev,ed11_i_ensino,ed10_c_abrev fr
          where ed57_i_escola=$escola and ed52_i_ano=$calendario order by ed11_i_ensino";
 
 $result1 = db_query($sql);
-$linhas1= pg_num_rows($result1);
+$linhas1= $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
   $pdf->Addpage("L");
 
@@ -200,7 +200,7 @@ $linhas1= pg_num_rows($result1);
         where ed11_i_codigo=".$ed11_i_codigo;
 
 		$result2 = db_query($sql2);
-		$linhas2= pg_num_rows($result2);
+		$linhas2= $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 		db_fieldsmemory($result2,0);
 
 		$tlinha=$tlinha+($masculino+$feminino);

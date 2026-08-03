@@ -83,7 +83,7 @@ if ($db_opcao == 1) {
                     <?php
                     $sql = $cltabtiporec->sql_query(null, "*", "k116_sequencial", null);
                     $rsTabRecTipo = $cltabtiporec->sql_record($sql);
-                    $iTabRecTipo = pg_num_rows($rsTabRecTipo);
+                    $iTabRecTipo = $rsTabRecTipo === false || $rsTabRecTipo === null ? 0 : pg_num_rows($rsTabRecTipo);
                     $aTabRecTipo = ["0" => "Nenhum"];
                     if ($iTabRecTipo > 0) {
                         for ($x = 0; $x < $iTabRecTipo; $x++) {

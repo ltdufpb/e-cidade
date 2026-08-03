@@ -219,7 +219,7 @@ $clRotulo->label("ob06_lote");
 			     
 			    	
 			    $rsHabiteSe     = db_query($sSqlHabiteSe);
-			    $iNumRowsHabite = pg_num_rows($rsHabiteSe);
+			    $iNumRowsHabite = $rsHabiteSe === false || $rsHabiteSe === null ? 0 : pg_num_rows($rsHabiteSe);
 			    	
 			    if ($iNumRowsHabite != 0) {
 			      

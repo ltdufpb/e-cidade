@@ -69,7 +69,7 @@ if ( $clturma->numrows > 0 ) {
            ORDER BY ed59_i_ordenacao
          ";
  $result3 = db_query($sql3);
- $linhas3 = pg_num_rows($result3);
+ $linhas3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
 
  $aCadDisciplina = [];
  for ( $iContador = 0; $iContador < $linhas3; $iContador++ ) {
@@ -107,7 +107,7 @@ if ( $clturma->numrows > 0 ) {
           ORDER BY ed59_i_ordenacao
          ";
  $result1 = db_query($sql1);
- $linhas1 = pg_num_rows($result1);
+ $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
  
  if($linhas1==0){?>
   <table width='100%'>

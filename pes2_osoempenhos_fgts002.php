@@ -148,7 +148,7 @@ order by
 
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem movimentos no período de '.$mes.' / '.$ano);
 
@@ -309,7 +309,7 @@ order by
 
 $result2 = db_query($sql2);
 
-$numrows2 = pg_num_rows($result2);
+$numrows2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 
 $tot_fgts    = 0;
 $tot_fgtsseg = 0;

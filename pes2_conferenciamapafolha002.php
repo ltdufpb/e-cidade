@@ -89,7 +89,7 @@ $sSqlRecursos .= " order by o15_codigo";
 $rsRecursos    = db_query($sSqlRecursos);
 if (pg_num_rows($rsRecursos) > 0) {
   
-  $iNumRowsRecursos = pg_num_rows($rsRecursos);
+  $iNumRowsRecursos = $rsRecursos === false || $rsRecursos === null ? 0 : pg_num_rows($rsRecursos);
   for ($i = 0; $i < $iNumRowsRecursos; $i++) {
     
     $oRecurso = db_utils::fieldsMemory($rsRecursos, $i);

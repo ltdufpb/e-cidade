@@ -278,7 +278,7 @@ if ($sqlerro == false) {
 
 		$sSqlArretipo     = " select (max(k00_tipo) + 1) as k00_tipo from arretipo ";
 		$rsSqlArretipo    = db_query($sSqlArretipo);
-		$iNumRowsArretipo = pg_num_rows($rsSqlArretipo);
+		$iNumRowsArretipo = $rsSqlArretipo === false || $rsSqlArretipo === null ? 0 : pg_num_rows($rsSqlArretipo);
 		if ($iNumRowsArretipo == 0) {
 
 	    $sMensagem = "Nenhum registro encontrado na arretipo!";

@@ -47,7 +47,7 @@ class RotuloCampoDB {
                               c.rotulorel
                          from db_syscampo c
                         where c.nomecam = '{$sCampoTrim}'");
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     for ($i = 0; $i < $numrows; $i ++) {
 
       /// variavel com o tipo de campo

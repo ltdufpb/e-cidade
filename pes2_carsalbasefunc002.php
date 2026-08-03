@@ -80,7 +80,7 @@ $sql = "select rh01_regist as matricula,
 //// db_query - executa $sql no banco e gera um RECORDSET criado na variável $resultado_sql com os dados da execução
 //// da variável $sql no $resultado_sql = db_query($sql);
 //// pg_numrows - verifica quantas linhas vieram no RECORDSET e coloca o resultado na variávei $qtd_linhas_sql
-$qtd_linhas_sql = pg_num_rows($resultado_sql);
+$qtd_linhas_sql = $resultado_sql === false || $resultado_sql === null ? 0 : pg_num_rows($resultado_sql);
 if($qtd_linhas_sql == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários cadastrados no período.');
 }

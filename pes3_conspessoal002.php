@@ -182,7 +182,7 @@ $sSql_instPrev = "
     where db21_codigosiconfi = '10132' 
 ";
 $result_instPrev = pg_query($sSql_instPrev);
-$numRowls_instPrev = pg_num_rows($result_instPrev);
+$numRowls_instPrev = $result_instPrev === false || $result_instPrev === null ? 0 : pg_num_rows($result_instPrev);
 
 if ($numRowls_instPrev > 0) {
     $codigo = db_utils::fieldsmemory($result_instPrev, 0)->codigo;
@@ -203,7 +203,7 @@ if ($codigo == db_getsession("DB_instit")) {
             where rh01_regist = {$rh21_regpri}
         ";
         $result_nomeorigem = pg_query($sSql_nomeorigem);
-        $nRows_nomeorigem = pg_num_rows($result_nomeorigem);
+        $nRows_nomeorigem = $result_nomeorigem === false || $result_nomeorigem === null ? 0 : pg_num_rows($result_nomeorigem);
         
         if ($nRows_nomeorigem  > 0) {
             $z01_nomeorigem = db_utils::fieldsmemory($result_nomeorigem, 0)->z01_nomeorigem;

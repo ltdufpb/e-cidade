@@ -156,7 +156,7 @@ class fornecedor
                 throw new Exception("Falha na consulta de liberações para fornecedor !");
             }
 
-            $iRowsLiberacao = pg_num_rows($rsSqlLiberacao);
+            $iRowsLiberacao = $rsSqlLiberacao === false || $rsSqlLiberacao === null ? 0 : pg_num_rows($rsSqlLiberacao);
 
             if ($iRowsLiberacao > 0) {
 
@@ -209,7 +209,7 @@ class fornecedor
                     throw new Exception("Falha na consulta de liberações para fornecedor !");
                 }
 
-                $iRowsLiberacaoGeral = pg_num_rows($rsSqlLiberacaoGeral);
+                $iRowsLiberacaoGeral = $rsSqlLiberacaoGeral === false || $rsSqlLiberacaoGeral === null ? 0 : pg_num_rows($rsSqlLiberacaoGeral);
 
                 if ($iRowsLiberacaoGeral > 0) {
 
@@ -444,7 +444,7 @@ class fornecedor
                         }
                     }
 
-                    $iNumRowsDebitosNumpre = pg_num_rows($rsSqlDebitosNumpre);
+                    $iNumRowsDebitosNumpre = $rsSqlDebitosNumpre === false || $rsSqlDebitosNumpre === null ? 0 : pg_num_rows($rsSqlDebitosNumpre);
                     for ($iInd = 0; $iInd < $iNumRowsDebitosNumpre; $iInd++) {
 
                         $oDebitosNumpre = db_utils::fieldsMemory($rsSqlDebitosNumpre, $iInd);

@@ -385,7 +385,7 @@ class ProgressaoParcialAlunoRepository {
     }
 
     $aProgressoes = [];
-    $iLinhas      = pg_num_rows($rsProgressoes);
+    $iLinhas      = $rsProgressoes === false || $rsProgressoes === null ? 0 : pg_num_rows($rsProgressoes);
     for ( $i = 0; $i < $iLinhas; $i++) {
 
       $iCodigo        = db_utils::fieldsMemory($rsProgressoes, $i)->ed114_sequencial;

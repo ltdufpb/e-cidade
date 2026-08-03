@@ -431,7 +431,7 @@ for ($z = 0; $z < $retorno_numrows; $z++) {
   $sqlparag     .= "    and db03_instit = {$iInstituicao}                           ";
   $sqlparag     .= "  order by db04_ordem                                           ";
   $resparag      = db_query($sqlparag);
-  $iNumRowsParag = pg_num_rows($resparag);
+  $iNumRowsParag = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
 
   if ($iNumRowsParag > 0) {
     db_fieldsmemory($resparag, 0);

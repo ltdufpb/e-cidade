@@ -58,7 +58,7 @@ $clprocavaliacao = new cl_procavaliacao;
  $sql       .= "         AND ed52_c_passivo = 'N' ";
  $sql       .= "         ORDER BY ed52_i_ano DESC";
  $sql_result = db_query($sql);
- $num        = pg_num_rows($sql_result);
+ $num        = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
  $conta      = "";
  while ($row = pg_fetch_array($sql_result)) {
 
@@ -78,7 +78,7 @@ $clprocavaliacao = new cl_procavaliacao;
    $sub_sql   .= "   AND ed221_c_origem      = 'S' ";
    $sub_sql   .= "   ORDER BY ed57_c_descr,ed11_c_descr ";
    $sub_result = db_query($sub_sql);
-   $num_sub    = pg_num_rows($sub_result);
+   $num_sub    = $sub_result === false || $sub_result === null ? 0 : pg_num_rows($sub_result);
 
    if ($num_sub >= 1) {
 
@@ -306,7 +306,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
       $sql   .= "         AND ed223_i_serie = ed59_i_serie ";
       $sql   .= "         ORDER BY ed59_i_ordenacao  ";
       $result = db_query($sql);
-      $linhas = pg_num_rows($result);
+      $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
    ?>
    <b>Disciplinas:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" 

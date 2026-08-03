@@ -226,7 +226,7 @@ class ArquivoConsignadoManualParcelaRepository {
     if (!$rsFinanciamento) {
       throw  new BusinessException("NNãao foi possível pesquisar os dados da parcela para o financiamento {$arquivoConsignadoManual->getCodigo()}");
     }
-    $iTotalLinhas = pg_num_rows($rsFinanciamento);
+    $iTotalLinhas = $rsFinanciamento === false || $rsFinanciamento === null ? 0 : pg_num_rows($rsFinanciamento);
     $aParcelas = [];
     for ($iParcela = 0; $iParcela < $iTotalLinhas; $iParcela++) {
 
@@ -356,7 +356,7 @@ class ArquivoConsignadoManualParcelaRepository {
     if (!$rsFinanciamento) {
       throw  new BusinessException("Não foi possível pesquisar os dados da parcela para a competência {$competencia->getCompetencia()}");
     }
-    $iTotalLinhas = pg_num_rows($rsFinanciamento);
+    $iTotalLinhas = $rsFinanciamento === false || $rsFinanciamento === null ? 0 : pg_num_rows($rsFinanciamento);
     $aParcelas = [];
     for ($iParcela = 0; $iParcela < $iTotalLinhas; $iParcela++) {
 

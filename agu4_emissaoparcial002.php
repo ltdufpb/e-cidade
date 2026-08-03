@@ -126,7 +126,7 @@ function MensagemCarne($exerc, $arretipo, $dtbase, $matric, $arrematric="w_arrem
   $sql .= "         arretipo.k03_tipo";
   $sql .= " ORDER BY 3 DESC"; // ordena pela qtd parcelas em atraso em ordem descendente
   $resDebitos = db_query($sql);
-  $rowsDebitos = pg_num_rows($resDebitos);
+  $rowsDebitos = $resDebitos === false || $resDebitos === null ? 0 : pg_num_rows($resDebitos);
 
   for ($iDeb = 0; $iDeb < $rowsDebitos; $iDeb++) {
 
@@ -391,7 +391,7 @@ $pdf->data_emissao = db_formatar($DB_DATACALC, "d");
 $pdf->hora_emissao = db_hora();
 
 $resultCarnes = db_query($sql);
-$numrows = pg_num_rows($resultCarnes);
+$numrows = $resultCarnes === false || $resultCarnes === null ? 0 : pg_num_rows($resultCarnes);
 
 if($numrows == 0) {
 

@@ -215,7 +215,7 @@ for ($x = 0; $x < $linhas; $x++) {
    $sql5   .= "   AND ed59_c_condicao    = 'OB' ";
    $sql5   .= "       ORDER BY ed59_i_ordenacao,ed59_i_codigo ";
    $result5 = db_query($sql5);
-   $linhas5 = pg_num_rows($result5);
+   $linhas5 = $result5 === false || $result5 === null ? 0 : pg_num_rows($result5);
    $cont3   = 0;
    if ($linhas5 > 0) {
 
@@ -359,7 +359,7 @@ for ($x = 0; $x < $linhas; $x++) {
    $sql6   .= "       AND ed59_c_condicao = 'OB' ";
    $sql6   .= "       AND ed74_c_resultadofinal != 'A' ";
    $result6 = db_query($sql6);
-   $linhas6 = pg_num_rows($result6);
+   $linhas6 = $result6 === false || $result6 === null ? 0 : pg_num_rows($result6);
    if (trim((string) $ed60_c_situacao) != "MATRICULADO" || $linhas5 == 0) {
      $rf = "";
    } else {
@@ -633,7 +633,7 @@ for ($x = 0; $x < $linhas; $x++) {
      $sql5   .= "      AND ed95_i_regencia in ($reg_pagina) ";
      $sql5   .= "      AND ed59_c_condicao = 'OB' ORDER BY ed59_i_ordenacao ";
      $result5 = db_query($sql5);
-     $linhas5 = pg_num_rows($result5);
+     $linhas5 = $result5 === false || $result5 === null ? 0 : pg_num_rows($result5);
      $cont3   = 0;
      if ($linhas5 > 0) {
 
@@ -696,7 +696,7 @@ for ($x = 0; $x < $linhas; $x++) {
                $sql_f   .= "  AND ed95_i_aluno = $ed60_i_aluno ";
                $sql_f   .= "  AND ed95_i_regencia = $ed59_i_codigo ";
                $result_f = db_query($sql_f);
-               $linhas_f = pg_num_rows($result_f);
+               $linhas_f = $result_f === false || $result_f === null ? 0 : pg_num_rows($result_f);
                if ($resultedu == 'S') {
                  $frequencia = ArredondamentoFrequencia::arredondar(pg_fetch_result($result_f,0,'ed74_i_percfreq'), $ed52_i_ano);
                } else {
@@ -759,7 +759,7 @@ for ($x = 0; $x < $linhas; $x++) {
      $sql6   .= "      AND ed59_c_condicao = 'OB' ";
      $sql6   .= "      AND ed74_c_resultadofinal != 'A' ";
      $result6 = db_query($sql6);
-     $linhas6 = pg_num_rows($result6);
+     $linhas6 = $result6 === false || $result6 === null ? 0 : pg_num_rows($result6);
 
      $oTurma               = TurmaRepository::getTurmaByCodigo( $ed57_i_codigo );
      $iAnoCalendario       = $oTurma->getCalendario()->getAnoExecucao();

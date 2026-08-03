@@ -80,7 +80,7 @@ if (isset($db_opcao)) {
     and descrtexto = '$db_opcao'
 	";//
 	$result_db_opcao = db_query($sql_db_opcao);
-	$num_db_opcao = pg_num_rows($result_db_opcao);
+	$num_db_opcao = $result_db_opcao === false || $result_db_opcao === null ? 0 : pg_num_rows($result_db_opcao);
 	if ($num_db_opcao!=0){
 		$habilita_alteracao = true;
 	}else{

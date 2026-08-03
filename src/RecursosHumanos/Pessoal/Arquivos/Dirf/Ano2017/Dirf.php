@@ -121,7 +121,7 @@ class Dirf extends \Dirf2015 {
     if (!$rsPensionistas) {
       throw new \BusinessException('Erro ao pesquisar dados de Pensionistas');
     }
-    $iTotalPensionistas = pg_num_rows($rsPensionistas);    
+    $iTotalPensionistas = $rsPensionistas === false || $rsPensionistas === null ? 0 : pg_num_rows($rsPensionistas);    
     $iCodigoRegistro    = '0561';
     if ($oPessoa->inativo) {
       $iCodigoRegistro    = '3533';  

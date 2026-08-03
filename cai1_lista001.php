@@ -369,7 +369,7 @@ if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
 			}
 			$sqltip = "select k00_tipo,k00_descr from arretipo where k00_tipo in($tipodeb1)";
 				$resulttip = db_query($sqltip);
-				$linhastip = pg_num_rows($resulttip);
+				$linhastip = $resulttip === false || $resulttip === null ? 0 : pg_num_rows($resulttip);
 				$virgula = "";
 				for ($x = 0; $x < $linhastip ; $x ++) {
 					db_fieldsmemory($resulttip, $x);

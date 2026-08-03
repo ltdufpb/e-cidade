@@ -1382,7 +1382,7 @@ class Lancamento extends BaseClassRepository
         }
         $sqlAtributos = $oDaoAtributos->sql_query_file(null, $campos, "c121_sequencial", $where);
         $rsAtributos = db_query($sqlAtributos);
-        $totalAtributos = pg_num_rows($rsAtributos);
+        $totalAtributos = $rsAtributos === false || $rsAtributos === null ? 0 : pg_num_rows($rsAtributos);
 
         for ($i = 0; $i < $totalAtributos; $i++) {
             $dadosAtributos = db_utils::fieldsMemory($rsAtributos, $i);

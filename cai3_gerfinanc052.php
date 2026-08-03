@@ -132,7 +132,7 @@ $oGet  = db_utils::postMemory($_GET);
   $sSqlCreditosDisponiveis .= "      recibo.k00_tipo, k125_datalanc";
 
   $rsCreditosDisponiveis    = db_query($sSqlCreditosDisponiveis);
-  $iLinhasCreditos          = pg_num_rows($rsCreditosDisponiveis);
+  $iLinhasCreditos          = $rsCreditosDisponiveis === false || $rsCreditosDisponiveis === null ? 0 : pg_num_rows($rsCreditosDisponiveis);
   $aDadosSaida = [];
 
   /**
@@ -217,7 +217,7 @@ $oGet  = db_utils::postMemory($_GET);
   $sSqlCreditosCompensados .= " order by k170_numpre, k170_numpar, k157_data asc";
 
   $rsCreditosCompensados      = db_query($sSqlCreditosCompensados);
-  $iLinhasCreditosCompensados = pg_num_rows($rsCreditosCompensados);
+  $iLinhasCreditosCompensados = $rsCreditosCompensados === false || $rsCreditosCompensados === null ? 0 : pg_num_rows($rsCreditosCompensados);
 
   if (isset($oGet->devolucao)) {
     $iLinhasCreditosCompensados = 0;
@@ -313,7 +313,7 @@ $oGet  = db_utils::postMemory($_GET);
   ";
   
   $rsTransferenciaDados = db_query($sSqlTransferenciaDados);
-  $iLinhasTransferencia = pg_num_rows($rsTransferenciaDados);
+  $iLinhasTransferencia = $rsTransferenciaDados === false || $rsTransferenciaDados === null ? 0 : pg_num_rows($rsTransferenciaDados);
 
   if (isset($oGet->compensacao)) {
     $iLinhasTransferencia = 0;
@@ -368,7 +368,7 @@ $oGet  = db_utils::postMemory($_GET);
   ";
   // die($sqlDevolucao);
   $rsDevolucao = db_query($sqlDevolucao);
-  $iLinhasDevolucao = pg_num_rows($rsDevolucao);
+  $iLinhasDevolucao = $rsDevolucao === false || $rsDevolucao === null ? 0 : pg_num_rows($rsDevolucao);
 
   if (isset($oGet->compensacao)) {
     $iLinhasDevolucao = 0;

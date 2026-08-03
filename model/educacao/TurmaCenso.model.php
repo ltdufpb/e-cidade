@@ -136,7 +136,7 @@ class TurmaCenso {
       $oDaoTurmaCensoTurma    = new cl_turmacensoturma();
       $sSqlTurmaCensoTurma    = $oDaoTurmaCensoTurma->sql_query_file('','*','',"ed343_turmacenso = {$this->iCodigo}");
       $rsTurmaCensoTurma      = db_query( $sSqlTurmaCensoTurma );
-      $iLinhasTurmaCensoTurma = pg_num_rows($rsTurmaCensoTurma);
+      $iLinhasTurmaCensoTurma = $rsTurmaCensoTurma === false || $rsTurmaCensoTurma === null ? 0 : pg_num_rows($rsTurmaCensoTurma);
 
       if ( $iLinhasTurmaCensoTurma > 0 ) {
 

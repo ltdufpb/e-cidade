@@ -199,7 +199,7 @@ class RelatorioDisponibilidadeFinanceira
         }
 
         $aContaCorrenteDetalhe = [];
-        $iTotalContaCorrenteDetalhe = pg_num_rows($rsContaCorrenteDetalhe);
+        $iTotalContaCorrenteDetalhe = $rsContaCorrenteDetalhe === false || $rsContaCorrenteDetalhe === null ? 0 : pg_num_rows($rsContaCorrenteDetalhe);
         for ($iIndice = 0; $iIndice < $iTotalContaCorrenteDetalhe; $iIndice++) {
 
             $oContaCorrenteDetalhe = db_utils::fieldsMemory($rsContaCorrenteDetalhe, $iIndice);
@@ -337,7 +337,7 @@ class RelatorioDisponibilidadeFinanceira
         }
 
         $aLancamentos = [];
-        $iTotalLancamentos = pg_num_rows($rsLancamentos);
+        $iTotalLancamentos = $rsLancamentos === false || $rsLancamentos === null ? 0 : pg_num_rows($rsLancamentos);
         for ($iIndice = 0; $iIndice < $iTotalLancamentos; $iIndice++) {
             $aLancamentos[] = db_utils::fieldsMemory($rsLancamentos, $iIndice);
         }
@@ -529,7 +529,7 @@ class RelatorioDisponibilidadeFinanceira
             throw new DBException("Houve um erro ao totalizar os valores dos lançamentos.");
         }
 
-        $iTotalLancamentos = pg_num_rows($rsLancamentos);
+        $iTotalLancamentos = $rsLancamentos === false || $rsLancamentos === null ? 0 : pg_num_rows($rsLancamentos);
         $aTotalLancamentos = [];
         for ($iIndice = 0; $iIndice < $iTotalLancamentos; $iIndice++) {
 

@@ -117,7 +117,7 @@ try {
   $sSql .= "    order by $oGet->ordem                                                                                                                  ";
 
   $rsVencimentos = db_query($sSql);
-  $iTotal        = pg_num_rows($rsVencimentos);
+  $iTotal        = $rsVencimentos === false || $rsVencimentos === null ? 0 : pg_num_rows($rsVencimentos);
 
   if ($iTotal == 0) {
     throw new Exception("Não existem registros cadastrados!");

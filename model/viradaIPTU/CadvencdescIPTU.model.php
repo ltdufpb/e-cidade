@@ -246,7 +246,7 @@ class CadvencdescIPTU implements iViradaIPTU {
      */
     $sSqlArretipoTipo        = " select max(k00_tipo) as k00_tipo from arretipo where k00_descr = 'IPTU {$this->getAnoNovo()}'";
     $rsSqlArretipoTipo       = db_query($sSqlArretipoTipo);
-    $iNumRowsArretipoTipo    = pg_num_rows($rsSqlArretipoTipo); 
+    $iNumRowsArretipoTipo    = $rsSqlArretipoTipo === false || $rsSqlArretipoTipo === null ? 0 : pg_num_rows($rsSqlArretipoTipo); 
     if ($iNumRowsArretipoTipo == 0) {
       
       $sMensagem = "ERRO: Tipo k00_tipo nao definido! Verifique tabela arretipo.";

@@ -44,7 +44,7 @@ $sql           = $oDaoConplano->sql_query_geral(null, null,
                                                   or c60_descr like '{$sName}%') "
                                                  );
 $result   = db_query($sql);
-$iNumRows = pg_num_rows($result);
+$iNumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $array    = db_utils::getCollectionByRecord($result,false,false, true);
 echo $oJson->encode($array);
 

@@ -74,7 +74,7 @@ input {
   }
   $sql .= " limit 1 offset ".(!isset($_POST["antprox"])?"0":$_POST["antprox"]);
   $result = db_query($conn,$sql);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   if($numrows == 0) {
     echo "<br><BR><Br><center><h3>Sem consultas.</h3></center>";
   } else {

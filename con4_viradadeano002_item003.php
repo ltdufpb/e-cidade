@@ -34,11 +34,11 @@ if($sqlerro == false) {
   // EXERCICIOS LOTACOES
   $sqlorigem = "select * from rhlotaexe where rh26_anousu =  $anoorigem limit 1";
   $resultorigem = db_query($sqlorigem);
-  $linhasorigem = pg_num_rows($resultorigem);
+  $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
   $sqldestino = "select * from rhlotaexe where rh26_anousu =  $anodestino limit 1";
   $resultdestino = db_query($sqldestino);
-  $linhasdestino = pg_num_rows($resultdestino);
+  $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
   if (($linhasorigem > 0) && ($linhasdestino == 0 )) {
 
@@ -60,7 +60,7 @@ if($sqlerro == false) {
       $erro_msg .= pg_last_error($rsLotaExe); //"Ocorreu um erro durante o processamento do item $c33_descricao. Processamento cancelado.";
     }
 
-    $iNumRows = pg_num_rows($rsLotaExe);
+    $iNumRows = $rsLotaExe === false || $rsLotaExe === null ? 0 : pg_num_rows($rsLotaExe);
     for ($iLota = 0; $iLota < $iNumRows; $iLota++) {
 
       $oLotaExe = db_utils::fieldsMemory($rsLotaExe,$iLota);
@@ -103,7 +103,7 @@ if($sqlerro == false) {
   $sSqlrhElementoEmp .= "                              and rh38_anousu = c60_anousu  ";
   $sSqlrhElementoEmp .= "  where rh38_anousu = {$anoorigem} ";
   $rsConsultaElemEmp  = db_query($sSqlrhElementoEmp);
-  $iLinhasElemEmp     = pg_num_rows($rsConsultaElemEmp);
+  $iLinhasElemEmp     = $rsConsultaElemEmp === false || $rsConsultaElemEmp === null ? 0 : pg_num_rows($rsConsultaElemEmp);
 
   if ( $iLinhasElemEmp > 0 ) {
 
@@ -175,7 +175,7 @@ if($sqlerro == false) {
 	$sSqlElemPCMater .= "                                                  and e_destino.rh38_anousu = {$anodestino}        ";
 
 	$rsConsultaElemPCMater = db_query($sSqlElemPCMater);
-  $iLinhasElemPCMater    = pg_num_rows($rsConsultaElemPCMater);
+  $iLinhasElemPCMater    = $rsConsultaElemPCMater === false || $rsConsultaElemPCMater === null ? 0 : pg_num_rows($rsConsultaElemPCMater);
 
   if ( $iLinhasElemPCMater > 0 ) {
 

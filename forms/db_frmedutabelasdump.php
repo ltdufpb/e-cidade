@@ -188,7 +188,7 @@ if(isset($atualizar2)){
       <?php 
       $sql = "SELECT ed130_i_codigo,ed130_i_sequencia,ed130_c_tabela from edutabelasdump where ed130_c_tipo = 'SE' order by ed130_i_sequencia";
       $query = db_query($sql);
-      $linhas = pg_num_rows($query);
+      $linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
       ?>
       <b>Ordenar Tabelas(<?=$linhas?>) SE:</b><br>
       <select name="camposse[]" id="camposse" size="20" style="font-size:10px;width:230px" multiple>
@@ -220,7 +220,7 @@ if(isset($atualizar2)){
       <?php 
       $sql = "SELECT ed130_i_codigo,ed130_i_sequencia,ed130_c_tabela from edutabelasdump where ed130_c_tipo = 'ES' order by ed130_i_sequencia";
       $query = db_query($sql);
-      $linhas = pg_num_rows($query);
+      $linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
       ?>
       <b>Ordenar Tabelas(<?=$linhas?>) ES:</b><br>
       <select name="camposes[]" id="camposes" size="20" style="font-size:10px;width:230px" multiple>

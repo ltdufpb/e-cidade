@@ -176,7 +176,7 @@ for($x=0;$x<$linhas;$x++){
          ";
  $result2 = db_query($sql2);
  //db_criatabela($result2);
- $linhas2 = pg_num_rows($result2);
+ $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
  for ($y = 0; $y < $linhas2; $y++) {
 
   db_fieldsmemory($result2, $y);
@@ -296,7 +296,7 @@ for($x=0;$x<$linhas;$x++){
             AND ed95_i_regencia = $ed59_i_codigo
           ";
   $result66 = db_query($sql66);
-  $linhas66 = pg_num_rows($result66);
+  $linhas66 = $result66 === false || $result66 === null ? 0 : pg_num_rows($result66);
   if($linhas66>0){
    db_fieldsmemory($result66,0);
   }else{
@@ -394,7 +394,7 @@ for($x=0;$x<$linhas;$x++){
               AND ed95_i_regencia = $ed59_i_codigo
              ";
     $result_f = db_query($sql_f);
-    $linhas_f = pg_num_rows($result_f);
+    $linhas_f = $result_f === false || $result_f === null ? 0 : pg_num_rows($result_f);
     if ($resultedu == 'S') {
       $ed74_i_percfreq = $ed74_i_percfreq!=""?number_format(pg_fetch_result($result_f,0,'ed74_i_percfreq'),2,".","."):"";
     } else {

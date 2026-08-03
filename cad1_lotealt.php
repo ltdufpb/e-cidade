@@ -154,7 +154,7 @@ function atualizarIptuBase($idmatricu, $j34_idbql, $cliptubase)
     $cliptubase->j01_matric = $idmatricu;
     $cliptubase->alterar($idmatricu);
 
-    $totalIdbqlAnterior = pg_num_rows($rsIptuBase);
+    $totalIdbqlAnterior = $rsIptuBase === false || $rsIptuBase === null ? 0 : pg_num_rows($rsIptuBase);
     // Update para executar a trigger que atualiza o campo j34_totcon da tabela lote
     $daoIptuconstr = new cl_iptuconstr();
     for ($index = 0; $index < $totalIdbqlAnterior; $index++) {

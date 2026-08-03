@@ -114,7 +114,7 @@ group by k13_conta,k13_descr,c60_codsis
 	 ";
     $result1 = db_query($sql);
     $result2 = db_query($sql1);
-    $num2    = pg_num_rows($result2);
+    $num2    = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 //    db_criatabela($result2);
 //    db_fieldsmemory(db_query($sql),0);
     $sql = "

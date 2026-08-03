@@ -57,7 +57,7 @@ switch ($oParam->exec) {
 	    $sSqlStatus   = " select fc_startsession(); ";
 	    $sSqlStatus  .= " select codigo, db21_ativo from db_config where prefeitura = true; ";
 	    $rsSqlStatus  = pg_query($sSqlStatus);
-	    $iSqlStatus   = pg_num_rows($rsSqlStatus);
+	    $iSqlStatus   = $rsSqlStatus === false || $rsSqlStatus === null ? 0 : pg_num_rows($rsSqlStatus);
 
 	    if ( $iSqlStatus > 0 ) {
 	    	$oSqlStatus = db_utils::fieldsMemory($rsSqlStatus,0);

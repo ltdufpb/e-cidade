@@ -209,7 +209,7 @@ class CategoriaTipoProcesso
             return null;
         }
 
-        $totalRegistros = pg_num_rows($rsVinculo);
+        $totalRegistros = $rsVinculo === false || $rsVinculo === null ? 0 : pg_num_rows($rsVinculo);
         $tipoProcessoCollection = new TipoProcessoCollection();
 
         for ($contador = 0; $contador < $totalRegistros; $contador++) {

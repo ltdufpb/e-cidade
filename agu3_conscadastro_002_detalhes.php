@@ -96,7 +96,7 @@ require_once(modification("libs/db_utils.php"));
 
     $result = $Consulta->RecordSetAguaConstrCar();
 
-    $linhas  = pg_num_rows( $result );  
+    $linhas  = $result === false || $result === null ? 0 : pg_num_rows( $result );  
 
     // Percorre construcoes;
     if( $linhas != 0 ) {
@@ -215,7 +215,7 @@ require_once(modification("libs/db_utils.php"));
   
     $rCalc = $Consulta->RecordSetAguaCalc();
 
-    $iLinhas = pg_num_rows($rCalc);
+    $iLinhas = $rCalc === false || $rCalc === null ? 0 : pg_num_rows($rCalc);
 
     if ( $iLinhas == 0 ) {
 

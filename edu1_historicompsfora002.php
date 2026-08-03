@@ -226,6 +226,6 @@ function DiscVinc($ed99_i_codigo) {
 
   $sSql          = " SELECT ed100_i_codigo FROM histmpsdiscfora WHERE ed100_i_historicompsfora = $ed99_i_codigo ";
   $rsHistMpsFora = db_query($sSql);
-  $iLinhas       = pg_num_rows($rsHistMpsFora);
+  $iLinhas       = $rsHistMpsFora === false || $rsHistMpsFora === null ? 0 : pg_num_rows($rsHistMpsFora);
   return $iLinhas;
 }

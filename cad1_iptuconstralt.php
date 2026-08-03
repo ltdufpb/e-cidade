@@ -173,7 +173,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
       }
       $sSqlGetConstrucao = "Select * from $esquema.iptuconstr where j39_matric = $j39_matric and j39_idcons = $j39_idcons";
       $resultGetConstrucao = db_query($sSqlGetConstrucao);
-      $numLinhasGetConstrucao = pg_num_rows($resultGetConstrucao);
+      $numLinhasGetConstrucao = $resultGetConstrucao === false || $resultGetConstrucao === null ? 0 : pg_num_rows($resultGetConstrucao);
 
       if($numLinhasGetConstrucao > 0){
           if($sAnosQuePossuemMesmaConstrucao == ""){
@@ -314,7 +314,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
         }
         $sSqlGetConstrucao = "Select * from $esquema.iptuconstr where j39_matric = $j39_matric and j39_idcons = $j39_idcons";
         $resultGetConstrucao = db_query($sSqlGetConstrucao);
-        $numLinhasGetConstrucao = pg_num_rows($resultGetConstrucao);
+        $numLinhasGetConstrucao = $resultGetConstrucao === false || $resultGetConstrucao === null ? 0 : pg_num_rows($resultGetConstrucao);
         if($numLinhasGetConstrucao == 0){
             if($sAnosConstrucaoInexistente == ""){
                 $sAnosConstrucaoInexistente = $anoMatricula;
@@ -584,7 +584,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
                             and j11_idcons = $j39_idcons";
 
     $rsResultCalcPadrao = db_query($sSqlcalcPadrao);
-    $iLinhasCalcPadrao  = pg_num_rows($rsResultCalcPadrao);
+    $iLinhasCalcPadrao  = $rsResultCalcPadrao === false || $rsResultCalcPadrao === null ? 0 : pg_num_rows($rsResultCalcPadrao);
 
     if ( $iLinhasCalcPadrao > 0 ) {
 
@@ -613,7 +613,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
         $sqlcalculo .= "  where j39_matric = $j39_matric ";
         $sqlcalculo .= "    and j39_idcons = $j39_idcons";
         $resultcalculo = db_query($sqlcalculo);
-        $linhascalculo = pg_num_rows($resultcalculo);
+        $linhascalculo = $resultcalculo === false || $resultcalculo === null ? 0 : pg_num_rows($resultcalculo);
 
 
         if ( $linhascalculo > 0  &&  !$excconscalc ) {

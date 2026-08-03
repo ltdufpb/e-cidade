@@ -111,7 +111,7 @@ if($db21_usasisagua == 't') {
 }
 
 $resultini       = db_query($sqlini);
-$iLinhasIniciais = pg_num_rows($resultini);
+$iLinhasIniciais = $resultini === false || $resultini === null ? 0 : pg_num_rows($resultini);
 
 if ( $iLinhasIniciais == 0) {
 
@@ -221,7 +221,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
                                 left join  divida              on  divida.v01_coddiv          = certdiv.v14_coddiv
                           where inicial.v50_inicial = {$inicialproc} ";
   $rsOrigemInicial  = db_query($sSqlOrigemInicial);
-  $iNumRows = pg_num_rows($rsOrigemInicial);
+  $iNumRows = $rsOrigemInicial === false || $rsOrigemInicial === null ? 0 : pg_num_rows($rsOrigemInicial);
 
   $aListaExercicio = [];
 
@@ -336,7 +336,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
           }
       }
 
-      $iLinhaDadosInicial = pg_num_rows($rsDadosInicial);
+      $iLinhaDadosInicial = $rsDadosInicial === false || $rsDadosInicial === null ? 0 : pg_num_rows($rsDadosInicial);
 
       for ($iInd=0; $iInd < $iLinhaDadosInicial; $iInd++ ) {
 
@@ -390,7 +390,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
                  order by v51_certidao";
 
   $rsCertid     = db_query($sSqlCert);
-  $iLinhasCert  = pg_num_rows($rsCertid);
+  $iLinhasCert  = $rsCertid === false || $rsCertid === null ? 0 : pg_num_rows($rsCertid);
   $aListaCertid = [];
 
   for ( $iInd=0; $iInd < $iLinhasCert; $iInd++ ) {
@@ -410,7 +410,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 							                where v14_certid in ($Certidao) ";
 
     $rsParcelamentos     = db_query($sSqlParcelamentos);
-    $iLinhasParcel       = pg_num_rows($rsParcelamentos);
+    $iLinhasParcel       = $rsParcelamentos === false || $rsParcelamentos === null ? 0 : pg_num_rows($rsParcelamentos);
     $aListaParcelamentos = [];
 
     for ( $iIndParcel=0; $iIndParcel < $iLinhasParcel; $iIndParcel++) {
@@ -426,7 +426,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
       if ( $rsDadosDebitoCorrigido != false ) {
 
-      	$iLinhasDebito = pg_num_rows($rsDadosDebitoCorrigido);
+      	$iLinhasDebito = $rsDadosDebitoCorrigido === false || $rsDadosDebitoCorrigido === null ? 0 : pg_num_rows($rsDadosDebitoCorrigido);
 
         for ($iIndDebito = 0; $iIndDebito < $iLinhasDebito; $iIndDebito++) {
           $ValorTotal += db_utils::fieldsMemory($rsDadosDebitoCorrigido,$iIndDebito)->total;
@@ -447,7 +447,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 			                     where v14_certid in ($Certidao)";
 
     $rsDadosDebitos      = db_query($sSqlDadosDebitos);
-    $iLinhasDadosDebitos = pg_num_rows($rsDadosDebitos);
+    $iLinhasDadosDebitos = $rsDadosDebitos === false || $rsDadosDebitos === null ? 0 : pg_num_rows($rsDadosDebitos);
 
     if ( $iLinhasDadosDebitos == 0 ) {
 
@@ -464,7 +464,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
       $sSqlDadosDebitos .= "        inner join arreold       on v59_numpre  = arreold.k00_numpre  ";
       $sSqlDadosDebitos .= "  where inicial = $inicialproc ";
       $rsDadosDebitos      = db_query($sSqlDadosDebitos);
-      $iLinhasDadosDebitos = pg_num_rows($rsDadosDebitos);
+      $iLinhasDadosDebitos = $rsDadosDebitos === false || $rsDadosDebitos === null ? 0 : pg_num_rows($rsDadosDebitos);
 
       $corrigirPeloArreold = true;
     } else {
@@ -566,7 +566,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
       }
       $sSqlEnvolvidos = "select  * from fc_busca_envolvidos({$lPrincipal},{$oParJuridico->v19_envolinicialiptu},'M',{$oDadosInicial->$sNomeMatricula})";
       $rsEnvolvidos   = db_query($sSqlEnvolvidos) or die($sSqlEnvolvidos);
-      $iLinhasEnvol   = pg_num_rows($rsEnvolvidos);
+      $iLinhasEnvol   = $rsEnvolvidos === false || $rsEnvolvidos === null ? 0 : pg_num_rows($rsEnvolvidos);
 
       if ($oParJuridico->v19_envolinicialiptu == 2 && $iLinhasEnvol == 0 ) {
 
@@ -575,7 +575,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
         $sSqlEnvolvidos .= "  where j01_matric = {$xmatric} ";
 
         $rsEnvolvidos = db_query($sSqlEnvolvidos) or die($sSqlEnvolvidos);
-        $iLinhasEnvol = pg_num_rows($rsEnvolvidos);
+        $iLinhasEnvol = $rsEnvolvidos === false || $rsEnvolvidos === null ? 0 : pg_num_rows($rsEnvolvidos);
       }
 
       for ($i=0; $i < $iLinhasEnvol; $i++) {
@@ -634,7 +634,7 @@ for ($xyx = 0; $xyx < $iLinhasIniciais; $xyx++) {
 
     $sSqlEnvolvidos = "select  * from fc_busca_envolvidos({$lPrincipal},{$oParJuridico->v19_envolinicialiss},'I',{$xinscr})";
     $rsEnvolvidos   = db_query($sSqlEnvolvidos) or die($sSqlEnvolvidos);
-    $iLinhasEnvol   = pg_num_rows($rsEnvolvidos);
+    $iLinhasEnvol   = $rsEnvolvidos === false || $rsEnvolvidos === null ? 0 : pg_num_rows($rsEnvolvidos);
 
     $sCgcCpf = "";
 

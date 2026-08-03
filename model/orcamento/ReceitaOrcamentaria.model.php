@@ -158,7 +158,7 @@ class ReceitaOrcamentaria {
     $sWhereReceita    .= " and o70_codrec = {$this->getCodigo()}";
     $sSqlBuscaFonte    = $oDaoOrcReceita->sql_query_fonte_desdobramento(null, null, "o57_fonte", null, $sWhereReceita);
     $rsBuscaFonte      = db_query($sSqlBuscaFonte);
-    $iLinhasBuscaFonte = pg_num_rows($rsBuscaFonte);
+    $iLinhasBuscaFonte = $rsBuscaFonte === false || $rsBuscaFonte === null ? 0 : pg_num_rows($rsBuscaFonte);
     if (!$rsBuscaFonte) {
       throw new BusinessException("Não foi possível verificar se a receita {$this->getCodigo()} possui desdobramento.");
     }
@@ -655,7 +655,7 @@ class ReceitaOrcamentaria {
         throw new BusinessException("Erro Técnico: Não foi possível verificar percentual a ser desdobrado.");
       }
 
-      $iTotalDesdobramentos = pg_num_rows($rsBuscaEstruturalMae);
+      $iTotalDesdobramentos = $rsBuscaEstruturalMae === false || $rsBuscaEstruturalMae === null ? 0 : pg_num_rows($rsBuscaEstruturalMae);
       $aDesdobramentos = [];
       for ($iDesdobramento = 0; $iDesdobramento < $iTotalDesdobramentos; $iDesdobramento++ ) {
 

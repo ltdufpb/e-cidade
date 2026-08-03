@@ -284,7 +284,7 @@ a.nome:hover {
                     </table></td>
                   <td width="67%" valign="top"> 
                     <?php 
-		    $numrows = pg_num_rows($result);
+		    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			   echo "<script>
 			   function js_envia(chave){
 			     debitos.location.href=chave;		        

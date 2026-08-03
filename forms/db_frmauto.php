@@ -181,7 +181,7 @@ if(isset($z01_numcgm) && $z01_numcgm != ""){
   			inner join bairro  as bl   on bl.j13_codi   =y12_codi
   			where y13_codnoti = $y30_codnoti";
     $resultnot = db_query ($sqlnot);
-    $linhasnot = pg_num_rows($resultnot);
+    $linhasnot = $resultnot === false || $resultnot === null ? 0 : pg_num_rows($resultnot);
     if($linhasnot>0){
        db_fieldsmemory($resultnot,0);
        $notific=true;

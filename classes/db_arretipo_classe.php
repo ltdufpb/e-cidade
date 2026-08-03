@@ -1701,7 +1701,7 @@ class cl_arretipo
 
             return false;
         }
-        $this->numrows = pg_num_rows($result);
+        $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:arretipo";
@@ -1778,7 +1778,7 @@ class cl_arretipo
         if ($result == false) {
             $this->numrows = 0;
         } else {
-            $this->numrows = pg_num_rows($result);
+            $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
         }
 
         return $result;

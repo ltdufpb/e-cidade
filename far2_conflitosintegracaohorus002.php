@@ -88,9 +88,9 @@ try {
     throw new Exception(pg_last_error());
   }
 
-  $iLinhasDispensacao = pg_num_rows($rsDispensacao);
-  $iLinhasEntrada     = pg_num_rows($rsEntrada);
-  $iLinhasSaida       = pg_num_rows($rsSaida);
+  $iLinhasDispensacao = $rsDispensacao === false || $rsDispensacao === null ? 0 : pg_num_rows($rsDispensacao);
+  $iLinhasEntrada     = $rsEntrada === false || $rsEntrada === null ? 0 : pg_num_rows($rsEntrada);
+  $iLinhasSaida       = $rsSaida === false || $rsSaida === null ? 0 : pg_num_rows($rsSaida);
 
   if ( empty($iLinhasDispensacao) && empty($iLinhasEntrada) && empty($iLinhasSaida) ) {
 

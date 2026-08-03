@@ -186,7 +186,7 @@ class TipoReconhecimentoContabil {
       throw new DBException("Erro ao executar a busca pelo Tipo de Reconhecimento");
     }
     
-    $iNumeroResultadosQuery = pg_num_rows($rsResultado);
+    $iNumeroResultadosQuery = $rsResultado === false || $rsResultado === null ? 0 : pg_num_rows($rsResultado);
     if ($iNumeroResultadosQuery != 1 ) {
       throw new BusinessException("Tipo de reconhecimento contábil não encontrado");
     }
@@ -224,7 +224,7 @@ class TipoReconhecimentoContabil {
       throw new DBException("Erro ao executar a busca pelos Tipos de Reconhecimentos");
     }
     
-    $iNumeroResultadosQuery = pg_num_rows($rsResultado);
+    $iNumeroResultadosQuery = $rsResultado === false || $rsResultado === null ? 0 : pg_num_rows($rsResultado);
     $aTiposReconhecimentos  = [];
     
     for ($iTipo = 0 ; $iTipo < $iNumeroResultadosQuery; $iTipo++ ) {
@@ -251,7 +251,7 @@ class TipoReconhecimentoContabil {
       throw new DBException("Erro ao executar a busca pelos Tipos de Reconhecimentos");
     }
     
-    $iNumeroResultadosQuery = pg_num_rows($rsResultado);
+    $iNumeroResultadosQuery = $rsResultado === false || $rsResultado === null ? 0 : pg_num_rows($rsResultado);
     $aTiposReconhecimentos  = [];
     
     for ($iTipo = 0 ; $iTipo < $iNumeroResultadosQuery; $iTipo++ ) {

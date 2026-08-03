@@ -250,7 +250,7 @@ var TREE_ITEMS = [
                              ";
 
                      $query1 = db_query($sql1);
-                     $linhas1 = pg_num_rows($query1);
+                     $linhas1 = $query1 === false || $query1 === null ? 0 : pg_num_rows($query1);
                      //$query1 = $clhistoricomps->sql_record($clhistoricomps->sql_query("","*","serie.ed11_i_sequencia,ed62_i_anoref,ed62_i_periodoref"," ed62_i_historico = $ed61_i_codigo"));
                      if($linhas1==0){?>
                       ['Etapa: <b>Nenhuma etapa para este curso</b>:', 'edu1_historicomps001.php?ed62_i_historico=<?=$ed61_i_codigo?>&ed29_c_descr=<?=$ed29_c_descr?>&ed29_i_codigo=<?=$ed29_i_codigo?>&ed61_i_aluno=<?=$ed61_i_aluno?>&ed47_v_nome=<?=$ed47_v_nome?>'],

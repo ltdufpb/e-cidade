@@ -104,7 +104,7 @@ if(isset($incluir)){
 									  and j76_codigo is null ";
 
 	 $rsVerItbi     = db_query($sqlVerItbi);
-   $linhasVerItbi = pg_num_rows($rsVerItbi);
+   $linhasVerItbi = $rsVerItbi === false || $rsVerItbi === null ? 0 : pg_num_rows($rsVerItbi);
 	 if($linhasVerItbi > 0){
 	 	 // é uma averbação do tipo 6 de itbi com guia do sistema.
 		 // então grava automatico os cgms dos compradores desta guia itbi. j104_guia
@@ -118,7 +118,7 @@ if(isset($incluir)){
 								   and it03_guia = {$j103_itbi}";
 
 		 $rsNome     =	db_query($sqlNome);
-		 $linhasNome = pg_num_rows($rsNome);
+		 $linhasNome = $rsNome === false || $rsNome === null ? 0 : pg_num_rows($rsNome);
 		 if($linhasNome > 0){
 		 	$sqlerro = false;
 		 	db_inicio_transacao();

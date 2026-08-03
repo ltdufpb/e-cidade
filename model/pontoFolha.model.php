@@ -102,7 +102,7 @@ class pontoFolha
                 throw new DBException("Ocorreu um erro ao consultar as rubricas");
             }
 
-            $oDaoRhrubricas->numrows = pg_num_rows($rsRubricaFormula);
+            $oDaoRhrubricas->numrows = $rsRubricaFormula === false || $rsRubricaFormula === null ? 0 : pg_num_rows($rsRubricaFormula);
 
             if ($oDaoRhrubricas->numrows == 0) {
                 throw new Exception("Rubrica {$oDadosPonto->r90_rubric} não encontrada. Verifique.");
@@ -428,7 +428,7 @@ class pontoFolha
 
                 if ($rsSomaValores) {
 
-                    $iLinhasSomaValores = pg_num_rows($rsSomaValores);
+                    $iLinhasSomaValores = $rsSomaValores === false || $rsSomaValores === null ? 0 : pg_num_rows($rsSomaValores);
 
                     if ($iLinhasSomaValores > 0) {
                         $oValorExistente = db_utils::fieldsMemory($rsSomaValores, 0);
@@ -867,7 +867,7 @@ class pontoFolha
 
         if ($rsPonto) {
 
-            $iLinhasPonto = pg_num_rows($rsPonto);
+            $iLinhasPonto = $rsPonto === false || $rsPonto === null ? 0 : pg_num_rows($rsPonto);
 
             if ($iLinhasPonto > 0) {
 
@@ -958,7 +958,7 @@ class pontoFolha
 
         if ($rsPonto) {
 
-            $iLinhasPonto = pg_num_rows($rsPonto);
+            $iLinhasPonto = $rsPonto === false || $rsPonto === null ? 0 : pg_num_rows($rsPonto);
 
             if ($iLinhasPonto > 0) {
                 return true;
@@ -1194,7 +1194,7 @@ class pontoFolha
 
                     if ($rsVerificaSelecao) {
 
-                        $iLinhasVerificaSelecao = pg_num_rows($rsVerificaSelecao);
+                        $iLinhasVerificaSelecao = $rsVerificaSelecao === false || $rsVerificaSelecao === null ? 0 : pg_num_rows($rsVerificaSelecao);
 
                         if ($iLinhasVerificaSelecao > 0) {
 
@@ -1209,7 +1209,7 @@ class pontoFolha
 
                             if ($rsConsultaRubricas) {
 
-                                $iLinhasRubricas = pg_num_rows($rsConsultaRubricas);
+                                $iLinhasRubricas = $rsConsultaRubricas === false || $rsConsultaRubricas === null ? 0 : pg_num_rows($rsConsultaRubricas);
 
                                 for ($iIndRubricas = 0; $iIndRubricas < $iLinhasRubricas; $iIndRubricas++) {
                                     $oRubrica = db_utils::fieldsMemory($rsConsultaRubricas, $iIndRubricas);
@@ -1314,7 +1314,7 @@ class pontoFolha
                     throw new DBException("Ocorreu um erro ao consultar as horas mensais para o servidor.");
                 }
 
-                $oDaoRHPessoalMov->numrows = pg_num_rows($rsHrsMen);
+                $oDaoRHPessoalMov->numrows = $rsHrsMen === false || $rsHrsMen === null ? 0 : pg_num_rows($rsHrsMen);
 
                 if ($oDaoRHPessoalMov->numrows > 0) {
 

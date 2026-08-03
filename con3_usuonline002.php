@@ -71,7 +71,7 @@ td {
     <?php 
 	db_query("delete from db_usuariosonline where uol_inativo < ".(time() - 300)." or uol_inativo is null") or die("erro(46) excluindo tabela db_usuariosonline");
 	$result = db_query("select * from db_usuariosonline order by uol_login");
-	$numrows = pg_num_rows($result);
+	$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 	for($i = 0;$i < $numrows;$i++) {
         echo "<tr onclick=\"window.open('con3_usuonline113.php?id_usuario=".pg_fetch_result($result,$i,"uol_id")."&usuario=".pg_fetch_result($result,$i,"uol_login")."&hora=".pg_fetch_result($result,$i,"uol_hora")."&sairfora=2','','height=500,width=410,scrollbars=0')\" style=\"cursor: hand\" bgcolor=\"".($i%2==0?"#31CEB7":"#9EE9DE")."\">
 					 <td nowrap>".pg_fetch_result($result,$i,"uol_ip")."</td>

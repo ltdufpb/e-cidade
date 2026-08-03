@@ -110,7 +110,7 @@ class LancamentoRRARepository {
 			throw new DBException(_M(self::MENSAGEM."erro_buscar_lancamentos"));
 		}
 
-		$iQtdeLancamentos = pg_num_rows($rsLancamentoRRA);
+		$iQtdeLancamentos = $rsLancamentoRRA === false || $rsLancamentoRRA === null ? 0 : pg_num_rows($rsLancamentoRRA);
 
 		if( $iQtdeLancamentos == 0) {
 			throw new DBException(_M(self::MENSAGEM."nenhum_lancamento_encontrado"));

@@ -130,7 +130,7 @@ function ajustaResposta($sResposta) {
 function organizaDados($rsResource) {
   
   $aCidadaos = [];
-  $iLinhas   = pg_num_rows($rsResource);
+  $iLinhas   = $rsResource === false || $rsResource === null ? 0 : pg_num_rows($rsResource);
   
   for ($i = 0; $i < $iLinhas; $i++) {
   

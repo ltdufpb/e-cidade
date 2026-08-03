@@ -909,7 +909,7 @@ class manad {
     $sSqlEmpenho .= "    and e60_instit in ({$sListaInstit})";
     $sSqlEmpenho .= "  order by 5, 6,7,8,9,10,11,12,13";
     $rsEmpenho    = db_query($sSqlEmpenho);
-    $iTotalLinhas = pg_num_rows($rsEmpenho);
+    $iTotalLinhas = $rsEmpenho === false || $rsEmpenho === null ? 0 : pg_num_rows($rsEmpenho);
     return db_utils::getCollectionByRecord($rsEmpenho);
   }
   
@@ -1056,7 +1056,7 @@ class manad {
     $sSqlPagamentos .= "   and e60_emiss <= '{$sDataFinal}' {$sWhere} ";             
     $sSqlPagamentos .= " order by ano,2 ";
     $rsPagamentos    = db_query($sSqlPagamentos);
-    $iTotalLinhas    = pg_num_rows($rsPagamentos);
+    $iTotalLinhas    = $rsPagamentos === false || $rsPagamentos === null ? 0 : pg_num_rows($rsPagamentos);
     $aPagamentos     = [];
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
@@ -1131,7 +1131,7 @@ class manad {
     $sSqlBalancete .= " order by o57_fonte asc ";
 
     $rsBalancete    = db_query($sSqlBalancete);
-    $iTotalLinhas = pg_num_rows($rsBalancete);
+    $iTotalLinhas = $rsBalancete === false || $rsBalancete === null ? 0 : pg_num_rows($rsBalancete);
     if (PostgreSQLUtils::isTableExists("work_receita")) {
       db_query("drop table if exists work_receita");
     }
@@ -1195,7 +1195,7 @@ class manad {
     db_query("rollback");
     
     $aDotacoes    = [];
-    $iTotalLinhas = pg_num_rows($rsDotacaoSaldo);
+    $iTotalLinhas = $rsDotacaoSaldo === false || $rsDotacaoSaldo === null ? 0 : pg_num_rows($rsDotacaoSaldo);
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oDespesa            = db_utils::fieldsMemory($rsDotacaoSaldo, $i);
@@ -1338,7 +1338,7 @@ class manad {
     $sSqlDecreto .= "         order by o45_numlei,o45_dataini,o39_numero,o39_data ";
     $sSqlDecreto .= "      ) as x ";
     $rsDecretos   = db_query($sSqlDecreto);
-    $iTotalLinhas = pg_num_rows($rsDecretos);
+    $iTotalLinhas = $rsDecretos === false || $rsDecretos === null ? 0 : pg_num_rows($rsDecretos);
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oDecreto = db_utils::fieldsMemory($rsDecretos, $i);
@@ -1462,7 +1462,7 @@ class manad {
     $sSqlOrgaos  .= "                           and o58_anousu = o40_anousu ";
     $sSqlOrgaos  .= " where o58_anousu between {$iAnoInicio} and  {$iAno} {$sWhereInstit}";
     $rsOrgaos     = db_query($sSqlOrgaos);
-    $iTotalLinhas = pg_num_rows($rsOrgaos); 
+    $iTotalLinhas = $rsOrgaos === false || $rsOrgaos === null ? 0 : pg_num_rows($rsOrgaos); 
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oOrgao        = db_utils::fieldsMemory($rsOrgaos, $i);
@@ -1502,7 +1502,7 @@ class manad {
     $sSqlUnidades .= " where o58_anousu between {$iAnoInicio} and {$iAno}";
     $sSqlUnidades .= "   and o58_instit in ({$iCodigoInstit})";
     $rsUnidades    = db_query($sSqlUnidades);
-    $iTotalLinhas = pg_num_rows($rsUnidades);
+    $iTotalLinhas = $rsUnidades === false || $rsUnidades === null ? 0 : pg_num_rows($rsUnidades);
 
     $aUnidades  = [];
     for ($i = 0; $i < $iTotalLinhas; $i++) {
@@ -1549,7 +1549,7 @@ class manad {
     $sSqlFuncao .= "  where o73_funcao > 0 ";
     $sSqlFuncao .= "    and o73_anousu between {$iAnoInicio} and {$iAno}";
     $rsFuncao    = db_query($sSqlFuncao);
-    $iTotalLinhas = pg_num_rows($rsFuncao);
+    $iTotalLinhas = $rsFuncao === false || $rsFuncao === null ? 0 : pg_num_rows($rsFuncao);
 
     $aFuncoes = [];
     for ($i = 0; $i < $iTotalLinhas; $i++) {
@@ -1590,7 +1590,7 @@ class manad {
     $sSqlSubFuncao .= "  where o73_subfuncao > 0 ";
     $sSqlSubFuncao .= "    and o73_anousu between {$iAnoInicio} and {$iAno}";
     $rsSubFuncao    = db_query($sSqlSubFuncao);
-    $iTotalLinhas = pg_num_rows($rsSubFuncao);
+    $iTotalLinhas = $rsSubFuncao === false || $rsSubFuncao === null ? 0 : pg_num_rows($rsSubFuncao);
     $aSubFuncoes  = [];      
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
@@ -1623,7 +1623,7 @@ class manad {
     $sSqlProgramas .= "                            and o58_anousu   = o54_anousu";
     $sSqlProgramas .= "    and o54_anousu between {$iAnoInicio} and {$iAno}"; 
     $rsPrograma     = db_query($sSqlProgramas);
-    $iTotalLinhas = pg_num_rows($rsPrograma);
+    $iTotalLinhas = $rsPrograma === false || $rsPrograma === null ? 0 : pg_num_rows($rsPrograma);
     $aProgramas   = [];     
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
@@ -1659,7 +1659,7 @@ class manad {
     $sSqlProAtiv .= "                            and o58_anousu   = o55_anousu";
     $sSqlProAtiv .= "    and o55_anousu between {$iAnoInicio} and {$iAno}";
     $rsProjAtiv   = db_query($sSqlProAtiv);
-    $iTotalLinhas = pg_num_rows($rsProjAtiv);
+    $iTotalLinhas = $rsProjAtiv === false || $rsProjAtiv === null ? 0 : pg_num_rows($rsProjAtiv);
     $aProjAtiv    = []; 
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
@@ -1718,7 +1718,7 @@ class manad {
     $sSqlRubrica .= "         order by o56_anousu,elemento";
     $sSqlRubrica .= "      ) as x "; 
     $rsRubrica    = db_query(analiseQueryPlanoOrcamento($sSqlRubrica));
-    $iTotalLinhas = pg_num_rows($rsRubrica);
+    $iTotalLinhas = $rsRubrica === false || $rsRubrica === null ? 0 : pg_num_rows($rsRubrica);
     $aRubricas    = []; 
     for ($i = 0; $i < $iTotalLinhas; $i++) {
           
@@ -1760,7 +1760,7 @@ class manad {
     $sSqlCredor .= "      '1' as tipo"; 
     $sSqlCredor .= "  from cgm";
     $rsCredor    = db_query($sSqlCredor);
-    $iTotalLinhas = pg_num_rows($rsCredor);
+    $iTotalLinhas = $rsCredor === false || $rsCredor === null ? 0 : pg_num_rows($rsCredor);
 
     $aCredores = [];
     for ($i = 0; $i < $iTotalLinhas; $i++) {

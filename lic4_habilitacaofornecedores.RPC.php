@@ -68,7 +68,7 @@ try {
       }
 
       $aFornecedores      = [];
-      $iTotalFornecedores = pg_num_rows($rsFornecedoresLicitacao);
+      $iTotalFornecedores = $rsFornecedoresLicitacao === false || $rsFornecedoresLicitacao === null ? 0 : pg_num_rows($rsFornecedoresLicitacao);
       for ($i = 0; $i < $iTotalFornecedores; $i++) {
         $aFornecedores[] = db_utils::fieldsMemory($rsFornecedoresLicitacao, $i, false, false, true);
       }

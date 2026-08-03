@@ -90,7 +90,7 @@ if (pg_num_rows($rspara) == 0) {
 
 $iLinhasPorPagina = 15;
 $rsproc           = db_query($sqlproc);
-$nNumeroLinhas    = pg_num_rows($rsproc);
+$nNumeroLinhas    = $rsproc === false || $rsproc === null ? 0 : pg_num_rows($rsproc);
 $imptit           = 0;
 $iNumeroPaginas   = ceil($nNumeroLinhas / $iLinhasPorPagina);
 $pdf              = new scpdf();

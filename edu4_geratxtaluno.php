@@ -53,7 +53,7 @@ $sSqlBuscaInfo .= "         where ed47_c_codigoinep = '' ";
 $sSqlBuscaInfo .= "           and ed18_i_codigo = $iEscola ";
 $sSqlBuscaInfo .= "           and ed52_i_ano = $ed52_i_ano";
 $rsBuscaInfo    = db_query($sSqlBuscaInfo);
-$iLinhas        = pg_num_rows($rsBuscaInfo);
+$iLinhas        = $rsBuscaInfo === false || $rsBuscaInfo === null ? 0 : pg_num_rows($rsBuscaInfo);
 
 if ($iLinhas == 0) {
 

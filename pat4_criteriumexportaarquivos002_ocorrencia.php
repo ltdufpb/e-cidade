@@ -33,7 +33,7 @@ $sSqlOcorrencia .= "       t68_descricao as nome_da_ocorrencia";
 $sSqlOcorrencia .= "       from ocorrenciabens";
 
 $rsOcorrencia   = db_query($sSqlOcorrencia);
-$iNumeroLinhas 	= pg_num_rows($rsOcorrencia);
+$iNumeroLinhas 	= $rsOcorrencia === false || $rsOcorrencia === null ? 0 : pg_num_rows($rsOcorrencia);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oOcorrencia   = db_utils::fieldsMemory($rsOcorrencia,$i);

@@ -201,7 +201,7 @@ class ArquivoConsignet {
       throw new DBException(_M(self::MENSAGEM . 'erro_carregar_dados'));
     }
 
-    $iQuantidadeRegistros = pg_num_rows($rsRegistros);
+    $iQuantidadeRegistros = $rsRegistros === false || $rsRegistros === null ? 0 : pg_num_rows($rsRegistros);
 
     if ($iQuantidadeRegistros == 0) {
 

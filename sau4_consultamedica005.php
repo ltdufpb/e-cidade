@@ -131,7 +131,7 @@ db_fieldsmemory($result,$i);
 //echo $clprontproced->sql_query("","*","sd29_i_codigo desc","sd29_i_prontuario=$sd24_i_codigo");
 $sql=$clprontproced->sql_query("","sd03_i_codigo,z01_nome,rh70_estrutural,rh70_descr","sd29_i_codigo desc","sd29_i_prontuario=$sd24_i_codigo");
 $query = db_query($sql);
-$linhas = pg_num_rows($query);
+$linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
  if($linhas>0){
   db_lovrot($sql,15,"()","","","","NoMe",["sd03_i_codigo"=>$sd03_i_codigo,"z01_nome"=>$z01_nome,"rh70_estrutural"=>$rh70_estrutural,"rh70_descr"=>$rh70_descr]);
  }else{

@@ -305,7 +305,7 @@ function db_incluir_sql($sql1, $table, $trigger)
     // $colunas = Quantidade de colunas que o select retornou.
     $campos = "";
     $virgula = "";
-    $colunas = pg_num_fields($result_tabela1);
+    $colunas = $result_tabela1 === false || $result_tabela1 === null ? 0 : pg_num_fields($result_tabela1);
 
     for ($ii = 0; $ii < $colunas; $ii++) {
         $dcoluna = pg_field_name($result_tabela1, $ii);   // Nome do campo corrente.

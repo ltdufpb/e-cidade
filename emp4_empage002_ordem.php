@@ -440,7 +440,7 @@ for ($i=0; $i<$numrows09; $i++) {
 						where		e82_codord = $e50_codord and 
 										e80_instit = " . db_getsession("DB_instit");
 	$result03  = db_query($sql3) or die($sql3);
-  $numrows03 = pg_num_rows($result03);
+  $numrows03 = $result03 === false || $result03 === null ? 0 : pg_num_rows($result03);
 
   $tot_valor = 0;
 	

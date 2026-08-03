@@ -455,7 +455,7 @@ class ControleMedico
             $msg = "Nenhum exame encontrado para o Assentamento Código:{$this->getCodigoAssentamento()} .";
             throw new \BusinessException($msg);
         }
-        $totalExames = pg_num_rows($rs);
+        $totalExames = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         for ($i = 0; $i < $totalExames; $i++) {
             $codigoExame = \db_utils::fieldsMemory($rs, $i)->h27_sequencial;
             $exame = new ControleMedicoExame($codigoExame);

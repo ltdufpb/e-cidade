@@ -239,7 +239,7 @@ if (isset($p->incluir)) {
             ";
 
             $rs = db_query($sql1);
-            $linhas = pg_num_rows($rs);
+            $linhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             if ($linhas > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Plano de Contas - {$iAno}'</script>";
                 flush();
@@ -306,7 +306,7 @@ if (isset($p->incluir)) {
                   )
                 ";
                 $rsPlanoOrcamentario = db_query($sql);
-                $linhas = pg_num_rows($rsPlanoOrcamentario);
+                $linhas = $rsPlanoOrcamentario === false || $rsPlanoOrcamentario === null ? 0 : pg_num_rows($rsPlanoOrcamentario);
 
                 if ($linhas > 0) {
                     for ($i = 0; $i < $linhas; $i++) {
@@ -434,7 +434,7 @@ if (isset($p->incluir)) {
             )";
 
             $rsConPlanoExe = db_query($sSqlConplanoExe);
-            $iNumRows = pg_num_rows($rsConPlanoExe);
+            $iNumRows = $rsConPlanoExe === false || $rsConPlanoExe === null ? 0 : pg_num_rows($rsConPlanoExe);
             if ($iNumRows > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando ConplanoExe - {$iAno}'</script>";
                 flush();
@@ -472,7 +472,7 @@ if (isset($p->incluir)) {
               )
             ";
             $rs = db_query($sql1);
-            $linhas = pg_num_rows($rs);
+            $linhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             if (pg_num_rows($rs) > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Contas Bancárias - {$iAno}'</script>";
                 flush();
@@ -520,7 +520,7 @@ if (isset($p->incluir)) {
             ";
 
             $rsOrcamentoConta = db_query($sql);
-            $linhas = pg_num_rows($rsOrcamentoConta);
+            $linhas = $rsOrcamentoConta === false || $rsOrcamentoConta === null ? 0 : pg_num_rows($rsOrcamentoConta);
 
             if ($linhas > 0) {
                 for ($i = 0; $i < $linhas; $i++) {
@@ -558,7 +558,7 @@ if (isset($p->incluir)) {
              )
             ";
             $rsEle = db_query($sql1);
-            $linhas = pg_num_rows($rsEle);
+            $linhas = $rsEle === false || $rsEle === null ? 0 : pg_num_rows($rsEle);
             if ($linhas > 0) {
                 for ($i = 0; $i < $linhas; $i++) {
                     db_atutermometro($i, $linhas, 'divimp2');
@@ -593,7 +593,7 @@ if (isset($p->incluir)) {
               )
             ";
             $rsOrg = db_query($sql1);
-            $linhas = pg_num_rows($rsOrg);
+            $linhas = $rsOrg === false || $rsOrg === null ? 0 : pg_num_rows($rsOrg);
             if (pg_num_rows($rs) > 0) {
                 for ($i = 0; $i < $linhas; $i++) {
                     db_atutermometro($i, $linhas, 'divimp2');
@@ -629,7 +629,7 @@ if (isset($p->incluir)) {
                 )
             ";
             $rsUni = db_query($sql);
-            $linhas = pg_num_rows($rsUni);
+            $linhas = $rsUni === false || $rsUni === null ? 0 : pg_num_rows($rsUni);
 
             if ($linhas > 0) {
                 for ($i = 0; $i < $linhas; $i++) {
@@ -667,7 +667,7 @@ if (isset($p->incluir)) {
               )
             ";
             $rsPro = db_query($sql1);
-            $linhas = pg_num_rows($rsPro);
+            $linhas = $rsPro === false || $rsPro === null ? 0 : pg_num_rows($rsPro);
             if ($linhas > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Programas - {$iAno}'</script>";
                 flush();
@@ -701,7 +701,7 @@ if (isset($p->incluir)) {
                  )
             ";
             $rsProj = db_query($sql1);
-            $linhas = pg_num_rows($rsProj);
+            $linhas = $rsProj === false || $rsProj === null ? 0 : pg_num_rows($rsProj);
             if ($linhas > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Projetos/Atividades - {$iAno}'</script>";
                 flush();
@@ -738,7 +738,7 @@ if (isset($p->incluir)) {
                  )
             ";
             $rsFon = db_query($sql1);
-            $linhas = pg_num_rows($rsFon);
+            $linhas = $rsFon === false || $rsFon === null ? 0 : pg_num_rows($rsFon);
             if ($linhas > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Fontes de Receita - {$iAno}'</script>";
                 flush();
@@ -771,7 +771,7 @@ if (isset($p->incluir)) {
             )
             ";
             $rsFon = db_query($sql1);
-            $linhas = pg_num_rows($rsFon);
+            $linhas = $rsFon === false || $rsFon === null ? 0 : pg_num_rows($rsFon);
             if ($linhas > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Desdobramentos da Receita - {$iAno}'</script>";
                 flush();
@@ -799,7 +799,7 @@ if (isset($p->incluir)) {
                 where dest.o50_anousu = {$clconaberturaexe->c91_anousudestino})
             ";
             $rsPars = db_query($sql1);
-            $linhas = pg_num_rows($rsPars);
+            $linhas = $rsPars === false || $rsPars === null ? 0 : pg_num_rows($rsPars);
             if ($linhas > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Parâmetros do Orçamento - {$iAno}'</script>";
                 flush();
@@ -848,7 +848,7 @@ if (isset($p->incluir)) {
                 )
             ";
             $rsConplanoGrupo = db_query($sql1);
-            $linhas = pg_num_rows($rsConplanoGrupo);
+            $linhas = $rsConplanoGrupo === false || $rsConplanoGrupo === null ? 0 : pg_num_rows($rsConplanoGrupo);
             if ($linhas > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Grupo de Contas - {$iAno}'</script>";
                 flush();
@@ -889,7 +889,7 @@ if (isset($p->incluir)) {
             ";
 
             $rsOrcamentoGrupo = db_query($sql);
-            $linhas = pg_num_rows($rsOrcamentoGrupo);
+            $linhas = $rsOrcamentoGrupo === false || $rsOrcamentoGrupo === null ? 0 : pg_num_rows($rsOrcamentoGrupo);
             if ($linhas > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Grupo de Contas Orçamentarias - {$iAno}'</script>";
                 flush();
@@ -927,7 +927,7 @@ if (isset($p->incluir)) {
             and exists(select 1 from conplanoorcamento
             where c60_codcon = c72_conplanoorcamento and c72_anousu = {$clconaberturaexe->c91_anousudestino})";
             $rsOrcamento = db_query($sql);
-            $linhas = pg_num_rows($rsOrcamento);
+            $linhas = $rsOrcamento === false || $rsOrcamento === null ? 0 : pg_num_rows($rsOrcamento);
 
             if ($linhas > 0) {
                 echo "<script>document.getElementById('lblimp').innerHTML = 'Importando Vinculo das Contas Orçamentarias - {$iAno}'</script>";

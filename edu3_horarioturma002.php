@@ -171,7 +171,7 @@ db_fieldsmemory($result1, 0);
            ";
 
             $result2 = db_query($sql2);
-            $linhas2 = pg_num_rows($result2);
+            $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 
             if ($linhas2 > 0) {
                 $aDisciplinas = [];

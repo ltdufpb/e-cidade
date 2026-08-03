@@ -155,7 +155,7 @@ try {
     throw new DBException("Nenhum registro encontrado.");
   }
 
-  $iLinha = pg_num_rows($rsExames);
+  $iLinha = $rsExames === false || $rsExames === null ? 0 : pg_num_rows($rsExames);
   $aDados = [];
 
   /**

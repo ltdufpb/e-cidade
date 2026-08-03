@@ -357,7 +357,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
 
     $pdf1->valtotal = $tot_item;
     $pdf1->recorddositens = $resultitem;
-    $pdf1->linhasdositens = pg_num_rows($resultitem);
+    $pdf1->linhasdositens = $resultitem === false || $resultitem === null ? 0 : pg_num_rows($resultitem);
     $pdf1->item = 'e55_item';
     $pdf1->quantitem = 'e55_quant';
     $pdf1->valoritem = 'e55_vltot';

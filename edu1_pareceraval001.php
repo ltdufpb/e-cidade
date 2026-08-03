@@ -89,7 +89,7 @@ if (isset($alterar2)) {
   $sql_r   .= "  OR diarioavaliacao.ed72_c_valorconceito != '' ";
   $sql_r   .= "  OR diarioavaliacao.ed72_t_parecer != '') ";
   $result_r = db_query($sql_r);
-  $linhas   = pg_num_rows($result_r);
+  $linhas   = $result_r === false || $result_r === null ? 0 : pg_num_rows($result_r);
   db_fieldsmemory($result_r,0);
 
   if ($max == "") {
@@ -136,7 +136,7 @@ if (isset($alterar2)) {
                                                                                $sWhere
                                                                               )
                                                 );
-    $linhas_dia = pg_num_rows($result);
+    $linhas_dia = $result === false || $result === null ? 0 : pg_num_rows($result);
     for ($t = 0; $t < $linhas_dia; $t++) {
 
       db_fieldsmemory($result,$t);
@@ -167,7 +167,7 @@ if (isset($alterar2)) {
       $sql_r   .= "  OR diarioavaliacao.ed72_c_valorconceito != '' ";
       $sql_r   .= "  OR diarioavaliacao.ed72_t_parecer != '') ";
       $result_r = db_query($sql_r);
-      $linhas   = pg_num_rows($result_r);
+      $linhas   = $result_r === false || $result_r === null ? 0 : pg_num_rows($result_r);
       db_fieldsmemory($result_r,0);
       if ($max == "") {
 

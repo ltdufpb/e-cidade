@@ -177,7 +177,7 @@ for($i=0;$i<$rows1;$i++){
 
   $result_deb = debitos_numpre($k63_numpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"),0,"k00_numpre");
   if($result_deb){
-    $rowsdeb    = pg_num_rows($result_deb); 
+    $rowsdeb    = $result_deb === false || $result_deb === null ? 0 : pg_num_rows($result_deb); 
   }else{
     $rowsdeb    = 0; 
   }
@@ -196,7 +196,7 @@ for($i=0;$i<$rows1;$i++){
     $sqlArrecad .= "      inner join arretipo on arrecad.k00_tipo = arretipo.k00_tipo ";
     $sqlArrecad .= " where k00_numpre = $k63_numpre limit 1 ";
     $rsArrecad  = db_query($sqlArrecad);
-    $rowsarrec  = pg_num_rows($rsArrecad); 
+    $rowsarrec  = $rsArrecad === false || $rsArrecad === null ? 0 : pg_num_rows($rsArrecad); 
     if($rowsarrec <> 0 ){
       db_fieldsmemory($rsArrecad,0);        
     }

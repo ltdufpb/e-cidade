@@ -139,8 +139,8 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 
 
 	$result       = db_query($sql);
-	$NumRows      = pg_num_rows($result);
-	$NumFields    = pg_num_fields($result);
+	$NumRows      = $result === false || $result === null ? 0 : pg_num_rows($result);
+	$NumFields    = $result === false || $result === null ? 0 : pg_num_fields($result);
 
 	$vet_data     = explode("-",(string) $data);
 
@@ -168,8 +168,8 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	$rs_tarefa    = $cltarefa->sql_record($cltarefa->sql_query_envol(null,"at40_sequencial,at40_diaini,at40_diafim,at40_horainidia,at40_horafim,at40_previsao,at40_tipoprevisao,at40_descr","at40_horainidia#at40_horafim",
                                                                      "at45_usuario=$id_usuario and at40_diaini>='$data_inicial'"));
 	if($cltarefa->numrows > 0) {
-		$NumRegs   = pg_num_rows($rs_tarefa);
-		$NumCampos = pg_num_fields($rs_tarefa);
+		$NumRegs   = $rs_tarefa === false || $rs_tarefa === null ? 0 : pg_num_rows($rs_tarefa);
+		$NumCampos = $rs_tarefa === false || $rs_tarefa === null ? 0 : pg_num_fields($rs_tarefa);
 	}
 	else {
 		$NumRegs   = 0;
@@ -179,8 +179,8 @@ function db_grid($sql,$data,$id_usuario,$vet_periodo_ini=null,$vet_periodo_fim=n
 	$rs_horafim    = $cltarefa->sql_record($cltarefa->sql_query_envol(null,"at40_diaini,at40_horafim","at40_horainidia#at40_horafim",
                                                                       "at45_usuario=$id_usuario and at40_diaini>='$data_inicial'"));
 	if($cltarefa->numrows > 0) {
-		$NumRegHfim   = pg_num_rows($rs_horafim);
-		$NumCampoHfim = pg_num_fields($rs_horafim);
+		$NumRegHfim   = $rs_horafim === false || $rs_horafim === null ? 0 : pg_num_rows($rs_horafim);
+		$NumCampoHfim = $rs_horafim === false || $rs_horafim === null ? 0 : pg_num_fields($rs_horafim);
 	}
 	else {
 		$NumRegHfim   = 0;

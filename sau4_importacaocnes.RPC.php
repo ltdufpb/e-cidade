@@ -120,7 +120,7 @@ try {
 
       $oRetorno->sMensagem = urlencode( _M( MENSAGENS_SAU4_IMPORTACAOCNES_RPC . 'cnes_nao_encontrados' ) );
 
-      $iTotalLinhas = pg_num_rows( $rsDBDepart );
+      $iTotalLinhas = $rsDBDepart === false || $rsDBDepart === null ? 0 : pg_num_rows( $rsDBDepart );
       for( $iContador = 0; $iContador < $iTotalLinhas; $iContador++ ) {
 
         $oDadosDepartamentos = db_utils::fieldsMemory( $rsDBDepart, $iContador );

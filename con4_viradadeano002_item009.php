@@ -67,7 +67,7 @@ if ($sqlerro == false) {
       $sqlinclui   .= "                      and a.id_item    = db_permissao.id_item) ";
 
       $resultinclui = db_query($sqlinclui);
-      $linhasinclui = pg_num_rows($resultinclui);
+      $linhasinclui = $resultinclui === false || $resultinclui === null ? 0 : pg_num_rows($resultinclui);
 
       if ($linhasinclui > 0) {
 

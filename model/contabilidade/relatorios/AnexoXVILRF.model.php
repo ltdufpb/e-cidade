@@ -77,8 +77,8 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
 
 
 
-    $iTotalLinhasReceita = pg_num_rows($rsReceita);
-    $iTotalLinhasDespesa = pg_num_rows($rsDespesa);
+    $iTotalLinhasReceita = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
+    $iTotalLinhasDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
 
     $aLinhasTotalizadorasImpostoLiquido  = [2, 3, 4, 5, 6, 7, 8, 9];
     $aLinhasTotalizadorasTransfConst     = [11, 12, 13, 14, 15, 16, 17, 18, 19];
@@ -650,7 +650,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
 
 
     $rsExecucao = db_query($sSqlExecucao);
-    $iTotalAnos = pg_num_rows($rsExecucao);
+    $iTotalAnos = $rsExecucao === false || $rsExecucao === null ? 0 : pg_num_rows($rsExecucao);
 
 
     //Linha 50

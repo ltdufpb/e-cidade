@@ -56,7 +56,7 @@ try {
         throw new DBException("Erro ao buscar as exceções de movimentação do banco selecionado");
       }
       
-      $iNumeroResultados   = pg_num_rows($rsResultado);
+      $iNumeroResultados   = $rsResultado === false || $rsResultado === null ? 0 : pg_num_rows($rsResultado);
       $aHistoricosExcecoes = [];
       
       for ($iMovimento = 0; $iMovimento < $iNumeroResultados; $iMovimento++) {

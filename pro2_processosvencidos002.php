@@ -203,7 +203,7 @@ function departamentosPorInstituicao()
         throw new DBException('Erro ao buscar departamentos da instituição.');
     }
 
-    $iLinhas = pg_num_rows($rsDepartamento);
+    $iLinhas = $rsDepartamento === false || $rsDepartamento === null ? 0 : pg_num_rows($rsDepartamento);
 
     if ($iLinhas == 0) {
         throw new BusinessException('Nenhum departamento encontrado para a instituição.');

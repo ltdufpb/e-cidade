@@ -615,7 +615,7 @@ class ServidorService
 
         $result = $curric->sql_query(null, 'h02_tipotreinamento', null, "h03_numcgm = " . $numCgm);
         $rsCurric = db_query($result);
-        $totalDadosCurric= pg_num_rows($rsCurric);
+        $totalDadosCurric= $rsCurric === false || $rsCurric === null ? 0 : pg_num_rows($rsCurric);
         for ($i = 0; $i < $totalDadosCurric; $i++) {
             $oCurric = db_utils::fieldsMemory($rsCurric, $i);
             if (!empty($oCurric->h02_tipotreinamento)) {

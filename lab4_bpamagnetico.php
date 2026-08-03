@@ -359,7 +359,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
     die("<br><br>".$sSql);
     
     $rsProducao      = db_query ( $sSql ) or die ( "Erro ao selecionar registros. <p>Comunique o adminstrador. <br> " );
-    $iLinhasProducao = pg_num_rows ( $rsProducao );
+    $iLinhasProducao = $rsProducao === false || $rsProducao === null ? 0 : pg_num_rows ( $rsProducao );
 
     $oDados->iLinhas      = $iLinhasProducao;
 

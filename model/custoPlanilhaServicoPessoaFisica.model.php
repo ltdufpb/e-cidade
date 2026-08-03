@@ -135,7 +135,7 @@ final class custoPlanilhaServicoPessoaFisica implements iCustoPlanilha {
     $sSqlCustos .= "          m52_sequen ";
     
     $rsCustos      = db_query($sSqlCustos);
-    $iTotalCustos  = pg_num_rows($rsCustos);
+    $iTotalCustos  = $rsCustos === false || $rsCustos === null ? 0 : pg_num_rows($rsCustos);
     
     require_once(modification("model/custoPlanilhaLinha.model.php"));
     require_once(modification("model/custorateio.model.php"));

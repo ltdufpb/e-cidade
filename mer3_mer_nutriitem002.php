@@ -55,7 +55,7 @@ $escola = db_getsession("DB_coddepto");
 $sql    = "select me09_i_codigo,me09_c_descr
            from mer_nutriente order by me09_c_descr";
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 $sql2   = " select me35_c_nomealimento,me35_i_codigo from mer_alimento ";
 if ($item!="") {
   $sql2 .= " where me35_i_codigo = $item ";
@@ -63,7 +63,7 @@ if ($item!="") {
   $sql2 .= " where me35_i_grupoalimentar = $grupo ";	
 }
 $result2 = db_query($sql2);
-$linhas2 = pg_num_rows($result2);
+$linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 ?>
 <br>
 <center>

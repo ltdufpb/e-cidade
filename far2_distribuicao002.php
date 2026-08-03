@@ -100,7 +100,7 @@ if ($distribu == 'N') {
   }
 }
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($linhas == 0) { ?>
  <table width='100%'>
   <tr>
@@ -152,7 +152,7 @@ if ($quebra == "d") {
 
     $sqld    = "select distinct (fa04_i_unidades) as depcod from far_retirada";
     $resultd = db_query($sqld);
-    $linhasd = pg_num_rows($resultd);
+    $linhasd = $resultd === false || $resultd === null ? 0 : pg_num_rows($resultd);
     for ($d = 0; $d < $linhasd; $d++) {
 
       db_fieldsmemory($resultd,$d);
@@ -279,7 +279,7 @@ for ($x = 0; $x < $veses; $x++) {
       }
 
       $result2    = db_query($sql2);
-      $linhas2    = pg_num_rows($result2);
+      $linhas2    = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
       db_fieldsmemory($result2, 0);
 
       $mes[$m]    = $quantidade;

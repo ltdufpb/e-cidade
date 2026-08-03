@@ -67,7 +67,7 @@ switch ( $objParam->exec ){
 		$obj_agendamento = db_utils::fieldsMemory ( $res_agendamento, 0 );
 		$arr_totalagenda = explode ( ",", (string) $obj_agendamento->fc_totalagendado );
 
-		$qtd = pg_num_rows($res_agendamento);
+		$qtd = $res_agendamento === false || $res_agendamento === null ? 0 : pg_num_rows($res_agendamento);
 		$intProfissional = $objParam->sd27_i_codigo;
 
 		db_inicio_transacao ();

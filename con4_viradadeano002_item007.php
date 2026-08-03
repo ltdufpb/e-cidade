@@ -34,11 +34,11 @@ if($sqlerro==false) {
   // PARÂMETROS TESOURARIA
   $sqlorigem = "select * from numpref where k03_anousu =  $anoorigem limit 1";
   $resultorigem = db_query($sqlorigem);
-  $linhasorigem = pg_num_rows($resultorigem);
+  $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
   $sqldestino = "select * from numpref where k03_anousu = $anodestino limit 1";
   $resultdestino = db_query($sqldestino);
-  $linhasdestino = pg_num_rows($resultdestino);
+  $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
   if (($linhasorigem > 0) && ($linhasdestino == 0 )) {
     
@@ -75,11 +75,11 @@ if($sqlerro==false) {
   // PARÂMETROS HABITACAO
   $sqlorigem = "select * from habitparametro where ht16_anousu =  $anoorigem limit 1";
   $resultorigem = db_query($sqlorigem);
-  $linhasorigem = pg_num_rows($resultorigem);
+  $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
   $sqldestino = "select * from habitparametro where ht16_anousu = $anodestino limit 1";
   $resultdestino = db_query($sqldestino);
-  $linhasdestino = pg_num_rows($resultdestino);
+  $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
   if (($linhasorigem > 0) && ($linhasdestino == 0 )) {
     

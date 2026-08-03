@@ -90,7 +90,7 @@ class AtividadeProfissionalEscolaRepository {
       return $aAtividades;
     }
 
-    $iLinhas = pg_num_rows($rsAtividade);
+    $iLinhas = $rsAtividade === false || $rsAtividade === null ? 0 : pg_num_rows($rsAtividade);
     for ($i = 0; $i < $iLinhas; $i++) {
 
       $iCodigo       = db_utils::fieldsMemory($rsAtividade, $i)->ed22_i_codigo;

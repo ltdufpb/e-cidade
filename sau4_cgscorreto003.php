@@ -54,7 +54,7 @@ if ((isset ( $_POST ["db_opcao"] ) && $_POST ["db_opcao"]) == "Excluir") {
 	
 	$sql1 = "select * from sau_cgscorreto where s127_i_codigo = $s127_i_codigo";
 	$result1 = db_query ( $sql1 );
-	$linhas1 = pg_num_rows ( $result1 );
+	$linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows ( $result1 );
 	if ($linhas1 > 0) {
 		db_fieldsmemory ( $result1, 0 );
 		if ($s127_b_proc == 't') {

@@ -81,7 +81,7 @@ class AnexoXIVBalancoGeral extends RelatoriosLegaisBase  {
                                            '',
                                            'true',
                                            'true');
-     $iTotalLinhas = pg_num_rows($rsPlano);     
+     $iTotalLinhas = $rsPlano === false || $rsPlano === null ? 0 : pg_num_rows($rsPlano);     
                                            
      /**
       * percorremos a slinhas cadastradas no relatorio, e adicionamos os valores cadastrados manualmente.

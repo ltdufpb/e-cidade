@@ -233,7 +233,7 @@ try {
                                     $oDaoDocumentoFiscais = new cl_tipodocumentosfiscal();
                                     $sql = $oDaoDocumentoFiscais->sql_query(null, "*", "e12_sequencial");
                                     $rsDocs = db_query($sql);
-                                    $linhas = pg_num_rows($rsDocs);
+                                    $linhas = $rsDocs === false || $rsDocs === null ? 0 : pg_num_rows($rsDocs);
                                     $aItens[0] = "selecione";
                                     for ($i = 0; $i < $linhas; $i++) {
                                         $oItens = db_utils::fieldsMemory($rsDocs, $i);

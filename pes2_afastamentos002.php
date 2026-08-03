@@ -238,7 +238,7 @@ $oPdf->AliasNbPages();
 $oPdf->setHeaderMargin(0.2);
 $oPdf->setfillcolor(235);
 
-$iTotal    = pg_num_rows($rsServidoresAfastados);
+$iTotal    = $rsServidoresAfastados === false || $rsServidoresAfastados === null ? 0 : pg_num_rows($rsServidoresAfastados);
 $lPreenche = false;
 $sQuebra   = '';
 

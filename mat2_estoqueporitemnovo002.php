@@ -232,7 +232,7 @@ if ($iTotalItensEstoque > 0) {
 
         $rsSaidasItens     = db_query($sSqlSaidasItens) ;
 
-        $iTotalSaidasItens = pg_num_rows($rsSaidasItens);
+        $iTotalSaidasItens = $rsSaidasItens === false || $rsSaidasItens === null ? 0 : pg_num_rows($rsSaidasItens);
 
         /**
          * Busca o saldo anterio do item, se informado um período inicial

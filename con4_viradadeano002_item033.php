@@ -42,7 +42,7 @@ if ($sqlerro == false) {
       throw new Exception("Não existe regra de calculo para carga horária no ano de: {$iAnoOrigem} ", 2);
     }
 
-    $iLinha = pg_num_rows($rsDadosOrigem);
+    $iLinha = $rsDadosOrigem === false || $rsDadosOrigem === null ? 0 : pg_num_rows($rsDadosOrigem);
     for ($i = 0; $i < $iLinha; $i++) {
 
       $oDados = db_utils::fieldsMemory($rsDadosOrigem, $i);

@@ -86,7 +86,7 @@ for($i = 0;$i < sizeof($conta);$i++) {
                      order by c.k12_hora";
 //		     die($sql);
   $result = db_query($sql);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   $pdf->SetFont('Arial','B',8);
   $pdf->setX(20);
   $pdf->Cell(16,3,"Data","LRB",0,"C",0);  

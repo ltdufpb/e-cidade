@@ -93,7 +93,7 @@ try {
     $oMsgErro->sErro = pg_last_error();
     throw new Exception( _M( MSG_RELATORIOVIAGEM . "erro_buscar_dados", $oMsgErro) );
   }
-  $iLinhas = pg_num_rows($rs);
+  $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
   if ($iLinhas == 0) {
     throw new Exception( _M( MSG_RELATORIOVIAGEM . "nenhum_registro_encontrado") );
   }

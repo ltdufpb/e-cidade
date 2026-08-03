@@ -460,7 +460,7 @@ try {
             $outrosPropri = $cl_obrasoutrosprop->sql_query_outrosprop(null, "z01_cgccpf", null, "ob32_codobra = {$value->codigoobra}");
             $rsOutrosPropri = $cl_obrasoutrosprop->sql_record($outrosPropri);
             
-            $numeroOutrosProp = pg_num_rows($rsOutrosPropri);
+            $numeroOutrosProp = $rsOutrosPropri === false || $rsOutrosPropri === null ? 0 : pg_num_rows($rsOutrosPropri);
             
             if (strlen((string) $dadosCgcCpf->z01_cgccpf) == 11) {
               $oRegistroAlvara->setCpfResponsavelPrincipal($dadosCgcCpf->z01_cgccpf);

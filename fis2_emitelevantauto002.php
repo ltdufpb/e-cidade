@@ -95,7 +95,7 @@ if (isset($codinscr) && $codinscr != ""){
 }
 //die($cllevanta->sql_querylev("",'*',"",$where));
 $resultlev = $cllevanta->sql_record($cllevanta->sql_querylev("",'*',"","$where"));
-$xxnum = pg_num_rows($resultlev);
+$xxnum = $resultlev === false || $resultlev === null ? 0 : pg_num_rows($resultlev);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem unidades cadastrados.');
    exit;

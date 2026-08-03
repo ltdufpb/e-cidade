@@ -103,7 +103,7 @@ if (isset($incluir) && $incluir != "") {
 	$sSqlItensAnt     .= "       inner join pcmater on pc01_codmater=pc16_codmater                                       ";
 	$sSqlItensAnt     .= " where pc11_numero = {$importado}   order by pc11_seq                                          ";
 	$result_itens_ant  = db_query($sSqlItensAnt);
-	$numrows_itens_ant = pg_num_rows($result_itens_ant);
+	$numrows_itens_ant = $result_itens_ant === false || $result_itens_ant === null ? 0 : pg_num_rows($result_itens_ant);
 	$sequencia = 0;
   
 	for ($w = 0; $w < $numrows_itens_ant; $w ++) {
@@ -372,7 +372,7 @@ $sSql = "select distinct
           inner join pcmater          on pc01_codmater  = pc16_codmater  
           where pc11_numero = $importado";
 $rsResult = db_query($sSql);
-$iNumrows = pg_num_rows($rsResult);
+$iNumrows = $rsResult === false || $rsResult === null ? 0 : pg_num_rows($rsResult);
 if ($iNumrows > 0) {
 ?>
     <table>

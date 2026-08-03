@@ -115,7 +115,7 @@ select termo.v07_parcel,
  group by colecao_numpar, v07_parcel
  order by 1
     ");
-    $totalRegistros = pg_num_rows($buscaDados);
+    $totalRegistros = $buscaDados === false || $buscaDados === null ? 0 : pg_num_rows($buscaDados);
 
     $this->objpdf->Setfont('Arial', 'b', 6);
     $this->objpdf->cell(10, 3, "Parcelamento"  , 0, 0, "C", 0);

@@ -125,7 +125,7 @@ for($i=0;$i<$num;$i++) {
       db_fieldsmemory($resultsoma, 0);
     }
     
-    $numrows01=pg_num_rows($result01);
+    $numrows01=$result01 === false || $result01 === null ? 0 : pg_num_rows($result01);
     $linha = 60;
     if($pri01=="false"){// testa quando e uma nova contribucao
       

@@ -65,7 +65,7 @@ if (!$rsSqlDbConfig) {
   db_redireciona('db_erros.php?fechar=true&db_erro=não foi possível pesquisar os dados para geração do comprovante.');
   exit;
 }
-$iNumRowsDbConfig = pg_num_rows($rsSqlDbConfig);
+$iNumRowsDbConfig = $rsSqlDbConfig === false || $rsSqlDbConfig === null ? 0 : pg_num_rows($rsSqlDbConfig);
 if ($iNumRowsDbConfig > 0) {
 
 	$oDbConfig  = db_utils::fieldsMemory($rsSqlDbConfig, 0);
@@ -444,7 +444,7 @@ if (!$rsSqlRendimento) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não foi possível pesquisar os dados para a geração do comprovantes');
   exit;
 }
-$iNumRows        = pg_num_rows($rsSqlRendimento);
+$iNumRows        = $rsSqlRendimento === false || $rsSqlRendimento === null ? 0 : pg_num_rows($rsSqlRendimento);
 
 if ($iNumRows == 0) {
 
@@ -476,7 +476,7 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
   $sSqlRubricasValores = $oDaoGeracaoDrif->sql_query_comprovante_rendimentos_rubricas_valores($oCompetencia, null, null, $sMatricula, $sRubricas);
 
   $rsSqlRubricasValores = db_query($sSqlRubricasValores);
-  $iNumRowsRubricasVal  = pg_num_rows($rsSqlRubricasValores);
+  $iNumRowsRubricasVal  = $rsSqlRubricasValores === false || $rsSqlRubricasValores === null ? 0 : pg_num_rows($rsSqlRubricasValores);
 
   for($i=0;$i < $iNumRowsRubricasVal;$i++){
     $oRubricasValores = db_utils::fieldsMemory($rsSqlRubricasValores, $i);

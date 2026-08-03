@@ -290,7 +290,7 @@ for($x = 0; $x < pg_num_rows($result);$x++){
 		$sqlOutrosNomes .= "  where k00_numpre = $v07_numpre ";
 		$sqlOutrosNomes .= "    and k00_numcgm <> $v07_numcgm ";
 		$rsOutrosNomes   = db_query($sqlOutrosNomes);
-		$intNumrows      = pg_num_rows($rsOutrosNomes);
+		$intNumrows      = $rsOutrosNomes === false || $rsOutrosNomes === null ? 0 : pg_num_rows($rsOutrosNomes);
 	
 		if($intNumrows > 1){
 	    $pdf->cell(60,$alt,'',0,0,"L",1);

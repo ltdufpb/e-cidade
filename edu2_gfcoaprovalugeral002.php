@@ -70,7 +70,7 @@ if ( $clturma->numrows > 0 ) {
 
   $result1 = db_query( $sql1 );
 
-  $linhas1 = pg_num_rows( $result1 );
+  $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows( $result1 );
 
   $aCadDisciplina = [];
   for ( $iContador = 0; $iContador < $linhas1; $iContador++ ) {
@@ -119,7 +119,7 @@ if ( $clturma->numrows > 0 ) {
   $sql4 .= " ORDER BY ed59_basecomum, ed59_i_ordenacao, disciplina ";
 
   $result4 = db_query( $sql4 );
-  $linhas4 = pg_num_rows( $result4 );
+  $linhas4 = $result4 === false || $result4 === null ? 0 : pg_num_rows( $result4 );
 
   //seleciona disciplinas da turma escolhida
   $sql2  = "SELECT DISTINCT substr(ed232_c_descr,0,20) as disciplina, ";
@@ -143,7 +143,7 @@ if ( $clturma->numrows > 0 ) {
 
 
   $result2 = db_query( $sql2 );
-  $linhas2 = pg_num_rows( $result2 );
+  $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows( $result2 );
 
   if ( $linhas1 == 0 ) {
   ?>

@@ -43,7 +43,7 @@ try {
     throw new Exception(pg_last_error());
   }
 
-  $iLinhas = pg_num_rows($rsAndamento);
+  $iLinhas = $rsAndamento === false || $rsAndamento === null ? 0 : pg_num_rows($rsAndamento);
 
   for ($i = 0; $i < $iLinhas; $i++ ) {
 

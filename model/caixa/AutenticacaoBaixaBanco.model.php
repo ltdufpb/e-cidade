@@ -182,7 +182,7 @@ class AutenticacaoBaixaBanco
             throw new BusinessException("Não foi possível localizar as receitas a serem arrecadadas.");
         }
 
-        $iReceitas = pg_num_rows($rsReceitasBaixaBanco);
+        $iReceitas = $rsReceitasBaixaBanco === false || $rsReceitasBaixaBanco === null ? 0 : pg_num_rows($rsReceitasBaixaBanco);
 
         /**
          * caso não encontre nenhuma receita, retorna false
@@ -250,7 +250,7 @@ class AutenticacaoBaixaBanco
             throw new BusinessException("Não foi possível localizar as receitas a serem arrecadadas.");
         }
 
-        $iTotalReceitas = pg_num_rows($rsReceitasBaixaBanco);
+        $iTotalReceitas = $rsReceitasBaixaBanco === false || $rsReceitasBaixaBanco === null ? 0 : pg_num_rows($rsReceitasBaixaBanco);
 
         /**
          * caso não encontre nenhuma receita, retorna false
@@ -307,7 +307,7 @@ class AutenticacaoBaixaBanco
             throw new BusinessException("Ocorreu um erro ao buscar as receitas extras orçamentárias na baixa de banco.");
         }
 
-        $iTotalReceitaExtra = pg_num_rows($rsBuscaReceita);
+        $iTotalReceitaExtra = $rsBuscaReceita === false || $rsBuscaReceita === null ? 0 : pg_num_rows($rsBuscaReceita);
 
         if ($iTotalReceitaExtra > 0) {
             $iAnoSessao = db_getsession('DB_anousu');
@@ -366,7 +366,7 @@ class AutenticacaoBaixaBanco
             throw new BusinessException("Ocorreu um erro ao buscar as receitas extras orçamentárias na baixa de banco.");
         }
 
-        $iTotalReceitaExtra = pg_num_rows($rsBuscaReceita);
+        $iTotalReceitaExtra = $rsBuscaReceita === false || $rsBuscaReceita === null ? 0 : pg_num_rows($rsBuscaReceita);
 
         if ($iTotalReceitaExtra <= 0) {
             return false;

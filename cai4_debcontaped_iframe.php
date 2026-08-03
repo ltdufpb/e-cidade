@@ -95,7 +95,7 @@ $sql = "select arrecad.k00_numpre,k00_numpar,k00_dtvenc,sum(k00_valor)as k00_val
 	              group by arrecad.k00_numpre,k00_numpar,k00_dtvenc,arrecad.k00_tipo,k00_descr
 				  order by arrecad.k00_numpre,arrecad.k00_numpar                  ";
 $result = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($numrows > 0) {
 	echo "
 	    <tr class='bordas'>

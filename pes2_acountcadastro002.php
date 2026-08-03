@@ -99,7 +99,7 @@ if (!$result1) {
   db_redireciona("db_erros.php?fechar=true&db_erro=".urlencode("Erro ao buscar os dados do account."));
 }
 
-$xxnum1  = pg_num_rows($result1);
+$xxnum1  = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
 for($xx = 0; $xx < pg_num_rows($result1);$xx++) {
 
@@ -154,7 +154,7 @@ $result2 = db_query($sql2);
 if (!$result2) {
   db_redireciona("db_erros.php?fechar=true&db_erro=".urlencode("Erro ao buscar os dados do account."));
 }
-$xxnum2 = pg_num_rows($result2);
+$xxnum2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 
 for($xx = 0; $xx < pg_num_rows($result2);$xx++){
    db_fieldsmemory($result2,$xx);
@@ -202,7 +202,7 @@ if (!$res_temp) {
   db_redireciona("db_erros.php?fechar=true&db_erro=".urlencode("Erro ao criar estrutura para o relatório."));
 }
 
-$xxnum = pg_num_rows($res_temp);
+$xxnum = $res_temp === false || $res_temp === null ? 0 : pg_num_rows($res_temp);
 
 if ($xxnum == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mes.' / '.$ano);

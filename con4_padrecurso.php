@@ -56,7 +56,7 @@ class recurso
         ";
 
         $res = db_query($sql);
-        $rows = pg_num_rows($res);
+        $rows = $res === false || $res === null ? 0 : pg_num_rows($res);
 
         for ($x = 0; $x < $rows; $x++) {
             $oDadosRecurso = db_utils::fieldsMemory($res, $x);

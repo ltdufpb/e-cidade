@@ -84,7 +84,7 @@ $cliptuconstr->rotulo-> label("j39_idcons");
           $sql = "select * from iptuconstr where j39_matric = $j11_matric and j39_idcons = $pesquisa_chave";
           echo "xxxxxxxxxxxxxxx = $sql"; 
           $result = db_query($sql);
-          $linhas = pg_num_rows($result);
+          $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
           if($linhas!=0){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$j39_idcons',null);</script>";

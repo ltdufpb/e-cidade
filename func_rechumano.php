@@ -124,7 +124,7 @@ $escola = db_getsession("DB_coddepto");
         WHERE ed75_i_escola = {$escola}
         ORDER BY ed10_c_abrev";
         $sql_result = db_query($sql);
-        $num        = pg_num_rows($sql_result);
+        $num        = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
         $conta      = "";
 
         while ($row = pg_fetch_array($sql_result)) {
@@ -141,7 +141,7 @@ $escola = db_getsession("DB_coddepto");
               AND ed75_i_escola = {$escola}
             ORDER BY ed232_c_descr";
             $sub_result = db_query($sub_sql);
-            $num_sub    = pg_num_rows($sub_result);
+            $num_sub    = $sub_result === false || $sub_result === null ? 0 : pg_num_rows($sub_result);
 
             if ($num_sub >= 1) {
               # Se achar alguma base para o curso, marca a palavra Todas
@@ -299,7 +299,7 @@ $escola = db_getsession("DB_coddepto");
             <?php
             $sSqlAtividadeRh = $clatividaderh->sql_query_file("", "ed01_i_codigo, ed01_c_descr", "ed01_c_descr");
             $result_ativ = $clatividaderh->sql_record($sSqlAtividadeRh);
-            $linhas_ativ = pg_num_rows($result_ativ);
+            $linhas_ativ = $result_ativ === false || $result_ativ === null ? 0 : pg_num_rows($result_ativ);
             ?>
             <select name="atividaderh"
                     id="atividaderh"

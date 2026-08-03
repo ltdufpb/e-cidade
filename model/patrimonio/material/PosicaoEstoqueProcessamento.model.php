@@ -309,7 +309,7 @@ class PosicaoEstoqueProcessamento {
 
 
       $rsBuscaMovimentacao = pg_execute("busca_movimentacao_material", $aParametrosQuery);
-      $iTotalMovimentacao  = pg_num_rows($rsBuscaMovimentacao);
+      $iTotalMovimentacao  = $rsBuscaMovimentacao === false || $rsBuscaMovimentacao === null ? 0 : pg_num_rows($rsBuscaMovimentacao);
 
       $nValorFinanceiro = 0 ;
       for ($iMovimentacao = 0; $iMovimentacao < $iTotalMovimentacao; $iMovimentacao++) {

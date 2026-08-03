@@ -49,7 +49,7 @@ $sSql  .= "          ) x                                          ";
 $sSql  .= " order by logradouro                                   ";
 
 $result   = db_query($sSql);
-$iNumRows = pg_num_rows($result);
+$iNumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $array    = db_utils::getCollectionByRecord($result,false,false,true);
 

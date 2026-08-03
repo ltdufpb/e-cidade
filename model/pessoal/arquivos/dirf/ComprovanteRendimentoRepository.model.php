@@ -81,7 +81,7 @@ class ComprovanteRendimentoRepository
         if (!$rsDadosDirf) {
             throw new DBException('Erro ao realizar pesquisa do comprovante de rendimentos');
         }
-        $iTotalLinhas = pg_num_rows($rsDadosDirf);
+        $iTotalLinhas = $rsDadosDirf === false || $rsDadosDirf === null ? 0 : pg_num_rows($rsDadosDirf);
         if ($iTotalLinhas == 0) {
             throw new BusinessException(
                 "Sem comprovante de rendimentos para o servidor {$matricula->getMatricula()} em {$ano}."
@@ -113,7 +113,7 @@ class ComprovanteRendimentoRepository
                     $sRubricas
                 );
                 $rsRubricasValores = db_query($sSqlRubricasValores);
-                $iTotalLinhasRubricas = pg_num_rows($rsRubricasValores);
+                $iTotalLinhasRubricas = $rsRubricasValores === false || $rsRubricasValores === null ? 0 : pg_num_rows($rsRubricasValores);
                 if ($iTotalLinhasRubricas > 0) {
                     for ($i = 0; $i < $iTotalLinhasRubricas; $i++) {
                         $oRubricasValores = db_utils::fieldsMemory($rsRubricasValores, $i);

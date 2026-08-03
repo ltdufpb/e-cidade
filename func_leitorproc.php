@@ -124,7 +124,7 @@ $clcidadao->rotulo->label("ov02_nome");
    } else if (isset($pesquisa_chave) && $pesquisa_chave != "") {
 
      $result = pg_query($sql);
-     $linhas = pg_num_rows($result);
+     $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
      
      if ($linhas != 0) {
 
@@ -136,7 +136,7 @@ $clcidadao->rotulo->label("ov02_nome");
    } else if (isset($pesquisa_chave2) && $pesquisa_chave2 != "") {
 
      $result = pg_query($sql);
-     $linhas = pg_num_rows($result);
+     $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
      
      if ($linhas != 0) {
 

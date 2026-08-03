@@ -288,7 +288,7 @@ if (isset($oPost->marcarvencidas) && isset($oPost->marcartodas)) {
             $sSqlArrecad .= "     and k00_numpar   = {$iNumpar}     ";
             $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}' ";
             $rsSqlArrecad = db_query($sSqlArrecad);
-            $iNumRows = pg_num_rows($rsSqlArrecad);
+            $iNumRows = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
 
             if ($iNumRows == 0) {
                 if ($_POST["tipo_debito"] == 3 || $_POST["tipo_debito"] == 5) {
@@ -461,7 +461,7 @@ if ($unica != "1") {
                 $sSqlArrecad .= "  where k00_numpre   = {$k00_numpre} ";
                 $sSqlArrecad .= "    and k00_numpar   = {$k00_numpar} ";
                 $rsSqlArrecad = db_query($sSqlArrecad);
-                $iNumRows = pg_num_rows($rsSqlArrecad);
+                $iNumRows = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
                 if ($iNumRows == 0) {
                     $oArrecad = db_utils::fieldsMemory($rsSqlArrecad, 0);
                     $sDataUsuCarnes = $oArrecad->k00_dtvenc;
@@ -1242,7 +1242,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                                 where j01_matric = $j01_matric limit 1";
 
                     $rsresultender = db_query($sqlEnder);
-                    $intNumrowsEnder = pg_num_rows($rsresultender);
+                    $intNumrowsEnder = $rsresultender === false || $rsresultender === null ? 0 : pg_num_rows($rsresultender);
                     if ($intNumrowsEnder > 0) {
                         db_fieldsmemory($rsresultender, 0);
                     }
@@ -1387,7 +1387,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
                 $rsReceitas = db_query($sqlReceitas);
 
-                $intnumrows = pg_num_rows($rsReceitas);
+                $intnumrows = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 
                 $vlrjuros = 0;
                 $vlrmulta = 0;
@@ -1465,7 +1465,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
                 $sqlMsgCarne = " select k00_msguni2 from arretipo where k00_tipo = $k00_tipo ";
                 $rsMsgCarneUnica = db_query($sqlMsgCarne);
-                $intNumrowsMsgCarne = pg_num_rows($rsMsgCarneUnica);
+                $intNumrowsMsgCarne = $rsMsgCarneUnica === false || $rsMsgCarneUnica === null ? 0 : pg_num_rows($rsMsgCarneUnica);
 
                 if ($intNumrowsMsgCarne > 0) {
                     db_fieldsmemory($rsMsgCarneUnica, 0);
@@ -1488,7 +1488,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                         $sqlaliq .= "   and q05_numpar = $k00_numpar ";
 
                         $rsIssvarano = db_query($sqlaliq);
-                        $intNumrows = pg_num_rows($rsIssvarano);
+                        $intNumrows = $rsIssvarano === false || $rsIssvarano === null ? 0 : pg_num_rows($rsIssvarano);
 
                         if ($intNumrows == 0) {
 
@@ -1523,7 +1523,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
                 $sqlmsg = "select k00_tipo, k00_msguni, k00_msguni2 from arretipo where k00_tipo = " . $k00_tipo;
                 $resultmsg = db_query($sqlmsg);
-                $linhasmsg = pg_num_rows($resultmsg);
+                $linhasmsg = $resultmsg === false || $resultmsg === null ? 0 : pg_num_rows($resultmsg);
                 db_fieldsmemory($resultmsg, 0);
 
                 $desconto = $k00_percdes;
@@ -1689,7 +1689,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
 
                                 if ($rsDadosPartilha) {
 
-                                    $iLinhasPartilha = pg_num_rows($rsDadosPartilha);
+                                    $iLinhasPartilha = $rsDadosPartilha === false || $rsDadosPartilha === null ? 0 : pg_num_rows($rsDadosPartilha);
                                     for ($iInd=0; $iInd < $iLinhasPartilha; $iInd++) {
                                         $aDadosPartilha = db_utils::fieldsMemory($rsDadosPartilha, $iInd);
 
@@ -1875,7 +1875,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             $sSqlArrecad .= "  where k00_numpre   = {$k00_numpre} ";
             $sSqlArrecad .= "    and k00_numpar   = {$k00_numpar} ";
             $rsSqlArrecad = db_query($sSqlArrecad);
-            $iNumRows = pg_num_rows($rsSqlArrecad);
+            $iNumRows = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
 
             if ($iNumRows == 0) {
 
@@ -1894,7 +1894,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         $sSqlArrecadVencimento .= "  where k00_numpre   = {$k00_numpre} ";
         $sSqlArrecadVencimento .= "    and k00_numpar   = {$k00_numpar} ";
         $rsSqlArrecadVencimento = db_query($sSqlArrecadVencimento);
-        $iNumRows = pg_num_rows($rsSqlArrecadVencimento);
+        $iNumRows = $rsSqlArrecadVencimento === false || $rsSqlArrecadVencimento === null ? 0 : pg_num_rows($rsSqlArrecadVencimento);
 
         if ($rsSqlArrecadVencimento && $iNumRows > 0) {
             $oArrecadVencimento = db_utils::fieldsMemory($rsSqlArrecadVencimento, 0);
@@ -2123,7 +2123,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         if ($k03_tipo == 3) {
 
             $rsAnoissvar = db_query("select q05_ano from issvar where q05_numpre = $k00_numpre");
-            $intAnoissvar = pg_num_rows($rsAnoissvar);
+            $intAnoissvar = $rsAnoissvar === false || $rsAnoissvar === null ? 0 : pg_num_rows($rsAnoissvar);
             db_fieldsmemory($rsAnoissvar, 0);
 
             if ($intAnoissvar > 0 && $q05_ano <= date("Y", $H_DATAUSU)) {
@@ -2519,7 +2519,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
     }
 
     $rsReceitas = db_query($sqlReceitas);
-    $intnumrows = pg_num_rows($rsReceitas);
+    $intnumrows = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 
     $lReceitasIguais = false;
     $vlrjuros     = 0;
@@ -2640,7 +2640,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
             where j01_matric = $numero limit 1";
 
         $rsresultender   = db_query($sqlEnder);
-        $intNumrowsEnder = pg_num_rows($rsresultender);
+        $intNumrowsEnder = $rsresultender === false || $rsresultender === null ? 0 : pg_num_rows($rsresultender);
 
         if ($intNumrowsEnder > 0) {
             db_fieldsmemory($rsresultender, 0);
@@ -2983,7 +2983,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         if ($k03_tipo == 3) {
             $sqlaliq = "select q05_aliq, q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
             $rsIssvarano = db_query($sqlaliq);
-            $intNumrows  = pg_num_rows($rsIssvarano);
+            $intNumrows  = $rsIssvarano === false || $rsIssvarano === null ? 0 : pg_num_rows($rsIssvarano);
             if ($intNumrows == 0) {
 
                 db_redireciona('db_erros.php?fechar=true&db_erro=Ano não encontrado na tabela issvar. Contate o suporte');
@@ -3209,7 +3209,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
                      and k00_numpar = $k00_numpar ";
 
     $resultVerParcel = db_query($sqlVerParcel);
-    $linhasVerParcel = pg_num_rows($resultVerParcel);
+    $linhasVerParcel = $resultVerParcel === false || $resultVerParcel === null ? 0 : pg_num_rows($resultVerParcel);
 
     $pdf1->descr4_2 = "";
 
@@ -3236,7 +3236,7 @@ for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
         if (db_strtotime($k00_dtvenc) >= db_strtotime($db_datausu)) {
             $sqlDesconto = "select fc_recibodesconto($k00_numpre,$k00_numpar,$v07_totpar,$k00_receit,$k00_tipo,'$k00_dtvenc','$k00_dtvenc') as percento";
             $resultDesconto = db_query($sqlDesconto);
-            $linhasDesconto = pg_num_rows($resultDesconto);
+            $linhasDesconto = $resultDesconto === false || $resultDesconto === null ? 0 : pg_num_rows($resultDesconto);
 
             $pdf1->descr4_2  = "Valor da parcela                        R$" . db_formatar($nTotalDebito, "f") . "\n";
 

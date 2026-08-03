@@ -353,7 +353,7 @@ for($i=0;$i<$num;$i++) {
     ";
 
      $result01 = pg_query($sSqlContLot);
-     $numrows01 = pg_num_rows($result01);
+     $numrows01 = $result01 === false || $result01 === null ? 0 : pg_num_rows($result01);
 
 
      $linha = 60;

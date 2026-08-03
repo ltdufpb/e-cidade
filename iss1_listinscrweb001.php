@@ -65,7 +65,7 @@ if(isset($acumula)&&!empty($acumula)){
      $sqlVerificaEscrito .= "     and q10_inscr  = {$oLista->p12_inscr}   "; 
 
      $rsVerificaEscrito = db_query($sqlVerificaEscrito);
-     $iVerificaEscrito  = pg_num_rows($rsVerificaEscrito);
+     $iVerificaEscrito  = $rsVerificaEscrito === false || $rsVerificaEscrito === null ? 0 : pg_num_rows($rsVerificaEscrito);
 
 	 if (isset($oLista->p12_tipolanc) && $oLista->p12_tipolanc == 1) {
         $sqlEscrito  = "  select q10_inscr                         ";
@@ -73,7 +73,7 @@ if(isset($acumula)&&!empty($acumula)){
         $sqlEscrito .= "   where q10_inscr = {$oLista->p12_inscr}  ";
 
         $rsEscrito = db_query($sqlEscrito);
-        $iEscrito  = pg_num_rows($rsEscrito);
+        $iEscrito  = $rsEscrito === false || $rsEscrito === null ? 0 : pg_num_rows($rsEscrito);
 
         if ($iEscrito > 0) {
            $sqlVerificaNull  = "  select q10_inscr,                        ";
@@ -84,7 +84,7 @@ if(isset($acumula)&&!empty($acumula)){
            $sqlVerificaNull .= "     and q10_dtfim is null                 ";
 
            $rsVerificaNull = db_query($sqlVerificaNull);
-           $iVerificaNull  = pg_num_rows($rsVerificaNull);
+           $iVerificaNull  = $rsVerificaNull === false || $rsVerificaNull === null ? 0 : pg_num_rows($rsVerificaNull);
 
            if ($iVerificaNull > 0) {
            	 $oVerifNullEscrito = db_utils::fieldsMemory($rsVerificaNull,0);
@@ -182,7 +182,7 @@ if ($cllistainscrcab->erro_banco != "") {
 //busca dados da instituição
 $sqlBuscaDadosInst = " select * from db_config where codigo = ".db_getsession('DB_instit');
 $rsBuscaDadosInst  = db_query($sqlBuscaDadosInst);
-$iBuscaDadosInst   = pg_num_rows($rsBuscaDadosInst);
+$iBuscaDadosInst   = $rsBuscaDadosInst === false || $rsBuscaDadosInst === null ? 0 : pg_num_rows($rsBuscaDadosInst);
 
 if ($iBuscaDadosInst > 0) {
 	 $oBuscaDadosInst = db_utils::fieldsMemory($rsBuscaDadosInst,0);

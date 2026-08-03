@@ -133,7 +133,7 @@ $sSqlDados    .= "          ) as planejado_acumulado ";
 $sSqlDados    .= " from   categoriapacto";
 $sSqlDados    .= " where o31_tipopacto = {$oConvenio->o16_tipopacto} order by o31_sequencial";
 $rsDados       = db_query($sSqlDados);
-$iTotalRows    = pg_num_rows($rsDados);
+$iTotalRows    = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
 $aLinhaRelatorio = db_utils::getCollectionByRecord($rsDados);
 
 $iAlt = 4;

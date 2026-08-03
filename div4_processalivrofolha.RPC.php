@@ -66,7 +66,7 @@ try {
                 throw new DBException("Ocorreu um erro ao consultar o livro para o exercício.");
             }
 
-            $totalRegistros = pg_num_rows($buscaInformacoes);
+            $totalRegistros = $buscaInformacoes === false || $buscaInformacoes === null ? 0 : pg_num_rows($buscaInformacoes);
             if ($totalRegistros === 0) {
                 throw new BusinessException("Não foram encontradas dividas importadas.");
             }

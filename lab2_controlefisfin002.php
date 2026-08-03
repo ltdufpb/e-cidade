@@ -209,7 +209,7 @@ $lQuebra = true;
 $iTpCtrAtual = 0;
 $fTotal = -1;
 $fLimite = 0;
-$iLinhas = pg_num_rows($rs);
+$iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
 for ($iInd = 0; $iInd < $iLinhas; $iInd++) {
     $oDados = db_utils::fieldsmemory($rs, $iInd, true);

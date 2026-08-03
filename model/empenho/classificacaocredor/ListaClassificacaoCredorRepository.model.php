@@ -83,7 +83,7 @@ class ListaClassificacaoCredorRepository {
       throw new DBException("Houve um erro ao buscar as Listas de Classificação de Credores.");
     }
 
-    $iTotalRegistros = pg_num_rows($rsListasClassificacao);
+    $iTotalRegistros = $rsListasClassificacao === false || $rsListasClassificacao === null ? 0 : pg_num_rows($rsListasClassificacao);
     if ($iTotalRegistros == 0) {
       throw new BusinessException("Nenhuma Lista de Classificação de Credores foi encontrada.");
     }

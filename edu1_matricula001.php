@@ -143,7 +143,7 @@ if ( isset( $incluir ) ) {
       db_msgbox("Erro ao buscar as referências do turno da turma.");
       $lErroTransacao = true;
     }
-    $iTotalTurmaTurnoReferente = pg_num_rows( $rsTurmaTurnoReferente );
+    $iTotalTurmaTurnoReferente = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows( $rsTurmaTurnoReferente );
 
     $msg_mat = "";
     db_inicio_transacao();

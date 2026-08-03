@@ -38,22 +38,22 @@ if($sqlerro==false) {
   // PARÂMETROS PROTOCOLO
   $sqlorigem = "select * from protprocessonumeracao where p07_ano = $anoorigem limit 1";
   $resultorigem = db_query($sqlorigem);
-  $linhasorigem = pg_num_rows($resultorigem);
+  $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
   $sqldestino = "select * from protprocessonumeracao where p07_ano = $anodestino limit 1";
   $resultdestino = db_query($sqldestino);
-  $linhasdestino = pg_num_rows($resultdestino);
+  $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
   $sqlparamglobal = "select * from protparamglobal";
   $resultparamglobal = db_query($sqlparamglobal);
-  $linhasparamglobal = pg_num_rows($resultparamglobal);
+  $linhasparamglobal = $resultparamglobal === false || $resultparamglobal === null ? 0 : pg_num_rows($resultparamglobal);
 
   if (($linhasorigem > 0) && ($linhasdestino == 0 ) and ($linhasparamglobal > 0) ) {
     db_fieldsmemory($resultparamglobal,0);
 
 		$sqlprotprocessonumeracao = $cl_protprocessonumeracao->sql_query_file("","*","","p07_ano = {$anoorigem}");
 		$rsprotprocessonumeracao  = $cl_protprocessonumeracao->sql_record($sqlprotprocessonumeracao);
-		$iTotalLinhaInsert = pg_num_rows($rsprotprocessonumeracao);
+		$iTotalLinhaInsert = $rsprotprocessonumeracao === false || $rsprotprocessonumeracao === null ? 0 : pg_num_rows($rsprotprocessonumeracao);
 		for ($iLinhaInsert = 0; $iLinhaInsert < $iTotalLinhaInsert;  $iLinhaInsert++ ) {
 		  db_fieldsmemory($rsprotprocessonumeracao, $iLinhaInsert);
 

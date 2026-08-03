@@ -60,7 +60,7 @@ $oPdfTable->addHeaderDescription("Exercício: " . $iAnousu);
 $oDaoZonasTaxa = new cl_zonastaxa;
 $sSql          = $oDaoZonasTaxa->sql_query(null, null, $iAnousu, "*", "j57_zona");
 $rsZonasTaxa   = $oDaoZonasTaxa->sql_record( $sSql );
-$iTotal        = pg_num_rows($rsZonasTaxa);
+$iTotal        = $rsZonasTaxa === false || $rsZonasTaxa === null ? 0 : pg_num_rows($rsZonasTaxa);
 
 if( $rsZonasTaxa ){
 

@@ -77,7 +77,7 @@ try {
         throw new DBException( _M( MSG_EDU4_TRANSFERIRALUNOSENCERRADOSRPC . "erro_buscar_escolas_rede") );
       }
 
-      $iLinhas            = pg_num_rows($rs);
+      $iLinhas            = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
       $oRetorno->aEscolas = [];
       for( $i = 0; $i < $iLinhas; $i++) {
 
@@ -207,7 +207,7 @@ try {
         throw new DBException( _M(MSG_EDU4_TRANSFERIRALUNOSENCERRADOSRPC . "erro_buscar_emissor"));
       }
 
-      $iTotalEmissores = pg_num_rows($rsAssinatura);
+      $iTotalEmissores = $rsAssinatura === false || $rsAssinatura === null ? 0 : pg_num_rows($rsAssinatura);
 
       for( $iContador = 0; $iContador < $iTotalEmissores; $iContador++ ) {
 

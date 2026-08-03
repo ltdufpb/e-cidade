@@ -751,7 +751,7 @@ class Regencia
             $oDaoDiarioRegraCalculo = new cl_diarioregracalculo();
             $oDaoDiarioAvaliacaoAlternativa = new cl_diarioavaliacaoalternativa();
 
-            $iLinhas = pg_num_rows($rsDiario);
+            $iLinhas = $rsDiario === false || $rsDiario === null ? 0 : pg_num_rows($rsDiario);
 
             for ($i = 0; $i < $iLinhas; $i++) {
                 $iDiario = db_utils::fieldsMemory($rsDiario, $i)->ed95_i_codigo;

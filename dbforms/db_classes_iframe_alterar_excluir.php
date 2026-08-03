@@ -45,7 +45,7 @@ $sql = base64_decode((string) $sql);
 if (isset($sql_disabled)) {
     $sql_disabled = base64_decode($sql_disabled);
     $result01 = db_query($sql_disabled);
-    $numrows01 = pg_num_rows($result01);
+    $numrows01 = $result01 === false || $result01 === null ? 0 : pg_num_rows($result01);
 }
 
 $campos = base64_decode($campos);
@@ -150,23 +150,23 @@ $campos_comparar = base64_decode(($campos_comparar ?? ""));
                            class="tabela_iframe_alterar_excluir">
                         <?php
                         $result = @db_query($sql);
-                        $numrows = @pg_num_rows($result);
-                        $numcols = @pg_num_fields($result);
+                        $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
+                        $numcols = $result === false || $result === null ? 0 : @pg_num_fields($result);
                         $flag_achou = false;
                         $id_reg = -1;
 
                         if (isset($sql_comparar) && $sql_comparar != "") {
                             $res_servico = @db_query($sql_servico);
-                            $numrows_servico = @pg_num_rows($res_servico);
-                            $numcols_servico = @pg_num_fields($res_servico);
+                            $numrows_servico = $res_servico === false || $res_servico === null ? 0 : @pg_num_rows($res_servico);
+                            $numcols_servico = $res_servico === false || $res_servico === null ? 0 : @pg_num_fields($res_servico);
 
                             $res_reservasaldo = @db_query($sql_reservasaldo);
-                            $numrows_reservasaldo = @pg_num_rows($res_reservasaldo);
-                            $numcols_reservasaldo = @pg_num_fields($res_reservasaldo);
+                            $numrows_reservasaldo = $res_reservasaldo === false || $res_reservasaldo === null ? 0 : @pg_num_rows($res_reservasaldo);
+                            $numcols_reservasaldo = $res_reservasaldo === false || $res_reservasaldo === null ? 0 : @pg_num_fields($res_reservasaldo);
 
                             $res_comparar = @db_query($sql_comparar);
-                            $numrows_comparar = @pg_num_rows($res_comparar);
-                            $numcols_comparar = @pg_num_fields($res_comparar);
+                            $numrows_comparar = $res_comparar === false || $res_comparar === null ? 0 : @pg_num_rows($res_comparar);
+                            $numcols_comparar = $res_comparar === false || $res_comparar === null ? 0 : @pg_num_fields($res_comparar);
 
                             $matriz_comparar = explode(",", $campos_comparar);
                             $numcol_comparar = sizeof($matriz_comparar);

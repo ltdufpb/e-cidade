@@ -162,7 +162,7 @@ if ( isset( $processar ) ) {
      */
     $sSqlTurmaTurnoReferente    = $oDaoTurmaTurnoReferente->sql_query_file( null, "*", null, "ed336_turma = {$codigo}" );
     $rsTurmaTurnoReferente      = db_query( $sSqlTurmaTurnoReferente );
-    $iLinhasTurmaTurnoReferente = pg_num_rows( $rsTurmaTurnoReferente );
+    $iLinhasTurmaTurnoReferente = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows( $rsTurmaTurnoReferente );
 
     for ( $iContador = 0; $iContador < $iLinhasTurmaTurnoReferente; $iContador++ ) {
 
@@ -253,7 +253,7 @@ if ( isset( $processar ) ) {
                                                                            )
                                         );
  $row        = $clcalendario->numrows;
- $num        = pg_num_rows($sql_result);
+ $num        = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
  $conta      = "";
  while ($row = pg_fetch_array($sql_result)) {
    $conta     = $conta+1;
@@ -449,7 +449,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
         $sql   .= "        where ed287_i_tipoturma = 1 and ed57_i_calendario = $calendario1)  order by ed57_c_descr";
 
         $result = db_query($sql);
-        $linhas = pg_num_rows($result);
+        $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
        ?>
         <b>Turmas:</b><br>
        <select name="alunosdiario" id="alunosdiario" onclick="js_desabinc()"
@@ -521,7 +521,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
             $sql23   .= "      left join turmalog on turmalog.ed287_i_turma = turma.ed57_i_codigo";
             $sql23   .= " where ed52_i_codigo = $calendario1 order by descr1";
             $result23 = db_query($sql23);
-            $linhas23 = pg_num_rows($result23);
+            $linhas23 = $result23 === false || $result23 === null ? 0 : pg_num_rows($result23);
 
          ?>
         <select name="turmasincluidas" id="turmasincluidas" size="10" onclick="js_desabexc()"

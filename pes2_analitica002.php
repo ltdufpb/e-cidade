@@ -418,7 +418,7 @@ if ($afastado == 'n') {
 $sql_dados1 .= " order by {$orderBY}";
 
 $result_dados = db_query($sql_dados1);
-$numrows_dados = pg_num_rows($result_dados);
+$numrows_dados = $result_dados === false || $result_dados === null ? 0 : pg_num_rows($result_dados);
 
 if($numrows_dados == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos no período de '.$mes.' / '.$ano);
@@ -1405,7 +1405,7 @@ function rodapebases($salabase, $baseFGTS, $bmesFGTS, $baliqIRF, $depenIRF, $bde
     $sSql   .= "order by r45_dtafas desc                                                                               ";
 
     $rsAfastamentos = db_query( $sSql );
-    $iLinhas        = pg_num_rows( $rsAfastamentos );
+    $iLinhas        = $rsAfastamentos === false || $rsAfastamentos === null ? 0 : pg_num_rows( $rsAfastamentos );
 
     if( $iLinhas > 0 ){
 

@@ -69,7 +69,7 @@ try {
       $sCampos .= " exists ((select distinct 1 from medicamentoslaboratoriorequiitem where la44_medicamentoslaboratorio = la43_sequencial)) as vinculado_exames ";
       $sSqlMedicamentosLaboratorio = $oDaoMedicamentosLaboratorio->sql_query_file(null, $sCampos, null, null);
       $rsMedicamentosLaboratorio   = db_query($sSqlMedicamentosLaboratorio);
-      $iTotalMedicamentos          = pg_num_rows($rsMedicamentosLaboratorio);
+      $iTotalMedicamentos          = $rsMedicamentosLaboratorio === false || $rsMedicamentosLaboratorio === null ? 0 : pg_num_rows($rsMedicamentosLaboratorio);
 
       if ( !$rsMedicamentosLaboratorio ){
         throw new DBException( _M(MSG_LAB_MEDICAMENTOSLABORATORIO . "erro_buscar_medicamentos") . "\n {$oDaoMedicamentosLaboratorio->erro_msg}" );

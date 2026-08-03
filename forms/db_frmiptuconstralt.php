@@ -176,7 +176,7 @@ function js_confir() {
 			    $result = $oDaoIPTUConstr->sql_record($oDaoIPTUConstr->sql_query_file($j39_matric,"","j39_idcons as jj39_idcons,j39_idprinc as jj39_idprinc","",""));
 
           if ( !empty($result) ) {
-			      $num = pg_num_rows($result);
+			      $num = $result === false || $result === null ? 0 : pg_num_rows($result);
           }
         }
 

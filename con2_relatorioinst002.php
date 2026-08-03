@@ -39,7 +39,7 @@ if($codigo!=""){
   $sql = "select nomeinst as nome, url as site, * from db_config order by codigo"; 
 }
 $result = db_query($sql);
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 $pdf->AliasNbPages(); 
 $head3 = "RELATÓRIO DE INSTITUIÇÕES";
 $linha = 0;

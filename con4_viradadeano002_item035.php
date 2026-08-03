@@ -49,7 +49,7 @@ if ($sqlerro == false) {
     /**
      * Vira as etapas do censo
      */
-    $iLinhasCensoEtapa = pg_num_rows($rsCensoEtapa);
+    $iLinhasCensoEtapa = $rsCensoEtapa === false || $rsCensoEtapa === null ? 0 : pg_num_rows($rsCensoEtapa);
     for ($i = 0; $i < $iLinhasCensoEtapa; $i++) {
 
       $oDadosEtapaCenso = db_utils::fieldsMemory( $rsCensoEtapa, $i);
@@ -92,7 +92,7 @@ if ($sqlerro == false) {
       throw new Exception("Erro ao buscar mediações didático pedagógica.\n" . pg_last_error(), 1);
     }
 
-    $iLinhasMediacao = pg_num_rows($rsMediacao);
+    $iLinhasMediacao = $rsMediacao === false || $rsMediacao === null ? 0 : pg_num_rows($rsMediacao);
     for ($i = 0; $i < $iLinhasMediacao; $i++) {
 
       $oDadosMediacao = db_utils::fieldsMemory($rsMediacao, $i);
@@ -135,7 +135,7 @@ if ($sqlerro == false) {
     /**
      * Vira os vínculos das etapas do e-cidade com as etapas do censo
      */
-    $iLinhasSerieCenso = pg_num_rows($rsSerieCenso);
+    $iLinhasSerieCenso = $rsSerieCenso === false || $rsSerieCenso === null ? 0 : pg_num_rows($rsSerieCenso);
     for( $i = 0; $i < $iLinhasSerieCenso; $i++ ) {
 
       $oDadosSerieCenso = db_utils::fieldsMemory($rsSerieCenso, $i);

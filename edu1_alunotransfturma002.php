@@ -253,7 +253,7 @@ if( !isset( $incluir ) && !isset( $incluir2 ) ) {
              $sql2 .= "   and ed232_i_codigo not in ( $sSelectWhere )";
 
              $result2 = db_query($sql2);
-             $linhas2 = pg_num_rows($result2);
+             $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
              ?>
              <select name="regenciadestino"
                      style="padding:0px;width:75px;height:16px;font-size:12px;"
@@ -429,7 +429,7 @@ if( !isset( $incluir ) && !isset( $incluir2 ) ) {
               $sql2 .= "   and ed09_i_codigo not in ( {$sSelectWhere} )                                         \n";
               $sql2 .= " order by ed41_i_sequencia";
               $result2 = db_query($sql2);
-              $linhas2 = pg_num_rows($result2);
+              $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
               ?>
               <select name="periododestino" style="padding:0px;width:75px;height:16px;font-size:12px;" onchange="js_eliminaper(this.value,<?=$t?>)">
                 <option value=""></option>
@@ -1684,7 +1684,7 @@ if (isset($incluir) ) {
                                                                          $sWhereTurmaTurnoReferente
                                                                        );
     $rsTurmaTurnoReferente     = db_query( $sSqlTurmaTurnoReferente );
-    $iTotalTurmaTurnoReferente = pg_num_rows( $rsTurmaTurnoReferente );
+    $iTotalTurmaTurnoReferente = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows( $rsTurmaTurnoReferente );
 
     for( $iContador = 0; $iContador < $iTotalTurmaTurnoReferente; $iContador++ ) {
 
@@ -1985,7 +1985,7 @@ if( isset( $incluir2 ) ) {
                                                                            $sWhereTurmaTurnoReferente
                                                                          );
     $rsTurmaTurnoReferente     = db_query( $sSqlTurmaTurnoReferente );
-    $iTotalTurmaTurnoReferente = pg_num_rows( $rsTurmaTurnoReferente );
+    $iTotalTurmaTurnoReferente = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows( $rsTurmaTurnoReferente );
 
     for( $iContador = 0; $iContador < $iTotalTurmaTurnoReferente; $iContador++ ) {
 

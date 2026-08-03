@@ -34,7 +34,7 @@ try {
 
       $rsModalidade = db_query($sqlModalidade);
       $retorno->modalidade = [];
-      $iQuantidade = pg_num_rows($rsModalidade);
+      $iQuantidade = $rsModalidade === false || $rsModalidade === null ? 0 : pg_num_rows($rsModalidade);
       for ($iRow = 0; $iRow < $iQuantidade; $iRow++) {
 
         $oModalidade = db_utils::fieldsMemory($rsModalidade, $iRow);

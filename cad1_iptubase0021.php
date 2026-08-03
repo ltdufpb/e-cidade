@@ -52,7 +52,7 @@ if(isset($testaentra)&& $testaentra=="true"){
 }
 $sqlcfiptu = "select * from cfiptu where j18_anousu = ".db_getsession('DB_anousu');
 $rsparametro = db_query($sqlcfiptu);
-$numrows     = pg_num_rows($rsparametro);
+$numrows     = $rsparametro === false || $rsparametro === null ? 0 : pg_num_rows($rsparametro);
 if($numrows > 0){
   db_fieldsmemory($rsparametro,0);
 }else{

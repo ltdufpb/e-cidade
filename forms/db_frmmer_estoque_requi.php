@@ -48,7 +48,7 @@ $clrotulo->label("me19_i_matrequi");
       $sql  = " select * from calendarioescola "; 
       $sql .= " inner join calendario on ed52_i_codigo=ed38_i_calendario where ed38_i_escola=".$escola; 
       $result=db_query($sql);
-	  $linhas=pg_num_rows($result);
+	  $linhas=$result === false || $result === null ? 0 : pg_num_rows($result);
 	  ?><select name="calendario" value=""><?php 
 	  for ($y=0;$y<$linhas;$y++) {
 	  	
@@ -79,7 +79,7 @@ $clrotulo->label("me19_i_matrequi");
 	
 	$sql = $cl_matrequiitem->sql_query("","*","","m41_codmatrequi=".$codrequi);
 	$result=db_query($sql);
-	$linhas=pg_num_rows($result);
+	$linhas=$result === false || $result === null ? 0 : pg_num_rows($result);
 	?>
 	  <table border="3">
 	    <tr>

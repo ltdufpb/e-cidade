@@ -323,7 +323,7 @@ if($tipo_cert==1){
 }
 flush();
 $rsNumpref = db_query("select * from numpref where k03_anousu = ".db_getsession("DB_anousu")." and k03_instit = ".db_getsession('DB_instit') );
-$numrows = pg_num_rows($rsNumpref);
+$numrows = $rsNumpref === false || $rsNumpref === null ? 0 : pg_num_rows($rsNumpref);
 if ($numrows>0){
   db_fieldsmemory($rsNumpref,0);
   if(isset($k03_reccert) && $k03_reccert == 't'){

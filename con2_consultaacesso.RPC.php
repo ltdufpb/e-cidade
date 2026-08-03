@@ -386,7 +386,7 @@ try {
         throw new DBException( "Erro ao buscar os módulos: ".pg_last_error() );
       }
       
-      $iLinhasDbModulos = pg_num_rows( $rsDbModulos );
+      $iLinhasDbModulos = $rsDbModulos === false || $rsDbModulos === null ? 0 : pg_num_rows( $rsDbModulos );
       if ( $iLinhasDbModulos == 0 ) {
         throw new DBException( "Módulos do sistema: "._M( "{$sCaminhoMensagens}.registros_nao_encontrados" ) );        
       }
@@ -419,7 +419,7 @@ try {
         throw new DBException( "Erro ao buscar os esquemas: ".pg_last_error() );
       }
 
-      $iLinhasDbSysModulo = pg_num_rows( $rsDbSysModulo );
+      $iLinhasDbSysModulo = $rsDbSysModulo === false || $rsDbSysModulo === null ? 0 : pg_num_rows( $rsDbSysModulo );
       if ( $iLinhasDbSysModulo == 0 ) {
         throw new DBException( "Esquemas do sistema: "._M( "{$sCaminhoMensagens}.registros_nao_encontrados" ) );
       }
@@ -460,7 +460,7 @@ try {
           throw new DBException("Erro ao buscar as tabelas dos módulos: ".pg_last_error());
         }
 
-        $iLinhasDbSysArquivo = pg_num_rows($rsDbSysArquivo);
+        $iLinhasDbSysArquivo = $rsDbSysArquivo === false || $rsDbSysArquivo === null ? 0 : pg_num_rows($rsDbSysArquivo);
         if ($iLinhasDbSysArquivo == 0) {
           throw new DBException("Tabelas dos módulos: "._M("{$sCaminhoMensagens}.registros_nao_encontrados"));
         }
@@ -510,7 +510,7 @@ try {
           throw new DBException( "Erro ao buscar os campos da tabela: ".pg_last_error() );
         }
 
-        $iLinhasDbSysArqCamp = pg_num_rows( $rsDbSysArqCamp );
+        $iLinhasDbSysArqCamp = $rsDbSysArqCamp === false || $rsDbSysArqCamp === null ? 0 : pg_num_rows( $rsDbSysArqCamp );
         if ( $iLinhasDbSysArqCamp == 0 ) {
           throw new DBException( "Campos das tabelas: "._M( "{$sCaminhoMensagens}.registros_nao_encontrados" ) );
         }

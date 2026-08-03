@@ -108,7 +108,7 @@ if (pg_num_rows($result_empresa)!=0){
 
 $sqlDbUsuarioAutoriza = "select nome as nomeusu from db_usuarios where id_usuario = $y08_login";
 $rsDbUsuarioAutoriza  = db_query($sqlDbUsuarioAutoriza);
-$iDbUsuarioAutoriza   = pg_num_rows($rsDbUsuarioAutoriza);
+$iDbUsuarioAutoriza   = $rsDbUsuarioAutoriza === false || $rsDbUsuarioAutoriza === null ? 0 : pg_num_rows($rsDbUsuarioAutoriza);
 
 if ($iDbUsuarioAutoriza > 0) {
   $oDbUsuarioAutoriza = db_utils::fieldsMemory($rsDbUsuarioAutoriza,0);
@@ -117,7 +117,7 @@ if ($iDbUsuarioAutoriza > 0) {
 
 $sqlDbUsuario = "select nome as nomeusu from db_usuarios where id_usuario =".db_getsession("DB_id_usuario");
 $rsDbUsuario  = db_query($sqlDbUsuario);
-$iDbUsuario   = pg_num_rows($rsDbUsuario);
+$iDbUsuario   = $rsDbUsuario === false || $rsDbUsuario === null ? 0 : pg_num_rows($rsDbUsuario);
 
 if ($iDbUsuario > 0) {
 	$oDbUsuario = db_utils::fieldsMemory($rsDbUsuario,0);

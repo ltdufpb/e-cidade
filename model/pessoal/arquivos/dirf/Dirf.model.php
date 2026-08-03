@@ -238,7 +238,7 @@ class Dirf {
       throw new DBException("Não foi possível verificar a existência de geração da DIRF");
     }
 
-    $iNumRowsDirf = pg_num_rows($rsVerificacaoGeracao);
+    $iNumRowsDirf = $rsVerificacaoGeracao === false || $rsVerificacaoGeracao === null ? 0 : pg_num_rows($rsVerificacaoGeracao);
     if ($iNumRowsDirf > 0) {
 
       for ($i = 0; $i < $iNumRowsDirf; $i++) {
@@ -1825,7 +1825,7 @@ class Dirf {
     if(!$rsDadosInstituicao) {
       $iNumRowsDadosInstituicao = null;
     } else {
-      $iNumRowsDadosInstituicao = pg_num_rows($rsDadosInstituicao);
+      $iNumRowsDadosInstituicao = $rsDadosInstituicao === false || $rsDadosInstituicao === null ? 0 : pg_num_rows($rsDadosInstituicao);
     }
 
     if ($iNumRowsDadosInstituicao > 0) {
@@ -1917,7 +1917,7 @@ class Dirf {
     if(!$rsTipoReceitas) {
       $iTotalLinhas      = 0;
     } else {
-      $iTotalLinhas      = pg_num_rows($rsTipoReceitas);
+      $iTotalLinhas      = $rsTipoReceitas === false || $rsTipoReceitas === null ? 0 : pg_num_rows($rsTipoReceitas);
     }
 
     $aLinhasDirf       = [];
@@ -2492,7 +2492,7 @@ class Dirf {
     if(!$rsMatriculasDirf) {
       return [];
     }
-    $iTotalLinhas        = pg_num_rows($rsMatriculasDirf);
+    $iTotalLinhas        = $rsMatriculasDirf === false || $rsMatriculasDirf === null ? 0 : pg_num_rows($rsMatriculasDirf);
     $aMatriculasDirf     = [];
     if ($iTotalLinhas > 0) {
       $aMatriculasDirf = db_utils::getCollectionByRecord($rsMatriculasDirf);

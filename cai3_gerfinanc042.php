@@ -85,7 +85,7 @@ if(isset($certid)){
 <?php 
 
   $result02=db_query($sql02);
-  $numrows02=pg_num_rows($result02);
+  $numrows02=$result02 === false || $result02 === null ? 0 : pg_num_rows($result02);
     echo "
    <table border='1';>
     <tr>
@@ -113,7 +113,7 @@ if(isset($certid)){
      if ($result05==false){
      	//echo "retornou falso";
      }else{
-	     $numrows05=pg_num_rows($result05);
+	     $numrows05=$result05 === false || $result05 === null ? 0 : pg_num_rows($result05);
 	     for($d=0; $d<$numrows05; $d++){
 			 db_fieldsmemory($result05,$d);
 			 $lrhis+=$vlrhis;
@@ -177,7 +177,7 @@ echo "
 <?php 
 
   $result=db_query($sql);
-  $numrows=pg_num_rows($result);
+  $numrows=$result === false || $result === null ? 0 : pg_num_rows($result);
     echo "
    <table border='1';>
     <tr>

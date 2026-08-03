@@ -130,7 +130,7 @@ class ItemPropLicitaCon extends ArquivoLicitaCon
         }
 
         $aLicitacoes = [];
-        $iTotalLotes = pg_num_rows($rsLotes);
+        $iTotalLotes = $rsLotes === false || $rsLotes === null ? 0 : pg_num_rows($rsLotes);
         for ($iLinha = 0; $iLinha < $iTotalLotes; $iLinha++) {
             $oLinha = db_utils::fieldsMemory($rsLotes, $iLinha);
 

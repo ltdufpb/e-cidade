@@ -154,7 +154,7 @@ class AvaliacaoAlternativa {
         throw new DBException( _M(URL_MSG_AVALIACAOALTERNATIVA . "erro_buscar_configuracao", $oMsgErro) );
       }
 
-      $iLinhas = pg_num_rows($rsRegra);
+      $iLinhas = $rsRegra === false || $rsRegra === null ? 0 : pg_num_rows($rsRegra);
       for ( $i = 0; $i < $iLinhas; $i++ ) {
 
         $oDados = db_utils::fieldsMemory($rsRegra, $i);

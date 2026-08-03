@@ -151,7 +151,7 @@ class SuspensaoNotaLiquidacao {
     if (!$rsRetorno) {
       throw new DBException(_M(self::MENSAGENS . 'erro_busca_suspensao'));
     }
-    $iLinhas = pg_num_rows($rsRetorno);
+    $iLinhas = $rsRetorno === false || $rsRetorno === null ? 0 : pg_num_rows($rsRetorno);
     if ($iLinhas == 0) {
       throw new BusinessException(_M(self::MENSAGENS . 'suspensao_nao_encontrada_retorno'));
     }

@@ -274,12 +274,12 @@ $db_filtro  = " o70_instit in ({$sListaInstit})";
 
 // Exercicio Atual
 $rsRecExeAtual         = db_receitasaldo(11,1,3,true,$db_filtro,$anousu,$dtDataInicial,$dtDataFinal);
-$iLinhasRecExeAtual    = pg_num_rows($rsRecExeAtual);
+$iLinhasRecExeAtual    = $rsRecExeAtual === false || $rsRecExeAtual === null ? 0 : pg_num_rows($rsRecExeAtual);
 @db_query("drop table work_receita");
 
 // Exercicio Anterior
 $rsRecExeAnterior      = db_receitasaldo(11,1,3,true,$db_filtro,$anousu_ant,$dtDataInicialAnt,$dtDataFinalAnt);
-$iLinhasRecExeAnterior = pg_num_rows($rsRecExeAnterior);
+$iLinhasRecExeAnterior = $rsRecExeAnterior === false || $rsRecExeAnterior === null ? 0 : pg_num_rows($rsRecExeAnterior);
 @db_query("drop table work_receita");
 
 
@@ -480,7 +480,7 @@ for ($linha = 18; $linha <= 27; $linha++){
   }
 
   $rsDespFuncaoAtual     = db_dotacaosaldo(8,2, 3, true, $db_filtro.$sWhereFuncao, $anousu, $dtDataInicial, $dtDataFinal);
-  $iLinhaDespFuncaoAtual = pg_num_rows($rsDespFuncaoAtual); 
+  $iLinhaDespFuncaoAtual = $rsDespFuncaoAtual === false || $rsDespFuncaoAtual === null ? 0 : pg_num_rows($rsDespFuncaoAtual); 
   
   for ($iInd = 0; $iInd < $iLinhaDespFuncaoAtual; $iInd++) {
     
@@ -506,7 +506,7 @@ for ($linha = 18; $linha <= 27; $linha++){
   
   
   $rsDespFuncaoAnterior     = db_dotacaosaldo(8,2, 3, true, $db_filtro.$sWhereFuncao, $anousu_ant, $dtDataInicialAnt, $dtDataFinalAnt);
-  $iLinhaDespFuncaoAnterior = pg_num_rows($rsDespFuncaoAnterior);
+  $iLinhaDespFuncaoAnterior = $rsDespFuncaoAnterior === false || $rsDespFuncaoAnterior === null ? 0 : pg_num_rows($rsDespFuncaoAnterior);
   
   for ($iInd=0; $iInd < $iLinhaDespFuncaoAnterior; $iInd++) {
     $oDespFuncaoAnterior = db_utils::fieldsMemory($rsDespFuncaoAnterior,$iInd);
@@ -731,7 +731,7 @@ $db_filtro_disponivel = "c61_instit in (".$sListaInstit.") ";
 
 // Exercicio Atual
 $rsDispAtual 	  = db_planocontassaldo_matriz($anousu,$dtDataInicial,$dtDataFinal,false,$db_filtro_disponivel);
-$iLinhasDispAtual = pg_num_rows($rsDispAtual);
+$iLinhasDispAtual = $rsDispAtual === false || $rsDispAtual === null ? 0 : pg_num_rows($rsDispAtual);
 @db_query("drop table work_receita"); 
 @db_query("drop table work_pl");
 @db_query("drop table work_pl_estrut");
@@ -740,7 +740,7 @@ $iLinhasDispAtual = pg_num_rows($rsDispAtual);
 
 // Exercicio Anterior
 $rsDispAnterior      = db_planocontassaldo_matriz($anousu_ant, $dtDataInicialAnt, $dtDataFinalAnt, false, $db_filtro_disponivel);
-$iLinhasDispAnterior = pg_num_rows($rsDispAnterior);
+$iLinhasDispAnterior = $rsDispAnterior === false || $rsDispAnterior === null ? 0 : pg_num_rows($rsDispAnterior);
 @db_query("drop table work_receita"); 
 @db_query("drop table work_pl");
 @db_query("drop table work_pl_estrut");
@@ -866,7 +866,7 @@ $db_filtro_disponivel = "c61_instit in (".$sListaInstit.") ";
 
 // Exercicio Atual
 $rsDispAtual 	  = db_planocontassaldo_matriz($anousu,$dtDataInicial,$dtDataFinal,false,$db_filtro_disponivel);
-$iLinhasDispAtual = pg_num_rows($rsDispAtual);
+$iLinhasDispAtual = $rsDispAtual === false || $rsDispAtual === null ? 0 : pg_num_rows($rsDispAtual);
 @db_query("drop table work_receita"); 
 @db_query("drop table work_pl");
 @db_query("drop table work_pl_estrut");
@@ -875,7 +875,7 @@ $iLinhasDispAtual = pg_num_rows($rsDispAtual);
 
 // Exercicio Anterior
 $rsDispAnterior      = db_planocontassaldo_matriz($anousu_ant,$dtDataInicialAnt,$dtDataFinalAnt,false,$db_filtro_disponivel);
-$iLinhasDispAnterior = pg_num_rows($rsDispAnterior);
+$iLinhasDispAnterior = $rsDispAnterior === false || $rsDispAnterior === null ? 0 : pg_num_rows($rsDispAnterior);
 @db_query("drop table work_receita"); 
 @db_query("drop table work_pl");
 @db_query("drop table work_pl_estrut");
@@ -884,7 +884,7 @@ $iLinhasDispAnterior = pg_num_rows($rsDispAnterior);
 $aDataMes               = explode("-", (string) $dtDataInicial);
 $dtDataFinalMesAnterior = "{$aDataMes[0]}-{$aDataMes[1]}-".cal_days_in_month(CAL_GREGORIAN, $aDataMes[1], $aDataMes[2]);
 $rsDispMesAnterior      = db_planocontassaldo_matriz($anousu, $dtDataInicial, $dtDataFinalMesAnterior, false, $db_filtro_disponivel);
-$iLinhasMesAnterior     = pg_num_rows($rsDispMesAnterior);
+$iLinhasMesAnterior     = $rsDispMesAnterior === false || $rsDispMesAnterior === null ? 0 : pg_num_rows($rsDispMesAnterior);
 @db_query("drop table work_receita"); 
 @db_query("drop table work_pl");
 @db_query("drop table work_pl_estrut");

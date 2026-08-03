@@ -138,7 +138,7 @@ if ((isset ($e60_numcgm) && $e60_numcgm != "") && (isset ($erro) && $erro == 'fa
 	   where e60_numcgm = $e60_numcgm $where $where1
 	   order by e60_numemp");
 	$result = db_query($sql);
-	$numrows = pg_num_rows($result);
+	$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 	if ($numrows > 0) {
 		echo "<tr class='bordas'>

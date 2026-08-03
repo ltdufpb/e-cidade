@@ -159,7 +159,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
      * Configurações de Busca na Base de Origem
      */
     $rsDadosOrigem = db_query($resConexaoOrigem, $sSqlGerfcomGerfsal);
-    $iTotalOrigem  = pg_num_rows($rsDadosOrigem);
+    $iTotalOrigem  = $rsDadosOrigem === false || $rsDadosOrigem === null ? 0 : pg_num_rows($rsDadosOrigem);
     $oDadosOrigem  = db_utils::getCollectionByRecord($rsDadosOrigem);
 
     @pg_close($resConexaoOrigem);
@@ -169,7 +169,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
      */
     $rsConexaoDestino = @pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA_ALT user=$DB_USUARIO password=$DB_SENHA");
     $rsDadosDestino   = db_query($rsConexaoDestino, $sSqlGerfcomGerfsal);
-    $iTotalDestino    = pg_num_rows($rsDadosDestino);
+    $iTotalDestino    = $rsDadosDestino === false || $rsDadosDestino === null ? 0 : pg_num_rows($rsDadosDestino);
     $oDadosDestino    = db_utils::getCollectionByRecord($rsDadosDestino);
 
     if ( $iTotalOrigem == 0 || $iTotalDestino == 0 ) {
@@ -271,7 +271,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
       $sSqlPontoComFs   = " select * from  $sTabelaDestino  where  $sWhereTipoFolhaDestino";
 
       $rsSqlPonto       = db_query($rsConexaoDestino, $sSqlPontoComFs);
-      $iTotalFolhaPonto = pg_num_rows($rsSqlPonto);
+      $iTotalFolhaPonto = $rsSqlPonto === false || $rsSqlPonto === null ? 0 : pg_num_rows($rsSqlPonto);
       $oDadosPonto      = db_utils::getCollectionByRecord($rsSqlPonto);
 
       if ( $iTotalFolhaPonto > 0 ) {

@@ -132,7 +132,7 @@ $sQuery .= $ordem;
 //die($sQuery);
 
 $rsQuery = db_query($sQuery);
-$iNumRows = pg_num_rows($rsQuery);
+$iNumRows = $rsQuery === false || $rsQuery === null ? 0 : pg_num_rows($rsQuery);
 
 if($iNumRows == 0){
 	

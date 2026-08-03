@@ -45,7 +45,7 @@ $clrotulo->label('v70_codforo');
 if(isset($Parcelamento) && $Parcelamento != ""){
   $sql=" select v07_numpre from termo where v07_parcel = $Parcelamento";
   $result=db_query($sql);
-  $numrows=pg_num_rows($result);
+  $numrows=$result === false || $result === null ? 0 : pg_num_rows($result);
   if ($numrows>0){
       db_fieldsmemory($result,0);
       $numpre = $v07_numpre;
@@ -430,7 +430,7 @@ function js_validar() {
                               k00_numpar    ";
 //    echo $sSqlPagamentos; exit;
   $rsPagamentos    = db_query($sSqlPagamentos);
-  $iRowsPagamentos = pg_num_rows($rsPagamentos);
+  $iRowsPagamentos = $rsPagamentos === false || $rsPagamentos === null ? 0 : pg_num_rows($rsPagamentos);
 
   $ConfCor1   = "#EFE029";
   $ConfCor2   = "#E4F471";
@@ -518,7 +518,7 @@ function js_validar() {
                                 limit 1 ";
 
         $rsHistorico    = db_query($sSqlHistorico);
-        $iRowsHistorico = pg_num_rows($rsHistorico);
+        $iRowsHistorico = $rsHistorico === false || $rsHistorico === null ? 0 : pg_num_rows($rsHistorico);
 
         if ($iRowsHistorico > 0){
 

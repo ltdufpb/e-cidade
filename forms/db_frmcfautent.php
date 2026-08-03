@@ -331,7 +331,7 @@ if(isset($k11_impassche) && $k11_impassche==1){
              inner join db_documento on k39_documento=db03_docum
              where k39_cfautent = $k11_id";
   $resultchq = db_query($sqlchq);
-  $linhaschq= pg_num_rows($resultchq);
+  $linhaschq= $resultchq === false || $resultchq === null ? 0 : pg_num_rows($resultchq);
   if($linhaschq>0){
     db_fieldsmemory($resultchq,0);
   }

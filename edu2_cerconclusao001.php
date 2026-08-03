@@ -95,7 +95,7 @@ db_postmemory($_GET);
                                AND ed59_i_turma = ed57_i_codigo)
                           ORDER BY ed52_i_ano DESC ";
   $sql_result = db_query($sql);
-  $num        = pg_num_rows($sql_result);
+  $num        = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
   $conta      = "";
 
   while ($row = pg_fetch_array($sql_result)) {
@@ -117,7 +117,7 @@ db_postmemory($_GET);
     $sub_sql   .= "    AND ed11_i_codigo IN (5,8,13,17,24,28,32,35,40,44,51) ";
     $sub_sql   .= "  ORDER BY ed57_c_descr,ed11_c_descr ";
     $sub_result = db_query($sub_sql);
-    $num_sub    = pg_num_rows($sub_result);
+    $num_sub    = $sub_result === false || $sub_result === null ? 0 : pg_num_rows($sub_result);
 
     if ($num_sub >= 1) {
 
@@ -338,7 +338,7 @@ $eta_turma = $arr_turma[1];
                 $sql   .= "    AND (select count(*) from historicomps where ed62_i_historico IN (select ed61_i_codigo from  historico where ed61_i_aluno = ed60_i_aluno) AND ed62_c_resultadofinal = 'A'  AND ed62_i_serie = $eta_turma AND trim(ed62_i_turma) = trim(ed57_c_descr)) > 0 ";
                 $sql   .= "  ORDER BY ed60_i_numaluno,to_ascii(ed47_v_nome) ";
                 $result = db_query($sql);
-                $linhas = pg_num_rows($result);
+                $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
                 ?>
                 <b>Alunos:</b><br>
                 <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()"

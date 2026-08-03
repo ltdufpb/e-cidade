@@ -134,7 +134,7 @@ $sql  = "select a.k12_id,a.k12_data,a.k12_autent,
 		    $ordem ";
 //exit;
 $result = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $QuebraPagina = 10;
 $Total1 = 0;
 $Total2 = 0;

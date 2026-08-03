@@ -166,7 +166,7 @@ function GetDadosEscola($iModulo) {
 
           if ($rs && pg_num_rows($rs) > 0) {
 
-            $iLinhas = pg_num_rows($rs);
+            $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             for ($i=0; $i < $iLinhas ; $i++) {
 
               $aEtapas[] = db_utils::fieldsMemory($rs, $i)->ed11_i_codigo;

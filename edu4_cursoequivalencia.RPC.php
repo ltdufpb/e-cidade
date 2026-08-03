@@ -65,7 +65,7 @@ try {
         throw new DBException( _M(ARQUIVO_MENSAGEM_EQUIVALENCIA . "erro_buscar_cursos") );
       }
 
-      $iTotalCursos = pg_num_rows($rsCurso);
+      $iTotalCursos = $rsCurso === false || $rsCurso === null ? 0 : pg_num_rows($rsCurso);
       if ( $iTotalCursos == 0 ) {
         throw new BusinessException( _M(ARQUIVO_MENSAGEM_EQUIVALENCIA . "nenhum_curso_encontrado") );
       }
@@ -100,7 +100,7 @@ try {
         throw new DBException( _M(ARQUIVO_MENSAGEM_EQUIVALENCIA . "erro_buscar_cursos_equivalentes") );
       }
 
-      $iTotalCursos = pg_num_rows($rsCursoEquivalencia);
+      $iTotalCursos = $rsCursoEquivalencia === false || $rsCursoEquivalencia === null ? 0 : pg_num_rows($rsCursoEquivalencia);
 
       for ( $iContador = 0; $iContador < $iTotalCursos; $iContador++ ) {
 

@@ -89,7 +89,7 @@ class cl_autenticar {
 	   }else{ 	 
 	       $sql     = "select k11_id from cfautent where k11_instit = " . db_getsession('DB_instit') . " and k11_ipterm = '$ip'"; 
 	       $result  = db_query($sql);
-	       $numrows = pg_num_rows($result);
+	       $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 	       if($numrows<1){
 		   $this->cancelar("IP ".db_getsession('DB_ip')." não autorizado! ");
 		   return false;
@@ -114,7 +114,7 @@ class cl_autenticar {
        if(empty($_SESSION['autenticando'])){
 	  $sql = "select 0 from corrente where k12_instit = " . db_getsession('DB_instit') . " and k12_id = $k11_id and k12_data ='".date("Y-m-d",db_getsession('DB_datausu'))."' limit 2";
 	  $result  = db_query($sql);
-	  $numrows = pg_num_rows($result);
+	  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 	  if($numrows==1){
 	    db_putsession('autenticando',true);
 	    $this->cabecalho();
@@ -472,7 +472,7 @@ function db_imprimecheque ($nome, $codbco, $valor, $data, $modelo = 1, $ip_impri
     inner join db_paragrafo on db02_idparag=db04_idparag 
     where k11_ipterm = '".$ip_imprime ."' and k11_impassche = 1";
     $resultass = db_query($sqlass);
-    $linhasass = pg_num_rows($resultass);
+    $linhasass = $resultass === false || $resultass === null ? 0 : pg_num_rows($resultass);
     if($linhasass>0){
       for($as=0;$as<$linhasass;$as++){
         db_fieldsmemory($resultass, $as); 

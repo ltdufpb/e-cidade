@@ -95,7 +95,7 @@ SQLBUSCA;
                 throw new Exception("Ocorreu um erro ao executar a consulta das informações de saldo do Plano Orçamentário.");
             }
 
-            $totalRegistros = pg_num_rows($buscaDotacoes);
+            $totalRegistros = $buscaDotacoes === false || $buscaDotacoes === null ? 0 : pg_num_rows($buscaDotacoes);
 
             $retorno->planos_orcamentarios = [];
             for ($row = 0; $row < $totalRegistros; $row++) {
@@ -151,7 +151,7 @@ SQLBUSCA;
             if (!$buscaInformacoesSecretaria) {
                 throw new Exception("Não foi possível executar a consulta.");
             }
-            $totalRegistros = pg_num_rows($buscaInformacoesSecretaria);
+            $totalRegistros = $buscaInformacoesSecretaria === false || $buscaInformacoesSecretaria === null ? 0 : pg_num_rows($buscaInformacoesSecretaria);
             $secretariasRetorno = [];
             for ($row = 0; $row < $totalRegistros; $row++) {
 

@@ -174,7 +174,7 @@ if (isset($concluir)) {
                 ORDER BY ed47_v_nome
                ";
    $result_hist = db_query($sql_hist);
-   $linhas_hist = pg_num_rows($result_hist);
+   $linhas_hist = $result_hist === false || $result_hist === null ? 0 : pg_num_rows($result_hist);
    if($linhas_hist==0){
     $erro1 = "OK";
     $result_alu = $claluno->sql_record($claluno->sql_query("","ed47_v_nome",""," ed47_i_codigo = $codaluno[$x]"));
@@ -222,7 +222,7 @@ if (isset($concluir)) {
                AND (ed99_i_serie = $seriedabase OR ed99_i_serie in ($equivalencias))
               ";
      $result_s = db_query($sql_s);
-     $linhas_s = pg_num_rows($result_s);
+     $linhas_s = $result_s === false || $result_s === null ? 0 : pg_num_rows($result_s);
      if($linhas_s==0){
       $erro .= "&nbsp;&nbsp; - SÉRIE ".$nomeserie." NÃO CONSTA NO HISTÓRICO<br>";
      }elseif($linhas_s==1){
@@ -246,7 +246,7 @@ if (isset($concluir)) {
                  AND ed99_c_resultadofinal = 'A'
                 ";
       $results_s1 = db_query($sql_s1);
-      $linhas_s1 = pg_num_rows($results_s1);
+      $linhas_s1 = $results_s1 === false || $results_s1 === null ? 0 : pg_num_rows($results_s1);
       if($linhas_s1==0){
        $erro .= "&nbsp;&nbsp; - SÉRIE ".$nomeserie." CONSTA COMO REPROVADO<br>";
       }

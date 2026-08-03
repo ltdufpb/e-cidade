@@ -121,7 +121,7 @@ class RelatorioCompensacoes
 		$aCompensacoes = [];
 		$aValorReceitaDestinoCompensacao = [];
 		$aValidaNumpreNumparReceita = [];
-		$iQuantidadeRegistros = pg_num_rows($rsDados);
+		$iQuantidadeRegistros = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
 		for ($iRegistro = 0; $iRegistro < $iQuantidadeRegistros; $iRegistro++) {
 
 			$oStdRegistro = db_utils::fieldsMemory($rsDados, $iRegistro);

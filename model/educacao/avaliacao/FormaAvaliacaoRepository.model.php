@@ -82,7 +82,7 @@ class FormaAvaliacaoRepository {
       throw new Exception("Error Processing Request", 1);
     }
 
-    $iLinhas = pg_num_rows($rs);
+    $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
     $aFormasAvaliacao = [];
     for ($i=0; $i < $iLinhas; $i++) {

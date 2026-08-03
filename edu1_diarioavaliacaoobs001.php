@@ -72,7 +72,7 @@ if(isset($alterar)){
             OR diarioavaliacao.ed72_t_parecer != '')
           ";
  $result_r = db_query($sql_r);
- $linhas = pg_num_rows($result_r);
+ $linhas = $result_r === false || $result_r === null ? 0 : pg_num_rows($result_r);
  db_fieldsmemory($result_r,0);
  if($max==""){
   $clregencia->ed59_c_ultatualiz = "SI";
@@ -94,7 +94,7 @@ if(isset($alterar)){
    $sep = ",";
   }
   $result = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","ed72_i_valornota,ed72_c_valorconceito,ed72_i_numfaltas,ed72_t_parecer,ed95_i_regencia as codregmais,ed72_i_codigo as ed93_i_diarioavaliacao",""," ed95_i_regencia in($regs) AND ed95_i_aluno = $codaluno AND ed72_i_procavaliacao = $codperiodo"));
-  $linhas_dia = pg_num_rows($result);
+  $linhas_dia = $result === false || $result === null ? 0 : pg_num_rows($result);
   for($t=0;$t<$linhas_dia;$t++){
    db_fieldsmemory($result,$t);
    $cldiarioavaliacao->ed72_i_valornota = $ed72_i_valornota;
@@ -117,7 +117,7 @@ if(isset($alterar)){
               OR diarioavaliacao.ed72_t_parecer != '')
             ";
    $result_r = db_query($sql_r);
-   $linhas = pg_num_rows($result_r);
+   $linhas = $result_r === false || $result_r === null ? 0 : pg_num_rows($result_r);
    db_fieldsmemory($result_r,0);
    if($max==""){
     $clregencia->ed59_c_ultatualiz = "SI";

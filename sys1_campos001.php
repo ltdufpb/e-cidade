@@ -105,7 +105,7 @@ if(isset($_POST["incluir"])) {
   } 
 
   $result = db_query("select nomecam from db_syscampo where nomecam ='$nomecam'");
-  $numrows = @pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
   if($numrows>0){
     $processamento = "4";
     $erro_msg      = "Inclusão abortada! \\n O campo $nomecam já foi incluido!";
@@ -172,7 +172,7 @@ if(isset($_POST["incluir"])) {
   $pode_ir=true;
 
   $result05 = db_query("select codcam as codcamal from db_syscampo where nomecam ='$nomecam'");
-  $numrows = @pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : @pg_num_rows($result);
   if($numrows>0){
     db_fieldsmemory($result05,0);
     if($codcam!=$codcamal){
@@ -491,7 +491,7 @@ input {
                       <?php 
 					  if(isset($retorno)){
 				        $result = db_query("select * from db_syscampodef where codcam = ".$retorno);
-					    $numrows = pg_num_rows($result);
+					    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 					    for($i = 0;$i < $numrows;$i++)
 					      echo "<option value=\"".pg_fetch_result($result,$i,"defcampo")."#&".pg_fetch_result($result,$i,"defdescr")."\">".pg_fetch_result($result,$i,"defcampo")."</option>\n";
 					  }

@@ -59,7 +59,7 @@ $unidade = str_replace("X",",",$unidades);
                 order by unidades.sd02_i_codigo";
 
 $query_und = @db_query($sql_und) or die(pg_last_error());
-$linhas = @pg_num_rows($query_und);
+$linhas = $query_und === false || $query_und === null ? 0 : @pg_num_rows($query_und);
 if($linhas == 0){
  echo "<table width='100%'>
         <tr>
@@ -197,7 +197,7 @@ if( $agrupar == 0){
 }             
 //echo "<BR> $sql_meio"; exit;
 $query_meio = db_query($sql_meio);
-$linhas_meio = pg_num_rows($query_meio);
+$linhas_meio = $query_meio === false || $query_meio === null ? 0 : pg_num_rows($query_meio);
 $primeiro=0; //pg_result($query_meio,0,"sd04_i_unidade");
 
    for($u=0; $u < $linhas_meio; $u++){

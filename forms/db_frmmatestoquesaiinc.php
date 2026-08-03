@@ -78,7 +78,7 @@ from (
     ";
 
     $rsSaldoItem = db_query($sSaldoItem);
-    $numrows_matestoque = pg_num_rows($rsSaldoItem);
+    $numrows_matestoque = $rsSaldoItem === false || $rsSaldoItem === null ? 0 : pg_num_rows($rsSaldoItem);
 
     $oMaterialAlmoxarifado = new MaterialAlmoxarifado($m70_codmatmater);
     if (ControleEstoque::itemEstaNoPontoPedido($oMaterialAlmoxarifado, $oAlmoxarifado)) {

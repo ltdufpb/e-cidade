@@ -44,7 +44,7 @@ include(modification("fpdf151/pdf.php"));
     $pdf->SetTextColor(0,0,0);
     $pdf->SetFillColor(24,135,18);
     $result = db_query($sql);
-    $num = pg_num_rows($result);
+    $num = $result === false || $result === null ? 0 : pg_num_rows($result);
     $pdf->SetFont('Courier','B',8);
     $linha = 60;
     $TotPag = 0;

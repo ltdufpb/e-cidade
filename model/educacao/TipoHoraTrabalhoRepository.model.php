@@ -75,7 +75,7 @@ class TipoHoraTrabalhoRepository {
       throw new Exception( _M(TipoHoraTrabalho::MENSAGENS_TIPOHORATRABALHO . "nenhum_tipo_hora_cadastrado_para_atividade") );
     }
 
-    $iLinhas = pg_num_rows($rsTipoHora);
+    $iLinhas = $rsTipoHora === false || $rsTipoHora === null ? 0 : pg_num_rows($rsTipoHora);
 
     $aTipoHora = [];
     for ( $i = 0; $i < $iLinhas; $i++ ) {

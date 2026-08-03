@@ -898,7 +898,7 @@ class cl_divida {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_num_rows($result);
+     $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:divida";
@@ -1783,7 +1783,7 @@ class cl_divida {
    $sSql .= "   ) as x                                                                                                   \n";
 
    $rsSql        = db_query($sSql);
-   $iNumRownsSql = pg_num_rows($rsSql);
+   $iNumRownsSql = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
 
    $aLongoPrazo   = [];
    $aCurtoPrazo   = [];
@@ -1879,7 +1879,7 @@ class cl_divida {
    $sSqlDebitosPago .= "           divida.v01_proced;                                              ";
 
    $rsDebitosPagos   = db_query($sSqlDebitosPago);
-   $iNroDebitosPagos = pg_num_rows($rsDebitosPagos);
+   $iNroDebitosPagos = $rsDebitosPagos === false || $rsDebitosPagos === null ? 0 : pg_num_rows($rsDebitosPagos);
 
    for ( $iInd=0; $iInd < $iNroDebitosPagos; $iInd++ ) {
 

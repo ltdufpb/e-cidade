@@ -53,7 +53,7 @@ class tceFolhaPagamentoPosterior extends tceEstruturaBasica
         );
 
         $rsPagamentosPosteriores = db_query($this->buscaInformacoesPagamentoPosterior());
-        $iNumRows = pg_num_rows($rsPagamentosPosteriores);
+        $iNumRows = $rsPagamentosPosteriores === false || $rsPagamentosPosteriores === null ? 0 : pg_num_rows($rsPagamentosPosteriores);
         $iTotalRegistros = 0;
         $iQuant = 0;
 

@@ -109,7 +109,7 @@ final class custoPlanilhaConsumoAlmox implements iCustoPlanilha {
     $sSqlCustos   .= " where extract(year from m80_data)::integer  = {$this->iAnoUsu} ";
     $sSqlCustos   .= "   and extract(month from m80_data)::integer = {$this->iMesUsu} ";
     $rsCustos      = db_query($sSqlCustos);
-    $iTotalCustos  = pg_num_rows($rsCustos);
+    $iTotalCustos  = $rsCustos === false || $rsCustos === null ? 0 : pg_num_rows($rsCustos);
     
     require_once(modification("model/custoPlanilhaLinha.model.php"));
     require_once(modification("model/custorateio.model.php"));

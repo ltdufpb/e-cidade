@@ -56,7 +56,7 @@ $result = db_query("select e.descr
 	           inner join atendmedexa a
 	    	   on a.codexa = e.codexa
  		   where a.codate = $codate");
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($numrows > 0) {
   for($i = 0;$i < $numrows;$i++) {
     $pdf->MultiCell(0,6,pg_fetch_result($result,$i,0),0,"J",0,30);

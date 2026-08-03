@@ -329,7 +329,7 @@ if (isset($_POST["processar"])) {
 
         echo $sSqlReceita."<br>";
         $rsReceitas = db_query($sSqlReceita);
-        $iTotalLinhas = pg_num_rows($rsReceitas);
+        $iTotalLinhas = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
         for ($i = 0; $i < $iTotalLinhas; $i++) {
 
             db_inicio_transacao();
@@ -404,7 +404,7 @@ if (isset($_POST["processar"])) {
                      and corrente.k12_instit = " . db_getsession("DB_instit");
 
         $rsReceitas = db_query($sSqlReceita);
-        $iTotalLinhas = pg_num_rows($rsReceitas);
+        $iTotalLinhas = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
         for ($i = 0; $i < $iTotalLinhas; $i++) {
 
             db_inicio_transacao();
@@ -452,7 +452,7 @@ if (isset($_POST["processar"])) {
                   order by corrente.k12_data, corrente.k12_id,corrente.k12_autent;";
 
         $rsReceitas = db_query($sSqlReceita);
-        $iTotalLinhas = pg_num_rows($rsReceitas);
+        $iTotalLinhas = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 
         for ($i = 0; $i < $iTotalLinhas; $i++) {
 

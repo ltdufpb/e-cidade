@@ -139,7 +139,7 @@ $sql .= "order by data, numcgm, tipo_alt desc                                   
 //die($sql);
 
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 if($linhas > 0){
   $head2 = "RELATÓRIO CGM ALTERAÇÃO/INCLUSÃO";

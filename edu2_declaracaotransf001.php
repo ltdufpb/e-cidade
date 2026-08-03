@@ -167,7 +167,7 @@ if (isset($incluirobs)) {
        $sql   .= "       AND extract(year from ed104_d_data) = '$ano' ";            
        $sql   .= "       ORDER BY to_ascii(ed47_v_nome) ";
        $result = db_query($sql);
-       $linhas = pg_num_rows($result);
+       $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
      }
    ?>
    <b>Alunos:</b><br>

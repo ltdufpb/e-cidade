@@ -38,7 +38,7 @@ $rsFuncaoAtividade   = db_query( $sSqlFuncaoAtividade );
 
 if( $rsFuncaoAtividade && pg_num_rows( $rsFuncaoAtividade ) > 0 ) {
 
-  $iTotalFuncaoAtividade = pg_num_rows( $rsFuncaoAtividade );
+  $iTotalFuncaoAtividade = $rsFuncaoAtividade === false || $rsFuncaoAtividade === null ? 0 : pg_num_rows( $rsFuncaoAtividade );
   for( $iContador = 0; $iContador < $iTotalFuncaoAtividade; $iContador++ ) {
 
     $oDadosFuncaoAtividade                                = db_utils::fieldsMemory( $rsFuncaoAtividade, $iContador );

@@ -75,7 +75,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"), db_getsession
  $sql       .= "    AND ed71_c_situacao = 'S' ";
  $sql       .= "  ORDER BY ed29_c_descr ASC ";
  $sql_result = db_query( $sql );
- $num        = pg_num_rows( $sql_result );
+ $num        = $sql_result === false || $sql_result === null ? 0 : pg_num_rows( $sql_result );
  $conta      = "";
 
  while ( $row = pg_fetch_array( $sql_result ) ) {
@@ -93,7 +93,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"), db_getsession
    $sub_sql   .= "    AND ed77_i_escola = {$escola} ";
    $sub_sql   .= "  ORDER BY ed11_i_ensino, ed11_i_sequencia ";
    $sub_result = db_query( $sub_sql );
-   $num_sub    = pg_num_rows( $sub_result );
+   $num_sub    = $sub_result === false || $sub_result === null ? 0 : pg_num_rows( $sub_result );
 
    if ( $num_sub >= 1 ) {
 
@@ -381,7 +381,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        $sql     .= "          OR alunocurso.ed56_c_situacao='REPETENTE'))) ";
        $sql     .= "  ORDER BY ed52_i_codigo, ed56_c_situacao, ed11_i_sequencia ";
        $result   = db_query( $sql );
-       $linhas   = pg_num_rows( $result );
+       $linhas   = $result === false || $result === null ? 0 : pg_num_rows( $result );
 
        if ( $linhas > 0 ) {
 
@@ -425,7 +425,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
         /**
          * Pega o resultado dos calendários pesquisados para preenchimento do combobox
          */
-        $iLinhaCalendario  = pg_num_rows( $rsCalendario );
+        $iLinhaCalendario  = $rsCalendario === false || $rsCalendario === null ? 0 : pg_num_rows( $rsCalendario );
         $iVagasDisponiveis = 0;
 
         /**

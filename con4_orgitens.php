@@ -146,7 +146,7 @@ input {
                                                                          and  i.libcliente is true					   
 								   order by lower(m.nome_modulo)");
 			    }
-				$numrows = pg_num_rows($result);
+				$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
 				  echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."##".pg_fetch_result($result,$i,"descr_modulo")."||".pg_fetch_result($result,$i,"nome_modulo")."\">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
 				}
@@ -205,7 +205,7 @@ input {
 									 and menu.id_item_filho is not null
                                                                          and i.libcliente is true
 								   order by lower(i.descricao)");
-				$numrows = pg_num_rows($result);
+				$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
 				  echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."##(".pg_fetch_result($result,$i,"id_item").") ".pg_fetch_result($result,$i,"help")." - ".pg_fetch_result($result,$i,"funcao")."\">".pg_fetch_result($result,$i,"descricao")." - ".pg_fetch_result($result,$i,"funcao")."</option>\n";
 				}
@@ -227,7 +227,7 @@ input {
 									 and menu.id_item_filho is null
                                                                          and i.libcliente is true
 								   order by lower(i.descricao),i.id_item,i.help,i.funcao");
-				$numrows = pg_num_rows($result);
+				$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
 				  echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."##(".pg_fetch_result($result,$i,"id_item").") ".pg_fetch_result($result,$i,"descricao")." - ".pg_fetch_result($result,$i,"funcao")."\">".pg_fetch_result($result,$i,"descricao")." - ".pg_fetch_result($result,$i,"funcao")."</option>\n";
 				}
@@ -248,7 +248,7 @@ input {
 				and i.id_item not in(select id_item from db_modulos) 
 
 				order by lower(i.descricao),i.id_item,i.help,i.funcao");
-				$numrows = pg_num_rows($result);
+				$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
 				  $menun = pg_fetch_result($result,$i,"id_item")."##".pg_fetch_result($result,$i,"help")." - ".pg_fetch_result($result,$i,"funcao");
 				  echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."##(".pg_fetch_result($result,$i,"id_item").") ".pg_fetch_result($result,$i,"help")." - ".pg_fetch_result($result,$i,"funcao")."\"  ".(isset($menu)&&$menu_old==$menun?"selected":"")." >".pg_fetch_result($result,$i,"descricao")." - ".pg_fetch_result($result,$i,"funcao")."</option>\n";

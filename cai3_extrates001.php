@@ -139,7 +139,7 @@ function js_mt() {
                                        "     inner join conplanoreduz on c62_reduz  = c61_reduz and 
 				                                         c62_anousu = c61_anousu and 
 								         c61_instit = " . db_getsession("DB_instit"));
-                     $numrows = pg_num_rows($result);
+                     $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		     for($i = 0;$i < $numrows;$i++)
 		          echo "<option value=\"".pg_fetch_result($result,$i,0)."\">".pg_fetch_result($result,$i,0)."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".pg_fetch_result($result,$i,1)."</option>\n";
 	          ?>
@@ -149,7 +149,7 @@ function js_mt() {
 			  <option value="T">Todos</option>
                   <?php 
 				 $result = db_query("select k11_id,k11_ipterm from cfautent where k11_instit = " . db_getsession("DB_instit") . " order by k11_ipterm");
-				 $numrows = pg_num_rows($result);
+				 $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 				 for($i = 0;$i < $numrows;$i++)
 				   echo "<option value=\"".pg_fetch_result($result,$i,0)."\">".pg_fetch_result($result,$i,1)."</option>\n";
 				  ?>

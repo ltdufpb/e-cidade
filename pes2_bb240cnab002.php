@@ -319,7 +319,7 @@ try {
       throw new Exception('Não foram encontrados registros para o tipo de arquivo selecionado.');
     }
 
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     if ($numrows == 0) {
        throw new Exception("Nenhum registro encontrado. Contate o suporte.");
     }
@@ -494,7 +494,7 @@ try {
     $formalancamento = $tipo_pagamento;
     $iQuantidadeServidoresLote = 0;
     $quantidadetotallote       = 0;
-    $iQuantidadeServidoresLote = pg_num_rows($rsDados);
+    $iQuantidadeServidoresLote = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
 
 
     $lGerarHeaderLote             = true;

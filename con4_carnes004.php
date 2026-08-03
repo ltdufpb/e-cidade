@@ -58,8 +58,8 @@ if(!($conn = pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$
   $pdf = new FPDF($orientacao,"pt","A4");
   $pdf->Open();
 
-  $numrows = pg_num_rows($result);
-  $numfields = pg_num_rows($campos);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
+  $numfields = $campos === false || $campos === null ? 0 : pg_num_rows($campos);
   
   for($i = 0;$i < $numrows;$i++) {
     $pdf->AddPage();

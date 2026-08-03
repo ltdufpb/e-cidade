@@ -38,7 +38,7 @@ if (pg_num_rows($result)==0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 }
 $head3=$rh34_descr;
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $pdf = new PDF(); 
 $pdf->Open(); 
 $pdf->AliasNbPages(); 

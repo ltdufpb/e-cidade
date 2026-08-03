@@ -507,7 +507,7 @@ if ($lTodosDepartamentos) {
  * Executa a query que busca os bens que serão impressos no relatório
  */
 $rsBuscaBens = db_query($sSqlBens);
-$iLinhasBuscaBens = pg_num_rows($rsBuscaBens);
+$iLinhasBuscaBens = $rsBuscaBens === false || $rsBuscaBens === null ? 0 : pg_num_rows($rsBuscaBens);
 if ($iLinhasBuscaBens == 0) {
     $sMsg = _M('patrimonial.patrimonio.pat2_benspordepartamento002.nao_existem_bens');
     db_redireciona("db_erros.php?fechar=true&db_erro=" . $sMsg);

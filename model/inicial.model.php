@@ -254,7 +254,7 @@ class inicial
             $sSqlNumpresInicial .= "             and v51_certidao = {$iCertidao} ) as x                                     ";
 
             $rsNumpresInicial = db_query($sSqlNumpresInicial);
-            $iLinhasNumpres = pg_num_rows($rsNumpresInicial);
+            $iLinhasNumpres = $rsNumpresInicial === false || $rsNumpresInicial === null ? 0 : pg_num_rows($rsNumpresInicial);
 
             for ($iInd = 0; $iInd < $iLinhasNumpres; $iInd++) {
 
@@ -404,7 +404,7 @@ class inicial
         $sSqlNumpresInicial .= "           where v51_inicial  = {$iInicial} ) as x                                       ";
 
         $rsNumpresInicial = db_query($sSqlNumpresInicial);
-        $iLinhasNumpres = pg_num_rows($rsNumpresInicial);
+        $iLinhasNumpres = $rsNumpresInicial === false || $rsNumpresInicial === null ? 0 : pg_num_rows($rsNumpresInicial);
 
         for ($iInd = 0; $iInd < $iLinhasNumpres; $iInd++) {
             $oNumpresInicial = db_utils::fieldsMemory($rsNumpresInicial, $iInd);

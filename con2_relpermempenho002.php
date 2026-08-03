@@ -134,7 +134,7 @@ $sSqlPermEmpenho .= "         inner join db_depart  on db_depart.coddepto      =
 $sSqlPermEmpenho .= "         {$sWhereDeptos}                                                                         ";
 
 $rsSqlPermEmpenho = db_query($sSqlPermEmpenho);
-$iNumRows         = pg_num_rows($rsSqlPermEmpenho);
+$iNumRows         = $rsSqlPermEmpenho === false || $rsSqlPermEmpenho === null ? 0 : pg_num_rows($rsSqlPermEmpenho);
 
 $head2 = "RELATÓRIO DE PERMISSÕES DE EMPENHO";
 $head4 = "EXERCICÍO: ".$iAnoUsu;

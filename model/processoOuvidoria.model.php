@@ -496,7 +496,7 @@ class processoOuvidoria
 
         $sSqlProrrogacao = $clProcessoOuvidoriaProrrogacao->sql_query(null, "*", "ov15_dtfim", $sWhereProrrogacao);
         $rsProrrogacao = $clProcessoOuvidoriaProrrogacao->sql_record($sSqlProrrogacao);
-        $iNroProrrogacao = pg_num_rows($rsProrrogacao);
+        $iNroProrrogacao = $rsProrrogacao === false || $rsProrrogacao === null ? 0 : pg_num_rows($rsProrrogacao);
 
         $dtDataIni = $dtDataInicial;
         $dtDataFim = $dtDataIni;
@@ -654,7 +654,7 @@ class processoOuvidoria
 
         $sSqlProrrogacao = $clProcessoOuvidoriaProrrogacao->sql_query(null, "*", "ov15_dtfim", $sWhereProrrogacao);
         $rsProrrogacao = $clProcessoOuvidoriaProrrogacao->sql_record($sSqlProrrogacao);
-        $iNroProrrogacao = pg_num_rows($rsProrrogacao);
+        $iNroProrrogacao = $rsProrrogacao === false || $rsProrrogacao === null ? 0 : pg_num_rows($rsProrrogacao);
 
         $lProcessado = false;
 

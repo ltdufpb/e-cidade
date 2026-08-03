@@ -82,7 +82,7 @@ $instit = db_getsession("DB_instit");
         if(($pesquisa_chave!=null) && ($pesquisa_chave!="")){
           $sql ="select * from lista where k60_codigo =$pesquisa_chave and k60_instit = $instit";
           $result =db_query($sql);
-          $linha = pg_num_rows($result);
+          $linha = $result === false || $result === null ? 0 : pg_num_rows($result);
           if($linha > 0){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$k60_descr',false);</script>";

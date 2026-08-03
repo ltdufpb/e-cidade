@@ -75,7 +75,7 @@ $sSqlConsulta         .= "                                and db_sysforkey.codca
 $sSqlConsulta         .= "  where db_sysarqcamp.codarq = {$j121_codarq}                                      ";
 $sSqlConsulta         .= "  order by db_sysarqcamp.seqarq                                                    ";
 $rsConsulta            = db_query($sSqlConsulta);
-$iNumRows              = pg_num_rows($rsConsulta);
+$iNumRows              = $rsConsulta === false || $rsConsulta === null ? 0 : pg_num_rows($rsConsulta);
 
 $aDadoManutensaoTabela = [];
 for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
@@ -102,7 +102,7 @@ $sSqlPriKey  .= "     where db_sysprikey.codarq = {$j121_codarq}                
 $sSqlPriKey  .= "  order by db_sysprikey.sequen                                                     ";
 
 $rsPriKey     = db_query($sSqlPriKey);
-$iLinhas      = pg_num_rows($rsPriKey);
+$iLinhas      = $rsPriKey === false || $rsPriKey === null ? 0 : pg_num_rows($rsPriKey);
 
 $aPrikey      = [];
 $aChave       = [];
@@ -188,7 +188,7 @@ if (isset($oGet->chavepesquisa0)) {
 
 	$sSqlPriKey      = " select * from db_sysprikey where codarq = {$j121_codarq} ";
 	$rsPriKey        = db_query($sSqlPriKey);
-	$iLinhas         = pg_num_rows($rsPriKey);
+	$iLinhas         = $rsPriKey === false || $rsPriKey === null ? 0 : pg_num_rows($rsPriKey);
 
 	$aPrikeyPesquisa = [];
 	for ($iInd = 0; $iInd < $iLinhas; $iInd++ ) {

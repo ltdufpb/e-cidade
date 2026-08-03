@@ -116,7 +116,7 @@ final class AnexoVIRGF extends RelatoriosLegaisBase {
       /**
        * Calculamos os valores das obrigacoes financeiras (devemos somar: empenhos a pagar do Exercicio, RP'S)
        */
-      $iLinhaDespesa = pg_num_rows($rsDespesa);
+      $iLinhaDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
       for($i = 0; $i < $iLinhaDespesa; $i ++) {
         
         $oDespesa = db_utils::fieldsmemory($rsDespesa, $i);
@@ -147,7 +147,7 @@ final class AnexoVIRGF extends RelatoriosLegaisBase {
       $sWhereDespesa = "o58_instit in ({$sListaRPPS})";
       $rsDespesa = db_dotacaosaldo(8, 3, 3, true, $sWhereDespesa, $this->iAnoUsu, $sDataInicial, $sDataFinal);
 
-      $iLinhaDespesa = pg_num_rows($rsDespesa);
+      $iLinhaDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
       for($i = 0; $i < $iLinhaDespesa; $i ++) {
         
         $oDespesa = db_utils::fieldsmemory($rsDespesa, $i);
@@ -252,7 +252,7 @@ final class AnexoVIRGF extends RelatoriosLegaisBase {
     $sSqlRecursosRestos .= "          db21_tipoinstit ";
     
     $rsRecursosResto = db_query($sSqlRecursosRestos);
-    $iNumRows = pg_num_rows($rsRecursosResto);
+    $iNumRows = $rsRecursosResto === false || $rsRecursosResto === null ? 0 : pg_num_rows($rsRecursosResto);
     for($i = 0; $i < $iNumRows; $i ++) {
       
       $oDadosResto = db_utils::fieldsMemory($rsRecursosResto, $i);
@@ -328,7 +328,7 @@ final class AnexoVIRGF extends RelatoriosLegaisBase {
     $sSqlInsuficiencia .= "   and e60_instit in({$this->getInstituicoes()})  ";
     $sSqlInsuficiencia .= " group by o58_codigo, db21_tipoinstit";
     $rsInsuficiencia = db_query($sSqlInsuficiencia);
-    $iTotalInsuficiencia = pg_num_rows($rsInsuficiencia);
+    $iTotalInsuficiencia = $rsInsuficiencia === false || $rsInsuficiencia === null ? 0 : pg_num_rows($rsInsuficiencia);
     if ($iTotalInsuficiencia > 0) {
       
       for($i = 0; $i < $iTotalInsuficiencia; $i ++) {

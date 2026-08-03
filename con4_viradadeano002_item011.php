@@ -33,11 +33,11 @@ if($sqlerro==false) {
   $cl_tabplan = new cl_tabplan;
   $sqldeporigem = "select * from tabplan where k02_anousu = $anoorigem ";
   $resultdeporigem = db_query($sqldeporigem);
-  $linhasdeporigem = pg_num_rows($resultdeporigem);
+  $linhasdeporigem = $resultdeporigem === false || $resultdeporigem === null ? 0 : pg_num_rows($resultdeporigem);
 
   $sqldepdestino = "select * from tabplan where k02_anousu = $anodestino limit 1";
   $resultdepdestino = db_query($sqldepdestino);
-  $linhasdepdestino = pg_num_rows($resultdepdestino);
+  $linhasdepdestino = $resultdepdestino === false || $resultdepdestino === null ? 0 : pg_num_rows($resultdepdestino);
 
   if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
     
@@ -49,7 +49,7 @@ if($sqlerro==false) {
       db_atutermometro($a, $linhasdeporigem, 'termometroitem', 1, $sMensagemTermometroItem);
       $sqlexe = "select c62_reduz from conplanoexe where c62_anousu = $anodestino and c62_reduz = $k02_reduz";
       $resultexe = db_query($sqlexe);
-      $linhasexe = pg_num_rows($resultexe);
+      $linhasexe = $resultexe === false || $resultexe === null ? 0 : pg_num_rows($resultexe);
       
       if ($linhasexe==0) {
         $reduz .= $vir.$k02_reduz;

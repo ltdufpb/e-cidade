@@ -49,7 +49,7 @@ $sSqlInstituicao = "select codigo,
                       from db_config 
                      where codigo in ({$db_selinstit})";
 $resultinst = db_query($sSqlInstituicao);
-$numero_instit = pg_num_rows($resultinst);
+$numero_instit = $resultinst === false || $resultinst === null ? 0 : pg_num_rows($resultinst);
 
 $descr_inst = '';
 $xvirg = '';

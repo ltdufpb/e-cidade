@@ -51,7 +51,7 @@ $sSqlInstituicaoRPPS .= "  from db_config ";
 $sSqlInstituicaoRPPS .= " where (db21_tipoinstit in (5,6) or prefeitura is true ) ";
 $sSqlInstituicaoRPPS .= "   and codigo = {$iUsuInstit}";
 $rsUsuInstit          = db_query($sSqlInstituicaoRPPS);
-$iNumRowsUsuInstit    = pg_num_rows($rsUsuInstit);
+$iNumRowsUsuInstit    = $rsUsuInstit === false || $rsUsuInstit === null ? 0 : pg_num_rows($rsUsuInstit);
 $iCodigo              = pg_fetch_result($rsUsuInstit,0);
 
 if($iNumRowsUsuInstit == 0){

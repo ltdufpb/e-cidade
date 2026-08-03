@@ -65,7 +65,7 @@ if(!isset($ed52_i_ano)){
          ORDER BY ed10_c_abrev
         ";
  $sql_result = db_query($sql);
- $num = pg_num_rows($sql_result);
+ $num = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
  $conta = "";
  while ($row=pg_fetch_array($sql_result)){
   $conta = $conta+1;
@@ -81,7 +81,7 @@ if(!isset($ed52_i_ano)){
               ORDER BY ed11_i_sequencia
              ";
   $sub_result = db_query($sub_sql);
-  $num_sub = pg_num_rows($sub_result);
+  $num_sub = $sub_result === false || $sub_result === null ? 0 : pg_num_rows($sub_result);
   if ($num_sub>=1){
    echo "new Array(\"\", ''),\n";
    $conta_sub = "";

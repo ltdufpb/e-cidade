@@ -64,7 +64,7 @@ final class PadArquivoSigapProjativ extends PadArquivoSigap {
     $sSqlProAtiv .= "                            and o58_anousu   = o55_anousu";
     $sSqlProAtiv .= "    and o55_anousu <= " . db_getsession("DB_anousu"); 
     $rsProjAtiv   = db_query($sSqlProAtiv);
-    $iTotalLinhas = pg_num_rows($rsProjAtiv);
+    $iTotalLinhas = $rsProjAtiv === false || $rsProjAtiv === null ? 0 : pg_num_rows($rsProjAtiv);
      
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       

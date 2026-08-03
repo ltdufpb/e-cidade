@@ -161,7 +161,7 @@ class Services_JSON
     *                                   bubble up with an error, so all return values
     *                                   from encode() should be checked with isError()
     */
-    function Services_JSON($use = 0, $lUseTOJSON = false)
+    function __construct($use = 0, $lUseTOJSON = false)
     {
         $this->use = $use;
         $this->lUseTOJSON = $lUseTOJSON;
@@ -358,7 +358,7 @@ class Services_JSON
                                 ord($var[$c + 3])
                             );
 // eu robson comentei essa linha pq estava dando pa
-//                                         ord($var{$c + 4}));
+//                                         ord($var[$c + 4]));
                             $c += 4;
                             $utf16 = $this->utf82utf16($char);
                             $ascii .= sprintf('\u%04s', bin2hex((string) $utf16));
@@ -817,7 +817,7 @@ if (class_exists('PEAR_Error')) {
 
     class Services_JSON_Error extends PEAR_Error
     {
-        function Services_JSON_Error(
+        function __construct(
             $message = 'unknown error',
             $code = null,
             $mode = null,

@@ -147,7 +147,7 @@ if ($db_where == ""){
 
 $sqlpar = "select db21_regracgmiss,db21_regracgmiptu from db_config where codigo = ".db_getsession("DB_instit");
 $resultpar = db_query($sqlpar);
-$linhaspar = pg_num_rows($resultpar);
+$linhaspar = $resultpar === false || $resultpar === null ? 0 : pg_num_rows($resultpar);
 if($linhaspar>0){
   db_fieldsmemory($resultpar,0);
 }
@@ -166,7 +166,7 @@ if($linhaspar>0){
 
 $sql = ($clinicial->sql_query_inform(null,$sCampos,$db_ordem,$db_where));
 $result= db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($linhas == 0){
 
   $sMsg = _M('tributario.juridico.jur2_relinicial002.nao_existem_registros');
@@ -213,7 +213,7 @@ for($x = 0; $x < $linhas;$x++){
   $sql .= "where v59_inicial = $v50_inicial ";
 
   $resultinicial = db_query($sql);
-  $linhasinicial = pg_num_rows($resultinicial);
+  $linhasinicial = $resultinicial === false || $resultinicial === null ? 0 : pg_num_rows($resultinicial);
   if ($linhasinicial == 0){
     continue;
   }
@@ -236,7 +236,7 @@ for($x = 0; $x < $linhas;$x++){
       //a matricula tem promitente
       $sqlprom = "select * from promitente where j41_matric = $k00_matric";
       $resultprom = db_query($sqlprom);
-      $linhasprom = pg_num_rows($resultprom);
+      $linhasprom = $resultprom === false || $resultprom === null ? 0 : pg_num_rows($resultprom);
       if($linhasprom > 0){
         db_fieldsmemory($resultprom,0);
         if($j41_numcgm == $cgm_exe){
@@ -248,7 +248,7 @@ for($x = 0; $x < $linhas;$x++){
         // não tem promitente... vê se tem proprietario
         $sqlprop = "select * from iptubase where j01_matric = $k00_matric";
         $resultprop = db_query($sqlprop);
-        $linhasprop = pg_num_rows($resultprop);
+        $linhasprop = $resultprop === false || $resultprop === null ? 0 : pg_num_rows($resultprop);
         if($linhasprop > 0){
           db_fieldsmemory($resultprop,0);
           //  esse é o proprietario
@@ -261,7 +261,7 @@ for($x = 0; $x < $linhas;$x++){
       //Considerar Somente Proprietario
       $sqlprop = "select * from iptubase where j01_matric = $k00_matric";
       $resultprop = db_query($sqlprop);
-      $linhasprop = pg_num_rows($resultprop);
+      $linhasprop = $resultprop === false || $resultprop === null ? 0 : pg_num_rows($resultprop);
       if($linhasprop > 0){
         db_fieldsmemory($resultprop,0);
         //  esse é o proprietario
@@ -282,7 +282,7 @@ for($x = 0; $x < $linhas;$x++){
         //Não vincular socios
         $sqlsoc = "select q02_inscr,q02_numcgm from issbase where q02_inscr = $k00_inscr";
         $resultsoc = db_query($sqlsoc);
-        $linhassoc = pg_num_rows($resultsoc);
+        $linhassoc = $resultsoc === false || $resultsoc === null ? 0 : pg_num_rows($resultsoc);
         if($linhassoc>0){
           db_fieldsmemory($resultsoc,0);
           if($q02_numcgm == $cgm_exe){
@@ -315,7 +315,7 @@ for($x = 0; $x < $linhas;$x++){
     $sSqlValorCor .= "  where v59_inicial = {$v50_inicial}                        ";
 
     $rsValorCor  = db_query($sSqlValorCor) or die($sSqlValorCor);
-    $iNroLinha 	 = pg_num_rows($rsValorCor);
+    $iNroLinha 	 = $rsValorCor === false || $rsValorCor === null ? 0 : pg_num_rows($rsValorCor);
 
     $lDebitoAberto = false;
     for ($i=0; $i < $iNroLinha; $i++) {
@@ -343,7 +343,7 @@ for($x = 0; $x < $linhas;$x++){
         $sSqlDebito   .= "  where termoini.inicial = {$v50_inicial}					   	    	             ";
         $sSqlDebito   .= "    and termo.v07_parcel not in (select v09_parcel from termoanu where v09_parcel = v07_parcel)";
         $rsDebito      = db_query($sSqlDebito) or die($sSqlDebito);
-        $iNroLinhaDeb  = pg_num_rows($rsDebito);                                                 
+        $iNroLinhaDeb  = $rsDebito === false || $rsDebito === null ? 0 : pg_num_rows($rsDebito);                                                 
 
         for ($iRP=0; $iRP < $iNroLinhaDeb; $iRP++) {
           db_fieldsmemory($rsDebito,$iRP);       
@@ -380,7 +380,7 @@ for($x = 0; $x < $linhas;$x++){
     $sSqlValorCor .= "  where v59_inicial = {$v50_inicial}									    	";
 
     $rsValorCor  = db_query($sSqlValorCor) or die($sSqlValorCor);
-    $iNroLinha 	 = pg_num_rows($rsValorCor);
+    $iNroLinha 	 = $rsValorCor === false || $rsValorCor === null ? 0 : pg_num_rows($rsValorCor);
 
 
     for ($i=0; $i < $iNroLinha; $i++) {
@@ -406,7 +406,7 @@ $sqlvalor = " select sum(k00_valor) as valor
 
 
 $resultvalor = db_query($sqlvalor);
-$linhasvalor = pg_num_rows($resultvalor);
+$linhasvalor = $resultvalor === false || $resultvalor === null ? 0 : pg_num_rows($resultvalor);
 
 if($linhasvalor > 0){
   db_fieldsmemory($resultvalor,0);

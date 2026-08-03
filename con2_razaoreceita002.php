@@ -191,7 +191,7 @@ if ($tipo == "a") {
     $res = db_query($sql_sintetico);
 }
 
-$rows = pg_num_rows($res);
+$rows = $res === false || $res === null ? 0 : pg_num_rows($res);
 if ($rows == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dados para gerar a consulta ! ');
 }

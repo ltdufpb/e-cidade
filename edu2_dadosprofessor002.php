@@ -70,7 +70,7 @@ try {
     throw new Exception( _M( MSG_EDU2_DADOSPROFESSOR002 . "erro_buscar_rechumano", $oMsgErro) );
   }
 
-  $iLinhas = pg_num_rows($rsRechumanoCgm);
+  $iLinhas = $rsRechumanoCgm === false || $rsRechumanoCgm === null ? 0 : pg_num_rows($rsRechumanoCgm);
 
   for ($i=0; $i < $iLinhas; $i++) {
     $aRechumano[] = db_utils::fieldsMemory($rsRechumanoCgm, $i)->rechumano;
@@ -271,7 +271,7 @@ function buscaMovimentacoes( $aRechumano ) {
   $sOrderRecHumanoMovimentacao = "ed118_data, ed118_hora";
   $sSqlRecHumanoMovimentacao   = $oDaoRecHumanoMovimentacao->sql_query_file('','*',$sOrderRecHumanoMovimentacao,$sWhereRecHumanoMovimentacao);
   $rsRecHumanoMovimentacao     = pg_query( $sSqlRecHumanoMovimentacao );
-  $iLinhas                     = pg_num_rows( $rsRecHumanoMovimentacao );
+  $iLinhas                     = $rsRecHumanoMovimentacao === false || $rsRecHumanoMovimentacao === null ? 0 : pg_num_rows( $rsRecHumanoMovimentacao );
 
   $aMovimentacoes = [];
   if ( $iLinhas > 0 ) {
@@ -527,7 +527,7 @@ function buscaEscolas($aRechumano) {
     db_redireciona( 'db_erros.php?fechar=true&db_erro='.trim($oErro->getMessage()) );
   }
 
-  $iLinhas = pg_num_rows($rs);
+  $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
   $aEscolas = [];
   for ($i=0; $i < $iLinhas; $i++) {
@@ -701,7 +701,7 @@ function imprimeRegimeTrabalho( FPDF $oPdf, $oConfig, ProfissionalEscola $oProfi
     db_redireciona( 'db_erros.php?fechar=true&db_erro='.trim($oErro->getMessage()) );
   }
 
-  $iLinhas = pg_num_rows($rsRelacaoTrabalho);
+  $iLinhas = $rsRelacaoTrabalho === false || $rsRelacaoTrabalho === null ? 0 : pg_num_rows($rsRelacaoTrabalho);
 
   if ( $iLinhas == 0 ) {
     return false;

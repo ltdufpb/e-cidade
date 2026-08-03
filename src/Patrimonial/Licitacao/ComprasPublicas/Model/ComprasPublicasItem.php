@@ -107,7 +107,7 @@ class ComprasPublicasItem
             throw new Exception("Sistema não conseguiu buscar os itens");
         }
 
-        $iRegistros = pg_num_rows($rsItensLicitacao);
+        $iRegistros = $rsItensLicitacao === false || $rsItensLicitacao === null ? 0 : pg_num_rows($rsItensLicitacao);
         for ($iRegistro = 0; $iRegistro < $iRegistros; $iRegistro++) {
             $item                     =  new stdClass();
             $oDadosItem = db_utils::fieldsMemory($rsItensLicitacao, $iRegistro);
@@ -204,7 +204,7 @@ class ComprasPublicasItem
             throw new Exception("Sistema não conseguiu buscar os itens");
         }
 
-        $iRegistros = pg_num_rows($rsItensLicitacao);
+        $iRegistros = $rsItensLicitacao === false || $rsItensLicitacao === null ? 0 : pg_num_rows($rsItensLicitacao);
         $numero     = 1;
         for ($iRegistro = 0; $iRegistro < $iRegistros; $iRegistro++) {
             $item                      =  new stdClass();

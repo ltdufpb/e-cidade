@@ -44,7 +44,7 @@ $depto     = db_getsession("DB_coddepto");
 
 $sql    = "SELECT bi17_codigo,bi17_nome FROM biblioteca WHERE bi17_coddepto = $depto";
 $result = db_query($sql);;
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 if ($linhas != 0) {
   db_fieldsmemory($result,0);

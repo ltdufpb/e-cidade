@@ -63,7 +63,7 @@ where tipo = 3 and w04_enviado is not true
 order by w04_inscr;		
 ";
 $result = db_query($sql);
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 $linha = 70;
 $pdf->AddPage();
 $pdf->SetFont('Arial','B',8);

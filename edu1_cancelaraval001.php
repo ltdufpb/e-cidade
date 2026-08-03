@@ -393,7 +393,7 @@ if (isset($proximo)) {
     $rsMatriculasTransferidas   = db_query($sSqlMatriculasTransferidas);
     if ($rsMatriculasTransferidas && pg_num_rows($rsMatriculasTransferidas) > 0) {
 
-      $iLinhas = pg_num_rows($rsMatriculasTransferidas);
+      $iLinhas = $rsMatriculasTransferidas === false || $rsMatriculasTransferidas === null ? 0 : pg_num_rows($rsMatriculasTransferidas);
       for ($i=0; $i < $iLinhas; $i++) { 
 
         $iCodigoMatricula    = db_utils::fieldsMemory($rsMatriculasTransferidas, $i)->ed60_i_codigo;

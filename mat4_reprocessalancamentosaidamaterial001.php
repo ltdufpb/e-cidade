@@ -132,7 +132,7 @@ if (isset($_POST["processar"])) {
                                           m82_codigo
                                  order by m80_codigo,m80_data";
     $rsBuscaMovimentacaoEstoque = db_query($sSqlMovimentacaoEstoque);
-    $iTotalMovimentacoes        = pg_num_rows($rsBuscaMovimentacaoEstoque);
+    $iTotalMovimentacoes        = $rsBuscaMovimentacaoEstoque === false || $rsBuscaMovimentacaoEstoque === null ? 0 : pg_num_rows($rsBuscaMovimentacaoEstoque);
     if ($iTotalMovimentacoes == 0) {
       throw new Exception("Nenhuma movimentação encontrada no período informado.");
     }

@@ -292,7 +292,7 @@ $sql="select o15_recurso,
 ";
 
 $result_contas = db_query($sql);
-$nrows = pg_num_rows($result_contas);
+$nrows = $result_contas === false || $result_contas === null ? 0 : pg_num_rows($result_contas);
 
 if (pg_num_rows($result_contas) > 0) {
     for ($x = 0; $x < pg_num_rows($result_contas); $x++) {
@@ -447,8 +447,8 @@ if (pg_num_rows($res) > 0) {
 //  ------------------------------------------------------ //
 $res = db_query("select * from work_rel order by recurso");
 
-$rows = pg_num_rows($res);
-$cols = pg_num_fields($res);
+$rows = $res === false || $res === null ? 0 : pg_num_rows($res);
+$cols = $res === false || $res === null ? 0 : pg_num_fields($res);
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

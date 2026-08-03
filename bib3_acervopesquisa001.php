@@ -46,7 +46,7 @@ $clexemplar = new cl_exemplar;
 $depto = db_getsession("DB_coddepto");
 $sql = "SELECT bi17_codigo,bi17_nome FROM biblioteca WHERE bi17_coddepto = $depto";
 $result = db_query($sql);;
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($linhas != 0) {
     db_fieldsmemory($result, 0);
 }
@@ -177,7 +177,7 @@ db_fieldsmemory($result, 0);
                                        )
                                        AND bi23_codigo = $bi23_codigo ";
                             $result1 = db_query($sql1);
-                            $linhas1 = pg_num_rows($result1);
+                            $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
                             if ($linhas1 == 0 || $bi23_situacao == 'N') {
                                 echo "Indisponível";
                             } else {
@@ -225,7 +225,7 @@ db_fieldsmemory($result, 0);
                                           )
                     ";
                     $result = @db_query($sql);
-                    $linhas = @pg_num_rows($result);
+                    $linhas = $result === false || $result === null ? 0 : @pg_num_rows($result);
                     if ($linhas > 0) {
                         for ($x = 0; $x < $linhas; $x++) {
                             db_fieldsmemory($result, $x);

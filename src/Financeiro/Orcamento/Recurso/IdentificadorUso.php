@@ -18,7 +18,7 @@ class IdentificadorUso
         $dao = new \cl_recursoidentificador();
         $busca = $dao->sql_query_file(null, "*", 2, "upper(o202_estado) = '{$estado}'");
         $resBusca = db_query($busca);
-        $totalRegistros = pg_num_rows($resBusca);
+        $totalRegistros = $resBusca === false || $resBusca === null ? 0 : pg_num_rows($resBusca);
         self::$itens = [];
         if ($totalRegistros > 0) {
             for ($row = 0; $row < $totalRegistros; $row++) {

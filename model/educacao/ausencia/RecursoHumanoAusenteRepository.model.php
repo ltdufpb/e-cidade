@@ -100,7 +100,7 @@ class RecursoHumanoAusenteRepository {
     }
 
     $aRecursoHumanoAusente = [];
-    $iQuantidadeLinhas     = pg_num_rows($rsRecHumanoAusente);
+    $iQuantidadeLinhas     = $rsRecHumanoAusente === false || $rsRecHumanoAusente === null ? 0 : pg_num_rows($rsRecHumanoAusente);
 
     if ( $iQuantidadeLinhas > 0 ) {
 

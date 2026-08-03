@@ -85,7 +85,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
 
 //    die($sSqlContasConciliacao) ;
     $rsContasConciliacao     = db_query($sSqlContasConciliacao) ;
-    $iTotalLinhasConciliacao = pg_num_rows($rsContasConciliacao);
+    $iTotalLinhasConciliacao = $rsContasConciliacao === false || $rsContasConciliacao === null ? 0 : pg_num_rows($rsContasConciliacao);
     
     if ( !$rsContasConciliacao || $iTotalLinhasConciliacao == 0) {
       throw new BusinessException("Sem contas conciliadas para a competência selecionada.");
@@ -115,7 +115,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
 //       echo $sqlPendenciascaixa."\n";
       }
       $rsPendenciaCaixa     = db_query($sqlPendenciascaixa);
-      $iTotalPendenciaCaixa = pg_num_rows($rsPendenciaCaixa);
+      $iTotalPendenciaCaixa = $rsPendenciaCaixa === false || $rsPendenciaCaixa === null ? 0 : pg_num_rows($rsPendenciaCaixa);
 
       if ( !$rsPendenciaCaixa) {
         throw new BusinessException("Pendencias do caixa não localizadas.");
@@ -198,7 +198,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
                                                                                     "tipomovimentacao, k86_data",
                                                                                     $sWherePendenciaExtrato);
       $rsPendenciaExtrato  = db_query($sSqlPendeciaExtrato);
-      $iTotalLinhasExtrato = pg_num_rows($rsPendenciaExtrato);
+      $iTotalLinhasExtrato = $rsPendenciaExtrato === false || $rsPendenciaExtrato === null ? 0 : pg_num_rows($rsPendenciaExtrato);
 
       for ($iRowPendenciaExtrato = 0; $iRowPendenciaExtrato < $iTotalLinhasExtrato; $iRowPendenciaExtrato++) {
 

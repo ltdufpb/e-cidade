@@ -132,7 +132,7 @@ if($prescrnoti=="n"){
 					inner join arretipo on k00_tipo = k62_tipodeb 
 					where k62_lista = $lista and k03_tipo <> 5"; 
 	      $resultlista =  db_query($sqllista);
-	      $linhaslista = pg_num_rows($resultlista);
+	      $linhaslista = $resultlista === false || $resultlista === null ? 0 : pg_num_rows($resultlista);
 
 	      $sqlVerificaLista = " select	distinct
 									                    listadeb.k61_codigo, 

@@ -250,7 +250,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
                                                                                                  " it19_guia = ".$oPost->it01_guia."
                                                                                                and it19_codigo = ".$aListaDadosCaracImovel[0]."
                                                                                                and it19_tipocaract = 1"));
-         $iDadosCaractRural  = @pg_num_rows($rsDadosCaractRural);
+         $iDadosCaractRural  = $rsDadosCaractRural === false || $rsDadosCaractRural === null ? 0 : @pg_num_rows($rsDadosCaractRural);
 
 	       $clitbiruralcaract->it19_guia       = $clitbi->it01_guia;
 	       $clitbiruralcaract->it19_codigo     = @$aListaDadosCaracImovel[0];

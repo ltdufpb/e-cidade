@@ -102,7 +102,7 @@ if (isset($notifparc)){
 		}
   
   $lim1 = 0;
-  $lim2 = pg_num_rows($result);	
+  $lim2 = $result === false || $result === null ? 0 : pg_num_rows($result);	
 		
 	
 } else {
@@ -247,13 +247,13 @@ if($fim > 0 && $intervalo != 'n'){
     $lim = 0;
   }
   if($fim > pg_num_rows($result)){
-    $lim2 = pg_num_rows($result);
+    $lim2 = $result === false || $result === null ? 0 : pg_num_rows($result);
   }else{
     $lim2 = $fim;
   }
 }else{
   $lim1 = 0;
-  $lim2 = pg_num_rows($result);
+  $lim2 = $result === false || $result === null ? 0 : pg_num_rows($result);
 }
 
 }

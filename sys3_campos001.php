@@ -130,7 +130,7 @@ if (isset($tabelacod)) {
                 $cor1 = "#FEA27A";
                 $cor2 = "#FFDBBF";
                 $cor = "";
-                $numrows = pg_num_rows($result);
+                $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
                 for ($i = 0; $i < $numrows; $i++) {
                     db_fieldsmemory($result, $i);
                     echo "<tr bgcolor=\"" . ($cor = $cor == $cor1 ? $cor2 : $cor1) . "\">\n";
@@ -169,7 +169,7 @@ if (isset($tabelacod)) {
                 echo "<strong>Chave Primária:</strong>\n";
             }
 
-            $numrows = pg_num_rows($result);
+            $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
             if ($numrows == 0) {
                 echo "Sem chave primaria\n";
             } else {
@@ -185,7 +185,7 @@ if (isset($tabelacod)) {
                        from db_sysforkey 
                        where codarq = $tabela
                        group by(referen)");
-            $numrows = pg_num_rows($result);
+            $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
             echo "<table border=\"0\">\n";
             if ($numrows == 0) {
                 if (isset($tabelacod)) {
@@ -207,7 +207,7 @@ if (isset($tabelacod)) {
                          and f.codarq = $tabela
                          and f.referen = " . pg_fetch_result($result, $j, "referen") . " 
                          order by f.sequen");
-                    $numfork = pg_num_rows($fork);
+                    $numfork = $fork === false || $fork === null ? 0 : pg_num_rows($fork);
                     echo "<tr><td></td><td>\n";
                     for ($i = 0; $i < $numfork; $i++) {
                         echo pg_fetch_result($fork, $i, "nomecam") . " ";
@@ -234,7 +234,7 @@ if (isset($tabelacod)) {
                        from db_sysindices
                        where codarq = $tabela");
             echo "<table>\n";
-            $numrows = pg_num_rows($result);
+            $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
             if ($numrows == 0) {
                 if (isset($tabelacod)) {
                     echo "<tr><td><a href=\"sys4_indices001.php?" . base64_encode("tabela=$tabela") . "\">Indices:</a></td><td>Sem Indice</td></tr>\n";
@@ -257,7 +257,7 @@ if (isset($tabelacod)) {
                             inner join db_syscadind c on c.codind = i.codind
                             inner join db_syscampo a on a.codcam = c.codcam 
                        where codarq = $tabela and i.codind = " . pg_fetch_result($result, $i, 0) . " order by c.sequen");
-                    $numro = pg_num_rows($result_ind);
+                    $numro = $result_ind === false || $result_ind === null ? 0 : pg_num_rows($result_ind);
                     $qcamp = "( ";
                     $separador = "";
                     for ($ii = 0; $ii < $numro; $ii++) {
@@ -299,7 +299,7 @@ if (isset($tabelacod)) {
                        where codsequencia = $codseq");
                 echo "<hr align='left' style='width:750px'>";
                 echo "<table>\n";
-                $numrows = pg_num_rows($result);
+                $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
                 if ($numrows == 0) {
                     echo "<tr><td><strong>Sequencia:</strong></td><td>Não Encontrada.</td></tr>\n";
                 } else {

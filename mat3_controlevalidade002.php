@@ -186,7 +186,7 @@ $sSQL = "select m60_codmater,
 //echo $sSQL;
 //exit;
 $rs= db_query($sSQL);
-$iLinhas = pg_num_rows($rs);
+$iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
 if($iLinhas == 0)
 {

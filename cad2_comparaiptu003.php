@@ -185,7 +185,7 @@ $sql =  "
         ";
 
 $result = db_query($sql) or die($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 if ($numrows == 0) {
 	$erro = true;

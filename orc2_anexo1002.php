@@ -47,7 +47,7 @@ $sSqlInst    .= "        nomeinstabrev                                      ";
 $sSqlInst    .= "   from db_config                                          ";
 $sSqlInst    .= "  where codigo in(".str_replace('-',', ',$db_selinstit).") ";
 $rsSqlInst    = db_query($sSqlInst);
-$iNumRowsInst = pg_num_rows($rsSqlInst);
+$iNumRowsInst = $rsSqlInst === false || $rsSqlInst === null ? 0 : pg_num_rows($rsSqlInst);
 
 $sDescrInst   = '';
 $sVirgula     = '';
@@ -231,7 +231,7 @@ if ($iAnoUsu < 2008) {
 
 
 $rsSqlWork1    = db_query($sSqlWork1);
-$iNumRowsWork1 = pg_num_rows($rsSqlWork1);
+$iNumRowsWork1 = $rsSqlWork1 === false || $rsSqlWork1 === null ? 0 : pg_num_rows($rsSqlWork1);
 
 for ($i = 0; $i < $iNumRowsWork1; $i++) {
 
@@ -252,7 +252,7 @@ for ($i = 0; $i < $iNumRowsWork1; $i++) {
 
 $sSqlWork1     = "select * from work1 where substr(elemento,1,1) = '3' order by elemento";
 $rsSqlWork1    = db_query($sSqlWork1);
-$iNumRowsWork1 = pg_num_rows($rsSqlWork1);
+$iNumRowsWork1 = $rsSqlWork1 === false || $rsSqlWork1 === null ? 0 : pg_num_rows($rsSqlWork1);
 
 for ($i = 0; $i < $iNumRowsWork1; $i++) {
 
@@ -362,7 +362,7 @@ $vlre   = [];
 
 $sSqlWork1     = "select * from work1 where substr(elemento,2,1) = '2' or substr(elemento,2,1) = '8' order by elemento";
 $rsSqlWork1    = db_query($sSqlWork1);
-$iNumRowsWork1 = pg_num_rows($rsSqlWork1);
+$iNumRowsWork1 = $rsSqlWork1 === false || $rsSqlWork1 === null ? 0 : pg_num_rows($rsSqlWork1);
 
 for ($i = 0; $i < $iNumRowsWork1; $i++) {
 
@@ -388,7 +388,7 @@ for ($i = 0; $i < $iNumRowsWork1; $i++) {
 
 $sSqlWork1     = "select * from work1 where substr(elemento,1,1) = '3' order by elemento";
 $rsSqlWork1    = db_query($sSqlWork1);
-$iNumRowsWork1 = pg_num_rows($rsSqlWork1);
+$iNumRowsWork1 = $rsSqlWork1 === false || $rsSqlWork1 === null ? 0 : pg_num_rows($rsSqlWork1);
 
 for ($i = 0; $i < $iNumRowsWork1; $i++) {
 
@@ -455,7 +455,7 @@ for ($i = 0; $i < $numreg; $i++) {
 
 $sSqlWork1     = "select * from work1 where elemento =   '390000000000000' or elemento = '370000000000000'";
 $rsSqlWork1    = db_query($sSqlWork1);
-$iNumRowsWork1 = pg_num_rows($rsSqlWork1);
+$iNumRowsWork1 = $rsSqlWork1 === false || $rsSqlWork1 === null ? 0 : pg_num_rows($rsSqlWork1);
 
 if ($iNumRowsWork1 > 0) {
 

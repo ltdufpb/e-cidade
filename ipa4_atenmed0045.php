@@ -208,7 +208,7 @@ input {
 			  $result = db_query("select codexa,descr 
 			                     from exames 
 								 where codmed = ".db_getsession("DB_id_usuario")." order by upper(descr)");
-			  $numrows = pg_num_rows($result);
+			  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			  for($i = 0;$i < $numrows;$i++) {
 			    db_fieldsmemory($result,$i);
 			    echo "<option value=\"".$codexa."\">".trim((string) $descr)."</option>\n";
@@ -245,7 +245,7 @@ input {
 							   on c.w01_numcgi = cg.j01_numero
 							   where trim(e.codpaciente) = trim('$codpaciente')
 							   order by data desc");
-			$numrows = pg_num_rows($result);
+			$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			if($numrows > 0) {
 			  echo "<table border=\"0\" cellspacing=\"1\" cellpadding=\"2\">\n";
 			  echo "<tr bgcolor=\"#FDB393\">

@@ -51,7 +51,7 @@ if(isset($alterar)){
 
 	 $sqlprocfiscalv    = "select y112_sequencial from procfiscallevanta where y112_levanta = $y60_codlev";
 	 $resultprocfiscalv = db_query($sqlprocfiscalv);
-	 $linhasprocfiscalv = pg_num_rows($resultprocfiscalv);
+	 $linhasprocfiscalv = $resultprocfiscalv === false || $resultprocfiscalv === null ? 0 : pg_num_rows($resultprocfiscalv);
 	 if($linhasprocfiscalv>0){
 
 	 	 db_fieldsmemory($resultprocfiscalv,0);
@@ -97,7 +97,7 @@ if(isset($alterar)){
 	                          inner join cgm on y101_numcgm=z01_numcgm
 	                    where y112_levanta = $chavepesquisa";
 	 $resultprocfiscal = db_query($sqlprocfiscal);
-	 $linhasprocfiscal = pg_num_rows($resultprocfiscal);
+	 $linhasprocfiscal = $resultprocfiscal === false || $resultprocfiscal === null ? 0 : pg_num_rows($resultprocfiscal);
 	 if($linhasprocfiscal>0){
 	 	db_fieldsmemory($resultprocfiscal,0);
 	 }else{

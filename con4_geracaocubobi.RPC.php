@@ -71,7 +71,7 @@ try {
         throw new Exception( _M( MENSAGEM_CON4_GERACAOCUBOBIRPC . "erro_buscar_cubos", $oErro) );
       }
 
-      $iLinhas = pg_num_rows($rsCubos);
+      $iLinhas = $rsCubos === false || $rsCubos === null ? 0 : pg_num_rows($rsCubos);
 
       for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
 

@@ -69,7 +69,7 @@ if($objParam->exec == 'medico'){
 	              and unidademedicos.sd04_i_medico=$objParam->medico
 	          limit 1";
 	   $result=db_query($sql);
-       $linhas=pg_num_rows($result);
+       $linhas=$result === false || $result === null ? 0 : pg_num_rows($result);
     }
     if($linhas>0){
         $objRetorno->sd27_i_codigo  = pg_fetch_result($result,0,0);

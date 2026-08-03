@@ -783,7 +783,7 @@ class Exportacao {
     $sOrdem         = "db52_posicao";
     $sSql           = $oLayoutCampos->sql_query(null, $sCampos, $sOrdem, $sWhere);
     $rsResultado    = db_query($sSql);
-    $iQtdResultados = pg_num_rows($rsResultado);
+    $iQtdResultados = $rsResultado === false || $rsResultado === null ? 0 : pg_num_rows($rsResultado);
 
     for ($iResultado = 0; $iResultado < $iQtdResultados; $iResultado++) {
 

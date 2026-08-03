@@ -174,7 +174,7 @@ $iInstituicao    = db_getsession('DB_instit');
 	    
 $sqlParametro    = "select p90_traminic from protparam where p90_instit = {$iInstituicao}";
 $rsParametro     = db_query($sqlParametro);
-$linhasParametro = pg_num_rows($rsParametro);
+$linhasParametro = $rsParametro === false || $rsParametro === null ? 0 : pg_num_rows($rsParametro);
 	    
 db_fieldsmemory($rsParametro,0);
 

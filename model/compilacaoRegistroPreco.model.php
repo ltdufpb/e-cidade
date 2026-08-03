@@ -845,7 +845,7 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
     if (!$rsJulgamento) {
       throw new Exception("Nao foi possível iniciar julgamento.\nErro ao iniciar julgamento.\nInforme Suporte");
     }
-    $iTotalItensJulgados = pg_num_rows($rsJulgamento);
+    $iTotalItensJulgados = $rsJulgamento === false || $rsJulgamento === null ? 0 : pg_num_rows($rsJulgamento);
     if ($iTotalItensJulgados == 0) {
       throw new Exception("Nao foi possível iniciar julgamento.\nNão foram encontrados itens para serem julgados.");
     }

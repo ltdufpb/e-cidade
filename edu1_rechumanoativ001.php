@@ -102,7 +102,7 @@ try {
     throw new Exception( _M(MSG_RECHUMANOATIVIDADE . "sem_horarios_escola_cadastrado") );
   }
 
-  $iLinhas = pg_num_rows($rsHorarioEscola);
+  $iLinhas = $rsHorarioEscola === false || $rsHorarioEscola === null ? 0 : pg_num_rows($rsHorarioEscola);
   for ($i = 0; $i < $iLinhas; $i++) {
 
     $oDados = db_utils::fieldsMemory($rsHorarioEscola, $i);

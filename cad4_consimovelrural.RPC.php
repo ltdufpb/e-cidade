@@ -60,7 +60,7 @@ try {
                 throw new Exception("Erro ao buscar isenções.");
             }
 
-            $linhaIsencao = pg_num_rows($rsIptuisen);
+            $linhaIsencao = $rsIptuisen === false || $rsIptuisen === null ? 0 : pg_num_rows($rsIptuisen);
 
             for ($i = 0; $i < $linhaIsencao; $i++) {
                 $retorno->isencoes[] = $oDadosIsencao = db_utils::fieldsMemory($rsIptuisen, $i);
@@ -84,7 +84,7 @@ try {
                 throw new Exception("Erro ao buscar percentuais de posse de outros proprietários.");
             }
 
-            $linhaPercPosseRural = pg_num_rows($rsPercPosseRural);
+            $linhaPercPosseRural = $rsPercPosseRural === false || $rsPercPosseRural === null ? 0 : pg_num_rows($rsPercPosseRural);
 
             for ($i = 0; $i < $linhaPercPosseRural; $i++) {
                 $retorno->outrosPropri[] = $oDadosIsencao = db_utils::fieldsMemory($rsPercPosseRural, $i);

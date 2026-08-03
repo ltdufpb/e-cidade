@@ -159,7 +159,7 @@ $clrotulo->label("e48_cgm");
                 $where  = "codigo <> ".db_getsession("DB_instit");
                 $sqlInstitituicoes = $daoDbConfig->sql_query_file(null, "codigo, nomeinst", "nomeinst", $where);
                 $rsInstituicoes = db_query($sqlInstitituicoes);
-                $totalInstituicoes = pg_num_rows($rsInstituicoes);
+                $totalInstituicoes = $rsInstituicoes === false || $rsInstituicoes === null ? 0 : pg_num_rows($rsInstituicoes);
 
                 $instituicoes[''] = "Não Aplicável";
                 for ($i= 0; $i < $totalInstituicoes; $i++) {

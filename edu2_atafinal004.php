@@ -506,7 +506,7 @@ for ($s = 0; $s < $linhas; $s ++) {
     $sql5   .= "      AND ed59_c_condicao = 'OB' ";
     $sql5   .= "      ORDER BY ed59_i_ordenacao ";
     $result5 = db_query($sql5);
-    $linhas5 = pg_num_rows($result5);
+    $linhas5 = $result5 === false || $result5 === null ? 0 : pg_num_rows($result5);
     $cont3   = 0;
     if ($linhas5 > 0) {
     	
@@ -594,7 +594,7 @@ for ($s = 0; $s < $linhas; $s ++) {
     $sql6   .= "      AND ed59_c_condicao = 'OB' ";
     $sql6   .= "      AND ed74_c_resultadofinal != 'A' ";        
     $result6 = db_query($sql6);
-    $linhas6 = pg_num_rows($result6);
+    $linhas6 = $result6 === false || $result6 === null ? 0 : pg_num_rows($result6);
     if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
       $rf = "";
     } else {

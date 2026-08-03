@@ -142,7 +142,7 @@ function ElementosFreq($ed67_i_procresultado){
          WHERE ed67_i_procresultado = $ed67_i_procresultado
          ";
  $query = db_query($sql);
- $linhas = pg_num_rows($query);
+ $linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
  return $linhas;
 }
 ?>

@@ -69,7 +69,7 @@ if ( isset( $incluir ) ) {
                                           where ed59_i_turma = {$codturmadest}
                                             AND ed59_i_serie = {$codseriedest})";
   $result_exc = db_query( $sql_exc );
-  $linhas_exc = pg_num_rows( $result_exc );
+  $linhas_exc = $result_exc === false || $result_exc === null ? 0 : pg_num_rows( $result_exc );
 
   for ( $z = 0; $z < $linhas_exc; $z++ ) {
 
@@ -119,7 +119,7 @@ if ( isset( $incluir ) ) {
              FROM alunocurso
             WHERE ed56_i_aluno = {$codigoaluno}";
   $query1  = db_query( $sql1 );
-  $linhas1 = pg_num_rows( $query1 );
+  $linhas1 = $query1 === false || $query1 === null ? 0 : pg_num_rows( $query1 );
 
   if($linhas1>0){
 

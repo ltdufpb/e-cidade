@@ -367,7 +367,7 @@ if ( pg_num_rows($rsFuncionarios) == 0 ) {
  * Agrupador -> Funcionarios -> Dados das Férias abertas
  */
 $aAgrupador         = [];
-$iTotalFuncionarios = pg_num_rows($rsFuncionarios); 
+$iTotalFuncionarios = $rsFuncionarios === false || $rsFuncionarios === null ? 0 : pg_num_rows($rsFuncionarios); 
 
 for ($i = 0; $i < $iTotalFuncionarios; $i++) {
 
@@ -411,7 +411,7 @@ for ($i = 0; $i < $iTotalFuncionarios; $i++) {
   $sSqlUltimoPeriodoGozado .= " order by r30_perai desc limit 1";
 
   $rsULtimoPeriodoGozado    = db_query($sSqlUltimoPeriodoGozado);
-  $iTemFerias               = pg_num_rows($rsULtimoPeriodoGozado); 
+  $iTemFerias               = $rsULtimoPeriodoGozado === false || $rsULtimoPeriodoGozado === null ? 0 : pg_num_rows($rsULtimoPeriodoGozado); 
 
   if ($iTemFerias > 0) {
     
@@ -465,7 +465,7 @@ for ($i = 0; $i < $iTotalFuncionarios; $i++) {
      * periodos de ferias ainda nao gozados completamentes. 
      */
     $rsFeriasVencidas     = db_query($sSqlFeriasCadastradas);
-    $iTotalFeriasVencidas = pg_num_rows($rsFeriasVencidas); 
+    $iTotalFeriasVencidas = $rsFeriasVencidas === false || $rsFeriasVencidas === null ? 0 : pg_num_rows($rsFeriasVencidas); 
     if ($iTotalFeriasVencidas > 0) {
       
       for ($iFerias = 0; $iFerias < $iTotalFeriasVencidas; $iFerias++) {

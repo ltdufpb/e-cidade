@@ -95,7 +95,7 @@ function buscaEspecialidadeMedico($iUnidade, $iProfissional) {
   if ( !$rsEspecMedico || pg_num_rows($rsEspecMedico) == 0 ) {
     return [];
   }
-  $iLinhas = pg_num_rows($rsEspecMedico);
+  $iLinhas = $rsEspecMedico === false || $rsEspecMedico === null ? 0 : pg_num_rows($rsEspecMedico);
 
   $aEspecialidades = [];
   for ( $i = 0; $i < $iLinhas; $i++) {

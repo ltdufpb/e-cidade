@@ -166,7 +166,7 @@ try {
             }
 
             $aDiasDeAula = [];
-            $iTotalDiasDaSemanaComAula = pg_num_rows($rsDiasDaSemanaComAula);
+            $iTotalDiasDaSemanaComAula = $rsDiasDaSemanaComAula === false || $rsDiasDaSemanaComAula === null ? 0 : pg_num_rows($rsDiasDaSemanaComAula);
 
             for ($iAula = 0; $iAula < $iTotalDiasDaSemanaComAula; $iAula++) {
 

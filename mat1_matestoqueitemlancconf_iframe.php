@@ -39,7 +39,7 @@ $sql = "
         order by m60_codmater
        ";
 $res = db_query($sql);
-$rows = pg_num_rows($res);
+$rows = $res === false || $res === null ? 0 : pg_num_rows($res);
 ?>
 <center>
 <div id="itensConf" style="position:absolute; max-height:550px; width:600px; top:25px; visibility:visible; overflow:auto; align:center;">

@@ -158,7 +158,7 @@ if (isset($oPost->btnincluir) && $oPost->btnincluir == 1) {
         if ($lSqlErro == false) {
             $sSql = "select p54_codigo, p54_codcam from procvar where p54_codigo = {$p58_codigo};";
             $rsSql = db_query($sSql);
-            $iSql = pg_num_rows($rsSql);
+            $iSql = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
             if ($iSql > 0) {
                 while ($ln = pg_fetch_array($rsSql)){
                     $sSqlCam = "select nomecam,rotulo from db_syscampo where codcam = ".$ln["p54_codcam"];

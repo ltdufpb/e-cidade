@@ -244,7 +244,7 @@ class Geral {
     $sArquivoLayout = 'tmp/emissao_geral_tarifa_layout.txt';
     $oProcessamento = new Processamento($sArquivo, $sArquivoLayout);
 
-    $iTotalContratos = pg_num_rows($rsInformacoesEmissao);
+    $iTotalContratos = $rsInformacoesEmissao === false || $rsInformacoesEmissao === null ? 0 : pg_num_rows($rsInformacoesEmissao);
     $iTotalContratosProcessados = 0;
 
     $this->oBarraProgresso->updateMaxProgress($iTotalContratos);

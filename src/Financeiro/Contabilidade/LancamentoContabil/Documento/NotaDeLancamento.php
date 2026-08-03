@@ -218,7 +218,7 @@ class NotaDeLancamento
     {
 
         $buscaLancamentos = $this->consultarLancamentos();
-        $totalRegistros = pg_num_rows($buscaLancamentos);
+        $totalRegistros = $buscaLancamentos === false || $buscaLancamentos === null ? 0 : pg_num_rows($buscaLancamentos);
 
         $this->lancamentos = [];
         for ($rowLancamento = 0; $rowLancamento < $totalRegistros; $rowLancamento++) {

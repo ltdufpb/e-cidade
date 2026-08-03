@@ -471,7 +471,7 @@ class RequisicaoExame
                 throw new DBException(_M(MENSAGEM_REQUISICAO_EXAME . "erro_buscar_medicamentos", $oMsgErro));
             }
 
-            $iLinhas = pg_num_rows($rsMedicamentos);
+            $iLinhas = $rsMedicamentos === false || $rsMedicamentos === null ? 0 : pg_num_rows($rsMedicamentos);
             for ($iContador = 0; $iContador < $iLinhas; $iContador++) {
                 $iMedicamento = db_utils::fieldsMemory($rsMedicamentos, $iContador)->la44_medicamentoslaboratorio;
                 $this->adicionarMedicamento(new MedicamentoLaboratorio($iMedicamento));

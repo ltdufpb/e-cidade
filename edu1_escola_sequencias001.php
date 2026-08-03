@@ -50,7 +50,7 @@ if(isset($incluir)){
           OR ($ed129_i_numfinal BETWEEN ed129_i_numinicio AND ed129_i_numfinal)
          ";
   $result = db_query($sql);
-  $linhas = pg_num_rows($result);
+  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
   if($linhas>0){
    $clescola_sequencias->erro_msg = "Inicio ou final da sequência digitada já pertence a outra escola!";
    $clescola_sequencias->erro_status = "0";
@@ -85,7 +85,7 @@ if(isset($alterar)){
           AND ed129_i_escola != $ed129_i_escola
          ";
   $result = db_query($sql);
-  $linhas = pg_num_rows($result);
+  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
   if($linhas>0){
    $clescola_sequencias->erro_msg = "Inicio ou final da sequência digitada já pertence a outra escola!";
    $clescola_sequencias->erro_status = "0";

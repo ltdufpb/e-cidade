@@ -152,7 +152,7 @@ $sSql .= "        left  join cgm transmitente on transmitente.z01_numcgm    = j7
 $sSql .= " $sWhere ";
 
 $rsDadosAverbacao = db_query($sSql);
-$iNumrows = pg_num_rows($rsDadosAverbacao);
+$iNumrows = $rsDadosAverbacao === false || $rsDadosAverbacao === null ? 0 : pg_num_rows($rsDadosAverbacao);
 
 if ($iNumrows == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.");

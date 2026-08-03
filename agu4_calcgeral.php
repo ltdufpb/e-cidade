@@ -92,7 +92,7 @@ $aAnos = [
 				throw new DBException("Não foi possível encontrar informações das Matrículas.");
 			}
 
-			$iTotalMatriculas = pg_num_rows($rsAguaBase);
+			$iTotalMatriculas = $rsAguaBase === false || $rsAguaBase === null ? 0 : pg_num_rows($rsAguaBase);
 			if ($iTotalMatriculas == 0) {
 				throw new DBException("Nenhuma Matrícula foi encontrada para realizar o calculo.");
 			}

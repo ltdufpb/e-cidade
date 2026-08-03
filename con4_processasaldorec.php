@@ -132,7 +132,7 @@ if ($clconencerramento->numrows == 0){
 
 }
 $result = db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fin,false,"substr(c60_estrut,1,1) in ('3','4','9') and c61_instit= ".db_getsession("DB_instit"),'','true','true');
-$iNumRowsLan = pg_num_rows($result);
+$iNumRowsLan = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($debug==true){
       echo "processando receita, zera contas conta 511, documento 1001 à debito";
       db_criatabela($result);

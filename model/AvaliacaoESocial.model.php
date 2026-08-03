@@ -800,7 +800,7 @@ class AvaliacaoESocial
             throw new DBException("Erro ao buscar respostas anteriores.");
         }
 
-        $linhas = pg_num_rows($rsAvalicaoResposta);
+        $linhas = $rsAvalicaoResposta === false || $rsAvalicaoResposta === null ? 0 : pg_num_rows($rsAvalicaoResposta);
 
         if ($linhas == 0) {
             return;

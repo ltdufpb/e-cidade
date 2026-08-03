@@ -31,7 +31,7 @@
   
   //seleciona todos os departamentos e verifica o total de registros encontrados
   $departamentos = db_query("select * from db_depart");
-  $numeroDepartamentos = pg_num_rows($departamentos);
+  $numeroDepartamentos = $departamentos === false || $departamentos === null ? 0 : pg_num_rows($departamentos);
 
   //para cada departamento encontrado verifica quais sao seus usuarios e separa em arrays
   //se tiver ao menos um usuario encontrado na pesquisa anterior
@@ -43,7 +43,7 @@
         	           inner join db_depusu du 
 		        	   on du.id_usuario = us.id_usuario
         			   where coddepto = ".pg_fetch_result($departamentos,$i,"coddepto"));
-	  $numusu = pg_num_rows($usu);
+	  $numusu = $usu === false || $usu === null ? 0 : pg_num_rows($usu);
 	  $aux= '';
 	  $c = '';
  	  echo strtolower(str_replace(" ","_",pg_fetch_result($departamentos,$i,"descrdepto")))." = new Array(";
@@ -113,7 +113,7 @@
 				  <?php  
 				    $descratual = pg_fetch_result($result,0,"descrdepto");
 					$listaDepartamentos = db_query("select * from db_depart where descrdepto not like '$descratual'");
-					$numdep = pg_num_rows($listaDepartamentos);
+					$numdep = $listaDepartamentos === false || $listaDepartamentos === null ? 0 : pg_num_rows($listaDepartamentos);
  				    echo "<option selected value=\"".strtolower(str_replace(" ","_",pg_fetch_result($result,0,"descrdepto")))."\">".pg_fetch_result($result,0,"descrdepto")."</option>";
 					for ($i=0;$i<$numdep;$i++) {
 					  echo "<option value=\"".strtolower(str_replace(" ","_",pg_fetch_result($listaDepartamentos,$i,"descrdepto")))."\">".pg_fetch_result($listaDepartamentos,$i,"descrdepto")."</option>";
@@ -135,7 +135,7 @@
 									 inner join db_usuarios d
 									 on d.id_usuario = u.id_usuario
 									 where u.coddepto = $coddepartamento");
-					$numnomes = pg_num_rows($listanomes); 
+					$numnomes = $listanomes === false || $listanomes === null ? 0 : pg_num_rows($listanomes); 
 					for ($i=0;$i<$numnomes;$i++) {
 					  if (pg_fetch_result($listanomes,$i,"nome")==$nome) {$estado="selected";} else {$estado="";}
 					  echo "<option ".$estado." value=\"".pg_fetch_result($listanomes,$i,"nome")."\">".pg_fetch_result($listanomes,$i,"nome")."</option>";

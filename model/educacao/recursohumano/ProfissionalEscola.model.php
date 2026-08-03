@@ -335,7 +335,7 @@ class ProfissionalEscola
             throw new Exception(_M(self::MSG_PROFISSIONALESCOLA . "erro_buscar_horarios_regencia"));
         }
 
-        $iHorarios = pg_num_rows($rsHorariosRegencia);
+        $iHorarios = $rsHorariosRegencia === false || $rsHorariosRegencia === null ? 0 : pg_num_rows($rsHorariosRegencia);
 
         for ($iContador = 0; $iContador < $iHorarios; $iContador++) {
             $oDadosHorarios     = db_utils::fieldsMemory($rsHorariosRegencia, $iContador);

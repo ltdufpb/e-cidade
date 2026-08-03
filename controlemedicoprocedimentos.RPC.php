@@ -56,7 +56,7 @@ switch ($oParam->exec) {
                 throw new DBException("Ocorreu erro ao buscar os dados de procedimentos médicos.");
             }
 
-            $registros = pg_num_rows($rs);
+            $registros = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             for ($i = 0; $i < $registros; $i++) {
                 $oDado = db_utils::fieldsMemory($rs, $i);
                 $oDados = new stdClass();

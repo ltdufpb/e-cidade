@@ -60,7 +60,7 @@ $sql = "select v01_exerc,
          " ;
 $result = db_query($sql);
 
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 /*
 db_query("drop table totproced");			
 db_query("create table totproced(v01_exerc int4,v01_proced int4,k00_numpre int4,k00_numpar float8,vlrhis float8,vlrcor float8,vlrjuros float8,vlrmulta float8,vlrdesconto float8,total float8)");

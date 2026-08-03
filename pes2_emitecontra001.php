@@ -89,7 +89,7 @@ try {
     throw new DBException("Ocorreu um erro ao consultar a folha de complementar");
   }
 
-  $clgerfcom->numrows = pg_num_rows($result_semest);
+  $clgerfcom->numrows = $result_semest === false || $result_semest === null ? 0 : pg_num_rows($result_semest);
 
 } catch (Exception $e) {
   $sErroMsg     = $e->getMessage();

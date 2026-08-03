@@ -98,7 +98,7 @@ if(isset($oPost->codObra) && trim($oPost->codObra)!=""){
      }
 
 	    $rsIptuEnder   = db_query($sSqlIptuEnder) or die($sSqlIptuEnder);
-      $iNumRowsEnder = pg_num_rows($rsIptuEnder);
+      $iNumRowsEnder = $rsIptuEnder === false || $rsIptuEnder === null ? 0 : pg_num_rows($rsIptuEnder);
 
 			if($iNumRowsEnder == 1 ){
 				$oIptuEnder = db_utils::fieldsMemory($rsIptuEnder,0);	
@@ -114,7 +114,7 @@ if(isset($oPost->codObra) && trim($oPost->codObra)!=""){
 				$sSqlIbge .= "		 and cp05_sigla = upper('".$oIptuEnder->z01_uf."')									              ";
 				
         $rsIbge    = db_query($sSqlIbge) or die($sSqlIbge);
-				$iNumRowsIbge	 = pg_num_rows($rsIbge);			
+				$iNumRowsIbge	 = $rsIbge === false || $rsIbge === null ? 0 : pg_num_rows($rsIbge);			
 				$oIbge = db_utils::fieldsMemory($rsIbge,0);
 				
 			  if($iNumRowsIbge == 1 ){

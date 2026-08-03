@@ -452,7 +452,7 @@ if ( isset($oPost->gerar) ) {
                   );
                   $rsDadosGer = db_query($sSqlGer);
 
-                  $iLinhasGer = pg_num_rows($rsDadosGer);
+                  $iLinhasGer = $rsDadosGer === false || $rsDadosGer === null ? 0 : pg_num_rows($rsDadosGer);
 
                   for ( $im=0 ; $im < $iLinhasGer; $im++ ) {
 

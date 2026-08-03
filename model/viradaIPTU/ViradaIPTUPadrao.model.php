@@ -330,7 +330,7 @@ class ViradaIPTUPadrao implements iViradaIPTU {
     $sSqlDadosTabela    .= "   from {$this->getNomeTabela()} ";
     $sSqlDadosTabela    .= "  where {$sWhereAnoAtual};       ";
     $rsDadosTabela       = db_query($sSqlDadosTabela);
-    $iNumRowsDadosTabela = pg_num_rows($rsDadosTabela);
+    $iNumRowsDadosTabela = $rsDadosTabela === false || $rsDadosTabela === null ? 0 : pg_num_rows($rsDadosTabela);
     if ($iNumRowsDadosTabela == 0) {
 
     	$sMensagem = "ERRO: Nenhum registro encontrado na tabela {$this->getNomeTabela()} exercicío {$this->getAnoAtual()}!";

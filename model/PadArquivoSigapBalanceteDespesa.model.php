@@ -90,7 +90,7 @@ final class PadArquivoSigapBalanceteDespesa extends PadArquivoSigap
                 $this->sDataInicial, $this->sDataFinal);
         }
         db_query("rollback");
-        $iTotalLinhas = pg_num_rows($rsDotacaoSaldo);
+        $iTotalLinhas = $rsDotacaoSaldo === false || $rsDotacaoSaldo === null ? 0 : pg_num_rows($rsDotacaoSaldo);
         for ($i = 0; $i < $iTotalLinhas; $i++) {
 
             $oDespesa = db_utils::fieldsMemory($rsDotacaoSaldo, $i);

@@ -206,7 +206,7 @@ if (isset($q60_modalvara) && $q60_modalvara == "3") {
       db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento 26 com os paragrafos do alvara!');
       exit();
     }
-    $numrows = pg_num_rows($resparag);
+    $numrows = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
     //	$pdf1->inicia = $db02_inicia;
     for($i = 0; $i < $numrows; $i ++) {
       db_fieldsmemory($resparag, $i);
@@ -260,7 +260,7 @@ if (isset($q60_modalvara) && $q60_modalvara == "3") {
       db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do alvara!');
       exit();
     }
-    $numrows = pg_num_rows($resparag);
+    $numrows = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
     //		$pdf1->inicia = $db02_inicia;
     for($i = 0; $i < $numrows; $i ++) {
       db_fieldsmemory($resparag, $i);
@@ -384,7 +384,7 @@ $sSqlCodCnae .= "        left join cnaeanalitica on cnaeanalitica.q72_sequencial
 $sSqlCodCnae .= "        left join cnae          on cnae.q71_sequencial          = cnaeanalitica.q72_cnae       ";
 $sSqlCodCnae .= "  where q07_inscr = {$oGet->inscricao} ";
 $rsCodCnae = db_query($sSqlCodCnae);
-$iTotalLinhas = pg_num_rows($rsCodCnae);
+$iTotalLinhas = $rsCodCnae === false || $rsCodCnae === null ? 0 : pg_num_rows($rsCodCnae);
 for($i = 0; $i < $iTotalLinhas; $i ++) {
 
   $oCodCnae = db_utils::fieldsMemory($rsCodCnae, $i);

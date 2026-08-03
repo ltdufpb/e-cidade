@@ -203,7 +203,7 @@ $clrotulo->label("e80_data");
 
                                 $rsDadoOcorrencia         = db_query($sSqlDadosOcorrencia);
 
-                                $iTotalLinhasOcorrencias  =  pg_num_rows($rsDadoOcorrencia);
+                                $iTotalLinhasOcorrencias  =  $rsDadoOcorrencia === false || $rsDadoOcorrencia === null ? 0 : pg_num_rows($rsDadoOcorrencia);
                                 if ($iTotalLinhasOcorrencias > 0) {
                                     db_fieldsmemory($rsDadoOcorrencia, 0);
                                 }
@@ -295,7 +295,7 @@ $clrotulo->label("e80_data");
                             $sSqlDadosOcorrencia  .= "   and empagedadosretmov.e76_processado = false ";
                             //$sSqlDadosOcorrencia  .= "   and e92_processa is true";
                             $rsDadoOcorrencia      = db_query($sSqlDadosOcorrencia);
-                            $iTotalLinhas          = pg_num_rows($rsDadoOcorrencia);
+                            $iTotalLinhas          = $rsDadoOcorrencia === false || $rsDadoOcorrencia === null ? 0 : pg_num_rows($rsDadoOcorrencia);
                             if ($iTotalLinhas > 0) {
                                 db_fieldsmemory($rsDadoOcorrencia,0);
                             }

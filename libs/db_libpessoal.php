@@ -333,9 +333,9 @@ function db_retorno_variaveis($ano, $mes, $registro){
   if($resultvar == false){
     return false;
   }else{
-    $num_rows = pg_num_rows($resultvar);
+    $num_rows = $resultvar === false || $resultvar === null ? 0 : pg_num_rows($resultvar);
     if($num_rows > 0){
-      $num_cols = pg_num_fields($resultvar);
+      $num_cols = $resultvar === false || $resultvar === null ? 0 : pg_num_fields($resultvar);
       for($index=0; $index<$num_cols; $index++){
         $nam_campo = pg_field_name($resultvar, $index);
         $unam_campo = strtoupper(pg_field_name($resultvar, $index));
@@ -366,8 +366,8 @@ function db_sel_cfpess($anofolha=null, $mesfolha=null, $campos=" * "){
   if($record_cfpess == false){
     return false;
   }else{
-    $num_cols = pg_num_fields($record_cfpess);
-    $num_rows = pg_num_rows($record_cfpess);
+    $num_cols = $record_cfpess === false || $record_cfpess === null ? 0 : pg_num_fields($record_cfpess);
+    $num_rows = $record_cfpess === false || $record_cfpess === null ? 0 : pg_num_rows($record_cfpess);
     for($index=0; $index<$num_cols; $index++){
       $nam_campo = pg_field_name($record_cfpess, $index);
       global ${$nam_campo};
@@ -1791,7 +1791,7 @@ function funcionarioferiasvencidas ($sDataVencimento, $sWhere = '') {
    *                       |-> Dados das Férias abertas
    */
   $aFuncionarios  = [];
-  $iTotalFuncionarios = pg_num_rows($rsFuncionarios); 
+  $iTotalFuncionarios = $rsFuncionarios === false || $rsFuncionarios === null ? 0 : pg_num_rows($rsFuncionarios); 
   for ($i = 0; $i < $iTotalFuncionarios; $i++) {
   
     $oDados = db_utils::fieldsMemory($rsFuncionarios, $i);
@@ -1826,7 +1826,7 @@ function funcionarioferiasvencidas ($sDataVencimento, $sWhere = '') {
     $sSqlUltimoPeriodoGozado .= "   and r30_regist = {$oDados->r01_regist}";
     $sSqlUltimoPeriodoGozado .= " order by r30_perai desc limit 1";
     $rsULtimoPeriodoGozado    = db_query($sSqlUltimoPeriodoGozado);
-    $iTemFerias               = pg_num_rows($rsULtimoPeriodoGozado); 
+    $iTemFerias               = $rsULtimoPeriodoGozado === false || $rsULtimoPeriodoGozado === null ? 0 : pg_num_rows($rsULtimoPeriodoGozado); 
     if ($iTemFerias > 0) {
       
       $oDadosPeriodoGozado                = db_utils::fieldsMemory($rsULtimoPeriodoGozado, 0);
@@ -1875,7 +1875,7 @@ function funcionarioferiasvencidas ($sDataVencimento, $sWhere = '') {
        * periodos de ferias ainda nao gozados completamentes. 
        */
       $rsFeriasVencidas     = db_query($sSqlFeriasCadastradas);
-      $iTotalFeriasVencidas = pg_num_rows($rsFeriasVencidas); 
+      $iTotalFeriasVencidas = $rsFeriasVencidas === false || $rsFeriasVencidas === null ? 0 : pg_num_rows($rsFeriasVencidas); 
       if ($iTotalFeriasVencidas > 0) {
         
         for ($iFerias = 0; $iFerias < $iTotalFeriasVencidas; $iFerias++) {

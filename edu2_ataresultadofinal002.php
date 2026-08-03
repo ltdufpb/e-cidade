@@ -1183,7 +1183,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
 
     if (is_resource($rsAprovConselho) && pg_num_rows($rsAprovConselho) > 0) {
 
-        $iLinhasAprovCons = pg_num_rows($rsAprovConselho);
+        $iLinhasAprovCons = $rsAprovConselho === false || $rsAprovConselho === null ? 0 : pg_num_rows($rsAprovConselho);
 
         for ($iContObs = 0; $iContObs < $iLinhasAprovCons; $iContObs++) {
 
@@ -1262,7 +1262,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
 
         if (is_resource($rsTransferido) && pg_num_rows($rsTransferido) > 0) {
 
-            $iTotalTransferido = pg_num_rows($rsTransferido);
+            $iTotalTransferido = $rsTransferido === false || $rsTransferido === null ? 0 : pg_num_rows($rsTransferido);
 
             for ($iContadorTransferido = 0; $iContadorTransferido < $iTotalTransferido; $iContadorTransferido++) {
 
@@ -1690,7 +1690,7 @@ function assinaturaDocente($oPdf, $oTurma, $oFiltroRelatorio, $iCodigoEtapa)
         $oPdf->AddPage();
         $oPdf->Ln(5);
 
-        $iTotalRegenciaHorario = pg_num_rows($rsRegenciaHorario);
+        $iTotalRegenciaHorario = $rsRegenciaHorario === false || $rsRegenciaHorario === null ? 0 : pg_num_rows($rsRegenciaHorario);
 
         for ($iContadorRegencia = 0; $iContadorRegencia < $iTotalRegenciaHorario; $iContadorRegencia++) {
 
@@ -1715,7 +1715,7 @@ function assinaturaDocente($oPdf, $oTurma, $oFiltroRelatorio, $iCodigoEtapa)
 
             if (is_resource($rsRegenciaHorarioDesc) && pg_num_rows($rsRegenciaHorarioDesc) > 0) {
 
-                $iTotalRegenciaHorarioDesc = pg_num_rows($rsRegenciaHorarioDesc);
+                $iTotalRegenciaHorarioDesc = $rsRegenciaHorarioDesc === false || $rsRegenciaHorarioDesc === null ? 0 : pg_num_rows($rsRegenciaHorarioDesc);
 
                 for ($iContadorRegenciaDesc = 0; $iContadorRegenciaDesc < $iTotalRegenciaHorarioDesc; $iContadorRegenciaDesc++) {
 

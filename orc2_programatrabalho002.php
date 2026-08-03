@@ -213,7 +213,7 @@ for ($o = 0; $o < pg_num_rows($res_orgao); $o++) {
         order by o58_subfuncao, o53_descr       
         ";
         $result_subfuncao = pg_exec($sql_subfuncao);
-        $xxnum1 = pg_num_rows($result_subfuncao);
+        $xxnum1 = $result_subfuncao === false || $result_subfuncao === null ? 0 : pg_num_rows($result_subfuncao);
         
         for ($x2 = 0; $x2 < pg_num_rows($result_subfuncao); $x2++) {
             db_fieldsmemory($result_subfuncao, $x2);
@@ -311,7 +311,7 @@ for ($o = 0; $o < pg_num_rows($res_orgao); $o++) {
             order by o58_programa, o54_descr, o54_finali
             ";
             $result_programa = pg_exec($sql_programa);
-            $xxnum2 = pg_num_rows($result_programa);
+            $xxnum2 = $result_programa === false || $result_programa === null ? 0 : pg_num_rows($result_programa);
           
             for ($x3 = 0; $x3 < pg_num_rows($result_programa); $x3++) {
                 db_fieldsmemory($result_programa, $x3);
@@ -414,7 +414,7 @@ for ($o = 0; $o < pg_num_rows($res_orgao); $o++) {
                 order by o58_projativ, o55_descr, o55_finali
                 ";
                 $result_projativ = pg_exec($sql_projativ);
-                $xxnum3 = pg_num_rows($result_projativ);
+                $xxnum3 = $result_projativ === false || $result_projativ === null ? 0 : pg_num_rows($result_projativ);
             
                 for ($x4 = 0; $x4 < pg_num_rows($result_projativ); $x4++) {
                     db_fieldsmemory($result_projativ, $x4);
@@ -525,7 +525,7 @@ for ($o = 0; $o < pg_num_rows($res_orgao); $o++) {
                     order by o58_esferaorcamentaria, o15_recurso 
                     ";
                     $result_recurso = pg_exec($sql_recurso);
-                    $xxnum4 = pg_num_rows($result_recurso);
+                    $xxnum4 = $result_recurso === false || $result_recurso === null ? 0 : pg_num_rows($result_recurso);
                
                     for ($x5 = 0; $x5 < pg_num_rows($result_recurso); $x5++) {
                         db_fieldsmemory($result_recurso, $x5);
@@ -640,7 +640,7 @@ for ($o = 0; $o < pg_num_rows($res_orgao); $o++) {
         ";
         
         $result_recurso1 = pg_exec($sql_recurso1);
-        $xxnum5 = pg_num_rows($result_recurso1);
+        $xxnum5 = $result_recurso1 === false || $result_recurso1 === null ? 0 : pg_num_rows($result_recurso1);
             
         for ($x6 = 0; $x6 < pg_num_rows($result_recurso1); $x6++) {
             db_fieldsmemory($result_recurso1, $x6);

@@ -52,7 +52,7 @@
  // $sql04 = $clissplan->sql_query_arrecad("","issplan.*,k00_dtpaga,arrecad.k00_valor as valdev,arrepaga.k00_valor as valpag","q20_ano,q20_mes","q24_inscr=".$q02_inscr."  ".$where_data);
 	
   $result04 = db_query($sql04);
-  $numrows04=pg_num_rows($result04);
+  $numrows04=$result04 === false || $result04 === null ? 0 : pg_num_rows($result04);
 ?>
 <html>
 <head>

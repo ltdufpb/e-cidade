@@ -115,7 +115,7 @@ try {
         throw new DBException(_M(MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_dados_aluno', $oErro));
     }
 
-    $iLinhasAluno = pg_num_rows($rsResult);
+    $iLinhasAluno = $rsResult === false || $rsResult === null ? 0 : pg_num_rows($rsResult);
 
     if ($iLinhasAluno == 0) {
         throw new BusinessException(_M(MENSAGENS_EDU2_FICHAALUNO001 . 'nenhum_registro_encontrado'));

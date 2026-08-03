@@ -107,7 +107,7 @@ if(isset($opcao) && $opcao=="alterar"){
       <select name="campos[]" id="campos" size="8" style="width:250px" multiple>
       <?php 
        $query = $clregimematdiv->sql_record($clregimematdiv->sql_query("","ed219_i_codigo,ed219_c_nome,ed219_c_abrev","ed219_i_ordenacao"," ed219_i_regimemat = $ed219_i_regimemat"));
-       $linhas = pg_num_rows($query);
+       $linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
        if($linhas>0){
         for($i=0;$i<$linhas;$i++){
         $dados = pg_fetch_array($query);

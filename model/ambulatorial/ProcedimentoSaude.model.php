@@ -172,7 +172,7 @@ final class ProcedimentoSaude {
       throw new DBException( _M( MENSAGENS_PROCCID_MODEL . "erro_buscar_proccid" ) );
     }
 
-    $iTotalLinhas = pg_num_rows( $rsProcCid );
+    $iTotalLinhas = $rsProcCid === false || $rsProcCid === null ? 0 : pg_num_rows( $rsProcCid );
     for ( $iContador = 0; $iContador < $iTotalLinhas; $iContador++ ) {
 
       $oProcedimentoCID = new ProcedimentoCID( db_utils::fieldsMemory( $rsProcCid, $iContador )->sd72_i_codigo );
@@ -200,7 +200,7 @@ final class ProcedimentoSaude {
         throw new Exception("Erro ao buscar CBOs: " . pg_last_error());
       }
 
-      $iLinhas = pg_num_rows($rsProcedimento);
+      $iLinhas = $rsProcedimento === false || $rsProcedimento === null ? 0 : pg_num_rows($rsProcedimento);
       if ($iLinhas  == 0 ) {
         return [];
       }

@@ -185,7 +185,7 @@ try {
         throw new Exception( _M( MENSAGENS_EDU4_ETAPAS_RPC . "erro_buscar_etapas_vinculadas", $oMsgErro ) );
       }
 
-      $iLinhas                = pg_num_rows($rsCensoEtapa);
+      $iLinhas                = $rsCensoEtapa === false || $rsCensoEtapa === null ? 0 : pg_num_rows($rsCensoEtapa);
       $oRetorno->aEtapasCenso = [];
       for ($i=0; $i < $iLinhas; $i++) {
 

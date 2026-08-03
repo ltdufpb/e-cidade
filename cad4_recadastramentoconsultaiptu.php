@@ -246,7 +246,7 @@ $aMatriculaNoLote      = $oRecadastramentoConsultaIptuHelper->getMatriculaNoLote
 
                 <?php
 
-                $totalLinhas = pg_num_rows($rsConstrucoes);
+                $totalLinhas = $rsConstrucoes === false || $rsConstrucoes === null ? 0 : pg_num_rows($rsConstrucoes);
 
                 for ($i = 0; $i < $totalLinhas; $i++) :
 
@@ -256,7 +256,7 @@ $aMatriculaNoLote      = $oRecadastramentoConsultaIptuHelper->getMatriculaNoLote
 
                 endfor;
 
-                $totalLinhasDepois = pg_num_rows($rsConstrucoesSchema);
+                $totalLinhasDepois = $rsConstrucoesSchema === false || $rsConstrucoesSchema === null ? 0 : pg_num_rows($rsConstrucoesSchema);
 
                 for ($i = 0; $i < $totalLinhasDepois; $i++) :
                     $dadosConstrucaoDepois = db_utils::fieldsMemory($rsConstrucoesSchema, $i);

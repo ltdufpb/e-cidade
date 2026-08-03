@@ -159,7 +159,7 @@ $sSqlInconsistencia = " select r14_regist, z01_nome, r70_descr, z01_cgccpf as cp
 $erro_msg = '';
 
 $result_inconsistencias = pg_query($sSqlInconsistencia);
-$numrows_inconsistencias = pg_num_rows($result_inconsistencias);
+$numrows_inconsistencias = $result_inconsistencias === false || $result_inconsistencias === null ? 0 : pg_num_rows($result_inconsistencias);
 
 $result_dados = $clmovrel->sql_record($sSqlMovRelDados);
 $numrows_dados = $clmovrel->numrows;

@@ -345,7 +345,7 @@ try {
 
       if( pg_num_rows( $rsFarCbos ) > 0 ) {
 
-        $iTotalLinhas = pg_num_rows( $rsFarCbos );
+        $iTotalLinhas = $rsFarCbos === false || $rsFarCbos === null ? 0 : pg_num_rows( $rsFarCbos );
         for( $iContador = 0; $iContador < $iTotalLinhas; $iContador++ ) {
 
           $oDadosRetorno           = db_utils::fieldsMemory( $rsFarCbos, $iContador );
@@ -432,7 +432,7 @@ try {
       $oDaoProcedimentoTriagem         = new cl_parametroprocedimentotriagem();
       $sSqlProcedimentoTriagem         = $oDaoProcedimentoTriagem->sql_query(null, "s166_sau_procedimento");
       $rsProcedimentoTriagem           = db_query( $sSqlProcedimentoTriagem );
-      $iTotalProcedimentoTriagem       = pg_num_rows( $rsProcedimentoTriagem );
+      $iTotalProcedimentoTriagem       = $rsProcedimentoTriagem === false || $rsProcedimentoTriagem === null ? 0 : pg_num_rows( $rsProcedimentoTriagem );
 
       if ($iTotalProcedimentoTriagem  > 0 ) {
 
@@ -581,7 +581,7 @@ try {
 
       $oRetorno->aClassificacoesRisco = [];
 
-      $iTotalClassificacaoRisco = pg_num_rows( $rsClassificacaoRisco );
+      $iTotalClassificacaoRisco = $rsClassificacaoRisco === false || $rsClassificacaoRisco === null ? 0 : pg_num_rows( $rsClassificacaoRisco );
       for( $iContador = 0; $iContador < $iTotalClassificacaoRisco;  $iContador++ ) {
 
         $oDadosClassificacaoRisco        = db_utils::fieldsMemory( $rsClassificacaoRisco, $iContador );

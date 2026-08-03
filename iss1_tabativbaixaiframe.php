@@ -98,8 +98,8 @@ function js_trocapri(seq){
 <?php 
 if(isset($sql) && $sql!=""){ 
        $result=db_query($sql);
-       $numrows=pg_num_rows($result);
-       $numcols=pg_num_fields($result);
+       $numrows=$result === false || $result === null ? 0 : pg_num_rows($result);
+       $numcols=$result === false || $result === null ? 0 : pg_num_fields($result);
        if($db_opcao=="Incluir"){
        } 
        if($db_opcao=="Incluir"){

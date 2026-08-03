@@ -52,7 +52,7 @@ $clrotulo->label("DBtxt5");
 
 $sql = "select * from cgs_und where z01_i_cgsund = ( select sd24_i_numcgs from prontuarios where sd24_i_codigo = $chave_sd24_i_codigo order by sd24_i_codigo)";
  $query = db_query($sql);
- $linhas4 = pg_num_rows($query);
+ $linhas4 = $query === false || $query === null ? 0 : pg_num_rows($query);
 db_fieldsmemory($query,0);
 ?>
 <form name="form1" method="post" action="">

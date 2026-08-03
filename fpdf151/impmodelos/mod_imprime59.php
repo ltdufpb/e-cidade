@@ -250,7 +250,7 @@ where db03_tipodoc = 1010 and db03_instit = ".db_getsession("DB_instit")."
 and db02_descr = 'ASSINATURAS_CODIGOPHP' ";
 //die($sqlass);
 $resultass = db_query($sqlass);
-$linhasass = pg_num_rows($resultass);
+$linhasass = $resultass === false || $resultass === null ? 0 : pg_num_rows($resultass);
 if ($linhasass>0){
   //db_fieldsmemory($resultass,0);
   $ass= pg_fetch_result($resultass,0,'db02_texto');
@@ -272,7 +272,7 @@ if ($linhasass>0){
     db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do alvara!');
     exit;
   }
-  $numrows = pg_num_rows($resparag);
+  $numrows = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
 
   $linha  = $this->objpdf->getY()+10;
   $colpri = $coluna;

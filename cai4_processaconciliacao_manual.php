@@ -552,7 +552,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
                                          where k68_sequencial = $concilia) 
                and k68_data >= (select k68_data from concilia where k68_sequencial = $concilia)";
     $rsConcilia = db_query($sql);
-    $intNumrows = pg_num_rows($rsConcilia); 
+    $intNumrows = $rsConcilia === false || $rsConcilia === null ? 0 : pg_num_rows($rsConcilia); 
 
     for ($x = 0; $x < $intNumrows; $x ++) {
         db_fieldsmemory($rsConcilia, $x);

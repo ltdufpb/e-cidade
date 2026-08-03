@@ -345,7 +345,7 @@ class AnexoXIVRREO extends RelatoriosLegaisBase  {
      /**
       * verificamos os valores cadastrados na linha
       */ 
-     $iTotalLinhasVerificacao = pg_num_rows($rsVerificacao);
+     $iTotalLinhasVerificacao = $rsVerificacao === false || $rsVerificacao === null ? 0 : pg_num_rows($rsVerificacao);
      $oParametro   = $oLinhaRelatorio->getParametros($this->iAnoUsu, $this->getInstituicoes());
      for ($i = 0; $i < $iTotalLinhasVerificacao; $i++) {
 

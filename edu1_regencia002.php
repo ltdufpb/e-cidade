@@ -77,7 +77,7 @@ if(isset($codnobase)){
                        AND ed60_c_situacao = 'MATRICULADO'";
    
    $result_exc = db_query($sql_exc);
-   $linhas_exc = pg_num_rows($result_exc);
+   $linhas_exc = $result_exc === false || $result_exc === null ? 0 : pg_num_rows($result_exc);
    
    if (pg_fetch_result($result11, 0, 0) == "S") {
      
@@ -92,7 +92,7 @@ if(isset($codnobase)){
                    FROM diario
                   WHERE ed95_i_regencia = $arr_regencia[$r]";
      $result_exc1 = db_query($sql_exc1);
-     $linhas_exc1 = pg_num_rows($result_exc1);
+     $linhas_exc1 = $result_exc1 === false || $result_exc1 === null ? 0 : pg_num_rows($result_exc1);
      
      if ($linhas_exc1 > 0) {
        
@@ -110,7 +110,7 @@ if(isset($codnobase)){
          }
          
          $result5 = db_query("select ed73_i_codigo from diarioresultado where ed73_i_diario = $coddiario");
-         $linhas5 = pg_num_rows($result5);
+         $linhas5 = $result5 === false || $result5 === null ? 0 : pg_num_rows($result5);
          
          for ($t = 0; $t < $linhas5; $t++) {
            
@@ -127,7 +127,7 @@ if(isset($codnobase)){
          }
          
          $result6 = db_query("select ed72_i_codigo from diarioavaliacao where ed72_i_diario = $coddiario");
-         $linhas6 = pg_num_rows($result6);
+         $linhas6 = $result6 === false || $result6 === null ? 0 : pg_num_rows($result6);
          
          for ($t = 0; $t < $linhas6; $t++) {
            

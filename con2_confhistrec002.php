@@ -70,8 +70,8 @@ $result_contas_inicial = db_query(sql_saldo_bancario($anousu, $anousu."-01-01", 
 $result_contas = db_query(sql_saldo_bancario($anousu, $data_limite, $db_selinstit, $where_recurso));
 
 //  db_criatabela($result_contas_inicial);
-$nrows_inicial = pg_num_rows($result_contas_inicial);
-$nrows = pg_num_rows($result_contas);
+$nrows_inicial = $result_contas_inicial === false || $result_contas_inicial === null ? 0 : pg_num_rows($result_contas_inicial);
+$nrows = $result_contas === false || $result_contas === null ? 0 : pg_num_rows($result_contas);
 // exit;
 $saldo_bancario_inicial = 0;
 $saldo_bancario_atual = 0;

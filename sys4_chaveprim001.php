@@ -123,7 +123,7 @@ $nomearq = pg_fetch_result($nomearq, 0, 0);
                                 <td align="right" valign="top"><b>Nome : <b></td>
                                 <td>
                                     <?php
-                                    $numrows = pg_num_rows($result);
+                                    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
                 if ($numrows > 0) {
                     echo "<textarea name=alt_ind rows='7' cols='40'>";
                     for ($i = 0; $i < $numrows; $i++) {

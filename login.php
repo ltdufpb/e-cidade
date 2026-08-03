@@ -123,7 +123,7 @@ if ( isset($serv) && $serv != "" ) {
 
   $sql_bases     = "select * from pg_database where datname ilike '$base_pesq%' order by datname;";
   $result_bases  = db_query($sql_bases);
-  $numrows_bases = pg_num_rows($result_bases);
+  $numrows_bases = $result_bases === false || $result_bases === null ? 0 : pg_num_rows($result_bases);
   pg_close($conn1);
 
 } else {

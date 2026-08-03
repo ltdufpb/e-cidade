@@ -128,7 +128,7 @@ $instit = db_getsession('DB_instit');
 //  echo $sql ; exit;
 
   $result = db_query($sql);
-  $xxnum = pg_num_rows($result);
+  $xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
   if ($xxnum == 0){
      db_redireciona('db_erros.php?fechar=true&db_erro=No existem clculos para o perodo de '.$mes.' / '.$ano);
   

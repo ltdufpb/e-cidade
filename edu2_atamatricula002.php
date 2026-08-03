@@ -81,7 +81,7 @@ try {
     throw new BusinessException( _M(MSG_ATAMATRICULA002 . "sem_turmas" ) );
   }
 
-  $iLinhas = pg_num_rows($rsTurmas);
+  $iLinhas = $rsTurmas === false || $rsTurmas === null ? 0 : pg_num_rows($rsTurmas);
 
   for ($i = 0; $i < $iLinhas; $i++) {
 

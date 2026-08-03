@@ -47,7 +47,7 @@ if ( !$sqlerro ) {
       throw new Exception("Erro ao buscar configuração da nota na secretaria da educação.", 1);
     }
 
-    $iLinhasEstruturalPadrao = pg_num_rows($rsEstruturalPadrao);
+    $iLinhasEstruturalPadrao = $rsEstruturalPadrao === false || $rsEstruturalPadrao === null ? 0 : pg_num_rows($rsEstruturalPadrao);
     if ( $iLinhasEstruturalPadrao > 0 ) {
 
       $oDados = db_utils::fieldsMemory($rsEstruturalPadrao, 0);
@@ -82,7 +82,7 @@ if ( !$sqlerro ) {
     if ( !$rsAvaliacaoEstruturaNota ) {
       throw new Exception("Erro ao buscar configuração da nota na Escola.", 1);
     }
-    $iLinhasAvaliacaoEstruturaNota = pg_num_rows($rsAvaliacaoEstruturaNota);
+    $iLinhasAvaliacaoEstruturaNota = $rsAvaliacaoEstruturaNota === false || $rsAvaliacaoEstruturaNota === null ? 0 : pg_num_rows($rsAvaliacaoEstruturaNota);
     if ($iLinhasAvaliacaoEstruturaNota > 0 )  {
 
       for ($iContadorNota = 0; $iContadorNota < $iLinhasAvaliacaoEstruturaNota; $iContadorNota++) {

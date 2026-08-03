@@ -45,7 +45,7 @@ $clempresto   = new cl_empresto;
 
 $iUsuInstit  = db_getsession('DB_instit');
 $rsUsuInstit = db_query(" select codigo from db_config where ( db21_tipoinstit in (5,6) or prefeitura is true ) and codigo = ".$iUsuInstit);
-$iNumRowsUsuInstit = pg_num_rows($rsUsuInstit);
+$iNumRowsUsuInstit = $rsUsuInstit === false || $rsUsuInstit === null ? 0 : pg_num_rows($rsUsuInstit);
 
 if($iNumRowsUsuInstit == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=O usuário deve ser da instituição RPPS ou Prefeitura para visualizar o relatório');

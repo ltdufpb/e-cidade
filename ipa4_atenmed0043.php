@@ -349,7 +349,7 @@ function js_imprimirreceita() {
 									   inner join atendmedcid a
 									   on a.ag40_codcid = c.codcid
 									   where ag40_codigo = ".db_getsession("COD_atendimento"));
-					$numrows = pg_num_rows($result);
+					$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 					if($numrows > 0)
 					  for($i = 0;$i < $numrows;$i++) {
 					    db_fieldsmemory($result,$i);

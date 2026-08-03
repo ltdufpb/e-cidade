@@ -49,7 +49,7 @@ class Departamentos
             throw new \DBException("Ocorreu um erro ao consultar os departamentos da Unidade Gestora.");
         }
 
-        $totalRegistros = pg_num_rows($consultaDepartamento);
+        $totalRegistros = $consultaDepartamento === false || $consultaDepartamento === null ? 0 : pg_num_rows($consultaDepartamento);
         $itensRetorno = [];
         for ($rowDepart = 0; $rowDepart < $totalRegistros; $rowDepart++) {
 

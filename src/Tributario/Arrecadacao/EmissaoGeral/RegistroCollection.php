@@ -49,7 +49,7 @@ class RegistroCollection implements \Countable, \Iterator, \ArrayAccess
         }
 
         $this->resource = $resource;
-        $this->iNumRows = pg_num_rows($resource);
+        $this->iNumRows = $resource === false || $resource === null ? 0 : pg_num_rows($resource);
     }
 
     public function count()

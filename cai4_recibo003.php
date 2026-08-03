@@ -867,7 +867,7 @@ $pdf1->tipoinscr1 = ($numprot > 0 ? $tipoidentificacao1 : $tipoidentificacao);
 $pdf1->datacalc = date('d-m-Y', $DB_DATACALC);
 $pdf1->predatacalc = date('d-m-Y', $DB_DATACALC);
 $pdf1->taxabanc = db_formatar($taxabancaria, 'f');
-$pdf1->linhasdadospagto = pg_num_rows($DadosPagamento);
+$pdf1->linhasdadospagto = $DadosPagamento === false || $DadosPagamento === null ? 0 : pg_num_rows($DadosPagamento);
 $pdf1->recorddadospagto = $DadosPagamento;
 $pdf1->receita = 'k00_receit';
 $pdf1->receitared = 'codreduz';
@@ -896,7 +896,7 @@ if (isset($lReemissao) && $lReemissao) {
                                                and corautent.k12_autent = cornump.k12_autent
                                   where k12_numnov = $k03_numpre ";
     $rsCodAutenticador = db_query($sSqlCodAutenticador);
-    $iNumrowsCodAutenticador = pg_num_rows($rsCodAutenticador);
+    $iNumrowsCodAutenticador = $rsCodAutenticador === false || $rsCodAutenticador === null ? 0 : pg_num_rows($rsCodAutenticador);
     if ($iNumrowsCodAutenticador > 0) {
         db_fieldsmemory($rsCodAutenticador, 0);
     } else {
@@ -913,7 +913,7 @@ if (isset($lReemissao) && $lReemissao) {
         if (PostgreSQLUtils::isTableExists("w_bkp_corautent")) {
             $sSqlCodAutenticador = "select k12_codautent from w_bkp_corautent where k12_codautent ilike '%$k03_numpre%$total_recibo%'";
             $rsCodAutenticador = pg_query($sSqlCodAutenticador);
-            $iNumrowsCodAutenticador = pg_num_rows($rsCodAutenticador);
+            $iNumrowsCodAutenticador = $rsCodAutenticador === false || $rsCodAutenticador === null ? 0 : pg_num_rows($rsCodAutenticador);
             if ($iNumrowsCodAutenticador > 0) {
                 db_fieldsmemory($rsCodAutenticador, 0);
             }

@@ -95,8 +95,8 @@ echo $query;
   // executa a query e cria a tabela
   $query .= " limit $numlinhas offset ".${$offset};
   $result = db_query($query);  
-  $NumRows = pg_num_rows($result);
-  $NumFields = pg_num_fields($result);
+  $NumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
+  $NumFields = $result === false || $result === null ? 0 : pg_num_fields($result);
   if($NumRows < $numlinhas)
     $Dd1 = $Dd2 = "disabled";
   echo "<table id=\"TabDbLov\" border=\"1\" cellspacing=\"1\" cellpadding=\"0\">\n";

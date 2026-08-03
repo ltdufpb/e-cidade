@@ -912,7 +912,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
     $rsAprovConselho = db_query($sSqlAprovCons);
 
     if (is_resource($rsAprovConselho) && pg_num_rows($rsAprovConselho) > 0) {
-        $iLinhasAprovCons = pg_num_rows($rsAprovConselho);
+        $iLinhasAprovCons = $rsAprovConselho === false || $rsAprovConselho === null ? 0 : pg_num_rows($rsAprovConselho);
 
         for ($iContObs = 0; $iContObs < $iLinhasAprovCons; $iContObs++) {
             $oAprovConselho = db_utils::fieldsmemory($rsAprovConselho, $iContObs);
@@ -984,7 +984,7 @@ function footerPadrao(FPDF $oPdf, Turma $oTurma, $oFiltroRelatorio, $iCodigoEtap
         $rsTransferido = db_query($sSqlTransferido);
 
         if (is_resource($rsTransferido) && pg_num_rows($rsTransferido) > 0) {
-            $iTotalTransferido = pg_num_rows($rsTransferido);
+            $iTotalTransferido = $rsTransferido === false || $rsTransferido === null ? 0 : pg_num_rows($rsTransferido);
 
             for ($iContadorTransferido = 0; $iContadorTransferido < $iTotalTransferido; $iContadorTransferido++) {
                 $oDadosTransferido = db_utils::fieldsMemory($rsTransferido, $iContadorTransferido);
@@ -1320,7 +1320,7 @@ function assinaturaDocente($oPdf, $oTurma, $oFiltroRelatorio, $iCodigoEtapa)
     $rsRegenciaHorario = db_query($sSqlRegenciaHorario);
 
     if (is_resource($rsRegenciaHorario) && pg_num_rows($rsRegenciaHorario) > 0) {
-        $iTotalRegenciaHorario = pg_num_rows($rsRegenciaHorario);
+        $iTotalRegenciaHorario = $rsRegenciaHorario === false || $rsRegenciaHorario === null ? 0 : pg_num_rows($rsRegenciaHorario);
 
         for ($iContadorRegencia = 0; $iContadorRegencia < $iTotalRegenciaHorario; $iContadorRegencia++) {
             $oDadosRegenciaHorario = db_utils::fieldsMemory($rsRegenciaHorario, $iContadorRegencia);
@@ -1345,7 +1345,7 @@ function assinaturaDocente($oPdf, $oTurma, $oFiltroRelatorio, $iCodigoEtapa)
             $rsRegenciaHorarioDesc = db_query($sSqlRegenciaHorarioDesc);
 
             if (is_resource($rsRegenciaHorarioDesc) && pg_num_rows($rsRegenciaHorarioDesc) > 0) {
-                $iTotalRegenciaHorarioDesc = pg_num_rows($rsRegenciaHorarioDesc);
+                $iTotalRegenciaHorarioDesc = $rsRegenciaHorarioDesc === false || $rsRegenciaHorarioDesc === null ? 0 : pg_num_rows($rsRegenciaHorarioDesc);
 
                 for ($iContadorRegenciaDesc = 0; $iContadorRegenciaDesc < $iTotalRegenciaHorarioDesc; $iContadorRegenciaDesc++) {
                     $oDadosRegenciaHorarioDesc = db_utils::fieldsMemory($rsRegenciaHorarioDesc, $iContadorRegenciaDesc);

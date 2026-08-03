@@ -54,7 +54,7 @@ if ($sqlerro == false) {
 
         $daoOrcreceita = new cl_orcreceita();
         $rsAjustesReceita = db_query($sqlAjusteReceitasTesouraria);
-        $totalRegistros = pg_num_rows($rsAjustesReceita);
+        $totalRegistros = $rsAjustesReceita === false || $rsAjustesReceita === null ? 0 : pg_num_rows($rsAjustesReceita);
         if ($totalRegistros > 0) {
             for ($i = 0; $i < $totalRegistros; $i++) {
                 $receita = \db_utils::fieldsMemory($rsAjustesReceita, $i);
@@ -94,7 +94,7 @@ if ($sqlerro == false) {
         $cl_taborc = new cl_taborc;
         $sqltaborc = "select * from taborc where k02_anousu = {$anoorigem} ";
         $resulttaborc = db_query($sqltaborc);
-        $linhastaborc = pg_num_rows($resulttaborc);
+        $linhastaborc = $resulttaborc === false || $resulttaborc === null ? 0 : pg_num_rows($resulttaborc);
         if ($linhastaborc > 0) {
             $fonte = "";
             $vir = "";
@@ -105,7 +105,7 @@ if ($sqlerro == false) {
 
                 $sql1 = "select * from taborc where k02_anousu = {$anodestino} and k02_codigo = {$k02_codigo}";
                 $result1 = db_query($sql1);
-                $linhas1 = pg_num_rows($result1);
+                $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
                 if ($linhas1 == 0) {
                     $sql2 = "select * ";
                     $sql2 .= "  from taborc ";
@@ -116,7 +116,7 @@ if ($sqlerro == false) {
                     $sql2 .= " where k02_anousu = {$anoorigem} ";
                     $sql2 .= "   and k02_codigo = {$k02_codigo}";
                     $result2 = db_query($sql2);
-                    $linhas2 = pg_num_rows($result2);
+                    $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
                     if ($linhas2 > 0) {
                         db_fieldsmemory($result2, 0);
                         $sql3 = "select * ";
@@ -128,7 +128,7 @@ if ($sqlerro == false) {
                         $sql3 .= "   and o70_concarpeculiar = lpad('{$o70_concarpeculiar}',3,'0') ";
                         $sql3 .= "   and o70_instit         = {$o70_instit} ";
                         $result3 = db_query($sql3);
-                        $linhas3 = pg_num_rows($result3);
+                        $linhas3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
                         if ($linhas3 > 0) {
                             db_fieldsmemory($result3, 0);
                             // inclui na taborc

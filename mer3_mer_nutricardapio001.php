@@ -88,7 +88,7 @@ $clrotulo->label("me01_c_nome");
                                                                                             or (me27_d_fim is not null and '$hoje'
                                                                                                 between me27_d_inicio and me27_d_fim))"
                                                                                          ));
-       $linhas = pg_num_rows($result);
+       $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
        for ($x=0;$x<$linhas;$x++) {
        	
          db_fieldsmemory($result,$x);
@@ -114,7 +114,7 @@ $clrotulo->label("me01_c_nome");
            $sql   .= "             inner join mer_cardapio on me01_i_codigo=mer_cardapiodia.me12_i_cardapio "; 
            $sql   .= "             where me01_i_tipocardapio=$cardapio";
            $result = db_query($sql);
-           $linhas = pg_num_rows($result);
+           $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
            for ($x=0;$x<$linhas;$x++) {
         	
     	     db_fieldsmemory($result,$x);

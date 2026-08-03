@@ -138,7 +138,7 @@ class NumeroControleInternoRequisicao
             throw new Exception('Erro ao buscar Número de Controle Interno da Requisição.');
         }
 
-        $linhas = pg_num_rows($rs);
+        $linhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
         if ($linhas === 0) {
             return null;

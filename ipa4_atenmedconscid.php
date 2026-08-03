@@ -63,7 +63,7 @@ if(!empty($codcid))
 else
   $str = " upper(descr) like upper('%$descr%') ";
 $result = db_query("select codcid,descr from cid10 where $str");
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($numrows > 0) {
   for($i = 0;$i < $numrows;$i++) {
     db_fieldsmemory($result,$i);

@@ -129,7 +129,7 @@ if (isset($_POST["json"])) {
      $sSqlBuscaTipo .= "  where j18_anousu = {$oPost->anousu}                                          ";
 
      $rsBuscaTipo = db_query($sSqlBuscaTipo);
-     $iLinhasTipo = pg_num_rows($rsBuscaTipo);
+     $iLinhasTipo = $rsBuscaTipo === false || $rsBuscaTipo === null ? 0 : pg_num_rows($rsBuscaTipo);
    
      if ( $iLinhasTipo > 0 ) {
      

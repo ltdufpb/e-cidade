@@ -102,7 +102,7 @@ switch ($oParam->exec) {
 	    $sSqlFcCorre  .= "                  ) as valorcorrigido                                                         ";
 
 	    $rsSqlFcCorre  = db_query($sSqlFcCorre);
-	    $iNumRows      = pg_num_rows($rsSqlFcCorre);
+	    $iNumRows      = $rsSqlFcCorre === false || $rsSqlFcCorre === null ? 0 : pg_num_rows($rsSqlFcCorre);
 	    if ( $iNumRows > 0 ) {
 
 	      $oFcCorre = db_utils::fieldsMemory($rsSqlFcCorre,0);

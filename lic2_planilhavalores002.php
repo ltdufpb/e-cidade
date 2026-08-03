@@ -62,7 +62,7 @@ for ($iProcs=0; $iProcs < pg_num_rows($rsLicita); $iProcs++) {
   db_fieldsmemory($rsLicita,$iProcs);
   $sSqlItens     = $clliclicitem->sql_query_sol(null,"*","pc11_seq"," l21_codliclicita = {$l20_codigo} and pc80_codproc = {$pc80_codproc}", "pc03_codgrupo");
   $result_itens  = db_query($sSqlItens);
-  $numrows_itens = pg_num_rows($result_itens); 
+  $numrows_itens = $result_itens === false || $result_itens === null ? 0 : pg_num_rows($result_itens); 
 
   $pdf1->labdados    = "PROCESSO DE COMPRAS N";
   $pdf1->labtitulo   = "Proc. compras";

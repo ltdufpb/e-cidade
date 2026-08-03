@@ -52,7 +52,7 @@ if ($opcao == 'erros') {
 $sSql .= " order by idret ";
 
 $result = db_query($sSql) or die($sSql);
-$num    = pg_num_rows($result);
+$num    = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $sSqlInstituicao = " select disarq.*, nome
           		         from disarq

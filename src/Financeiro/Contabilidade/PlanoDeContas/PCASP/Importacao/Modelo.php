@@ -182,7 +182,7 @@ class Modelo {
 				throw new \DBException("Houve um erro ao buscar as contas do modelo {$iModelo}.");
 			}
 
-			$iContas = pg_num_rows($rsResult);
+			$iContas = $rsResult === false || $rsResult === null ? 0 : pg_num_rows($rsResult);
 			if ($iContas == 0) {
 				throw new \BusinessException("Não foram encontradas contas para o Modelo {$iModelo}.");
 			}
@@ -226,7 +226,7 @@ class Modelo {
 			throw new \DBException("Houve uma falha ao buscar os modelos para o exercício {$iExercicio}.");
 		}
 
-		$iModelos = pg_num_rows($rsModelo);
+		$iModelos = $rsModelo === false || $rsModelo === null ? 0 : pg_num_rows($rsModelo);
 		for ($i = 0; $i < $iModelos; $i++) {
 
 			$oStd = \db_utils::fieldsMemory($rsModelo, $i);

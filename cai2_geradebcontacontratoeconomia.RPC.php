@@ -60,7 +60,7 @@ try {
           d66_arretipo desc";
       
       $rsTipoDebito = db_query($sSqlTipoDebito);
-      $iQuantidadeTipoDebito = pg_num_rows($rsTipoDebito);
+      $iQuantidadeTipoDebito = $rsTipoDebito === false || $rsTipoDebito === null ? 0 : pg_num_rows($rsTipoDebito);
       $aTipoDebito = [];
 
       for($iLinha = 0; $iLinha < $iQuantidadeTipoDebito; $iLinha++){
@@ -79,7 +79,7 @@ try {
           d62_instituicao =  {$iInstituicao}";
 
       $rsBanco = db_query($sSqlBanco);
-      $iQuantidadeBanco = pg_num_rows($rsBanco);
+      $iQuantidadeBanco = $rsBanco === false || $rsBanco === null ? 0 : pg_num_rows($rsBanco);
       $aBanco = [];
 
       for($iLinha = 0; $iLinha < $iQuantidadeBanco; $iLinha++){

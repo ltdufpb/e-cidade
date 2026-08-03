@@ -149,7 +149,7 @@ class ArquivoTransmissao {
       throw new DBException("Impossível buscar os movimentos do arquivo.");
     }
 
-    $iQtdMovimentacoes = pg_num_rows($rsMovimentacao);
+    $iQtdMovimentacoes = $rsMovimentacao === false || $rsMovimentacao === null ? 0 : pg_num_rows($rsMovimentacao);
     $aMovimentos       = [];
 
     /**

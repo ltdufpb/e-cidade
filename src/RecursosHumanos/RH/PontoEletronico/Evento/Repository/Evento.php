@@ -237,7 +237,7 @@ class Evento extends \BaseClassRepository
             throw new \DBException("Ocorreu um erro ao verificar conflito de datas para o servidor.");
         }
 
-        $totalRegistros = pg_num_rows($resPeriodoConflitante);
+        $totalRegistros = $resPeriodoConflitante === false || $resPeriodoConflitante === null ? 0 : pg_num_rows($resPeriodoConflitante);
 
         for ($rowConflito = 0; $rowConflito < $totalRegistros; $rowConflito++) {
             if (\db_utils::fieldsMemory($resPeriodoConflitante, $rowConflito)->resultado == 't') {
@@ -271,7 +271,7 @@ class Evento extends \BaseClassRepository
             throw new \DBException("Ocorreu um erro ao buscar as matrículas vinculadas ao evento.");
         }
 
-        $totalRegistros = pg_num_rows($resBuscaMatriculas);
+        $totalRegistros = $resBuscaMatriculas === false || $resBuscaMatriculas === null ? 0 : pg_num_rows($resBuscaMatriculas);
 
         for ($rowServidor = 0; $rowServidor < $totalRegistros; $rowServidor++) {
             $evento->adicionarServidor(

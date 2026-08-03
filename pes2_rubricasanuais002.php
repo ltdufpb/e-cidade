@@ -266,7 +266,7 @@ from rhpessoal
 
 //echo "<br><br>".$sql_princ;exit; 
 $result = db_query($sql_princ);
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mesfolha.' / '.$anofolha);
 

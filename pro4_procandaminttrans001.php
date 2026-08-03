@@ -167,7 +167,7 @@ db_textarea('p78_despacho',0,80,$Ip78_despacho,true,'text',1,"")
 				   where ( p61_coddepto = ".db_getsession("DB_coddepto").")  ) as x																	                   
 				   where   x.p68_codproc is null";
        $result=db_query($sql);
-       $numrows=pg_num_rows($result);
+       $numrows=$result === false || $result === null ? 0 : pg_num_rows($result);
        if($numrows>0){ 
           echo "
 	  <br><br>

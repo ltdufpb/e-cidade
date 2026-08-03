@@ -70,7 +70,7 @@ $sql        = " select * from mer_cardapio ";
 $sql       .= "       inner join mer_cardapiodia on me12_i_cardapio=me01_i_codigo";
 $sql       .= "       inner join mer_tipocardapio on me27_i_codigo = me01_i_tipocardapio";
 $result     = db_query($sql);
-$linhas     = pg_num_rows($result);
+$linhas     = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($linhas == 0 || $lErro) {
 	
   ?>
@@ -213,7 +213,7 @@ $pdf->Open();
 $pdf->AliasNbPages ();
 $sqlcardapioescola        = " select me32_i_codigo as cardapioescolacod,ed18_c_nome from mer_cardapioescola inner join escola  on  escola.ed18_i_codigo = mer_cardapioescola.me32_i_escola where me32_i_tipocardapio = $cardapio $condicao3 ";
 $resultcardapioescola     = db_query($sqlcardapioescola);
-$linhascardapioescola     = pg_num_rows($resultcardapioescola);
+$linhascardapioescola     = $resultcardapioescola === false || $resultcardapioescola === null ? 0 : pg_num_rows($resultcardapioescola);
 for($rrr=0; $rrr < $linhascardapioescola; $rrr++){
 
   db_fieldsmemory($resultcardapioescola,$rrr);
@@ -261,7 +261,7 @@ for($rrr=0; $rrr < $linhascardapioescola; $rrr++){
   $campos .= " me03_i_orden ";
   $sSql    = $clmer_cardapiotipo->sql_query("",$campos,"me03_i_orden"," me27_i_codigo = $cardapio"); 
   $result2 = $clmer_cardapiotipo->sql_record($sSql);
-  $linhas2 = pg_num_rows($result2);
+  $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
   if ($semana==0) {
     $aSemana = montasemana("","01",$calendario+1);
   } else {

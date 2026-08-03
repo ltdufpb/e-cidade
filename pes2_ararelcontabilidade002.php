@@ -592,7 +592,7 @@ order by rh27_rubric
 //echo $sql;exit;
 $result4_outras = db_query($sql4_outras);
 //db_criatabela($result4_outras);exit;
-$xxnum = pg_num_rows($result4_outras);
+$xxnum = $result4_outras === false || $result4_outras === null ? 0 : pg_num_rows($result4_outras);
 if($result4_outras == false){
   db_redireciona('db_erros.php?fechar=true&db_erro=1 - Não nenhum registro encontrado no período de '.$mes.' / '.$ano);
 }

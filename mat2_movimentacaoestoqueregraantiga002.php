@@ -362,7 +362,7 @@ function buscaMateriais($dtInicial, $dtFinal, $iInstituicao, $sOrder, $sAlmoxari
 function contabilizaMateriais($rsMateriais)
 {
     $aItens = [];
-    $iNumeroMateriais = pg_num_rows($rsMateriais);
+    $iNumeroMateriais = $rsMateriais === false || $rsMateriais === null ? 0 : pg_num_rows($rsMateriais);
 
     for ($iMaterial = 0; $iMaterial < $iNumeroMateriais; $iMaterial++) {
         $oMaterial = db_utils::fieldsmemory($rsMateriais, $iMaterial);

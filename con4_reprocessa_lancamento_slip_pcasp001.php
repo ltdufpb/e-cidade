@@ -137,7 +137,7 @@ if (isset($_POST["processar"])) {
 
     //die($sSqlReceita);
     $rsReceitas   = db_query($sSqlReceita);
-    $iTotalLinhas = pg_num_rows($rsReceitas);
+    $iTotalLinhas = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
     echo "<pre>";
     $aSlipIncluidosTipo = [];
     $aSlipConcar        = [];

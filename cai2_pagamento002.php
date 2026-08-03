@@ -88,7 +88,7 @@ $sql = "
      ";
 //die($sql);
 $result_somaval = db_query($sql);
-$numrows = pg_num_rows($result_somaval);
+$numrows = $result_somaval === false || $result_somaval === null ? 0 : pg_num_rows($result_somaval);
 if($numrows == 0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Não existem valores com os seguintes dados informados:<br> $msg_ERRO");
 }

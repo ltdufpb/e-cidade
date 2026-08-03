@@ -356,7 +356,7 @@ function buscaMovimentacoes( $iRecHumano ) {
   $sOrderRecHumanoMovimentacao = "ed118_data, ed118_hora";
   $sSqlRecHumanoMovimentacao   = $oDaoRecHumanoMovimentacao->sql_query_file('','*',$sOrderRecHumanoMovimentacao,$sWhereRecHumanoMovimentacao);
   $rsRecHumanoMovimentacao     = pg_query( $sSqlRecHumanoMovimentacao );
-  $iLinhas                     = pg_num_rows( $rsRecHumanoMovimentacao );
+  $iLinhas                     = $rsRecHumanoMovimentacao === false || $rsRecHumanoMovimentacao === null ? 0 : pg_num_rows( $rsRecHumanoMovimentacao );
 
   $aMovimentacoes = [];
   if ( $iLinhas > 0 ) {

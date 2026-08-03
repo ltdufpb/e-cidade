@@ -245,7 +245,7 @@ if ( $filtro == 0 || $filtro == 1 ) {
 
 
 
-    $xxnum = pg_num_rows($rsDadosPrev);
+    $xxnum = $rsDadosPrev === false || $rsDadosPrev === null ? 0 : pg_num_rows($rsDadosPrev);
     
     /* 
      * T.42515
@@ -258,7 +258,7 @@ if ( $filtro == 0 || $filtro == 1 ) {
       }
     } 
     
-    $iLinhasPrev = pg_num_rows($rsDadosPrev); 
+    $iLinhasPrev = $rsDadosPrev === false || $rsDadosPrev === null ? 0 : pg_num_rows($rsDadosPrev); 
     
     for ( $iInd = 0; $iInd < $iLinhasPrev; $iInd++ ){
       

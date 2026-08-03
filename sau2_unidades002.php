@@ -114,7 +114,7 @@ $sql_rel = "select db_depart.coddepto, descrdepto,
 ";
 //die( ">>>>>".$sql_rel );
 $query = @db_query($sql_rel);
-$linhas = @pg_num_rows($query);
+$linhas = $query === false || $query === null ? 0 : @pg_num_rows($query);
 
 if($linhas == 0){
  echo "<table width='100%'>
@@ -125,7 +125,7 @@ if($linhas == 0){
  exit;
 }
 $query_und = @db_query($sql_und);
-$linhas_und = @pg_num_rows($query_und);
+$linhas_und = $query_und === false || $query_und === null ? 0 : @pg_num_rows($query_und);
 
 
 $pdf = new PDF();

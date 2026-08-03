@@ -57,7 +57,7 @@ $sqlSituacao = "select distinct k54_codigo,k59_descr
                 inner join notisitu on k54_codigo = k59_codigo 
                 where k54_notifica between $minimo and $maximo";
 $resultSituacao = db_query($sqlSituacao);
-$linhasSituacao = pg_num_rows($resultSituacao);
+$linhasSituacao = $resultSituacao === false || $resultSituacao === null ? 0 : pg_num_rows($resultSituacao);
 if($linhasSituacao > 0){
   $situacao ="";
   $vir = "";

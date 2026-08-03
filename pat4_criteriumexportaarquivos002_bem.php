@@ -141,7 +141,7 @@ if($iCodigoDepto!="" && $iCodigoDepto != 0){
 
 $rsBem		    = db_query($sSqlBem);
 
-$iNumeroLinhas = pg_num_rows($rsBem);
+$iNumeroLinhas = $rsBem === false || $rsBem === null ? 0 : pg_num_rows($rsBem);
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oBem			    = db_utils::fieldsMemory($rsBem,$i);
 	$oLayoutTxt->setByLineOfDBUtils($oBem,3,'20');

@@ -78,7 +78,7 @@ class IntegracaoContrato extends IntegracaoBase implements IItemIntegracao {
     $oDaoAcordo    = new cl_acordo();
     $sSqlAcordo    = $oDaoAcordo->sql_query_transparencia($sCampos, null, "ac16_anousu >= {$this->iAnoInicioIntegracao}");
     $rsAcordos     = db_query($this->rsConexaoOrigem, $sSqlAcordo);
-    $iTotalAcordos = pg_num_rows($rsAcordos);
+    $iTotalAcordos = $rsAcordos === false || $rsAcordos === null ? 0 : pg_num_rows($rsAcordos);
 
     IntegracaoPortalTransparencia::escreverRegistrosProcessados($iTotalAcordos, $this->sArquivoLog, $this->iTipoLog);
 
@@ -129,7 +129,7 @@ class IntegracaoContrato extends IntegracaoBase implements IItemIntegracao {
     $oDaoAcordoposicao = new cl_acordoposicao();
     $sSqlAcordoPosicao = $oDaoAcordoposicao->sql_query_transparencia( $sCampos, null, "ac16_anousu >= {$this->iAnoInicioIntegracao}" );
     $rsAcordoPosicao   = db_query($this->rsConexaoOrigem, $sSqlAcordoPosicao);
-    $iTotalPosicoes    = pg_num_rows($rsAcordoPosicao);
+    $iTotalPosicoes    = $rsAcordoPosicao === false || $rsAcordoPosicao === null ? 0 : pg_num_rows($rsAcordoPosicao);
 
     IntegracaoPortalTransparencia::escreverRegistrosProcessados($iTotalPosicoes, $this->sArquivoLog, $this->iTipoLog);
 
@@ -175,7 +175,7 @@ class IntegracaoContrato extends IntegracaoBase implements IItemIntegracao {
           throw new Exception("Erro ao pesquisar os membros da comissao" . pg_last_error());
       }
 
-      $iTotalComissaoMembro = pg_num_rows($rsAcordoComissaoMembro);
+      $iTotalComissaoMembro = $rsAcordoComissaoMembro === false || $rsAcordoComissaoMembro === null ? 0 : pg_num_rows($rsAcordoComissaoMembro);
 
       IntegracaoPortalTransparencia::escreverRegistrosProcessados($iTotalComissaoMembro, $this->sArquivoLog, $this->iTipoLog);
 
@@ -217,7 +217,7 @@ class IntegracaoContrato extends IntegracaoBase implements IItemIntegracao {
     $oDaoAcordoitem = new cl_acordoitem();
     $sSqlAcordoItem = $oDaoAcordoitem->sql_query_transparencia($sCampos, null, "ac16_anousu >= {$this->iAnoInicioIntegracao}");
     $rsAcordoItem   = db_query($this->rsConexaoOrigem, $sSqlAcordoItem);
-    $iTotalItens    = pg_num_rows($rsAcordoItem);
+    $iTotalItens    = $rsAcordoItem === false || $rsAcordoItem === null ? 0 : pg_num_rows($rsAcordoItem);
 
     IntegracaoPortalTransparencia::escreverRegistrosProcessados($iTotalItens, $this->sArquivoLog, $this->iTipoLog);
 
@@ -274,7 +274,7 @@ class IntegracaoContrato extends IntegracaoBase implements IItemIntegracao {
     $sSqlAcordoEmpenhos .= $oDaoAcordoEmpenho->sql_query(null, $sCampos, null, "ac16_anousu >= {$this->iAnoInicioIntegracao}");
 
     $rsAcordoEmpenhos    = db_query($this->rsConexaoOrigem, $sSqlAcordoEmpenhos);
-    $iTotalEmpenhos      = pg_num_rows($rsAcordoEmpenhos);
+    $iTotalEmpenhos      = $rsAcordoEmpenhos === false || $rsAcordoEmpenhos === null ? 0 : pg_num_rows($rsAcordoEmpenhos);
 
     IntegracaoPortalTransparencia::escreverRegistrosProcessados($iTotalEmpenhos, $this->sArquivoLog, $this->iTipoLog);
 
@@ -324,7 +324,7 @@ class IntegracaoContrato extends IntegracaoBase implements IItemIntegracao {
     $oDaoAcordodocumento = new cl_acordodocumento();
     $sSqlDocumentos      = $oDaoAcordodocumento->sql_query_transparencia($sCampos, null, "ac16_anousu >= {$this->iAnoInicioIntegracao}");
     $rsAcordoDocumentos  = db_query($this->rsConexaoOrigem, $sSqlDocumentos);
-    $iTotalDocumentos    = pg_num_rows($rsAcordoDocumentos);
+    $iTotalDocumentos    = $rsAcordoDocumentos === false || $rsAcordoDocumentos === null ? 0 : pg_num_rows($rsAcordoDocumentos);
 
     IntegracaoPortalTransparencia::escreverRegistrosProcessados($iTotalDocumentos, $this->sArquivoLog, $this->iTipoLog);
 
@@ -400,7 +400,7 @@ class IntegracaoContrato extends IntegracaoBase implements IItemIntegracao {
       throw new Exception("Erro ao pesquisar os contratos da licitacao ".pg_last_error());
     }
 
-    $iTotalContratos      = pg_num_rows($rsLicitacaoContratos);
+    $iTotalContratos      = $rsLicitacaoContratos === false || $rsLicitacaoContratos === null ? 0 : pg_num_rows($rsLicitacaoContratos);
     IntegracaoPortalTransparencia::escreverRegistrosProcessados($iTotalContratos, $this->sArquivoLog, $this->iTipoLog);
 
     if (!$iTotalContratos) {

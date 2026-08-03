@@ -1006,7 +1006,7 @@ class EncerramentoAvaliacao {
     $sSql .= "                  );";
 
     $rsValidaDiario = db_query($sSql);
-    $iLinhas        = pg_num_rows($rsValidaDiario);
+    $iLinhas        = $rsValidaDiario === false || $rsValidaDiario === null ? 0 : pg_num_rows($rsValidaDiario);
 
     $aDisciplinasBase = $oMatricula->getTurma()->getBaseCurricular()->getDisciplina($oEtapa);
 

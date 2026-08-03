@@ -376,7 +376,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
 
                           if($rsAtoLegal && pg_num_rows($rsAtoLegal) > 0) {
 
-                            $iLinhasAtoLegal = pg_num_rows($rsAtoLegal);
+                            $iLinhasAtoLegal = $rsAtoLegal === false || $rsAtoLegal === null ? 0 : pg_num_rows($rsAtoLegal);
                             for($iContador = 0; $iContador < $iLinhasAtoLegal; $iContador++) {
 
                               $oDadosAtoLegal                                 = db_utils::fieldsMemory($rsAtoLegal, $iContador);

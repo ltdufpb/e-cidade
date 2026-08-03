@@ -76,7 +76,7 @@ class AnexoReceitaCorrenteLiquida extends RelatoriosLegaisBase {
                                         $sDataInicial, 
                                         $sDataFinal);
                                         
-    $iTotalLinhasReceita   = pg_num_rows($rsReceita);
+    $iTotalLinhasReceita   = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
     $aLinhasRelatorio = $this->oRelatorioLegal->getLinhasCompleto();
     $aLinhas = [];
 

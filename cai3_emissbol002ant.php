@@ -466,7 +466,7 @@ where arrec <> 0 or estorno <> 0 order by k02_estorc
 
 ");
 
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $QuebraPagina = 10;
 $Total1 = 0;
 $Total2 = 0;
@@ -572,7 +572,7 @@ from plano
 ) as x
   on k02_estpla = c01_estrut and c01_anousu = ".$GLOBALS["DB_anousu"]."
 group by k02_estpla,c01_descr,k12_conta,k12_receit;");
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 if($numrows>0){
 

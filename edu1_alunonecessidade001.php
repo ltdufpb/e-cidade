@@ -169,7 +169,7 @@ if(isset($excluir)){
           ORDER BY ed48_c_descr
          ";
   $result = db_query($sql);
-  $linhas = pg_num_rows($result);
+  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
   if($linhas==1){
    $result = db_query("UPDATE alunonecessidade SET ed214_c_principal = 'SIM' WHERE ed214_i_aluno = $ed214_i_aluno");
   }elseif($linhas>1){

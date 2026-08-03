@@ -118,7 +118,7 @@ if(isset($calcular)){
   }
 
   $result1 = db_query($sql1) or die($sql1);
-	$numrows = pg_num_rows($result1);
+	$numrows = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 	$sqlerro = false;
 	$cont    = 0;
 
@@ -203,7 +203,7 @@ if(isset($calcular)){
             if ( isset($data1)&&$data1 != "--" || isset($data2) && $data2 != "--" || isset($data3) && $data3 != "--" ) {
 
               $result_calc  = db_query("select distinct q01_numpre from isscalc where q01_inscr = $q07_inscr and q01_anousu = $anousu");
-              $numrows_calc = pg_num_rows($result_calc);
+              $numrows_calc = $result_calc === false || $result_calc === null ? 0 : pg_num_rows($result_calc);
               $hoje = date('Y-m-d',db_getsession("DB_datausu"));
                 /*
                  * alteracao para incluir no cabeçalho criado para recibo unica

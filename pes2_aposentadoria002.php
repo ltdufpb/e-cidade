@@ -47,7 +47,7 @@ $sql_base = "select r09_rubric from basesr where r09_base   = '$base1'
 
 $result_base = db_query($sql_base);
 
-$numrows_base = pg_num_rows($result_base);
+$numrows_base = $result_base === false || $result_base === null ? 0 : pg_num_rows($result_base);
 $sel_base = "'";
 for($i=0; $i<$numrows_base; $i++){
    db_fieldsmemory($result_base, $i);

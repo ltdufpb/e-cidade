@@ -132,7 +132,7 @@ $db_botao = true;
          $cod_rh = str_replace(");","",trim(substr($linha,29)));
          $sql2 = "select * from rechumano where ed20_i_codigo = $cod_rh";
          $result2 = db_query($sql2);
-         $linhas2 = pg_num_rows($result2);
+         $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
          if($linhas2==0){
           $sql1 = $linha;
           $result1 = db_query($sql1);

@@ -107,7 +107,7 @@ $j39_idcons = $oPost->iConstrucao;
   and j01_baixa is null) as x";
 
     $resultareatotal = db_query($sqlareatotal);
-    $linhasareatotal = pg_num_rows($resultareatotal);
+    $linhasareatotal = $resultareatotal === false || $resultareatotal === null ? 0 : pg_num_rows($resultareatotal);
     if ($linhasareatotal > 0) {
         $temareatotal = "";
         $areatotal = pg_fetch_result($resultareatotal, 0);
@@ -125,7 +125,7 @@ $j39_idcons = $oPost->iConstrucao;
   and j01_baixa is null";
 
     $resultareaconst = db_query($sqlareaconst);
-    $linhasareaconst = pg_num_rows($resultareaconst);
+    $linhasareaconst = $resultareaconst === false || $resultareaconst === null ? 0 : pg_num_rows($resultareaconst);
     if ($linhasareaconst > 0) {
         $temareaconst = "";
         $areaconst = pg_fetch_result($resultareaconst, 0);
@@ -142,7 +142,7 @@ $j39_idcons = $oPost->iConstrucao;
   and j34_lote    = '" . $fieldmatriculaSelecionada->j34_lote . "'  limit 1";
 
     $resultareaconsttotal = db_query($sqlareaconsttotal);
-    $linhasareaconsttotal = pg_num_rows($resultareaconsttotal);
+    $linhasareaconsttotal = $resultareaconsttotal === false || $resultareaconsttotal === null ? 0 : pg_num_rows($resultareaconsttotal);
     if ($linhasareaconsttotal > 0) {
         $temareaconsttotal = "";
         $areaconsttotal = pg_fetch_result($resultareaconsttotal, 0);

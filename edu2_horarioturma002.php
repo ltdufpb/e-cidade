@@ -186,7 +186,7 @@ UNION
           AND ed223_i_serie = ed59_i_serie
              ";
         $result2 = db_query($sql2);
-        $linhas2 = pg_num_rows($result2);
+        $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 
         //echo $sql2 ."<br><br>";
 

@@ -197,7 +197,7 @@ function js_contageral(numero,idobj){
 		  	and i.itemativo = $ambiente
       order by menusequencia"); 
 //			and m.id_item_filho in (select id_item from db_itenshelp h where h.id_item = m.id_item_filho) ");
-      $numrows = pg_num_rows($sub);
+      $numrows = $sub === false || $sub === null ? 0 : pg_num_rows($sub);
       if($numrows > 0) {
 	      for($x = 0;$x < $numrows;$x++) {                  
 	        $valor = pg_fetch_result($sub,$x,"id_item_filho");

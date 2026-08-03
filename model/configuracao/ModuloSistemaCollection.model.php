@@ -70,7 +70,7 @@ class ModuloSistemaCollection {
     $oDaoModuloSistema    = new cl_db_modulos();
     $sSqlModuloSistema    = $oDaoModuloSistema->sql_query_file( null, "*", "nome_modulo" );
     $rsModuloSistema      = db_query( $sSqlModuloSistema );
-    $iLinhasModuloSistema = pg_num_rows( $rsModuloSistema );
+    $iLinhasModuloSistema = $rsModuloSistema === false || $rsModuloSistema === null ? 0 : pg_num_rows( $rsModuloSistema );
     
     if ( $rsModuloSistema && $iLinhasModuloSistema > 0 ) {
       

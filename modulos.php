@@ -48,7 +48,7 @@ if(isset($modulo) and is_numeric($modulo)){
 
   $rsSqlAreaModulo = @db_query($sSqlAreaModulo);
 
-  $iNumAreaModulo = @pg_num_rows($rsSqlAreaModulo);
+  $iNumAreaModulo = $rsSqlAreaModulo === false || $rsSqlAreaModulo === null ? 0 : @pg_num_rows($rsSqlAreaModulo);
 
   if($iNumAreaModulo > 0){
 

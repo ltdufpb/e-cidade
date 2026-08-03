@@ -125,7 +125,7 @@ if($clpareceraval->numrows>0){
             ORDER BY ed59_i_ordenacao
            ";
     $result = db_query($sql);
-    $linhas = pg_num_rows($result);
+    $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
     if($linhas>0){
      ?>
      <b>Selecione outras disciplinas para conter<br>este parecer no período <?=$periodo?></b>:<br>

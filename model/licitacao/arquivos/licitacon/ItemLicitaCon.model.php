@@ -91,7 +91,7 @@ class ItemLicitaCon extends ArquivoLicitaCon
             throw new DBException(_M(self::MENSAGEM . 'erro_busca_itens'));
         }
 
-        $iTotalRegistros = pg_num_rows($rsItensLicitacao);
+        $iTotalRegistros = $rsItensLicitacao === false || $rsItensLicitacao === null ? 0 : pg_num_rows($rsItensLicitacao);
 
         for ($i = 0; $i < $iTotalRegistros; $i++) {
             $oStdItem = db_utils::fieldsMemory($rsItensLicitacao, $i);

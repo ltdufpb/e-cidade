@@ -1340,7 +1340,7 @@ class slip
         $sql .= "  from slipempagemovslips";
         $sql .= " where k108_slip = {$this->iSlip}";
         $rsRentecoes = db_query($sql);
-        $linhas = pg_num_rows($rsRentecoes);
+        $linhas = $rsRentecoes === false || $rsRentecoes === null ? 0 : pg_num_rows($rsRentecoes);
 
         for ($i = 0; $i < $linhas; $i++) {
             $this->retencoes[] = db_utils::fieldsMemory($rsRentecoes, $i)->codigo;

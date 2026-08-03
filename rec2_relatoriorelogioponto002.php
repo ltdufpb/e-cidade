@@ -91,7 +91,7 @@ try {
         throw new BusinessException("Não há servidores para esta selecão.");
     }
     $dadosRelatorio = [];
-    $totalLinhas = pg_num_rows($rsDadosRelatorio);
+    $totalLinhas = $rsDadosRelatorio === false || $rsDadosRelatorio === null ? 0 : pg_num_rows($rsDadosRelatorio);
     for ($i = 0; $i < $totalLinhas; $i++) {
 
         $dados = db_utils::fieldsMemory($rsDadosRelatorio, $i);

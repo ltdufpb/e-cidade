@@ -83,7 +83,7 @@ if (isset($valor)) {
   $sql .=  " GROUP BY bi06_seq, bi06_titulo, bi06_edicao, bi06_volume, bi06_tipoitem, bi05_nome, bi29_nome       ";
 
   $result = db_query($sql);
-  $linhas = pg_num_rows($result);
+  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 ?>
   <table width="100%" border="0" cellspacing="1" cellpading="3" >
     <form method="POST" name="form2">
@@ -160,7 +160,7 @@ if (isset($valor)) {
                            AND bi17_codigo = $bi17_codigo
                          ORDER BY bi18_retirada desc, bi21_entrega desc";
             $result_emp = db_query($sql_emp);
-            $linhas_emp = pg_num_rows($result_emp);?>
+            $linhas_emp = $result_emp === false || $result_emp === null ? 0 : pg_num_rows($result_emp);?>
             <tr bgcolor="<?=$cor?>">
               <td></td>
               <td align="center" colspan="5">

@@ -743,7 +743,7 @@ class RemuneracaoRGPSService
         }
 
         $resultado = db_query($sql);
-        $registro = pg_num_rows($resultado);
+        $registro = $resultado === false || $resultado === null ? 0 : pg_num_rows($resultado);
         if ($registro > 0) {
             $grupoIdeEstabLot->nrInsc = \db_utils::fieldsMemory($resultado, 0)->cgc;
             $grupoIdeEstabLot->codLotacao = \db_utils::fieldsMemory($resultado, 0)->rh268_codigolotacao;

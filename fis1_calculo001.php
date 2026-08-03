@@ -117,7 +117,7 @@ if ( isset($calcular) ) {
                                    from vistorianumpre where vistorianumpre.y69_codvist = $y70_codvist";
 
  $resultdebtfv= db_query($sSqlVist);
- $linhasdebtfv = pg_num_rows($resultdebtfv);
+ $linhasdebtfv = $resultdebtfv === false || $resultdebtfv === null ? 0 : pg_num_rows($resultdebtfv);
  $info = ""; 
  if ($linhasdebtfv>0) {
    db_fieldsmemory( $resultdebtfv, 0 );

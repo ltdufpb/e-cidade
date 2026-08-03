@@ -93,7 +93,7 @@ $nomearq = pg_fetch_result($nomearq, 0, 0);
 			           on c.codcam = ci.codcam
 			           where i.codind = $ind
 			           order by ci.sequen");
-                    $num_linhas = pg_num_rows($result);
+                    $num_linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
                     $nome_ind = pg_fetch_result($result, 0, "nome_indice");
                 } ?>
                 <form method="post" name="f_campo" onSubmit="return js_submeter(this)">

@@ -606,7 +606,7 @@ class Certidao {
     /**
      * Valores por Receita
      */
-    $iTotalReceitas = pg_num_rows($rsValoresPorReceita);
+    $iTotalReceitas = $rsValoresPorReceita === false || $rsValoresPorReceita === null ? 0 : pg_num_rows($rsValoresPorReceita);
 
     /**
      * Verifica limite de receitas para o modelo especifico
@@ -650,7 +650,7 @@ class Certidao {
     }
 
     $oPdf->recorddadospagto = $rsDadosPagamento;
-    $oPdf->linhasdadospagto = pg_num_rows($rsDadosPagamento);
+    $oPdf->linhasdadospagto = $rsDadosPagamento === false || $rsDadosPagamento === null ? 0 : pg_num_rows($rsDadosPagamento);
     $oPdf->receita          = 'k00_receit';
     $oPdf->valor            = 'valor';
     $oPdf->receitared       = 'codreduz';

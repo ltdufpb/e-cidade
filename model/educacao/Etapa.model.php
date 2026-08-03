@@ -181,7 +181,7 @@ class Etapa {
       throw new DBException( "Error ao executar query: Não foi possível buscar equivalências" );
     }
 
-    $iLinhas             = pg_num_rows( $rsEquivalente );
+    $iLinhas             = $rsEquivalente === false || $rsEquivalente === null ? 0 : pg_num_rows( $rsEquivalente );
     $aSeriesEquivalentes = [];
 
     for ($i = 0; $i < $iLinhas; $i++) {

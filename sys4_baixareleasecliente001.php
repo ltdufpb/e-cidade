@@ -37,7 +37,7 @@ $ipbase="$DB_SERVIDOR";
 $aborta=0;
 $sql    = "select db30_codversao,db30_codrelease from db_versao order by db30_codver desc limit 1";
 $result = db_query($sql);
-$numrows= pg_num_rows($result);
+$numrows= $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($numrows==0)
 {
    #echo "\n Não existe registro na tabela db_versão. \n";

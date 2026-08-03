@@ -137,7 +137,7 @@ $totalportipo = [];
 $lista 				= $k60_codigo;
 $impcab 			= true;
 
-$linhasNotiDebitos = pg_num_rows($rsNotiDebitos);
+$linhasNotiDebitos = $rsNotiDebitos === false || $rsNotiDebitos === null ? 0 : pg_num_rows($rsNotiDebitos);
 
 for($x=0;$x < $linhasNotiDebitos;$x++) {
   db_fieldsmemory($rsNotiDebitos, $x);

@@ -309,7 +309,7 @@ for ( $y = 0; $y < $clmatricula->numrows; $y++ ) {
             ORDER BY ed72_c_amparo desc
             LIMIT 1";
   $result2 = db_query( $sql2 );
-  $linhas2 = pg_num_rows( $result2 );
+  $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows( $result2 );
 
   if ( $linhas2 > 0 ) {
     db_fieldsmemory( $result2, 0 );

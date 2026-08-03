@@ -268,7 +268,7 @@ $sSqlDados    .= "       inner join orcprograma   on o54_anousu      = o87_orcpr
 $sSqlDados    .= "                               and o54_programa    = o87_pactoprograma";
 $sSqlDados    .= " where o87_pactoplano  = {$oGet->iPlano} order by o54_descr, o55_descr";
 $rsDados       = db_query($sSqlDados);
-$iTotalRows    = pg_num_rows($rsDados);
+$iTotalRows    = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
 $aLinhaRelatorio = [];
 
 $aTotalizador["CP"]["realizado_trim_atual"]    = 0; 

@@ -108,7 +108,7 @@ order by rh37_funcao,r02_codigo,z01_nome;
 //echo $sql ; exit;
 //die ($sql);
 $result = db_query($sql);
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem cálculos para o período de '.$mes.' / '.$ano);
 
@@ -134,7 +134,7 @@ $imp_cab = true;
 $total_sec = 0;
 $total_pad = 0;
 $pre = 1;
-$tot_registros = pg_num_rows($result);
+$tot_registros = $result === false || $result === null ? 0 : pg_num_rows($result);
 $x = 0;
 while($x < $tot_registros){
    db_fieldsmemory($result,$x);

@@ -55,7 +55,7 @@ $escola = db_getsession("DB_coddepto");
 //select tipos de nutrientes
 $sql    ="select me09_i_codigo,me09_c_descr from mer_nutriente order by me09_c_descr";
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 $sql1   = " select distinct me01_i_codigo,me01_c_nome,me01_i_percapita,me01_f_versao from mer_cardapio ";
 $str    = "";
 $sep    = " where ";
@@ -88,7 +88,7 @@ if (isset($cardapio)) {
 }
 $sql1    .= $str;
 $result1  = db_query($sql1);
-$linhas1  = pg_num_rows($result1);
+$linhas1  = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 ?>
 <br>
 <center>
@@ -103,12 +103,12 @@ for ($z=0;$z<$linhas1;$z++) {
   $sql2    .= "       inner join mer_alimento on me35_i_codigo=me07_i_alimento ";
   $sql2    .= "       where me07_i_cardapio=$me01_i_codigo";
   $result2  = db_query($sql2);
-  $linhas2  = pg_num_rows($result2);           
+  $linhas2  = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);           
   $sqltp    = " select me03_c_tipo from mer_cardapiotipo ";
   $sqltp    .= "        inner join mer_tprefeicao on me21_i_tprefeicao = me03_i_codigo ";
   $sqltp    .= "        where me21_i_cardapio=$me01_i_codigo"; 
   $resulttp = db_query($sqltp);
-  $linhastp = pg_num_rows($resulttp);
+  $linhastp = $resulttp === false || $resulttp === null ? 0 : pg_num_rows($resulttp);
   $sep      = "";
   $tipo     = "";
   for ($tp=0;$tp<$linhastp;$tp++) {
@@ -169,7 +169,7 @@ for ($z=0;$z<$linhas1;$z++) {
 	           $sqli   .= "                inner join matunid on m61_codmatunid=me07_i_unidade ";
 	           $sqli   .= "          where me07_i_alimento=$me35_i_codigo and me07_i_cardapio=$me01_i_codigo";
 	           $resulti = db_query($sqli);
-	           $linhasi = pg_num_rows($resulti);
+	           $linhasi = $resulti === false || $resulti === null ? 0 : pg_num_rows($resulti);
 	           if ($linhasi>0) {
 	           	
 	             db_fieldsmemory($resulti,0);

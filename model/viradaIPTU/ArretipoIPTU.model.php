@@ -232,7 +232,7 @@ class ArretipoIPTU implements iViradaIPTU {
     $sSqlCfIptuTipoDebito    .= "        inner join cadvencdesc on j18_vencim = q92_codigo ";
     $sSqlCfIptuTipoDebito    .= "  where j18_anousu = {$this->getAnoNovo()}                ";
     $rsSqlCfIptuTipoDebito    = db_query($sSqlCfIptuTipoDebito);
-    $iNumRowsCfIptuTipoDebito = pg_num_rows($rsSqlCfIptuTipoDebito);
+    $iNumRowsCfIptuTipoDebito = $rsSqlCfIptuTipoDebito === false || $rsSqlCfIptuTipoDebito === null ? 0 : pg_num_rows($rsSqlCfIptuTipoDebito);
     if ($iNumRowsCfIptuTipoDebito == 0) {
 
       $sMensagem = "ERRO: Nenhum registro encontrado na cfiptu exercicío {$this->getAnoNovo()}!";

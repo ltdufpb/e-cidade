@@ -382,7 +382,7 @@ class MenuSistema {
       throw new DBException( _M( CAMINHO_MENSAGENS_ITENS . "erro_buscar_itens_filho" ) );
     }
 
-    $iLinhasDbMenu = pg_num_rows( $rsDbMenu );
+    $iLinhasDbMenu = $rsDbMenu === false || $rsDbMenu === null ? 0 : pg_num_rows( $rsDbMenu );
     if ( $iLinhasDbMenu == 0 ) {
       return $this->aItensFilho;
     }
@@ -473,7 +473,7 @@ class MenuSistema {
       throw new DBException( _M( CAMINHO_MENSAGENS_ITENS . "erro_buscar_menus_vinculados" ) );
     }
 
-    $iTotalLinhas = pg_num_rows( $rsDbMenu );
+    $iTotalLinhas = $rsDbMenu === false || $rsDbMenu === null ? 0 : pg_num_rows( $rsDbMenu );
     for ( $iContador = 0; $iContador < $iTotalLinhas; $iContador++ ) {
 
       $oDadosVinculo          = new stdClass();

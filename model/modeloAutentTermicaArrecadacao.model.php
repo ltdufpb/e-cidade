@@ -242,7 +242,7 @@ class modeloAutentTermicaArrecadacao extends modeloAutentTermicaBasica {
     $sSqlArquivoRet .= "	      order by disrec.k00_receit                                 ";
 
     $rsDados = db_query($sSqlArquivoRet);
-    $iNum    = pg_num_rows($rsDados);
+    $iNum    = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
 
 
     //echo 'num = ' . $iNum;

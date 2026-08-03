@@ -83,7 +83,7 @@ $result = $clitbinome->sql_record($clitbinome->sql_query($itbi,""," it03_nome as
 if($clitbinome->numrows  > 0){
   $traco = '';
   $proprietarios .= "\n".'ADQUIRENTES : ';
-  $num = pg_num_rows($result);
+  $num = $result === false || $result === null ? 0 : pg_num_rows($result);
   for ($p = 0;$p < $num;$p++){
     db_fieldsmemory($result,$p);
     $proprietarios .= $traco.trim((string) $nomecomp);
@@ -98,7 +98,7 @@ if($clitbicgm->numrows  > 0){
   }else{
     $proprietarios .= " - ";
   }
-  $num = pg_num_rows($result);
+  $num = $result === false || $result === null ? 0 : pg_num_rows($result);
   for ($p = 0;$p < $num;$p++){
     db_fieldsmemory($result,$p);
     $proprietarios .= $traco.trim((string) $nomecomp);
@@ -112,7 +112,7 @@ if($proprietarios == ""){
 }
 $resultcons = $clitbiconstr->sql_record($clitbiconstr->sql_query("","*",""," it08_guia = $itbi"));
 if($clitbiconstr->numrows  > 0){
-  $num = pg_num_rows($resultcons);
+  $num = $resultcons === false || $resultcons === null ? 0 : pg_num_rows($resultcons);
   $areatotal = 0;
   $areatrans = 0;
   for ($p = 0;$p < $num;$p++){

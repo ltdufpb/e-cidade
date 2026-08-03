@@ -49,7 +49,7 @@
 		from db_usuarios
 	";
 	$result = db_query($sql);
-	$numrows = pg_num_rows($result);
+	$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 	for ($i=0;$i<$numrows;$i++) {
 	  $db_select = ""; 
   	  if (isset($usuarios) && sizeof($usuarios)!=0){
@@ -92,7 +92,7 @@
 		from db_depart
 	";
 	$result = db_query($sql);
-	$numrows = pg_num_rows($result);
+	$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 	for ($i=0;$i<$numrows;$i++) {
 ?>
                 <option value="<?=@pg_fetch_result($result,$i,"coddepto")?>" <?php 
@@ -134,7 +134,7 @@
 		from impres
 	";
 	$result = db_query($sql);
-	$numrows = pg_num_rows($result);
+	$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 	if (sizeof($usuarios)==1){
 		$sqlPesqisaImpressorasDoUsuario = "
 			select d51_usuario, d51_impres
@@ -142,7 +142,7 @@
 			where d51_usuario = $usuarios[0]
 		";
 		$result_sqlPesqisaImpressorasDoUsuario = db_query($sqlPesqisaImpressorasDoUsuario);
-		$num = pg_num_rows($result_sqlPesqisaImpressorasDoUsuario);
+		$num = $result_sqlPesqisaImpressorasDoUsuario === false || $result_sqlPesqisaImpressorasDoUsuario === null ? 0 : pg_num_rows($result_sqlPesqisaImpressorasDoUsuario);
 	}
 	for ($i=0;$i<$numrows;$i++) {
 ?>

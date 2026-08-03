@@ -127,7 +127,7 @@ $clmatmater->rotulo->label("m60_descr");
 
       	  $sql    = $clfar_matersaude_ext->sql_query($pesquisa_chave,"*","fa01_i_codmater"," fa01_i_codigo=$pesquisa_chave and fa04_i_cgsund=$cgs $sep$ativo");
       	  $result = db_query($sql);
-          $linhas = pg_num_rows($result);
+          $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
           if ($linhas!=0) {
 
           	db_fieldsmemory($result,0);

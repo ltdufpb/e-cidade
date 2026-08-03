@@ -97,7 +97,7 @@ class uniorcam {
                    o41_ident
             having count(distinct cgc) > 1";
    $rs_verifica = db_query($sql_verifica) or die($sql_verifica);
-   $rows = pg_num_rows($rs_verifica);
+   $rows = $rs_verifica === false || $rs_verifica === null ? 0 : pg_num_rows($rs_verifica);
    if ( $rows > 0 ) {
      echo "<br><b>PROVAVEIS ERROS NOS REGISTROS DA UNIORCAM:</b><br>";
      for ($x=0;$x < $rows;$x++) {
@@ -131,7 +131,7 @@ class uniorcam {
 
   // echo $sql;exit;
    $res=db_query($sql);
-   $rows = pg_num_rows($res);
+   $rows = $res === false || $res === null ? 0 : pg_num_rows($res);
    for ($x=0;$x < $rows;$x++){
       $anousu         = formatar(pg_fetch_result($res,$x,"anousu"),4);
       $orgao          = formatar(pg_fetch_result($res,$x,"orgao"),2);

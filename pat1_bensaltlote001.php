@@ -273,7 +273,7 @@ if(isset($alterar)){
                                inner join benslote    on benslote.t43_bem = bens.t52_bem
                          where benslote.t43_codlote = ".addslashes($iCodigoLote);
     $rsBuscaBensImoveis = db_query($sSqlBensImoveis);
-    $iLinhasBensImoveis = pg_num_rows($rsBuscaBensImoveis);
+    $iLinhasBensImoveis = $rsBuscaBensImoveis === false || $rsBuscaBensImoveis === null ? 0 : pg_num_rows($rsBuscaBensImoveis);
     
     $sSqlBensMaterial = "select distinct bensmater.* 
                            from bens 
@@ -281,7 +281,7 @@ if(isset($alterar)){
                                 inner join benslote  on benslote.t43_bem = bens.t52_bem
                           where benslote.t43_codlote = ".addslashes($iCodigoLote);
     $rsBuscaBensMaterial = db_query($sSqlBensMaterial);
-    $iLinhasBensMaterial = pg_num_rows($rsBuscaBensMaterial);
+    $iLinhasBensMaterial = $rsBuscaBensMaterial === false || $rsBuscaBensMaterial === null ? 0 : pg_num_rows($rsBuscaBensMaterial);
     
     if ($iLinhasBensImoveis > 0) {
       

@@ -93,7 +93,7 @@ $clcalendario = new cl_calendario;
               ORDER BY ed10_c_abrev
              ";
       $result= db_query($sql);
-      $linhas = pg_num_rows($result);
+      $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
       if($linhas==0){
        $x = [' '=>'NENHUM REGISTRO'];
        db_select('ano',$x,true,1,"style='font-size:9px;width:200px;height:18px;'");
@@ -125,7 +125,7 @@ $clcalendario = new cl_calendario;
               ORDER BY ed11_i_sequencia
              ";
       $result= db_query($sql);
-      $linhas = pg_num_rows($result);
+      $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
       if($linhas==0){
        $x = [' '=>'NENHUM REGISTRO'];
        db_select('serie',$x,true,1,"style='font-size:9px;width:200px;height:18px;'");
@@ -166,7 +166,7 @@ $clcalendario = new cl_calendario;
             ORDER BY ed18_c_nome
            ";
     $result= db_query($sql);
-    $linhas = pg_num_rows($result);?>
+    $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);?>
     <select name="escola" style="font-size:9px;width:300px;height:100px;" multiple>
      <?php 
      for($x=0;$x<$linhas;$x++){

@@ -47,7 +47,7 @@ $sSqlTarefas = "select at40_sequencial as cod,
                  order by at40_sequencial ";
 
 $rsTarefa = db_query($sSqlTarefas);
-$iNumRows = pg_num_rows($rsTarefa);
+$iNumRows = $rsTarefa === false || $rsTarefa === null ? 0 : pg_num_rows($rsTarefa);
 
 $aRetorno = db_utils::getCollectionByRecord($rsTarefa,false,false,true);
 

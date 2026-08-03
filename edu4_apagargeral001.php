@@ -646,7 +646,7 @@ if (isset($excluir)) {
                     throw new Exception("Erro ao buscar as progressões da turma. \n{$sErro}");
                 }
 
-                $iLinhasProgressao = pg_num_rows($rsProgressao);
+                $iLinhasProgressao = $rsProgressao === false || $rsProgressao === null ? 0 : pg_num_rows($rsProgressao);
 
                 for ($iContadorProgressao = 0; $iContadorProgressao < $iLinhasProgressao; $iContadorProgressao++) {
                     $iProgressao = db_utils::fieldsMemory($rsProgressao, $iContadorProgressao)->ed114_sequencial;

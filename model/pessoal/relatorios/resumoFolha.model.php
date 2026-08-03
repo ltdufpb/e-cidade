@@ -443,7 +443,7 @@ class resumoFolha extends RelatorioFolhaPagamento {
     $sValoresPatronais .= "    and r33_instit = {$this->iInstituicao} ";
 
     $rsValoresPatronais    = db_query($sValoresPatronais);
-    $iRowsValoresPatronais = pg_num_rows($rsValoresPatronais);
+    $iRowsValoresPatronais = $rsValoresPatronais === false || $rsValoresPatronais === null ? 0 : pg_num_rows($rsValoresPatronais);
 
 
     if($rsValoresPatronais && $iRowsValoresPatronais > 0){

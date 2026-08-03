@@ -302,7 +302,7 @@ $this->objpdf->AliasNbPages();
                                          and rhpessoalmov.rh02_regist = {$this->registro} 
                                          and extract(month from rhpessoal.rh01_clas2) in (9,10);";
 		$rsVerificaAposentadoria = db_query($sSqlVerificaAposentadoria);
-		$iLinhasVerificaAposentadoria = pg_num_rows($rsVerificaAposentadoria);
+		$iLinhasVerificaAposentadoria = $rsVerificaAposentadoria === false || $rsVerificaAposentadoria === null ? 0 : pg_num_rows($rsVerificaAposentadoria);
 		if ($iLinhasVerificaAposentadoria > 0) {
 		  $this->mensagem .= "\nSr(a) Aposentado(a) admitido pela Prefeitura Municipal do Natal antes de Janeiro/1998,"; 
                   $this->mensagem .= "apresente sua Carteira de Trabalho no NATALPREV ou envie cópia via e-mail: ";

@@ -191,7 +191,7 @@ if ($clregenciahorario->numrows > 0) {
  $result_ano .= " inner join calendario  on  calendario.ed52_i_codigo = turmaac.ed268_i_calendario";
  $result_ano .= " where ed270_i_rechumano= $ed20_i_codigo order by ed52_i_ano desc";
  $resultano  = db_query($result_ano) ;
- $linhas2    = pg_num_rows($resultano);
+ $linhas2    = $resultano === false || $resultano === null ? 0 : pg_num_rows($resultano);
 if (!isset($calendario) && $linhas2 > 0) {
   $calendario = pg_fetch_result($resultano,0,'ed52_i_ano');
 } else {
@@ -233,7 +233,7 @@ $lRecHumanoHoraDisp      = pg_num_rows( $rsRecHumanoHoraDisp ) > 0;
  $resultano .= " inner join escola  on  escola.ed18_i_codigo = turmaac.ed268_i_escola";
  $resultano .= " where ed270_i_rechumano= $ed20_i_codigo and ed52_i_ano=$calendario order by ed18_c_nome";
  $resultano1 = db_query($resultano) ;
- $linhas3    = pg_num_rows($resultano1);
+ $linhas3    = $resultano1 === false || $resultano1 === null ? 0 : pg_num_rows($resultano1);
  $lTemEscola = $linhas3 > 0;
 ?>
 <b>Escola:</b>

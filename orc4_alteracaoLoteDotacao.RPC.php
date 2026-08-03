@@ -86,7 +86,7 @@ try {
                 throw new Exception("Ocorreu um erro ao consultar as dotações.");
             }
 
-            $totalRegistros = pg_num_rows($resultDotacao);
+            $totalRegistros = $resultDotacao === false || $resultDotacao === null ? 0 : pg_num_rows($resultDotacao);
             if ($totalRegistros === 0) {
                 throw new Exception("Nenhuma dotação encontrada para o filtro selecionados.");
             }

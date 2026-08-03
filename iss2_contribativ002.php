@@ -108,7 +108,7 @@ issruas.j14_codigo ";
 
 $result = db_query($sql) or die($sql);
 //db_criatabela($result);exit;             
-$numlinhas = pg_num_rows($result);
+$numlinhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($numlinhas == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não foi encontrado nenhum registro para o filtro selecionado.');
 }
@@ -178,7 +178,7 @@ for($i=0;$i<$numlinhas;$i++){
 		group by extract (year from k00_dtoper)";
 		//die($sqltotal);
 		$rsTotal =  db_query($sqltotal);
-		$toti    =  pg_num_rows($rsTotal);
+		$toti    =  $rsTotal === false || $rsTotal === null ? 0 : pg_num_rows($rsTotal);
 		$passa = true;	
 		
 		if ($debitos == "s" and $toti > 0) {

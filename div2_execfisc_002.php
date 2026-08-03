@@ -181,7 +181,7 @@ if ( pg_fetch_result($result,0,"matric") > 0 ) {
 }
 $pdf->SetFont('Arial','B',11);
 $pdf->MultiCell(0,8,$nomedeb,0,1,0,0);
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 $linha = 20;
 //$pdf->Ln(4);
 $Tv01_vlrhis = 0;

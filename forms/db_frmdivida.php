@@ -279,7 +279,7 @@ if ($db_opcao == 1) {
                       $sqlTipo .= "  where k03_tipo   = 5  ";
                       $sqlTipo .= "    and k00_instit = " . db_getsession('DB_instit');
                       $rsTipo = db_query($sqlTipo);
-                      $iTipo = pg_num_rows($rsTipo);
+                      $iTipo = $rsTipo === false || $rsTipo === null ? 0 : pg_num_rows($rsTipo);
                       $arrTipo = [];
                       $arrTipo[0] = "Selecione";
 

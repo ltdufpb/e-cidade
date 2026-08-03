@@ -1278,7 +1278,7 @@ elseif ( isset($excluir) || isset ( $pontoexcluir) ) {
       $sqlerro  = true;
     }
 
-    $iTotalLinhas = pg_num_rows($rsRubricaNoPonto);
+    $iTotalLinhas = $rsRubricaNoPonto === false || $rsRubricaNoPonto === null ? 0 : pg_num_rows($rsRubricaNoPonto);
     if ($iTotalLinhas > 0) {
 
       $oDadosControlePonto = db_utils::fieldsMemory($rsRubricaNoPonto, 0);

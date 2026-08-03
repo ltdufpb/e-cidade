@@ -174,7 +174,7 @@ db_query('begin');
 $sSql  = ' declare pCursor cursor for '.$sSql;
 db_query($sSql);
 $rs = db_query('fetch forward 1000 from pCursor;');
-$iLinhas = pg_num_rows($rs);
+$iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
 if($iLinhas == 0) {
 ?>
@@ -240,7 +240,7 @@ if($formato == 1) {
     }
 
    $rs = db_query('fetch forward 1000 from pCursor;');
-   $iLinhas = pg_num_rows($rs);
+   $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
   }
 
@@ -304,7 +304,7 @@ if($formato == 1) {
     }
 
     $rs = db_query('fetch forward 1000 from pCursor;');
-    $iLinhas = pg_num_rows($rs);
+    $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
   }
   novoTotalTxt($oFd, $iTotal);

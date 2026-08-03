@@ -67,7 +67,7 @@ $clcolecaoacervo->rotulo->label("bi29_nome");
 $depto   = db_getsession("DB_coddepto");
 $sql1    = "SELECT bi17_codigo,bi17_nome FROM biblioteca WHERE bi17_coddepto = $depto";
 $result1 = db_query($sql1);
-$linhas1 = pg_num_rows($result1);
+$linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
 if($linhas1!=0){
   db_fieldsmemory($result1,0);

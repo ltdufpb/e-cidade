@@ -69,7 +69,7 @@ $pri = true;
        $result=$clsau_agendatransporte->sql_record($sql);
        $i=0;
        $ctr=26;
-       $linhas=pg_num_rows($result);
+       $linhas=$result === false || $result === null ? 0 : pg_num_rows($result);
        $e=1;
        $d=27;
        for($r=0;$r<26;$r++){

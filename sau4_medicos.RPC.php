@@ -108,7 +108,7 @@ try {
         throw new DBException(_M(MENSAGENS_SAU4_MEDICOS_RPC . 'erro_buscar_especialidades'));
       }
 
-      $iTotalEspecialidades = pg_num_rows($rsEspecialidade);
+      $iTotalEspecialidades = $rsEspecialidade === false || $rsEspecialidade === null ? 0 : pg_num_rows($rsEspecialidade);
 
       if($iTotalEspecialidades == 0) {
         throw new BusinessException(_M(MENSAGENS_SAU4_MEDICOS_RPC . 'nenhuma_especialidade_encontrada'));

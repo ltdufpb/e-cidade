@@ -83,7 +83,7 @@ $sql = "select a.codarq,a.nomearq,m.codmod,m.nomemod, a.rotulo
                      $qr
                      order by codmod";
 $result = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $RecordsetTabMod = $result;
 if ($numrows == 0) {
     echo "Não foi encontrada nenhuma tabela com o argumento $nometab";
@@ -137,7 +137,7 @@ for ($i = 0; $i < $numrows; $i++) {
                             inner join db_syscampo d   on d.codcam = p.camiden
                        where a.codarq = " . pg_fetch_result($result, $i, "codarq") . "
 		       order by p.sequen");
-    $Npk = pg_num_rows($pk);
+    $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
     if (pg_num_rows($pk) > 0) {
         for ($p = 0; $p < $Npk; $p++) {
             fputs($fd,
@@ -169,7 +169,7 @@ for ($i = 0; $i < $numrows; $i++) {
 
     if (pg_num_rows($pk) > 0) {
 
-        $Npk = pg_num_rows($pk);
+        $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 
         for ($p = 0; $p < $Npk; $p++) {
 
@@ -227,7 +227,7 @@ for ($i = 0; $i < $numrows; $i++) {
     fputs($fd, "    }\n");
 
     if (pg_num_rows($pk) > 0) {
-        $Npk = pg_num_rows($pk);
+        $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
         $regpk = 0;
         if (strpos(pg_fetch_result($pk, 0, 'nomecam'), 'anousu') > 0) {
             $regpk = 1;
@@ -293,7 +293,7 @@ for ($i = 0; $i < $numrows; $i++) {
     if (pg_num_rows($pk) > 0) {
 
 
-        $Npk = pg_num_rows($pk);
+        $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 
         fputs($fd, '        if(isset($chave_' . trim(pg_fetch_result($pk, 0, 'campoca')) . ')){' . "\n");
 

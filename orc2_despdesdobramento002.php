@@ -76,7 +76,7 @@ if ($w_elemento !=""){
 //echo $cldesdobramento->sql($sele_work,$dtini,$dtfim,$instits);    
     
 $result = db_query($cldesdobramento->sql($sele_work,$dtini,$dtfim,$instits));
-$rows = pg_num_rows($result);
+$rows = $result === false || $result === null ? 0 : pg_num_rows($result);
 //  db_criatabela($result);exit;
  /*
  if (pg_numrows($result)>0){

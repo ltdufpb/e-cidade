@@ -301,7 +301,7 @@ for ($i = 0; $i < $clpagordem->numrows; $i++) {
     $pdf1->outrasordens = $outrasordens;
     $pdf1->recorddositens = $rsItem;
     $pdf1->ano = $e60_anousu;
-    $pdf1->linhasdositens = pg_num_rows($rsItem);
+    $pdf1->linhasdositens = $rsItem === false || $rsItem === null ? 0 : pg_num_rows($rsItem);
     $pdf1->elementoitem = "o56_elemento";
     $pdf1->descr_elementoitem = "o56_descr";
     $pdf1->vlremp = "e53_valor";
@@ -310,7 +310,7 @@ for ($i = 0; $i < $clpagordem->numrows; $i++) {
     $pdf1->vlrsaldo = "saldo";
     $pdf1->saldo_final = "saldo_final";
     $pdf1->recordretencoes = $rsRetencoes;
-    $pdf1->linhasretencoes = pg_num_rows($rsRetencoes);
+    $pdf1->linhasretencoes = $rsRetencoes === false || $rsRetencoes === null ? 0 : pg_num_rows($rsRetencoes);
     $pdf1->receita = "e52_receit";
     $pdf1->dreceita = "k02_drecei";
     $pdf1->vlrrec = "e52_valor";

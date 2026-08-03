@@ -78,7 +78,7 @@ from iptucalv
 group by j21_receit,k02_drecei) as y on x.rec_pago = y.rec_calc
        ";
 $result = db_query($sql);
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 // j23_matric, z01_nome, percentual, valordb, valorsap, diferenca
 $linha = 60;
 //$pdf->MultiCell(0,4,"teste",0,"J",0,0);

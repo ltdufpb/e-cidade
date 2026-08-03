@@ -204,7 +204,7 @@ if (isset($_POST["processar"])) {
   $sSqlFuncionarios .= "     and  rh30_vinculo = 'A'";
                                                           
   $rsDados      = db_query($sSqlFuncionarios);                                                        
-  $iNumRows     = pg_num_rows($rsDados);
+  $iNumRows     = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
   $sNomeArquivo = "tmp/agilplan{$iMes}{$iAno}.txt";
   $rsArquivo    = fopen($sNomeArquivo, "w");
   $sFiller      = " ";

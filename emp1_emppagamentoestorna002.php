@@ -129,7 +129,7 @@ if (isset($confirmar)) {
 
       // verifica se esta na empresto
       $result  = db_query("select e91_numemp from empresto where e91_numemp = $e60_numemp");
-      $tot_reg = pg_num_rows($result);
+      $tot_reg = $result === false || $result === null ? 0 : pg_num_rows($result);
 
       if ($tot_reg == 0) {
         $erro_msg = "Pagamento de RP não estornado";

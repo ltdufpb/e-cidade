@@ -78,7 +78,7 @@ $p       = 0;
 	                           inner join cgm on q86_numcgm = z01_numcgm 
        	               where q86_numcgm in ({$Dados}) order by z01_nome";
    $result = db_query($sSqlCadEscrito);
-   $numrows = pg_num_rows($result);
+   $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     
    for($x=0; $x< $numrows; $x++) {
      db_fieldsmemory($result,$x);
@@ -123,7 +123,7 @@ $p       = 0;
                     order by z01_nome ";
 
      $result2  = db_query($sSqlEscrito);
-     $numrows2 = pg_num_rows($result2);
+     $numrows2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
      
      //não ha registros
      if ($numrows2 == 0) {

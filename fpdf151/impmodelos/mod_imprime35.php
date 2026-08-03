@@ -331,7 +331,7 @@ $cldb_config = new cl_db_config;
 			db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do alvara!');
 			exit;
 		}
-		$numrows = pg_num_rows($resparag);
+		$numrows = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
 		
 		$linha  = $this->objpdf->getY()+10;
 		$colpri = $coluna;

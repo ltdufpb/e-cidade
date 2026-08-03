@@ -74,7 +74,7 @@ $sSql .= "where c69_data between '{$data_ini}' and '{$data_fim}'                
 $sSql .= "order by c69_data, c69_codlan                                               ";
 
 $rsLancamentos     = db_query($sSql);
-$iQtdLancamentos   = pg_num_rows($rsLancamentos);
+$iQtdLancamentos   = $rsLancamentos === false || $rsLancamentos === null ? 0 : pg_num_rows($rsLancamentos);
 if ($rsLancamentos==false){
  db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado');     
 }

@@ -162,7 +162,7 @@ input {
               <select style="font-size:9px" name="especial" size="10" id="especial">
                 <?php 
 			  $result = db_query("select w12_codigo,w12_descr from especial order by w12_descr");
-			  $numrows = pg_num_rows($result);
+			  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			  for($i = 0;$i < $numrows;$i++) {
 			    db_fieldsmemory($result,$i);
 			    echo "<option value=\"".$w12_codigo."\">".$w12_descr."</option>\n";			  
@@ -199,7 +199,7 @@ input {
 							   on c.w01_numcgi = cg.j01_numero
 							   where trim(codpaciente) = trim($codpaciente)
 							   order by data desc");
-			$numrows = pg_num_rows($result);
+			$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			if($numrows > 0) {
 			  echo "<table border=\"0\" cellspacing=\"1\" cellpadding=\"2\">\n";
 			  echo "<tr bgcolor=\"#FDB393\">

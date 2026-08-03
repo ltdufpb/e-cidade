@@ -36,7 +36,7 @@ $clrotulo->label("ed11_i_codigo");
  <?php 
  #Seleciona todos os calendários
  $sql_result = $clensino->sql_record($clensino->sql_query("","ed10_i_codigo,ed10_c_descr","ed10_c_abrev",""));
- $num = pg_num_rows($sql_result);
+ $num = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
  $conta = "";
  while ($row=pg_fetch_array($sql_result)){
   $conta = $conta+1;

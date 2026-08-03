@@ -45,7 +45,7 @@ $bCalendario = "SELECT distinct(ed52_c_descr) as nomecal
                  WHERE ed52_i_ano = ".db_getsession("DB_anousu")."
               ORDER BY ed52_c_descr";
 $sCalendario = db_query($bCalendario);
-$nCalendario = pg_num_rows($sCalendario);
+$nCalendario = $sCalendario === false || $sCalendario === null ? 0 : pg_num_rows($sCalendario);
 
 ?>
 <html>

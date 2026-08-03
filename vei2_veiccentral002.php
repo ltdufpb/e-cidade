@@ -76,7 +76,7 @@
             else 'INATIVO'
             end as situacao";
 	
-	$iResultCentral = pg_num_rows($result_central);
+	$iResultCentral = $result_central === false || $result_central === null ? 0 : pg_num_rows($result_central);
 	
 	/**
 	 * Caso não retorne 0 linhas será exibida a mensagem de erro abaixo

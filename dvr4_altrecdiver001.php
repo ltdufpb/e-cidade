@@ -379,7 +379,7 @@ if (isset($processar)){
            where $where and dv05_instit = ".db_getsession('DB_instit');   
            
    $result = db_query($sql);
-   $numrows = pg_num_rows($result);   
+   $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);   
    if ($numrows==0){
    		db_msgbox(_M("tributario.diversos.dvr4_altrecdiver001.nao_exitem_registro"));
    		echo "<script>location.href='dvr4_altrecdiver001.php';</script>";

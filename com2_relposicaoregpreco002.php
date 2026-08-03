@@ -222,7 +222,7 @@ function buscaQuantidadeReservada ($iCodigoItemSolicitacao) {
 }
 
 $rsSql   = db_query($sSql);
-$iRsSql  = pg_num_rows($rsSql);
+$iRsSql  = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
 
 if ($iRsSql == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
@@ -724,7 +724,7 @@ function buscaSolicitacoesVinculadas ($iEstimativa) {
     $sSqlResumo .= "  where estimativa.pc10_numero = {$iEstimativa}                                                                    ";
 
     $rsSql   = db_query($sSqlResumo);
-    $iRsSql  = pg_num_rows($rsSql);
+    $iRsSql  = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
 
     if ($rsSql == false) {
         db_redireciona('db_erros.php?fechar=true&db_erro=Erro ao executar a query.');

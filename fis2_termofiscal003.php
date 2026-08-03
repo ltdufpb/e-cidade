@@ -119,7 +119,7 @@ $troca = 1;
 $alt = 4;
 
 $result = db_query($str_sql);// or die ( "FALHA: $str_sql");
-$int_linhas = pg_num_rows($result);
+$int_linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($int_linhas == 0){
 //  db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro para o filtro selecionado!');
 

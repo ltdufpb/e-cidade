@@ -42,7 +42,7 @@ if ($sqlerro == false) {
       throw new DBException('Falha ao buscar os dados referentes a estrutura de arredondamento das frequências.');
     }
     
-    $iTotalAvaliacoesEstruturaFrequencia = pg_num_rows($rsDadosAvaliacoesEstruturaFrequencia);
+    $iTotalAvaliacoesEstruturaFrequencia = $rsDadosAvaliacoesEstruturaFrequencia === false || $rsDadosAvaliacoesEstruturaFrequencia === null ? 0 : pg_num_rows($rsDadosAvaliacoesEstruturaFrequencia);
     
     for ($iContador = 0; $iContador < $iTotalAvaliacoesEstruturaFrequencia; $iContador++) {
 

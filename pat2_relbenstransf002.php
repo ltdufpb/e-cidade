@@ -134,7 +134,7 @@ $pdf1->destino    = $descrdepto;
 $pdf1->origem     = $origem;
 $pdf1->usuario    = $nome;
 $pdf1->recordbens = $resultbens;
-$pdf1->linhasbens = pg_num_rows($resultbens);
+$pdf1->linhasbens = $resultbens === false || $resultbens === null ? 0 : pg_num_rows($resultbens);
 $pdf1->bem        = "t52_bem";
 $pdf1->descr_bem  = "t52_descr";
 $pdf1->class_bem  = "t64_class";

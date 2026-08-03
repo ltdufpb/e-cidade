@@ -92,7 +92,7 @@ try {
       $sSqlFechamento    = $oDaoLabFechamento->sql_query_file( null, $sCampos, "la54_d_data desc", null );
       $rsFechamento      = db_query( $sSqlFechamento );
 
-      $iLinhas     = pg_num_rows( $rsFechamento );
+      $iLinhas     = $rsFechamento === false || $rsFechamento === null ? 0 : pg_num_rows( $rsFechamento );
       $aFechamento = [];
 
       if ( $iLinhas > 0 ) {
@@ -181,7 +181,7 @@ try {
       $sSqlFechaConferencia = $oDaoFechaConferencia->sql_query_file(null, "la58_i_codigo", null, $sWhere);
       $rsFechaConferencia   = db_query($sSqlFechaConferencia);
 
-      $iLinhas = pg_num_rows($rsFechaConferencia);
+      $iLinhas = $rsFechaConferencia === false || $rsFechaConferencia === null ? 0 : pg_num_rows($rsFechaConferencia);
 
       for ($i = 0; $i < $iLinhas; $i++) {
 

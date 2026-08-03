@@ -184,7 +184,7 @@ $clcnae->rotulo->label("q71_estrutural");
 						    	where	
 									 q71_estrutural ilike '%$pesquisa_chave'"; 
           $result = db_query($sql);
-          $linhas = pg_num_rows($result);
+          $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
           if($linhas>0){
             db_fieldsmemory($result,0);
                

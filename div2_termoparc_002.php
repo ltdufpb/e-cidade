@@ -65,7 +65,7 @@ $xnumpre = 0;
 $reparcelamento = false;
 $sqlmunic = "SELECT munic, cgc FROM db_config WHERE codigo = " . db_getsession('DB_instit');
 $resultmunic = db_query($sqlmunic);
-$linhasmunic = pg_num_rows($resultmunic);
+$linhasmunic = $resultmunic === false || $resultmunic === null ? 0 : pg_num_rows($resultmunic);
 if ($linhasmunic > 0) {
     db_fieldsmemory($resultmunic, 0);
 }
@@ -1004,7 +1004,7 @@ $sqltexto .= "        inner join cadtipoparc  on k40_codigo       = v07_desconto
 $sqltexto .= "        inner join db_documento on k40_db_documento = db03_docum       ";
 $sqltexto .= "  where v07_parcel  = {$v07_parcel}                                    ";
 $resulttexto = db_query($sqltexto);
-$linhastexto = pg_num_rows($resulttexto);
+$linhastexto = $resulttexto === false || $resulttexto === null ? 0 : pg_num_rows($resulttexto);
 if ($linhastexto > 0) {
     db_fieldsmemory($resulttexto, 0);
 
@@ -1014,7 +1014,7 @@ if ($linhastexto > 0) {
     $sqlparag .= "       inner join db_paragrafo on db02_idparag = db04_idparag ";
     $sqlparag .= " where db03_docum = {$k40_db_documento}                       ";
     $resultparag = db_query($sqlparag);
-    $linhasparag = pg_num_rows($resultparag);
+    $linhasparag = $resultparag === false || $resultparag === null ? 0 : pg_num_rows($resultparag);
     if ($linhasparag == 0) {
         db_redireciona('db_erros.php?fechar=true&db_erro=Não encontrado paragrafo cadastrado para o documento ' . $k40_db_documento . ' !');
         exit;
@@ -1074,7 +1074,7 @@ foreach ($parag as $chave) {
 
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->MultiCell(0, 8, $nomedeb, 0, 1, 0, 0);
-        $num = pg_num_rows($result);
+        $num = $result === false || $result === null ? 0 : pg_num_rows($result);
         //######################## começa a tabela ##########################
         $pdf->SetFont('Arial', 'B', 7);
         $pdf->Cell(15, 4, 'MAT/INSC', 1, 0, "C", 1);
@@ -1171,7 +1171,7 @@ foreach ($parag as $chave) {
                     $rsTotalInicial = db_query($sqlTotal);
 
                     if ($rsTotalInicial != false) {
-                        $intNumrows = pg_num_rows($rsTotalInicial);
+                        $intNumrows = $rsTotalInicial === false || $rsTotalInicial === null ? 0 : pg_num_rows($rsTotalInicial);
                         if ($rsTotalInicial != false && $intNumrows > 0) {
                             db_fieldsmemory($rsTotalInicial, 0);
                             $vlrdesccor = (float)(@$vlrcor * @$percdesccor);
@@ -1367,16 +1367,16 @@ foreach ($parag as $chave) {
 		union
 		select * from (select k30_tipo from arreprescr where k30_numpre = $numprecerto and k30_anulado is false) as x4 ";
         $resulttipo = db_query($sqltipo);
-        $linhastipo = pg_num_rows($resulttipo);
+        $linhastipo = $resulttipo === false || $resulttipo === null ? 0 : pg_num_rows($resulttipo);
         if ($linhastipo > 0) {
             db_fieldsmemory($resulttipo, 0);
             $numtotparc = $numpar + 1;
             $datad = date("Y-m-d");
             $desconto = "select  fc_recibodesconto($numprecerto, 0, $numtotparc, 0, $k00_tipo, '$datad', '$datad') as desconto";
             $resultdesc = db_query($desconto);
-            $linhasdesc = pg_num_rows($resultdesc);
+            $linhasdesc = $resultdesc === false || $resultdesc === null ? 0 : pg_num_rows($resultdesc);
             $dadosParcelas = ParcValorRepository::getParcelas($parcel);
-            $linhasDadosParcelas = pg_num_rows($dadosParcelas);
+            $linhasDadosParcelas = $dadosParcelas === false || $dadosParcelas === null ? 0 : pg_num_rows($dadosParcelas);
             if ($linhasdesc > 0 and $cgc != "29131075000193") {
                 db_fieldsmemory($resultdesc, 0);
 

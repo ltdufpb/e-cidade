@@ -269,7 +269,7 @@ $sSQL .= "  {$sOrder_by}";
 $rs      = db_query($sSQL);
 
 
-$iLinhas = pg_num_rows($rs);
+$iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
 if($iLinhas == 0 || count($departamentos) <= 0) {
 ?>

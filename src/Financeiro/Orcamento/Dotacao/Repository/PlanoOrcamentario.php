@@ -89,7 +89,7 @@ class PlanoOrcamentario extends \BaseClassRepository
         if (!$buscaPlano) {
             throw new \DBException("Ocorreu um erro ao consultar os planos orçamentários por dotação.");
         }
-        $totalRegistros = pg_num_rows($buscaPlano);
+        $totalRegistros = $buscaPlano === false || $buscaPlano === null ? 0 : pg_num_rows($buscaPlano);
         for ($row = 0; $row < $totalRegistros; $row++) {
             self::getInstance()->make(\db_utils::fieldsMemory($buscaPlano, $row));
         }

@@ -455,7 +455,7 @@ class ordemPagamento
       $sSqlEmpAgeConfChe .= "  where e91_codcheque = {$this->getChequeAgenda()}  and e91_ativo is true ";
 
       $rsEmpAgeConfChe = db_query($sSqlEmpAgeConfChe);
-      $iEmpAgeConfChe  = pg_num_rows($rsEmpAgeConfChe);
+      $iEmpAgeConfChe  = $rsEmpAgeConfChe === false || $rsEmpAgeConfChe === null ? 0 : pg_num_rows($rsEmpAgeConfChe);
 
       if ($iEmpAgeConfChe > 0) {
         $oEmpAgeConfChe  = db_utils::fieldsMemory($rsEmpAgeConfChe, 0);
@@ -2422,7 +2422,7 @@ class ordemPagamento
         null,
         "e81_codmov = {$iMovimento} and e23_ativo is true");
     $resTotalRetencao = db_query($sqlTotalRetencao);
-    $totalRegistrosRetencao = pg_num_rows($resTotalRetencao);
+    $totalRegistrosRetencao = $resTotalRetencao === false || $resTotalRetencao === null ? 0 : pg_num_rows($resTotalRetencao);
     if ($nValorRetencoes > 0 && $resTotalRetencao && $totalRegistrosRetencao == 0) {
         $oDaoEmpAgeMov->e81_codmov = $iMovimento;
         $oDaoEmpAgeMov->e81_cancelado = date('Y-m-d');

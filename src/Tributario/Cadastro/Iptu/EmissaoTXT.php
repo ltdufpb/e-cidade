@@ -2880,7 +2880,7 @@ class EmissaoTXT
                         ), 18, ' ', STR_PAD_LEFT));
 
                         $valorTaxa = round($oDadosTaxas->j21_valor / pg_num_rows($resultfin2), 2);
-                        $numeroTotalParcelas = pg_num_rows($resultfin2);
+                        $numeroTotalParcelas = $resultfin2 === false || $resultfin2 === null ? 0 : pg_num_rows($resultfin2);
 
                         if ($oDadosTaxas->j17_codhis == 11 || $oDadosTaxas->j17_codhis == 12) {
                             if ($oDadosTaxas->j17_codhis == 11) {
@@ -3760,7 +3760,7 @@ class EmissaoTXT
         $sSqlReceitas .= "  from iptucalcconfrec where j23_anousu = {$this->iAno} and j23_tipo = 1";
 
         $rsReceitas = \db_query($sSqlReceitas);
-        $iLinhasRec = pg_num_rows($rsReceitas);
+        $iLinhasRec = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 
         $this->iReceitaMin = "";
         $this->sListaReceitas = "";
@@ -3905,7 +3905,7 @@ class EmissaoTXT
         $this->oArquivoLayout->fwrite("OPCOES ESCOLHIDAS NA GERACAO: {$this->sQuebraLinha}");
         $this->oArquivoLayout->fwrite("{$this->sQuebraLinha}");
         $this->oArquivoLayout->fwrite("ORDEM: {$ordem}{$this->sQuebraLinha}");
-        $this->oArquivoLayout->fwrite("ESPÉCIE: $oParametrosGeracao->especie{$this->sQuebraLinha}");
+        $this->oArquivoLayout->fwrite("ESPÉCIE: $oParametrosGeracao->especie[$this->sQuebraLinha]");
         $this->oArquivoLayout->fwrite($quantidadeRegistros);
         $this->oArquivoLayout->fwrite($imprimirValidos);
 
@@ -3926,10 +3926,10 @@ class EmissaoTXT
                 6,
                 "0",
                 STR_PAD_LEFT
-            ) . " - $oDadosCgmNaoGera->z01_nome{$this->sQuebraLinha}");
+            ) . " - $oDadosCgmNaoGera->z01_nome[$this->sQuebraLinha]");
         }
 
-        $totalCgm = pg_num_rows($resultnaogeracgm);
+        $totalCgm = $resultnaogeracgm === false || $resultnaogeracgm === null ? 0 : pg_num_rows($resultnaogeracgm);
 
         $this->oArquivoLayout->fwrite("{$this->sQuebraLinha}");
         $this->oArquivoLayout->fwrite("TOTAL DE CGM A NAO GERAR: {$totalCgm}{$this->sQuebraLinha}");
@@ -3943,7 +3943,7 @@ class EmissaoTXT
             $filtroprincipal = "SOMENTE OS REGISTROS SEM PAGAMENTOS";
         }
 
-        $this->oArquivoLayout->fwrite("FILTRO PRINCIPAL: $filtroprincipal{$this->sQuebraLinha}");
+        $this->oArquivoLayout->fwrite("FILTRO PRINCIPAL: $filtroprincipal[$this->sQuebraLinha]");
         $this->oArquivoLayout->fwrite("{$this->sQuebraLinha}");
 
         $imobiliariaTodos = "IMPRIMIR TODOS OS REGISTROS, INDEPENDENTE DO VINCULO COM IMOBILIARIA";

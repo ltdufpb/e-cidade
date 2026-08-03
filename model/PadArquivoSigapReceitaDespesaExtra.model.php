@@ -76,7 +76,7 @@ final class PadArquivoSigapReceitaDespesaExtra extends PadArquivoSigap {
     if (PostgreSQLUtils::isTableExists("work_pl")) {
         db_query("drop table work_pl");
     }
-    $iTotalLinhas  = pg_num_rows($rsReceitas);
+    $iTotalLinhas  = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
     for ($i = 1; $i < $iTotalLinhas; $i++) {
       
       $oReceita   = db_utils::fieldsMemory($rsReceitas, $i);

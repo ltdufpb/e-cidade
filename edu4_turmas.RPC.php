@@ -1170,7 +1170,7 @@ try {
       $aTurmas = [];
       if ($rsTurmas && pg_num_rows($rsTurmas) > 0) {
 
-        $iLinhas = pg_num_rows($rsTurmas);
+        $iLinhas = $rsTurmas === false || $rsTurmas === null ? 0 : pg_num_rows($rsTurmas);
 
         for ($i = 0; $i < $iLinhas; $i ++) {
 
@@ -1356,7 +1356,7 @@ try {
       $oRetorno->atividades = [];
 
       if ($rs) {
-          $numAtividades = pg_num_rows($rs);
+          $numAtividades = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
           for($i = 0; $i < $numAtividades; $i++) {
             $ativ = db_utils::fieldsMemory($rs, $i);
 
@@ -1399,7 +1399,7 @@ try {
       $rs = $clturma->sql_record($clturma->sql_query_turnos_referentes($oParam->turma, 'distinct ed231_i_referencia'));
       $turnosTurma = [];
       if ($rs) {
-        $numLinhas = pg_num_rows($rs);
+        $numLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         for($i = 0; $i < $numLinhas; $i++) {
             $turnoRef = db_utils::fieldsMemory($rs, $i);
             $turnosTurma[] = $turnoRef->ed231_i_referencia;
@@ -1410,7 +1410,7 @@ try {
       $rs = $clhorarioescola->sql_record($clhorarioescola->sql_query_file(null, 'distinct ed123_turnoreferencia', null, "horarioescola.ed123_escola = {$iEscola}"));
       $turnosEscola = [];
       if ($rs) {
-        $numLinhas = pg_num_rows($rs);
+        $numLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         for($i = 0; $i < $numLinhas; $i++) {
             $turnoRef = db_utils::fieldsMemory($rs, $i);
             $turnosEscola[] = $turnoRef->ed123_turnoreferencia;

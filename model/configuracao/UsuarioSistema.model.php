@@ -376,7 +376,7 @@ class UsuarioSistema {
 
     $sSqlBuscaDadosUsuario = "select * from configuracoes.db_usuarios where login = '{$sLoginUsuario}'";
     $rsExecutaBusca        = db_query($sSqlBuscaDadosUsuario);
-    $iLinhasBusca          = pg_num_rows($rsExecutaBusca);
+    $iLinhasBusca          = $rsExecutaBusca === false || $rsExecutaBusca === null ? 0 : pg_num_rows($rsExecutaBusca);
 
     if ($iLinhasBusca == 0) {
       throw new Exception( _M( UsuarioSistema::MENSAGENS . 'usuario_nao_localizado' ) );
@@ -466,7 +466,7 @@ class UsuarioSistema {
         throw new Exception( _M( UsuarioSistema::MENSAGENS . 'erro_departamentos_usuario' ) );
       }
 
-      $iDepartamentos = pg_num_rows($rsDepartamentos);
+      $iDepartamentos = $rsDepartamentos === false || $rsDepartamentos === null ? 0 : pg_num_rows($rsDepartamentos);
       $aDepartamentos = [];
 
       for($iIndice = 0; $iIndice < $iDepartamentos; $iIndice++) {

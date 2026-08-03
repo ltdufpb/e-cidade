@@ -111,7 +111,7 @@ class AnexoIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
       throw new BusinessException(_M(self::CAMINHO_MENSAGEM."erro_busca_dados"));
     }
 
-    $iTotalPendencias = pg_num_rows($rsBuscaPendencias);
+    $iTotalPendencias = $rsBuscaPendencias === false || $rsBuscaPendencias === null ? 0 : pg_num_rows($rsBuscaPendencias);
     for ($iPendencia  = 0; $iPendencia < $iTotalPendencias; $iPendencia++) {
 
       $oStdPendencia = db_utils::fieldsMemory($rsBuscaPendencias, $iPendencia);

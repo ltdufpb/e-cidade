@@ -740,7 +740,7 @@ class clExpDadosColetores {
     
     $rsArreCad = db_query($this->sSqlArreCad);
     
-    $this->iNumRowsArreCad = pg_num_rows($rsArreCad);
+    $this->iNumRowsArreCad = $rsArreCad === false || $rsArreCad === null ? 0 : pg_num_rows($rsArreCad);
     
     return $rsArreCad;
     

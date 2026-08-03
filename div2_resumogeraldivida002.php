@@ -75,7 +75,7 @@ $oDaoDivida         = db_utils::getDao('divida');
 
 $sSqlDebitosPagos   = $oDaoDivida->sql_queryDebitosAnteriores($aDataDebitos[0]);
 $rsDebitosPagos     = $oDaoDivida->sql_record($sSqlDebitosPagos);
-$iNroDebitosPagos   = pg_num_rows($rsDebitosPagos);
+$iNroDebitosPagos   = $rsDebitosPagos === false || $rsDebitosPagos === null ? 0 : pg_num_rows($rsDebitosPagos);
 
 for ( $iInd = 0; $iInd < $iNroDebitosPagos; $iInd++ ) {
 	

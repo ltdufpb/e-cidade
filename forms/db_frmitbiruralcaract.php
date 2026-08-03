@@ -72,7 +72,7 @@ if (!empty($caracteristicas)) {
           $sSql .= " where {$sWhere} and it19_guia = {$oGet->guia}";
 
 			    $rsConsultaRuralCaract = db_query($sSql);
-			    $iNumCaracter			 = pg_num_rows($rsConsultaRuralCaract);
+			    $iNumCaracter			 = $rsConsultaRuralCaract === false || $rsConsultaRuralCaract === null ? 0 : pg_num_rows($rsConsultaRuralCaract);
           if ($iNumCaracter > 0) {
             for ( $iInd=0; $iInd < $iNumCaracter; $iInd++) {
 

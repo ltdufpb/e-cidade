@@ -81,7 +81,7 @@ if($primeiro==false || $cgs==""){
 }
 
 $result = db_query($sql) or die ( pg_last_error()."<br> $sql");
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 if($linhas==0){?>
  <table width='100%'>

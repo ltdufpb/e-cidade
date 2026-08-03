@@ -269,7 +269,7 @@ if ($oParametros->lApagarLancamentosContabeis) {
 
   $sSqlMatEstoque = "select * From w_dados_saldo_matestoque";
   $rsMatEstoque   = db_query($sSqlMatEstoque);
-  $iTotalLinhas   = pg_num_rows ($rsMatEstoque);
+  $iTotalLinhas   = $rsMatEstoque === false || $rsMatEstoque === null ? 0 : pg_num_rows ($rsMatEstoque);
   for ($i = 0; $i < $iTotalLinhas; $i++) { 
      
     $oDadosEstoque = db_utils::fieldsMemory($rsMatEstoque, $i);
@@ -404,7 +404,7 @@ db_query($sSql1);
  */
 $sSqlMatEstoqueNew = "select * From matestoque";
 $rsMatEstoqueNew   = db_query($sSqlMatEstoqueNew);
-$iTotalLinhasNew   = pg_num_rows($rsMatEstoqueNew);
+$iTotalLinhasNew   = $rsMatEstoqueNew === false || $rsMatEstoqueNew === null ? 0 : pg_num_rows($rsMatEstoqueNew);
 
 if ($iTotalLinhasNew <> $iTotalLinhas){
   $oParametros->lComitar = false;

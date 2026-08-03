@@ -223,7 +223,7 @@ class LoteConLicitaCon extends ArquivoLicitaCon
         $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
 
         $aLinhas = [];
-        $iQuantidadeItens = pg_num_rows($rsItens);
+        $iQuantidadeItens = $rsItens === false || $rsItens === null ? 0 : pg_num_rows($rsItens);
 
         for ($iItem = 0; $iItem < $iQuantidadeItens; $iItem++) {
             $oStdItem = db_utils::fieldsMemory($rsItens, $iItem);
@@ -256,7 +256,7 @@ class LoteConLicitaCon extends ArquivoLicitaCon
 
                 $rsLotes = db_query($sSqlLotes);
 
-                $iTotalLotes = pg_num_rows($rsLotes);
+                $iTotalLotes = $rsLotes === false || $rsLotes === null ? 0 : pg_num_rows($rsLotes);
                 for ($iLinha = 0; $iLinha < $iTotalLotes; $iLinha++) {
                     $oLote = db_utils::fieldsMemory($rsLotes, $iLinha);
 

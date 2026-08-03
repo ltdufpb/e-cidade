@@ -136,7 +136,7 @@ $iAnousu        = db_getsession('DB_anousu');
               if ($oDaoTipoDebito) {
 
                 $iTotalRegistros = 0;
-      					$iTotalRegistros = pg_num_rows($oDaoTipoDebito);
+      					$iTotalRegistros = $oDaoTipoDebito === false || $oDaoTipoDebito === null ? 0 : pg_num_rows($oDaoTipoDebito);
 
       					$aTipoDebito = ["0" => " Selecione o tipo de débito "];
 

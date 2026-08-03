@@ -72,7 +72,7 @@ if( $clturma->numrows > 0 ) {
   $sql1 .= " ORDER BY ed59_i_ordenacao                                                               ";
 
   $result1 = db_query($sql1);
-  $linhas1 = pg_num_rows($result1);
+  $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
   if( $linhas1 == 0 ) {
   ?>

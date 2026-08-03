@@ -105,7 +105,7 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 			        $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}'   ";
 
 			        $rsSqlArrecad = db_query($sSqlArrecad);
-			        $iNumRows     = pg_num_rows($rsSqlArrecad);
+			        $iNumRows     = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
 			        if ($iNumRows == 0) {
 
                 $receit1 .= $virgula.$receit;
@@ -162,7 +162,7 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
     $sqlconfplan    = "select * from db_confplan";
     $resultconfplan = db_query($sqlconfplan);
-    $linhasconfplan = pg_num_rows($resultconfplan);
+    $linhasconfplan = $resultconfplan === false || $resultconfplan === null ? 0 : pg_num_rows($resultconfplan);
     if($linhasconfplan== 0 ){
       db_msgbox("Falta parâmetros na configuração de planilhas.");
       echo "<script>parent.document.formatu.pesquisar.click();</script>";
@@ -180,7 +180,7 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
 
 
     $resultverifica = db_query($sqlverifica);
-    $linhasverifica = pg_num_rows($resultverifica);
+    $linhasverifica = $resultverifica === false || $resultverifica === null ? 0 : pg_num_rows($resultverifica);
     if($linhasverifica > 0){
       db_msgbox(" Não é possivel efetuar cancelamento. \\n Deve utilizar a rotina Cancelamento de Issqn Variável.");
       echo "<script>parent.document.formatu.pesquisar.click();</script>";
@@ -223,7 +223,7 @@ if ((isset ($ver_matric) or isset ($ver_inscr) or isset ($ver_numcgm)) && !isset
               $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}'   ";
 
               $rsSqlArrecad = db_query($sSqlArrecad);
-              $iNumRows     = pg_num_rows($rsSqlArrecad);
+              $iNumRows     = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
               if ($iNumRows == 0) {
 
                 $numpar1 .= $virgula.$numpar;
@@ -354,7 +354,7 @@ if (isset ($envia) && (@$k20_codigo == 0 || @$k20_codigo == "")) {
       if ($receit==0) {
         $sqlrec = "select distinct k00_receit from arrecad where k00_numpre =$numpre and k00_numpar = $numpar";
         $resultrec= db_query($sqlrec);
-        $linhasrec = pg_num_rows($resultrec);
+        $linhasrec = $resultrec === false || $resultrec === null ? 0 : pg_num_rows($resultrec);
         if ($resultrec>0) {
           for ($r=0; $r < $linhasrec; $r++) {
             db_fieldsmemory($resultrec,$r);
@@ -414,7 +414,7 @@ if (isset ($envia) && (@$k20_codigo == 0 || @$k20_codigo == "")) {
 					 left join concarpeculiar            on c58_sequencial  = k72_concarpeculiar
 					 where k20_codigo = $k20_codigo";
     $rsTipoDeb = db_query($sqlTipoDeb);
-	$linhasDeb = pg_num_rows($rsTipoDeb);
+	$linhasDeb = $rsTipoDeb === false || $rsTipoDeb === null ? 0 : pg_num_rows($rsTipoDeb);
     if($rsTipoDeb>0){
     	db_fieldsmemory($rsTipoDeb,0);
 
@@ -518,7 +518,7 @@ if (isset ($envia) && (@$k20_codigo == 0 || @$k20_codigo == "")) {
       $sqlrec = "select k00_receit from arrecad where k00_numpre =$numpre and k00_numpar = $numpar";
 
       $resultrec= db_query($sqlrec);
-      $linhasrec = pg_num_rows($resultrec);
+      $linhasrec = $resultrec === false || $resultrec === null ? 0 : pg_num_rows($resultrec);
       if($resultrec>0){
         for ($r=0; $r < $linhasrec; $r++) {
           db_fieldsmemory($resultrec,$r);
@@ -631,7 +631,7 @@ echo "<input type='hidden' name='k03_tipo' value='".@$k03_tipo."'>\n";
 
 				if($apenasTipoRenuncia == 'f'){
           $resulttipo = db_query("select k73_sequencial,k73_descricao from cancdebitostipo order by k73_sequencial");
-          $linhasTipo = pg_num_rows($resulttipo);
+          $linhasTipo = $resulttipo === false || $resulttipo === null ? 0 : pg_num_rows($resulttipo);
           if($linhasTipo > 0 ){
 				    for($t=0;$t<$linhasTipo;$t++){
 				    	db_fieldsmemory($resulttipo, $t);

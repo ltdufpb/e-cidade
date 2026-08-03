@@ -272,7 +272,7 @@ function js_emite(){
                          			group by matric,numcgm,z01_nome";
 	         				$resulta = db_query($sql);
 		 					if(pg_num_rows($resulta)!=0){
-                      		  $numrows = pg_num_rows($resulta);
+                      		  $numrows = $resulta === false || $resulta === null ? 0 : pg_num_rows($resulta);
 		    					for($i = 0;$i < $numrows;$i++) {
 		      					  db_fieldsmemory($resulta,$i);
                       			  echo "<option value=\"$codigo \">$descr</option>";
@@ -503,7 +503,7 @@ if ( (isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir" ) {
 
     db_inicio_transacao();
 
-    $totalreg = pg_num_rows($resultmatric);
+    $totalreg = $resultmatric === false || $resultmatric === null ? 0 : pg_num_rows($resultmatric);
 
     for($xx = 0;$xx < $totalreg;$xx++) {
 

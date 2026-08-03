@@ -196,7 +196,7 @@ class TurmaRepository
             throw new DBException("Erro ao buscar as turmas do calendário:\n" . pg_result_error($rsTurma));
         }
 
-        $iTotalLinhas = pg_num_rows($rsTurma);
+        $iTotalLinhas = $rsTurma === false || $rsTurma === null ? 0 : pg_num_rows($rsTurma);
         for ($iContador = 0; $iContador < $iTotalLinhas; $iContador++) {
             $oTurma = TurmaRepository::getTurmaByCodigo(db_utils::fieldsMemory($rsTurma, $iContador)->ed57_i_codigo);
             $aTurmas[] = $oTurma;
@@ -224,7 +224,7 @@ class TurmaRepository
         $sSqlTurma = $oDaoTurma->sql_query_turmaserie_regencia(null, $sCamposTurma, "ed57_c_descr", $sWhereTurma);
         $rsTurma = db_query($sSqlTurma);
 
-        $iTotalLinhas = pg_num_rows($rsTurma);
+        $iTotalLinhas = $rsTurma === false || $rsTurma === null ? 0 : pg_num_rows($rsTurma);
 
         for ($iContador = 0; $iContador < $iTotalLinhas; $iContador++) {
             $oTurma = TurmaRepository::getTurmaByCodigo(db_utils::fieldsMemory($rsTurma, $iContador)->ed57_i_codigo);
@@ -255,7 +255,7 @@ class TurmaRepository
             throw new DBException("Erro ao buscar as turmas do calendário:\n" . pg_result_error($rsTurma));
         }
 
-        $iTotalLinhas = pg_num_rows($rsTurma);
+        $iTotalLinhas = $rsTurma === false || $rsTurma === null ? 0 : pg_num_rows($rsTurma);
 
         for ($iContador = 0; $iContador < $iTotalLinhas; $iContador++) {
             $oTurma = TurmaRepository::getTurmaByCodigo(db_utils::fieldsMemory($rsTurma, $iContador)->ed57_i_codigo);
@@ -290,7 +290,7 @@ class TurmaRepository
         $rsTurma = db_query($sSqlTurma);
 
         if ($rsTurma && pg_num_rows($rsTurma) > 0) {
-            $iTotalLinhas = pg_num_rows($rsTurma);
+            $iTotalLinhas = $rsTurma === false || $rsTurma === null ? 0 : pg_num_rows($rsTurma);
             for ($iContador = 0; $iContador < $iTotalLinhas; $iContador++) {
                 TurmaRepository::getTurmaByCodigo(db_utils::fieldsMemory($rsTurma, $iContador)->ed57_i_codigo);
             }

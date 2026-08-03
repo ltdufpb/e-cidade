@@ -81,7 +81,7 @@ class tceArrecadacaoMunicipal extends tceEstruturaBasica {
                                                                  $this->sCodRemessa), 1);
 
     $rsArrecadacao = db_query($this->sqlArrecadacao($this->iInstit, $this->sDataIni, $this->sDataFim));
-    $iNumRows = pg_num_rows($rsArrecadacao);
+    $iNumRows = $rsArrecadacao === false || $rsArrecadacao === null ? 0 : pg_num_rows($rsArrecadacao);
     $iTotalRegistros = 0;
     $iQuant          = 0;
 

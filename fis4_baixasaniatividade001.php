@@ -68,7 +68,7 @@ if(isset($_POST["db_opcao"]) && $db_opcao == "Baixar"){
     $sqlqtativ = "select * from saniatividade
 					where y83_codsani = $y83_codsani and y83_dtfim is null";
     $resultqtativ = db_query($sqlqtativ);
-    $linhasqtativ = pg_num_rows($resultqtativ);
+    $linhasqtativ = $resultqtativ === false || $resultqtativ === null ? 0 : pg_num_rows($resultqtativ);
     $linhaschave = sizeof($chaves);
 
 
@@ -82,7 +82,7 @@ if(isset($_POST["db_opcao"]) && $db_opcao == "Baixar"){
 
       $sqlpar = "select * from parfiscal";
       $resultpar = db_query($sqlpar);
-      $linhaspar = pg_num_rows($resultpar);
+      $linhaspar = $resultpar === false || $resultpar === null ? 0 : pg_num_rows($resultpar);
       if($linhaspar>0){
         db_fieldsmemory($resultpar,0);
       }
@@ -90,7 +90,7 @@ if(isset($_POST["db_opcao"]) && $db_opcao == "Baixar"){
          
         $sqlinscr = "select * from sanitarioinscr where y18_codsani = $y83_codsani";
         $resultinscr = db_query($sqlinscr);
-        $linhasinscr = pg_num_rows($resultinscr);
+        $linhasinscr = $resultinscr === false || $resultinscr === null ? 0 : pg_num_rows($resultinscr);
         if($linhasinscr>0){
           db_fieldsmemory($resultinscr,0);
           $sqldebito = "
@@ -104,7 +104,7 @@ if(isset($_POST["db_opcao"]) && $db_opcao == "Baixar"){
 				   and k00_dtvenc < current_date
 				   and k03_tipo not in (2,9,19)";
           $resultdebito = db_query($sqldebito);
-          $linhasdebito = pg_num_rows($resultdebito);
+          $linhasdebito = $resultdebito === false || $resultdebito === null ? 0 : pg_num_rows($resultdebito);
           if($linhasdebito>0){
             $erro_msg = "Não permite baixa de alvara com debitos. (Inscrição: $y18_inscr)";
             $sqlerro = true;
@@ -121,7 +121,7 @@ if(isset($_POST["db_opcao"]) && $db_opcao == "Baixar"){
 				   and k00_dtvenc < current_date
 				   and k03_tipo = 3";
             $resultdebito3 = db_query($sqldebito3);
-            $linhasdebito3 = pg_num_rows($resultdebito3);
+            $linhasdebito3 = $resultdebito3 === false || $resultdebito3 === null ? 0 : pg_num_rows($resultdebito3);
             if($linhasdebito3>0){
               $erro_msg = "Não permite baixa de alvara com debitos. (Inscrição: $y18_inscr)";
               $sqlerro = true;

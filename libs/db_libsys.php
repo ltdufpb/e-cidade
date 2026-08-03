@@ -47,7 +47,7 @@ function db_sysexportaagata($sArquivoXml) {
   $sXml = "";
 
   $result  = db_query($sSql);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
   if($numrows == 0) {
     return $sXml;

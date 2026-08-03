@@ -414,7 +414,7 @@ class Receita
         $retorno = [];
         $buscaEmentario = pg_query("select * from planocontadetalhe where c95_modeloplanoconta = {$this->modelo}");
 
-        $totalRegistros = pg_num_rows($buscaEmentario);
+        $totalRegistros = $buscaEmentario === false || $buscaEmentario === null ? 0 : pg_num_rows($buscaEmentario);
         for ($row = 0; $row < $totalRegistros; $row++) {
 
             $stdEmentario = \db_utils::fieldsMemory($buscaEmentario, $row);
@@ -524,7 +524,7 @@ class Receita
             throw new \DBException("Ocorreu um erro ao consultar a conta {$codigoContaOrcamento}.");
         }
 
-        $totalRegistro = pg_num_rows($resBuscaConta);
+        $totalRegistro = $resBuscaConta === false || $resBuscaConta === null ? 0 : pg_num_rows($resBuscaConta);
         for ($rowConta = 0; $rowConta < $totalRegistro; $rowConta++) {
 
             $stdOrcamento = \db_utils::fieldsMemory($resBuscaConta, $rowConta);

@@ -125,7 +125,7 @@ if(isset($codmatricula)){
            ORDER BY ed111_d_data ASC
            ";
    $sql_result = db_query($sql);
-   $linhas = pg_num_rows($sql_result);
+   $linhas = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
    ?>
    <select name="convocacoes" id="convocacoes" size="18"  multiple style="font-size:9px;width:350px;">
     <?php 

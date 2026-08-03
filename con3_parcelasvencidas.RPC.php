@@ -72,7 +72,7 @@ switch($oParam->exec) {
         	
           $rsSqlDebitosNumpre = debitos_numpre($oNumpres, 0, $oParam->tipodebito, $oParam->data,
                                               db_getsession("DB_anousu"), "", "", "", "", true);
-          $iNumRowsDebitos    = pg_num_rows($rsSqlDebitosNumpre);
+          $iNumRowsDebitos    = $rsSqlDebitosNumpre === false || $rsSqlDebitosNumpre === null ? 0 : pg_num_rows($rsSqlDebitosNumpre);
           
           if ($oNumpres != $iNumpre) {
           	

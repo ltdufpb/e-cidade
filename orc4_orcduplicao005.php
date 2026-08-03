@@ -239,7 +239,7 @@ if (isset($post->o40_orgao) or $iTipo == 3){
 							$sWh
 							order by $order";
   $rs       = db_query($sSql);
-	$iNumRows = pg_num_rows($rs);
+	$iNumRows = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
   $pDisabled = '';
  for ($i = 0;$i < $iNumRows;$i++){
     

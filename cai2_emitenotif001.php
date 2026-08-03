@@ -117,7 +117,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
   	          $sSqlLista .= "  where k60_codigo = {$k60_codigo} ";
 
   	          $rsConsultaLista = db_query($sSqlLista);
-  	          $iLinhasConsulta = pg_num_rows($rsConsultaLista);
+  	          $iLinhasConsulta = $rsConsultaLista === false || $rsConsultaLista === null ? 0 : pg_num_rows($rsConsultaLista);
 
   	          $oLista = db_utils::fieldsMemory($rsConsultaLista,0);
 
@@ -257,7 +257,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 
                   if(pg_num_rows($resulta) != 0){
 
-                    $numrows = pg_num_rows($resulta);
+                    $numrows = $resulta === false || $resulta === null ? 0 : pg_num_rows($resulta);
                     for($i = 0;$i < $numrows;$i++) {
 
                       db_fieldsmemory($resulta,$i);

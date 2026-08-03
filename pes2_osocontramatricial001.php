@@ -323,7 +323,7 @@ if(isset($emite2)){
                                          );  
  // echo $sqlDentro; exit;
   $res = db_query($sqlDentro);
-  $num = pg_num_rows($res);
+  $num = $res === false || $res === null ? 0 : pg_num_rows($res);
   if($num == 0){
     $erro_msg = "Não existe cálculo no período de $mesfolha / $anofolha";
     $sqlerro = true;

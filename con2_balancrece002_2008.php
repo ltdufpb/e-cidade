@@ -49,7 +49,7 @@ $daoOrctiporec = new cl_orctiporec;
 $recursos = [];
 $sqlRecursos = $daoOrctiporec->sql_query_file();
 $rsRecursos = db_query($sqlRecursos);
-$totalRecursos = pg_num_rows($rsRecursos);
+$totalRecursos = $rsRecursos === false || $rsRecursos === null ? 0 : pg_num_rows($rsRecursos);
 for ($i = 0; $i < $totalRecursos; $i++) {
 
     $dadosRecurso = db_utils::fieldsMemory($rsRecursos, $i);

@@ -115,7 +115,7 @@ if(isset($chavepesquisa)){
              group by ve01_placa,ve61_medidadevol,ve61_horadevol,ve61_datadevol,ve60_medidasaida,
              ve60_horasaida,ve60_datasaida";
       $result = db_query($sql);
-      $linhas= pg_num_rows($result);
+      $linhas= $result === false || $result === null ? 0 : pg_num_rows($result);
       if($linhas>0){
        ?>
         <tr>
@@ -212,7 +212,7 @@ if(isset($chavepesquisa)){
               where ed220_i_rota=$chavepesquisa
               group by ve62_hora,ve62_vlrpecas,ve62_data,ve01_placa,ve60_medidasaida,ve60_hora,ve60_data";
       $result1 = db_query($sql1);
-      $linhas1= pg_num_rows($result1);
+      $linhas1= $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
       if($linhas1>0){
        ?>
         <tr>
@@ -304,7 +304,7 @@ if(isset($chavepesquisa)){
               where ed220_i_rota=$chavepesquisa
               group by ve70_litros,ve70_data,ve70_hora,ve70_medida,ve01_placa";
       $result1 = db_query($sql1);
-      $linhas1= pg_num_rows($result1);
+      $linhas1= $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
       if($linhas1>0){
        ?>
         <tr>

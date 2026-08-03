@@ -135,7 +135,7 @@ try {
         throw new Exception("[] " . pg_last_error());
       }
 
-      $iLinhas  = pg_num_rows($rsAtoSerie);
+      $iLinhas  = $rsAtoSerie === false || $rsAtoSerie === null ? 0 : pg_num_rows($rsAtoSerie);
       $iAtoNovo = -1;
       for ( $i = 0; $i < $iLinhas; $i++ ) {
 
@@ -182,7 +182,7 @@ try {
           throw new DBException("[] Erro as disciplinas vinculadas a base curricular.");
         }
 
-        $iTotalDisciplinas = pg_num_rows( $rsBaseMps );
+        $iTotalDisciplinas = $rsBaseMps === false || $rsBaseMps === null ? 0 : pg_num_rows( $rsBaseMps );
 
         for( $iContador = 0; $iContador < $iTotalDisciplinas; $iContador++ ) {
 

@@ -184,7 +184,7 @@ class Programa {
     $sWhere                        .= " and o144_orcprogramaanousu   = {$this->iAno}";
     $sSQL                           = $oDaoOrcProgramaVinculoObjetivo->sql_query("null", "*", null, $sWhere);
     $rsResultado                    = db_query($sSQL);
-    $iTotalObjetivos                = pg_num_rows($rsResultado);
+    $iTotalObjetivos                = $rsResultado === false || $rsResultado === null ? 0 : pg_num_rows($rsResultado);
 
     if (!$rsResultado) {
 

@@ -44,7 +44,7 @@
 	db_inicio_transacao();
 	$sqltab ="select * from pg_tables where tablename = 'temp_classeatualiza'";
 	$resulttab = db_query($sqltab);
-	$linhatab = pg_num_rows($resulttab);
+	$linhatab = $resulttab === false || $resulttab === null ? 0 : pg_num_rows($resulttab);
 	if($linhatab>0){
 		for($x=0;$x<$count;$x++){
 			$sql = "select * from temp_classeatualiza where seq = ".$arr[$x];

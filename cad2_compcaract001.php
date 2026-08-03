@@ -256,7 +256,7 @@ function js_periodo(){
         <?php 
 		  $sqlGrupol  = "select j32_grupo,j32_descr from cargrup where j32_tipo = 'L' order by j32_grupo";
           $rsGrupol   = db_query($sqlGrupol);
-          $intNumrows =	pg_num_rows($rsGrupol);
+          $intNumrows =	$rsGrupol === false || $rsGrupol === null ? 0 : pg_num_rows($rsGrupol);
 		  for($i=0;$i<$intNumrows;$i++){
               db_fieldsmemory($rsGrupol,$i);
 		      $lote[$j32_grupo] = $j32_grupo." - ".$j32_descr; 
@@ -273,7 +273,7 @@ function js_periodo(){
      	<?php 
 		  $sqlGrupof   = "select j32_grupo,j32_descr from cargrup where j32_tipo = 'F' order by j32_grupo";
           $rsGrupof    = db_query($sqlGrupof);
-          $intNumrowsf = pg_num_rows($rsGrupof);
+          $intNumrowsf = $rsGrupof === false || $rsGrupof === null ? 0 : pg_num_rows($rsGrupof);
           if ($intNumrowsf == 0) {
              db_msgbox('Não existem características por faces de quadra!');
              exit;

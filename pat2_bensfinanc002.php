@@ -480,7 +480,7 @@ if($tipoData == 1) {
 $head7 = $sHeadBaixa;
 
 $result = db_query($sql);
-$totalLinhas = pg_num_rows($result);
+$totalLinhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 if ($totalLinhas == 0) {
     $sMsg = _M('patrimonial.patrimonio.pat2_bensfinanc002.nao_existem_bens');

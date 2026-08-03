@@ -291,7 +291,7 @@ class DbModulos {
       throw new DBException( _M( CAMINHO_MENSAGENS_MODULOS . "erro_buscar_db_menu", $oMensagem ) );
     }
     
-    $iLinhasDbMenu = pg_num_rows( $rsDbMenu );
+    $iLinhasDbMenu = $rsDbMenu === false || $rsDbMenu === null ? 0 : pg_num_rows( $rsDbMenu );
     if ( $iLinhasDbMenu > 0 ) {
       
       for ( $iContador = 0; $iContador < $iLinhasDbMenu; $iContador++ ) {

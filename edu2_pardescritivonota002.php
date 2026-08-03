@@ -351,7 +351,7 @@ for ($x = 0; $x < $linhas1; $x++) {
   $result  = db_query($sql);
 
   // db_criatabela($result);
-  $linhas0 = pg_num_rows($result);
+  $linhas0 = $result === false || $result === null ? 0 : pg_num_rows($result);
   for ($r = 0; $r < $linhas0; $r++) {
 
     db_fieldsmemory($result,$r);

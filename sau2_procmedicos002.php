@@ -62,7 +62,7 @@ $sql = "SELECT  count(*) as quantidade,
         ORDER BY z01_nome
         ";
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 //db_criatabela($result);
 //exit;
 if($linhas == 0){
@@ -149,7 +149,7 @@ for ($i=0;$i<$linhas;$i++){
           ORDER BY sd09_c_descr
         ";
  $result1 = db_query($sql1);
- $linhas1 = pg_num_rows($result1);
+ $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
  $cont = 0;
  $cor1 = "1";
  $cor2 = "0";

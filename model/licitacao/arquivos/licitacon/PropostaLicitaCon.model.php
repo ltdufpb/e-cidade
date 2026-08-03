@@ -111,7 +111,7 @@ class PropostaLicitaCon extends ArquivoLicitaCon
             throw new Exception('Não foi possível carregar as propostas para criação do arquivo PROPOSTAS.TXT.');
         }
 
-        $iNumeroLinhas = pg_num_rows($rsBuscaOrcamento);
+        $iNumeroLinhas = $rsBuscaOrcamento === false || $rsBuscaOrcamento === null ? 0 : pg_num_rows($rsBuscaOrcamento);
 
         for ($iRowProposta = 0; $iRowProposta < $iNumeroLinhas; $iRowProposta++) {
             $oStdDadosProposta = db_utils::fieldsMemory($rsBuscaOrcamento, $iRowProposta);

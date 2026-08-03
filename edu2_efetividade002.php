@@ -118,7 +118,7 @@ for ($iCont = 0; $iCont < $oDaoEfetividadeRh->numrows; $iCont++) {
     $lPossuiLicencaPeriodo = false;
     $sLicenca              = "";
 
-    $iTotalLicencas = pg_num_rows($rsLicenca);
+    $iTotalLicencas = $rsLicenca === false || $rsLicenca === null ? 0 : pg_num_rows($rsLicenca);
 
     if ( $iTotalLicencas > 0 ) {
 

@@ -388,7 +388,7 @@ class RefactorGeracaoBoleto
             throw new Exception(pg_last_error());
         }
 
-        $iRowsRegraEmissao = pg_num_rows($rsSqlRegraEmissao);
+        $iRowsRegraEmissao = $rsSqlRegraEmissao === false || $rsSqlRegraEmissao === null ? 0 : pg_num_rows($rsSqlRegraEmissao);
 
         /**
          * Valida se existe alguma regra de emissao cadastrada no sistema
@@ -716,7 +716,7 @@ class RefactorGeracaoBoleto
                                 }
 
                                 $rsSqlProcessosForo = db_query($sSqlProcessosForo);
-                                $iProcessosForo = pg_num_rows($rsSqlProcessosForo);
+                                $iProcessosForo = $rsSqlProcessosForo === false || $rsSqlProcessosForo === null ? 0 : pg_num_rows($rsSqlProcessosForo);
 
                                 $nValorTotalCustas = 0.00;
 
@@ -742,7 +742,7 @@ class RefactorGeracaoBoleto
                                           $sWherePartilhaProcesso
                                         );
                                         $rsSqlPartilhaProcesso = db_query($sSqlPartilhaProcesso);
-                                        $iNumRowsPartilhaProcesso = pg_num_rows($rsSqlPartilhaProcesso);
+                                        $iNumRowsPartilhaProcesso = $rsSqlPartilhaProcesso === false || $rsSqlPartilhaProcesso === null ? 0 : pg_num_rows($rsSqlPartilhaProcesso);
 
                                         if ($rsSqlPartilhaProcesso && $iNumRowsPartilhaProcesso == 0) {
                                             /**

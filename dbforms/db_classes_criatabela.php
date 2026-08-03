@@ -80,7 +80,7 @@ td{
          $virgula=",";
        } 
        $result90= db_query($sql);
-       $numrows90= @pg_num_rows($result90);  
+       $numrows90= $result90 === false || $result90 === null ? 0 : @pg_num_rows($result90);  
          if($numrows90!=false && $numrows90>0){
             for($i=0; $i<$numrows90; $i++){
               db_fieldsmemory($result90,$i,true);

@@ -56,7 +56,7 @@ $limite       = 0;
 $anousu       = db_getsession("DB_anousu");
 
 $resultinst = db_query("select codigo,munic,db21_tipoinstit from db_config");
-$numrowsinstit = pg_num_rows($resultinst);
+$numrowsinstit = $resultinst === false || $resultinst === null ? 0 : pg_num_rows($resultinst);
 
 $instit_rpps = "";
 $instituicao = "";
@@ -439,7 +439,7 @@ if ($instituicao != '') {
  * Montamos os dados das instituições nao RPPS
  * o for no recordset $rsAnterior buscamos dados do period anterior  e 1 quadrimestre/Semestre
  */
-$iLinhasAnterior = pg_num_rows($rsAnterior);
+$iLinhasAnterior = $rsAnterior === false || $rsAnterior === null ? 0 : pg_num_rows($rsAnterior);
 for ($i = 0; $i < $iLinhasAnterior; $i++) {
 
   $oResultado = db_utils::fieldsMemory($rsAnterior, $i);
@@ -508,7 +508,7 @@ for ($i = 0; $i < $iLinhasAnterior; $i++) {
 
 }
 
-$iLinhasPeriodo = pg_num_rows($rsPeriodo);
+$iLinhasPeriodo = $rsPeriodo === false || $rsPeriodo === null ? 0 : pg_num_rows($rsPeriodo);
 for ($i = 0; $i < $iLinhasPeriodo; $i++) {
 
   $oResultado = db_utils::fieldsMemory($rsPeriodo, $i);
@@ -622,7 +622,7 @@ if (trim($instit_rpps) != "" && !isset($arqinclude)) {
   $rsPeriodoRpps = db_planocontassaldo_matriz($anousu, $dtini_02, $dtfin_02, false, $sele_work, "", "true", "false");
   @db_query("drop table work_pl");
 
-  $iLinhasAnterior = pg_num_rows($rsAnteriorRpps);
+  $iLinhasAnterior = $rsAnteriorRpps === false || $rsAnteriorRpps === null ? 0 : pg_num_rows($rsAnteriorRpps);
   for ($i = 0; $i < $iLinhasAnterior; $i++) {
 
     $oResultado = db_utils::fieldsMemory($rsAnteriorRpps, $i);
@@ -662,7 +662,7 @@ if (trim($instit_rpps) != "" && !isset($arqinclude)) {
     }
   }
 
-  $iLinhasPeriodo = pg_num_rows($rsPeriodoRpps);
+  $iLinhasPeriodo = $rsPeriodoRpps === false || $rsPeriodoRpps === null ? 0 : pg_num_rows($rsPeriodoRpps);
   for ($i = 0; $i < $iLinhasPeriodo; $i++) {
 
     $oResultado = db_utils::fieldsMemory($rsPeriodoRpps, $i);

@@ -259,7 +259,7 @@ class custoPlanilha {
     $sSqlCustos  .= "order by cc01_estrutural ";
     $rsCustos     = db_query($sSqlCustos);
     $aCustos      = db_utils::getCollectionByRecord($rsCustos, false, false, true);
-    $iTotalRowsCusto = pg_num_Rows($rsCustos);
+    $iTotalRowsCusto = $rsCustos === false || $rsCustos === null ? 0 : pg_num_Rows($rsCustos);
     return $aCustos;
   }
   /**

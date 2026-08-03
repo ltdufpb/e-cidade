@@ -64,7 +64,7 @@ class cl_formulario_relcampos {
 
       $arr_tabless = [];
     	$arr_tabelas = ["0"=>"Selecione um arquivo"];
-	    $colunas = pg_num_fields($result_tabelas);
+	    $colunas = $result_tabelas === false || $result_tabelas === null ? 0 : pg_num_fields($result_tabelas);
 
 	    for($i=0; $i<pg_num_rows($result_tabelas); $i++){
 	    	db_fieldsmemory($result_tabelas, $i);

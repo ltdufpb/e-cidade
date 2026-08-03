@@ -124,7 +124,7 @@ function js_redireciona(chave){
           FROM escolaproc
          ";
       $result_escola = db_query($sql);
-      $linhas= pg_num_rows($result_escola);
+      $linhas= $result_escola === false || $result_escola === null ? 0 : pg_num_rows($result_escola);
       if($linhas==0){
       $x = [''=>''];
       db_select('ed56_i_escola',$x,true,1,"style='width:300px;'");
@@ -171,7 +171,7 @@ function js_redireciona(chave){
          ";
       }
       $result_curso = db_query($sql);
-      $linhas= pg_num_rows($result_curso);
+      $linhas= $result_curso === false || $result_curso === null ? 0 : pg_num_rows($result_curso);
       if($linhas==0){
        $x = [''=>''];
        db_select('ed31_i_curso',$x,true,1," $disabled style='width:300px;'");

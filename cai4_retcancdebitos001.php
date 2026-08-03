@@ -133,7 +133,7 @@ if (isset ($chavepesquisa)){
 	                inner join concarpeculiar on k72_concarpeculiar = c58_sequencial 
 	                where k72_cancdebitos = $k20_codigo";
 	$rsPeculiar     = db_query($sqlPeculiar);
-	$linhasPeculiar =  pg_num_rows($rsPeculiar);
+	$linhasPeculiar =  $rsPeculiar === false || $rsPeculiar === null ? 0 : pg_num_rows($rsPeculiar);
 	if($linhasPeculiar > 0 ){
 	  db_fieldsmemory($rsPeculiar,0);
 	  $c58_sequencial = $tipo;

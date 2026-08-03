@@ -85,7 +85,7 @@
       $sql   .= "   AND (ed61_i_periodoconc is null or ed61_i_periodoconc =0) ";
       $sql   .= " ORDER BY ed47_v_nome                                        ";
       $result = db_query( $sql );
-      $linhas = pg_num_rows( $result );
+      $linhas = $result === false || $result === null ? 0 : pg_num_rows( $result );
       ?>
       <label class="bold">Alunos:</label>
       <br>

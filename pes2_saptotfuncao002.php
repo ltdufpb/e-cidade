@@ -73,7 +73,7 @@ $sSql .= " {$sWhere}                                                            
 $sSql .= " order by r37_descr,rh37_funcao,z01_nome                                     ";
 
 $rsSql = db_query($sSql);
-$iRows = pg_num_rows($rsSql);
+$iRows = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
 if ($iRows == 0) {
   $sMsg = "Não existem funcionários no período de {$oGet->mes} / {$oGet->ano}";
   db_redireciona("db_erros.php?fechar=true&db_erro={$sMsg}");

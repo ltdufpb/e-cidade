@@ -358,7 +358,7 @@
       
       if (pg_num_rows($result_pag) > 0) {
         
-        $par_pag = pg_num_rows($result_pag);
+        $par_pag = $result_pag === false || $result_pag === null ? 0 : pg_num_rows($result_pag);
       }
       
       $result_pag = db_query("select sum(arrepaga.k00_valor) as val_pag 

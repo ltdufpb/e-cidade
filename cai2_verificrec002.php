@@ -129,7 +129,7 @@ $head3 = "Verifica Receitas Tesouraria";
 $head5 = "Listar: $info";
 
 $result = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($numrows == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 }

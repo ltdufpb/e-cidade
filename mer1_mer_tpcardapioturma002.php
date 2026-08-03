@@ -50,7 +50,7 @@ if(isset($coddisciplinas)){
            where me28_i_cardapioescola =$codcardapioescola";
  
   $result = db_query($sql);
-  $linhas = pg_num_rows($result);
+  $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
   
   if ($linhas>0) {     
     for ($t=0;$t<$linhas;$t++) {  
@@ -95,7 +95,7 @@ if(isset($coddisciplinas)){
                                                                              "",
                                                                              "me32_i_tipocardapio = $codcardapio and me32_i_codigo not in ($codcardapioescola)"
                                                                             ));
-   $linhas = pg_num_rows($result);
+   $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
    if($linhas>0){
     ?>
     <select name="outras_disc[]" id="outras_disc" size="10" style="width:300px;font-size:10px;padding:0px;" multiple>

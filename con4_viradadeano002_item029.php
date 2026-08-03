@@ -38,17 +38,17 @@ if($sqlerro==false) {
   // PARÂMETROS EDUCACAO
   $sqlorigem = "select * from termoresultadofinal where ed110_ano =  $anoorigem limit 1";
   $resultorigem = db_query($sqlorigem);
-  $linhasorigem = pg_num_rows($resultorigem);
+  $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
   $sqldestino = "select * from termoresultadofinal where ed110_ano = $anodestino limit 1";
   $resultdestino = db_query($sqldestino);
-  $linhasdestino = pg_num_rows($resultdestino);
+  $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
   if (($linhasorigem > 0) && ($linhasdestino == 0 )) {
     
 		$sqltermoresultadofinal = $cl_termoresultadofinal->sql_query_file("","*","","ed110_ano = {$anoorigem}");
 		$rstermoresultadofinal  = $cl_termoresultadofinal->sql_record($sqltermoresultadofinal);
-		$iTotalLinhaInsert = pg_num_rows($rstermoresultadofinal);
+		$iTotalLinhaInsert = $rstermoresultadofinal === false || $rstermoresultadofinal === null ? 0 : pg_num_rows($rstermoresultadofinal);
 		for ($iLinhaInsert = 0; $iLinhaInsert < $iTotalLinhaInsert;  $iLinhaInsert++ ) {
 		  db_fieldsmemory($rstermoresultadofinal, $iLinhaInsert);
 

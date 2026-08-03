@@ -751,7 +751,7 @@ try {
     $sSqlReceitas .= "select distinct j23_recdst as j18_receit from iptucalcconfrec where j23_anousu = $anousu and j23_tipo = 1";
 
     $rsReceitas = db_query($sSqlReceitas);
-    $iLinhasRec = pg_num_rows($rsReceitas);
+    $iLinhasRec = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 
     if ($iLinhasRec > 0) {
         //
@@ -907,7 +907,7 @@ try {
             $quantos = 0;
             $cliptubase = new cl_iptubase;
 
-            $total_reg = pg_num_rows($resultprinc);
+            $total_reg = $resultprinc === false || $resultprinc === null ? 0 : pg_num_rows($resultprinc);
 
             if ($quantescolhida == "") {
                 $quantidade = $total_reg;
@@ -1135,7 +1135,7 @@ try {
                     throw new DBException("Erro ao buscar ao buscar o valor da maior parecela.");
                 }
 
-                $intNumrowsValorMax = pg_num_rows($rsValorMax);
+                $intNumrowsValorMax = $rsValorMax === false || $rsValorMax === null ? 0 : pg_num_rows($rsValorMax);
                 if ($intNumrowsValorMax > 0) {
                     db_fieldsmemory($rsValorMax, 0);
                 }
@@ -1322,7 +1322,7 @@ try {
                         throw new DBException("Erro ao buscar os tipos de débitos.");
                     }
 
-                    $iNumRows = pg_num_rows($rsSqlArretipo);
+                    $iNumRows = $rsSqlArretipo === false || $rsSqlArretipo === null ? 0 : pg_num_rows($rsSqlArretipo);
 
                     if ($iNumRows == 0) {
                         throw new DBException("O código do banco não esta cadastrado no arquivo arretipo para este tipo!");
@@ -2489,7 +2489,7 @@ try {
                                         $sSqlArretipoExec = "EXECUTE sSqlArretipo($k00_tipo)";
                                         $rsSqlArretipo = db_query($sSqlArretipoExec);
 
-                                        $iNumRows = pg_num_rows($rsSqlArretipo);
+                                        $iNumRows = $rsSqlArretipo === false || $rsSqlArretipo === null ? 0 : pg_num_rows($rsSqlArretipo);
 
                                         if ($iNumRows == 0) {
                                             throw new DBException("O código do banco não esta cadastrado no arquivo arretipo para este tipo.");
@@ -3014,7 +3014,7 @@ try {
 
                                             /* PLUGIN SAPIRANGA - MELHORIA 13409 - 4 */
                                             $valorTaxa = round($j21_valor / pg_num_rows($resultfin2), 2);
-                                            $numeroTotalParcelas = pg_num_rows($resultfin2);
+                                            $numeroTotalParcelas = $resultfin2 === false || $resultfin2 === null ? 0 : pg_num_rows($resultfin2);
                                 
                                             if ($j17_codhis == 11) {
                                                 $valorTaxaBomPgd[$j17_codhis] = floatval($valorTaxa);
@@ -3178,7 +3178,7 @@ try {
                                 throw new DBException("Erro ao buscar a parcela e a data vencimento.");
                             }
 
-                            $iNumRows = pg_num_rows($resultfinrecibo);
+                            $iNumRows = $resultfinrecibo === false || $resultfinrecibo === null ? 0 : pg_num_rows($resultfinrecibo);
 
                             try {
                                 $oRecibo = new recibo(2, null, 5);
@@ -4128,9 +4128,9 @@ try {
                           "BASE DE DADOS UTILIZADA: " . @$GLOBALS["DB_NBASE"] . "{$sQuebraLinha}");
                         fputs($clabre_arquivo->arquivo,
                           "ORDEM: " . ($ordem == "endereco" ? "Endereco de entrega" : ($ordem == "alfabetica" ? "Alfabética" : "Zona de entrega")) . "{$sQuebraLinha}");
-                        fputs($clabre_arquivo->arquivo, "ESPÉCIE: $especie{$sQuebraLinha}");
+                        fputs($clabre_arquivo->arquivo, "ESPÉCIE: $especie[$sQuebraLinha]");
                         fputs($clabre_arquivo->arquivo,
-                          "QUANTIDADE DE REGISTROS A PROCESSAR: $quantescolhida{$sQuebraLinha}");
+                          "QUANTIDADE DE REGISTROS A PROCESSAR: $quantescolhida[$sQuebraLinha]");
                         fputs($clabre_arquivo->arquivo,
                           "IMPRIMIR APENAS REGISTROS COM ENDERECO DE ENTREGA VALIDOS: " . (!empty($entregavalido) ? "SIM" : "NAO"));
 
@@ -4151,7 +4151,7 @@ try {
                             db_fieldsmemory($resultnaogeracgm, $naogeracgm);
 
                             fputs($clabre_arquivo->arquivo,
-                              str_pad((string) $j68_numcgm, 6, "0", STR_PAD_LEFT) . " - $z01_nome{$sQuebraLinha}");
+                              str_pad((string) $j68_numcgm, 6, "0", STR_PAD_LEFT) . " - $z01_nome[$sQuebraLinha]");
 
                         }
                         fputs($clabre_arquivo->arquivo, "{$sQuebraLinha}");
@@ -4168,7 +4168,7 @@ try {
                         }
 
 
-                        fputs($clabre_arquivo->arquivo, "FILTRO PRINCIPAL: $filtroprincipal{$sQuebraLinha}");
+                        fputs($clabre_arquivo->arquivo, "FILTRO PRINCIPAL: $filtroprincipal[$sQuebraLinha]");
                         fputs($clabre_arquivo->arquivo, "{$sQuebraLinha}");
 
                         if ($imobiliaria == "todos") {

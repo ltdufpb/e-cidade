@@ -61,7 +61,7 @@ if ( !$rsProntuario ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Erro ao buscar os dados da Requisição de Exames.');
 }
 
-$iLinhas = pg_num_rows($rsProntuario);
+$iLinhas = $rsProntuario === false || $rsProntuario === null ? 0 : pg_num_rows($rsProntuario);
 
 if ( $iLinhas == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum exame cadastrado para esta FAA.');

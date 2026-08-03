@@ -72,7 +72,7 @@ final class PadArquivoSigapUnidade extends PadArquivoSigap {
     $sSqlUnidades .= " where o58_anousu <=  $iAno ";
     $sSqlUnidades .= "   and o58_instit in ({$iCodigoInstit})";
     $rsUnidades    = db_query($sSqlUnidades);
-    $iTotalLinhas = pg_num_rows($rsUnidades);
+    $iTotalLinhas = $rsUnidades === false || $rsUnidades === null ? 0 : pg_num_rows($rsUnidades);
      
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       

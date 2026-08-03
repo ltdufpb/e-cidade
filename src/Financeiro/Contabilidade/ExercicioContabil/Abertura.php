@@ -61,7 +61,7 @@ class Abertura extends ExercicioContabil
             $where
         );
         $rsAbertura = db_query($consultaAbertura);
-        $totalRegistros = pg_num_rows($rsAbertura);
+        $totalRegistros = $rsAbertura === false || $rsAbertura === null ? 0 : pg_num_rows($rsAbertura);
         for ($i = 0; $i < $totalRegistros; $i++) {
             $dados = \db_utils::fieldsMemory($rsAbertura, $i);
             $daoAberturaExercicio->excluir($dados->c105_aberturaexercicioorcamento);

@@ -53,7 +53,7 @@ if (isset($alterar)){
 
    $sSql    = $clmatparamconsulta->sql_query($iInstituicao);
    $result  = $clmatparamconsulta->sql_record($sSql); 
-	 $iLinhas = pg_num_rows($result);
+	 $iLinhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
    if ( $iLinhas > 0 ) {
      

@@ -98,7 +98,7 @@ class DadosProcessamentoCivitas
                                 order by j32_grupo";
 
         $rsCaracteristica = db_query($sSqlCaractetiscasLote);
-        $iTotalLinhas = pg_num_rows($rsCaracteristica);
+        $iTotalLinhas = $rsCaracteristica === false || $rsCaracteristica === null ? 0 : pg_num_rows($rsCaracteristica);
         $caracteristicas = [];
 
         for ($contador = 0; $contador < $iTotalLinhas; $contador++) {
@@ -138,7 +138,7 @@ class DadosProcessamentoCivitas
 
 
         $rsLote = db_query($sqlLote);
-        $totalLinhasLote = pg_num_rows($rsLote);
+        $totalLinhasLote = $rsLote === false || $rsLote === null ? 0 : pg_num_rows($rsLote);
 
         if (!$rsLote || $totalLinhasLote == 0) {
             return null;
@@ -210,7 +210,7 @@ class DadosProcessamentoCivitas
         $sSqlCaractetiscasLote .= " order by j48_idcons, j32_grupo";
 
         $rsCaracteristica = db_query($sSqlCaractetiscasLote);
-        $iTotalLinhas = pg_num_rows($rsCaracteristica);
+        $iTotalLinhas = $rsCaracteristica === false || $rsCaracteristica === null ? 0 : pg_num_rows($rsCaracteristica);
         $caracteristicas = [];
 
         for ($contador = 0; $contador < $iTotalLinhas; $contador++) {

@@ -592,7 +592,7 @@ abstract class DAOBasica {
       return false;
     }
 
-    $this->numrows = pg_num_rows ( $rsQuery );
+    $this->numrows = $rsQuery === false || $rsQuery === null ? 0 : pg_num_rows ( $rsQuery );
     if ($this->numrows == 0) {
 
       $this->erro_banco  = "";

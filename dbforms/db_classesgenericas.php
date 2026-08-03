@@ -1478,7 +1478,7 @@ class cl_db_estrut{
        //rotina que verifica se o estrutural já não foi incluido
    $sql= " select $campo from $tabela where $campo = '".$codigo."' ";
    $result  =  @db_query($sql);
-   $this->numrows = pg_num_rows($result);
+   $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    if($this->numrows>0){
       $this->erro_msg = 'Inclusão abortada. Estrutural já incluido!';
             $this->erro_status = 0;
@@ -1495,7 +1495,7 @@ class cl_db_estrut{
        //rotina que verifica se o código fornecido possui mae
    $sql= " select $tipomae as tipo from $tabela where $campo = '".$this->mae."' ";
    $result  =  @db_query($sql);
-   $this->numrows = pg_num_rows($result);
+   $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    if($this->numrows<1){
       $this->erro_msg = 'Inclusão abortada. Estrutural  acima não encontrado!';
             $this->erro_status = 0;
@@ -1520,7 +1520,7 @@ class cl_db_estrut{
 
    $sql= " select $campo from $tabela where  $campo like '".$this->str_cut."%'";
    $result  =  @db_query($sql);
-   $this->numrows = pg_num_rows($result);
+   $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    if($this->numrows>0){
       $this->erro_msg = 'Inclusão abortada. Existe um estrutural  de nível inferior cadastrado!';
             $this->erro_status = 0;
@@ -1541,7 +1541,7 @@ class cl_db_estrut{
        //rotina que verifica se o estrutural já não foi incluido
    $sql= " select $campo from $tabela where $campo = '".$codigo."' ";
    $result  =  @db_query($sql);
-   $this->numrows = pg_num_rows($result);
+   $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    if($this->numrows==0){
       $this->erro_msg = 'Exclusão abortada. Estrutural não existe!';
             $this->erro_status = 0;
@@ -1567,7 +1567,7 @@ class cl_db_estrut{
 
    $sql= " select $campo from $tabela where  $campo like '".$this->str_cut."%' and substr($campo,".(strlen((string) $this->str_cut)+1).",".$resto.")<>'$zero' ";
    $result  =  @db_query($sql);
-   $this->numrows = pg_num_rows($result);
+   $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
    if($this->numrows>0){
       $this->erro_msg = 'Exclusão abortada. Existe um estrutural  de nível inferior cadastrado!';
             $this->erro_status = 0;
@@ -1592,7 +1592,7 @@ class cl_db_estrut{
     $clrotulocampo = new rotulocampo;
     $clrotulocampo->label($nome);
     $result  = db_query("select db77_descr, db77_estrut as mascara from db_estrutura where db77_codestrut=$id");
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     if ($numrows >0){
         db_fieldsmemory($result,0);
         $tamanho=strlen((string) $mascara);

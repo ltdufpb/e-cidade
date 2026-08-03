@@ -191,7 +191,7 @@ if($clregencia->numrows==0){
              ORDER BY ed41_i_sequencia
             ";
     $result3 = db_query($sql3);
-    $linhas3 = pg_num_rows($result3) or die (pg_last_error());
+    $linhas3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3) or die (pg_last_error());
     for($c=0;$c<$clregencia->numrows;$c++){
      db_fieldsmemory($result_proc,$c);
      if($cor==$cor1){

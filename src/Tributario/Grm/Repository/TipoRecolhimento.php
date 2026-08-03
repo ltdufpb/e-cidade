@@ -82,7 +82,7 @@ class TipoRecolhimento
             throw new \DBException('Erro ao pesquisar recolhimentos vinculados a unidade gestora');
         }
         $aRetorno     = [];
-        $iTotalLinhas = pg_num_rows($rsRecolhimentos);
+        $iTotalLinhas = $rsRecolhimentos === false || $rsRecolhimentos === null ? 0 : pg_num_rows($rsRecolhimentos);
         for ($iRecolhimento = 0; $iRecolhimento < $iTotalLinhas; $iRecolhimento++) {
             $oDadosRecolhimento = \db_utils::fieldsMemory($rsRecolhimentos, $iRecolhimento);
             $oRecolhimento      = $this->make($oDadosRecolhimento);
@@ -352,7 +352,7 @@ class TipoRecolhimento
             throw new \BusinessException('Erro ao consultar dados dos atributos dinamicos do tipo de recolhimento '
             .$tipoRecolhimento->getCodigoRecolhimento());
         }
-        $iTotalLinhas = pg_num_rows($rsAtributos);
+        $iTotalLinhas = $rsAtributos === false || $rsAtributos === null ? 0 : pg_num_rows($rsAtributos);
         if ($iTotalLinhas === 0) {
             return null;
         }

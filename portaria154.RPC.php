@@ -98,7 +98,7 @@ SQL;
         if (pg_num_rows($rs) > 0) {
             $oRetorno->possuiDados = true;
             $aExercicioAnterior    = [];
-            $contador              = pg_num_rows($rs);
+            $contador              = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
             for ($i = 0; $i < $contador; $i++) {
                 $dado = db_utils::fieldsMemory($rs, $i);

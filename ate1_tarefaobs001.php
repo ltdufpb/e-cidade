@@ -103,7 +103,7 @@ if(isset($alterar)) {
 			and at05_seq = $at05_seq;
 		";
 		$res = db_query($sql); 
-		$linhas =pg_num_rows($res);
+		$linhas =$res === false || $res === null ? 0 : pg_num_rows($res);
 	
 	  	if ($linhas > 0) {
 		    db_fieldsmemory($res, 0);

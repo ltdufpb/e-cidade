@@ -876,7 +876,7 @@
   	    $sSqlResFinal   .= "          ed95_i_aluno = ".$oDadosMatricula2->ed60_i_aluno;
   	    $sSqlResFinal   .= "          AND ed95_i_regencia = ".$oDadosRegencia->ed59_i_codigo;
   	    $rsResFinal      = db_query($sSqlResFinal);
-  	    $iLinhasResFinal = pg_num_rows($rsResFinal);
+  	    $iLinhasResFinal = $rsResFinal === false || $rsResFinal === null ? 0 : pg_num_rows($rsResFinal);
   	  
   	    if ($iLinhasResFinal > 0) {
   	  	  $sVerificaResFinal = db_utils::fieldsmemory($rsResFinal, 0)->verificarf;

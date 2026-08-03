@@ -1336,7 +1336,7 @@ class licitacao
             $sSqlBuscaItem .= "        inner join liclicitem   on     l21_codigo = pc26_liclicitem  ";
             $sSqlBuscaItem .= "  where l21_codpcprocitem  = {$iCodItemProcCompra} ";
             $rsBuscaItem = db_query($sSqlBuscaItem);
-            $iTotalLinhas = pg_num_rows($rsBuscaItem);
+            $iTotalLinhas = $rsBuscaItem === false || $rsBuscaItem === null ? 0 : pg_num_rows($rsBuscaItem);
 
             /**
              * Caso exista fornecedores cadastrados o processo é abortado, do contrário é excluido os registros em
@@ -1653,7 +1653,7 @@ class licitacao
             $sWhere = "l46_liclicita = {$this->iCodLicitacao}";
             $sSqlEventos = $oDaoEventos->sql_query_file(null, 'l46_sequencial', null, $sWhere);
             $rsEventos = db_query($sSqlEventos);
-            $iQuantidade = pg_num_rows($rsEventos);
+            $iQuantidade = $rsEventos === false || $rsEventos === null ? 0 : pg_num_rows($rsEventos);
             if ($rsEventos && $iQuantidade > 0) {
                 for ($iRegistro = 0; $iRegistro < $iQuantidade; $iRegistro++) {
                     $iCodigo = db_utils::fieldsMemory($rsEventos, $iRegistro)->l46_sequencial;

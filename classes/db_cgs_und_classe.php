@@ -1914,7 +1914,7 @@ class cl_cgs_und
   function alterarExt()
   {
     $result    = pg_query("SELECT * FROM cgs_und_ext WHERE z01_i_cgsund =" . $this->z01_i_cgsund);
-    $num_rows = pg_num_rows($result);
+    $num_rows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
     if($num_rows == 0) {
       return $this->inserirExt();
@@ -2266,7 +2266,7 @@ class cl_cgs_und
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_num_rows($result);
+     $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
       if ($this->numrows == 0) {
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cgs_und";

@@ -283,7 +283,7 @@ for($i=0; $i < $clrhpessoal->numrows; $i++){
 //echo "<BR> $sql_dados_gerfs";
 //exit;
   $result_dados_gerfs = db_query($sql_dados_gerfs);
-  $numrows_dados_gerfs = pg_num_rows($result_dados_gerfs);
+  $numrows_dados_gerfs = $result_dados_gerfs === false || $result_dados_gerfs === null ? 0 : pg_num_rows($result_dados_gerfs);
   $mes_anterior = "";
   $ano_anterior = "";
   $contaIarray  = 1;
@@ -372,11 +372,11 @@ $arquivo = fopen($arq,'w');
 
 $sql_rubr = "select distinct rubric as rubric1,drubri as drubri1 from work_ficha_financ order by rubric";
 $result_rubr = db_query($sql_rubr);
-$numrows_rubr = pg_num_rows($result_rubr);
+$numrows_rubr = $result_rubr === false || $result_rubr === null ? 0 : pg_num_rows($result_rubr);
 //db_criatabela($result_rubr);exit;
 $sql_work = "select * from work_ficha_financ order by $orderby2";
 $result_work = db_query($sql_work);
-$numrows_work = pg_num_rows($result_work);
+$numrows_work = $result_work === false || $result_work === null ? 0 : pg_num_rows($result_work);
 //db_criatabela($result_work);exit;
 $primatric = "";
 $aRubrica = [];

@@ -124,7 +124,7 @@ $oDados =  db_utils::fieldsMemory($rsDados, 0);
 $head6 = $iEscola.' - '.$oDados->escola;
 
 if ($tipo == 0 || $tipo == 1) {
-    $iLinhas = pg_num_rows($rsDados);
+    $iLinhas = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
 }
 
 if ($iLinhas == 0) {

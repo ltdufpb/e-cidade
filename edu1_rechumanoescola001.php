@@ -250,7 +250,7 @@ if (isset($alterar)) {
     $rsRecHumanoHoraDisp = db_query($sSqlRecHumanoHoraDisp);
 
     if ($rsRecHumanoHoraDisp && pg_num_rows($rsRecHumanoHoraDisp) > 0) {
-        $iTotalLinhas = pg_num_rows($rsRecHumanoHoraDisp);
+        $iTotalLinhas = $rsRecHumanoHoraDisp === false || $rsRecHumanoHoraDisp === null ? 0 : pg_num_rows($rsRecHumanoHoraDisp);
 
         for ($iContador = 0; $iContador < $iTotalLinhas; $iContador++) {
             $iCodigo = db_utils::fieldsMemory($rsRecHumanoHoraDisp, $iContador)->ed33_i_codigo;

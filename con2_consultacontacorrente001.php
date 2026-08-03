@@ -38,7 +38,7 @@ $where  = "c122_tipo = 2";
 $campos = "c122_sequencial as codigo, c122_descricao as nome";
 $sqlContaCorrente = $daoContaCorrente->sql_query_file(null, $campos, "c122_sequencial", $where);
 $rsContaCorrentes = db_query($sqlContaCorrente);
-$totalLinhas      = pg_num_rows($rsContaCorrentes);
+$totalLinhas      = $rsContaCorrentes === false || $rsContaCorrentes === null ? 0 : pg_num_rows($rsContaCorrentes);
 $contascorrentes = ["0" => "Selecione"];
 for ($i = 0; $i < $totalLinhas; $i++) {
 

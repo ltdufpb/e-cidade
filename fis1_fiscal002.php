@@ -87,7 +87,7 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 // exclui e inclui no procfiscalnotificacao
 	 $sqlprocfiscalv = "select y110_sequencial from procfiscalnotificacao where y110_notificacaofiscal = $y30_codnoti ";
 	 $resultprocfiscalv = db_query($sqlprocfiscalv);
-	 $linhasprocfiscalv = pg_num_rows($resultprocfiscalv);
+	 $linhasprocfiscalv = $resultprocfiscalv === false || $resultprocfiscalv === null ? 0 : pg_num_rows($resultprocfiscalv);
 	 if($linhasprocfiscalv>0){
 	 	 db_fieldsmemory($resultprocfiscalv,0);
 	   $clprocfiscalnotificacao->y110_sequencial =$y110_sequencial;
@@ -155,7 +155,7 @@ $sqlprocfiscal = " select y110_procfiscal as procfiscal,z01_nome as nome
   								 where y110_notificacaofiscal = $chavepesquisa
 									";
 	 $resultprocfiscal = db_query($sqlprocfiscal);
-	 $linhasprocfiscal = pg_num_rows($resultprocfiscal);
+	 $linhasprocfiscal = $resultprocfiscal === false || $resultprocfiscal === null ? 0 : pg_num_rows($resultprocfiscal);
 	 if($linhasprocfiscal>0){
 	 	 db_fieldsmemory($resultprocfiscal,0);
 	 }else{

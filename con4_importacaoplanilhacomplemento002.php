@@ -70,7 +70,7 @@ function salvarDespesa($despesas) {
     if (!$buscaLancamentos) {
         throw new Exception("Ocorreu um erro ao localizar os empenhos.");
     }
-    $totalRegistros = pg_num_rows($buscaLancamentos);
+    $totalRegistros = $buscaLancamentos === false || $buscaLancamentos === null ? 0 : pg_num_rows($buscaLancamentos);
     $comandosDespesa = [];
     $lancamentosExclusao = [];
     for ($row = 0; $row < $totalRegistros; $row++) {

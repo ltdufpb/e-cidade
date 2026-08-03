@@ -169,7 +169,7 @@ function recibodesconto(
     $sSqlTipoParc .= "    and '$k00_dtvenc' <= k41_vencfim                               ";
 
     $rsTipoParc = db_query($sSqlTipoParc) or die($sSqlTipoParc);
-    $iLinhasTipoParc = pg_num_rows($rsTipoParc);
+    $iLinhasTipoParc = $rsTipoParc === false || $rsTipoParc === null ? 0 : pg_num_rows($rsTipoParc);
 
     if ($iLinhasTipoParc > 0) {
 
@@ -550,13 +550,13 @@ if (!isset($notifparc)) {
 
         $lim2 = $fim;
         if ($fim > pg_num_rows($result)) {
-            $lim2 = pg_num_rows($result);
+            $lim2 = $result === false || $result === null ? 0 : pg_num_rows($result);
         }
 
     } else {
 
         $lim1 = 0;
-        $lim2 = pg_num_rows($result);
+        $lim2 = $result === false || $result === null ? 0 : pg_num_rows($result);
     }
 
 } else {
@@ -595,7 +595,7 @@ if (!isset($notifparc)) {
     $sSqlNotifParc .= "           z01_nome                                                       ";
 
     $result = db_query($sSqlNotifParc) or die($sSqlNotifParc);
-    $lim2 = pg_num_rows($result);
+    $lim2 = $result === false || $result === null ? 0 : pg_num_rows($result);
 
     $oNotifParc = db_utils::fieldsMemory($result, 0);
 
@@ -679,7 +679,7 @@ if ($tiporel == 1 || $tiporel == 11) {
             $sSqlConsultaPaga .= "  where notidebitos.k53_notifica = " . $notifica;
 
             $rsConsultaPaga = db_query($sSqlConsultaPaga);
-            $iLinhasPaga = pg_num_rows($rsConsultaPaga);
+            $iLinhasPaga = $rsConsultaPaga === false || $rsConsultaPaga === null ? 0 : pg_num_rows($rsConsultaPaga);
 
             if ($iLinhasPaga > 0) {
 
@@ -812,7 +812,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                    group by k22_tipo,k00_descr";
 
             $result2 = db_query($sql2);
-            $num2 = pg_num_rows($result2);
+            $num2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
         }
 
         $sSqlproced = " select distinct proced.v03_codigo,   proced.v03_dcomp        ";
@@ -1001,7 +1001,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     inner join arretipo on arretipo.k00_tipo  = arrecad.k00_tipo
                               where k43_notifica = " . $notifica;
                 $rsConsultaTipo = db_query($sSqlConsultaTipo) or die($sSqlConsultaTipo);
-                $iNroLinhaTipo = pg_num_rows($rsConsultaTipo);
+                $iNroLinhaTipo = $rsConsultaTipo === false || $rsConsultaTipo === null ? 0 : pg_num_rows($rsConsultaTipo);
 
                 if ($iNroLinhaTipo > 1) {
 
@@ -1359,7 +1359,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                     $sqlPossuidor .= "  where j18_anousu= " . db_getsession("DB_anousu");
 
                     $resultPossuidor = db_query($sqlPossuidor);
-                    $linhasPossuidor = pg_num_rows($resultPossuidor);
+                    $linhasPossuidor = $resultPossuidor === false || $resultPossuidor === null ? 0 : pg_num_rows($resultPossuidor);
 
                     $possuidor = "POSSUIDOR";
                     if ($linhasPossuidor > 0) {
@@ -1399,7 +1399,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                     $sSqlOrigensNumpre .= " where k53_notifica = " . $notifica;
 
                     $rsOrigensNumpre = db_query($sSqlOrigensNumpre);
-                    $iLinhaOrigemNumpre = pg_num_rows($rsOrigensNumpre);
+                    $iLinhaOrigemNumpre = $rsOrigensNumpre === false || $rsOrigensNumpre === null ? 0 : pg_num_rows($rsOrigensNumpre);
 
                     for ($ind = 0; $ind < $iLinhaOrigemNumpre; $ind++) {
 
@@ -1407,7 +1407,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                         $sSqlEnvol = " select * from fc_busca_envolvidos(false, {$oOrigensNumpre->regra},'{$oOrigensNumpre->tipoorigem}',{$oOrigensNumpre->origem})";
                         $rsEnvol = db_query($sSqlEnvol) or die($sSqlEnvol);
-                        $iLinhasEnvol = pg_num_rows($rsEnvol);
+                        $iLinhasEnvol = $rsEnvol === false || $rsEnvol === null ? 0 : pg_num_rows($rsEnvol);
 
                         $oEnvol = db_utils::getCollectionByRecord($rsEnvol);
                     }
@@ -1432,7 +1432,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                         $sSqlDadosEnvol .= "  where z01_numcgm = " . $oEnvol->rinumcgm;
 
                         $rsDadosEnvol = db_query($sSqlDadosEnvol) or die($sSqlDadosEnvol);
-                        $iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
+                        $iLinhasDadosEnvol = $rsDadosEnvol === false || $rsDadosEnvol === null ? 0 : pg_num_rows($rsDadosEnvol);
 
                         if ($iLinhasDadosEnvol > 0) {
 
@@ -2359,7 +2359,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     if ($desconto != 0) {
 
                                         $result_desc = db_query("select * from tipoparc where cadtipoparc = $desconto and maxparc = 1");
-                                        $numrows_desc = pg_num_rows($result_desc);
+                                        $numrows_desc = $result_desc === false || $result_desc === null ? 0 : pg_num_rows($result_desc);
 
                                         if ($numrows_desc > 0) {
 
@@ -2765,7 +2765,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->datacalc = date('d-m-Y', $DB_DATACALC);
                             $pdf->taxabanc = db_formatar($taxabancaria, 'f');
                             $pdf->recorddadospagto = $DadosPagamento;
-                            $pdf->linhasdadospagto = pg_num_rows($DadosPagamento);
+                            $pdf->linhasdadospagto = $DadosPagamento === false || $DadosPagamento === null ? 0 : pg_num_rows($DadosPagamento);
                             $pdf->receita = 'k00_receit';
                             $pdf->receitared = 'codreduz';
                             $pdf->dreceita = 'k02_descr';

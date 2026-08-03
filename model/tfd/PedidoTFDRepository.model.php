@@ -127,7 +127,7 @@ class PedidoTFDRepository {
       throw new DBException( _M( MENSAGENS_PEDIDOTFD_REPOSITORY . 'erro_buscar_pedido', $oErro ) );
     }
 
-    $iTotalPedidos = pg_num_rows( $rsPedido );
+    $iTotalPedidos = $rsPedido === false || $rsPedido === null ? 0 : pg_num_rows( $rsPedido );
     $aPedidosTFD   = [];
 
     for( $iContador = 0; $iContador < $iTotalPedidos; $iContador++ ) {

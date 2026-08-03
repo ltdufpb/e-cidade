@@ -85,7 +85,7 @@ function js_imprime(virada){
 
     $sSqlConsultaInstit = " select codigo,nomeinst from db_config where db21_tipoinstit in (1,2,5)";
     $rsConsultaInstit   = db_query($sSqlConsultaInstit);
-    $iLinhasInstit      = pg_num_rows($rsConsultaInstit);
+    $iLinhasInstit      = $rsConsultaInstit === false || $rsConsultaInstit === null ? 0 : pg_num_rows($rsConsultaInstit);
 
     $aInstit = [];
     for ( $iInd=0; $iInd < $iLinhasInstit; $iInd++ ) {
@@ -112,7 +112,7 @@ function js_imprime(virada){
     $sSqlVirada .= "  where c31_db_viradacaditem in ({$sListaItens}) and c31_db_viradacaditem not in(23,24)        ";
 
     $rsConsultaVirada = db_query($sSqlVirada);
-    $iLinhasVirada    = pg_num_rows($rsConsultaVirada);
+    $iLinhasVirada    = $rsConsultaVirada === false || $rsConsultaVirada === null ? 0 : pg_num_rows($rsConsultaVirada);
 
     if ( $iLinhasVirada > 0 ) {
     	$aListaItemErro = [];
@@ -147,7 +147,7 @@ function js_imprime(virada){
 		    $sSqlPPAVersao   .= "   from ppaversao                ";
 		    $sSqlPPAVersao   .= "  where o119_versaofinal is true ";
 		    $rsPPAVersao      = db_query($sSqlPPAVersao);
-		    $iLinhasPPAVersao = pg_num_rows($rsPPAVersao);
+		    $iLinhasPPAVersao = $rsPPAVersao === false || $rsPPAVersao === null ? 0 : pg_num_rows($rsPPAVersao);
 
 		  	if ( $iLinhasPPAVersao == 0 ) {
 		    	$sErroMsg = '';

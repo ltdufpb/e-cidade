@@ -100,7 +100,7 @@ final class PadArquivoSigapRubrica extends PadArquivoSigap {
     $sSqlRubrica .= "         order by o56_anousu,elemento";
     $sSqlRubrica .= "      ) as x "; 
     $rsRubrica    = db_query(analiseQueryPlanoOrcamento($sSqlRubrica));
-    $iTotalLinhas = pg_num_rows($rsRubrica); 
+    $iTotalLinhas = $rsRubrica === false || $rsRubrica === null ? 0 : pg_num_rows($rsRubrica); 
     for ($i = 0; $i < $iTotalLinhas; $i++) {
           
       $sDiaMesAno    =  "{$iAno}-".str_pad($iMes, 2, "0", STR_PAD_LEFT)."-".str_pad($iDia, 2, "0", STR_PAD_LEFT);

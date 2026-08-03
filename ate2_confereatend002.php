@@ -125,7 +125,7 @@ order by at02_datafim, nome, at05_horaini
 ";
 //die($sql);
 $result = db_query($sql) or die($sql);
-$linhas  = pg_num_rows($result);
+$linhas  = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($linhas>0){
   $total = 0;
   $pdf = new PDF(); // abre a classe

@@ -80,7 +80,7 @@
   }
  
   $result04  = db_query($sql04);
-  $numrows04 = pg_num_rows($result04)
+  $numrows04 = $result04 === false || $result04 === null ? 0 : pg_num_rows($result04)
 ?>
 <html>
 <head>

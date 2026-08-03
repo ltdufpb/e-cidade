@@ -67,7 +67,7 @@ $sqliss = "
  where q01_cadcal = 3 and q01_anousu = " . db_getsession("DB_anousu") . " order by q01_inscr";
 
 $resultiss = db_query($sqliss);
-@$totalregistros  =  pg_num_rows($resultiss);
+@$totalregistros  =  $resultiss === false || $resultiss === null ? 0 : pg_num_rows($resultiss);
 for($ii = 800;$ii < pg_num_rows($resultiss);$ii++){ 
 db_fieldsmemory($resultiss,$ii);
 $sqliss1 = " select *
@@ -75,7 +75,7 @@ $sqliss1 = " select *
              where k00_numpre = $q01_numpre 
            ";
 $resultiss1 = db_query($sqliss1);
-@$totalcarnes = pg_num_rows($resultiss1);
+@$totalcarnes = $resultiss1 === false || $resultiss1 === null ? 0 : pg_num_rows($resultiss1);
 for($volta = 0;$volta < pg_num_rows($resultiss1);$volta++) {
 //for($volta = 0;$volta < 5;$volta++) {
   db_fieldsmemory($resultiss1,$volta);

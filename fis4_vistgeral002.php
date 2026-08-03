@@ -365,7 +365,7 @@ if(isset($procreg) && $procreg == 't'){
 					       k00_receit ";
 //  die($sql_pesq);
     $result_pesq_divida = db_query($sql_pesq);
-    $numrows = pg_num_rows($result_pesq_divida);
+    $numrows = $result_pesq_divida === false || $result_pesq_divida === null ? 0 : pg_num_rows($result_pesq_divida);
     if (isset($numrows) && $numrows == 0 ){
 	 db_msgbox("Nenhum registro para o filtro selecionado !");	
     }
@@ -557,7 +557,7 @@ if(isset($procreg) && $procreg == 't'){
 //           se agrupar por numpre,  receita
 //                          die("select * from arrecad where k00_numpre = $k00_numpre ".(isset($$andnumpar)&& $$andnumpar!=""?$$andnumpar:"")." and k00_receit = $k00_receit");
           $rsArreold = db_query("select * from arrecad where k00_numpre = $k00_numpre ".(isset(${$andnumpar})&& ${$andnumpar}!=""?${$andnumpar}:"")." and k00_receit = $k00_receit");
-	      $numrowsArreold = pg_num_rows($rsArreold);
+	      $numrowsArreold = $rsArreold === false || $rsArreold === null ? 0 : pg_num_rows($rsArreold);
           for ($iarreold=0;$iarreold<$numrowsArreold;$iarreold++){
 				db_fieldsmemory($rsArreold,$iarreold);
 //	                                                   die($clproced->sql_query_file(null,"v03_receit,k00_hist",null," v03_codigo=$cod_v03_codigo"));

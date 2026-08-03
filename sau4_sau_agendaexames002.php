@@ -133,7 +133,7 @@ if (!$rsControleMensal) {
 }
 $aWheres = ["s112_c_tipograde <> 'M'", "s112_i_prestadorvinc = $s111_i_codigo", "s112_i_diasemana = {$chave_diasemana}"];
 $lControleMensal       = false;
-$iTotalRegistrosMensal = pg_num_rows($rsControleMensal);
+$iTotalRegistrosMensal = $rsControleMensal === false || $rsControleMensal === null ? 0 : pg_num_rows($rsControleMensal);
 $iQuantidadeMensal     = 0;
 $sWhereDatas = " (s112_d_valfinal is null or
                                       (s112_d_valfinal is not null and s112_d_valfinal > '{$dataAgendamento}'::date )

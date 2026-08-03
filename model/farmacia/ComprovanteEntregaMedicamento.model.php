@@ -119,7 +119,7 @@ class ComprovanteEntregaMedicamento
                 throw new Exception(_M(MSG_COMPROVANTE_ENTREGA_MEDICAMENTO . "erro_buscar_medicamentos"));
             }
 
-            $iLinhas = pg_num_rows($rsItens);
+            $iLinhas = $rsItens === false || $rsItens === null ? 0 : pg_num_rows($rsItens);
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oMedicamento = db_utils::fieldsMemory($rsItens, $i);
                 $lFixo = ParametrosFarmacia::tipoPeriodoContinuado() == 1;

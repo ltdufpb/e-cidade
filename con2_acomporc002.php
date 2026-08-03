@@ -315,7 +315,7 @@ $rsDotacaoSaldo = db_query($sql);
 $aGrupo = [];
 $aTotGrupo = [];
 
-$linhas = pg_num_rows($rsDotacaoSaldo);
+$linhas = $rsDotacaoSaldo === false || $rsDotacaoSaldo === null ? 0 : pg_num_rows($rsDotacaoSaldo);
 for ($i = 0; $i < $linhas; $i++) {
     $oDotacaoSaldo = db_utils::fieldsMemory($rsDotacaoSaldo, $i);
 

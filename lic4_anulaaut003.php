@@ -296,7 +296,7 @@ if (isset($e54_autori) && trim($e54_autori) != "") {
           if (isset ($pc30_contrandsol) && $pc30_contrandsol == 't') {
 
             $result_testitem=db_query($sql_itens);
-            $numrows_testitem=pg_num_rows($result_testitem);
+            $numrows_testitem=$result_testitem === false || $result_testitem === null ? 0 : pg_num_rows($result_testitem);
             for ($w = 0;$w < $numrows_testitem; $w++) {
 
               db_fieldsmemory($result_testitem,$w);

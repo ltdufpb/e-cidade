@@ -135,7 +135,7 @@ class Turno {
     $aReferencias = [];
     if( $rsTurnoReferente && pg_num_rows( $rsTurnoReferente ) > 0 ) {
 
-      $iLinha = pg_num_rows( $rsTurnoReferente );
+      $iLinha = $rsTurnoReferente === false || $rsTurnoReferente === null ? 0 : pg_num_rows( $rsTurnoReferente );
       for  ($i = 0; $i < $iLinha; $i++) {
         $aReferencias[] = db_utils::fieldsMemory( $rsTurnoReferente, $i )->ed231_i_referencia;
       }

@@ -147,7 +147,7 @@ try {
 
                 $sqlDependplug = "select * from rhdependeplug where dp01_regist = " . $rh31_regist . " and dp01_rhdepend =" . $rh31_codigo;
                 $proc = db_query($sqlDependplug);
-                $proclinhas = pg_num_rows($proc);
+                $proclinhas = $proc === false || $proc === null ? 0 : pg_num_rows($proc);
                 
                 // Valida a dtAlteração de acordo com os campos extra do dependente.
                 new S2405($rh31_regist)->validarS2405('rhdependplug', $clrhdependeplug, null, $sqlDependplug);
@@ -229,7 +229,7 @@ if (isset($opcao)) {
         db_fieldsmemory($result_dados, 0);
     }
     $proc = db_query("select * from rhdependeplug where dp01_regist = " . $rh31_regist . " and dp01_rhdepend =" . $rh31_codigo);
-    $proclinhas = pg_num_rows($proc);
+    $proclinhas = $proc === false || $proc === null ? 0 : pg_num_rows($proc);
     if ($proclinhas > 0) {
         db_fieldsmemory($proc, 0);
     } else {

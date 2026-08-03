@@ -618,7 +618,7 @@ class AguaContrato {
       }
 
       $this->aEconomias = [];
-      $iQuantidadeEconomias = pg_num_rows($rsEconomias);
+      $iQuantidadeEconomias = $rsEconomias === false || $rsEconomias === null ? 0 : pg_num_rows($rsEconomias);
       for ($iEconomia = 0; $iEconomia < $iQuantidadeEconomias; $iEconomia++) {
 
         $iCodigoEconomia = db_utils::fieldsMemory($rsEconomias, $iEconomia)->x38_sequencial;

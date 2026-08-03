@@ -172,7 +172,7 @@ $sqllevanta = "select case when levinscr.y62_codlev is not null then
 //die($sqllevanta);
 $resultlevanta = db_query($sqllevanta);
 //$clativprinc->numrows;
-$numrows = pg_num_rows($resultlevanta);
+$numrows = $resultlevanta === false || $resultlevanta === null ? 0 : pg_num_rows($resultlevanta);
 if ($numrows > 0) {
     db_fieldsmemory($resultlevanta, 0);
 }
@@ -260,7 +260,7 @@ if (pg_num_rows($resparag) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do Auto de lancamento !!! ');
     exit;
 }
-$numrows = pg_num_rows($resparag);
+$numrows = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
 //$pdf1->inicia     = $db02_inicia;
 for ($i = 0; $i < $numrows; $i++) {
     db_fieldsmemory($resparag, $i);

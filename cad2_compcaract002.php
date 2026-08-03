@@ -121,7 +121,7 @@ $sql = "
 $result = db_query($sql);
 //db_criatabela($result);exit; 
 
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros para o filtro selecionado.');
 }

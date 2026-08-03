@@ -171,7 +171,7 @@ class calendario {
     }
 
     $lControleMensal       = false;
-    $iTotalRegistrosMensal = pg_num_rows($rsControleMensal);
+    $iTotalRegistrosMensal = $rsControleMensal === false || $rsControleMensal === null ? 0 : pg_num_rows($rsControleMensal);
     $iQuantidadeMensal     = 0;
     $sCampoTotalFichas     = 's112_i_fichas';
     $iTotalExamesNoMes     = 0;

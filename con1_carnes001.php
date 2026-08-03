@@ -141,7 +141,7 @@ if(isset($_POST["incluir"])) {
             <option value="0">Nenhum...</option>
             <?php 
 			    $result = db_query("select codmodelo,nomemodelo from db_carnesimg");
-				$numrows = pg_num_rows($result);
+				$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
 				  echo "<option value=\"".pg_fetch_result($result,$i,"codmodelo")."\" ".(isset($_POST["formulario"])?($_POST["formulario"]==pg_fetch_result($result,$i,"codmodelo")?"selected":""):"").">".pg_fetch_result($result,$i,"nomemodelo")."</option>\n";
 				}

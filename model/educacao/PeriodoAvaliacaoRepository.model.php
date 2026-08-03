@@ -110,7 +110,7 @@ class PeriodoAvaliacaoRepository {
     $sWherePeriodoAvaliacao = "ed338_escola = {$oEscola->getCodigo()}";
     $sSqlPeriodoAvaliacao   = $oDaoPeriodoAvaliacao->sql_query( null, "ed09_i_codigo", null, $sWherePeriodoAvaliacao );
     $rsPeriodoAvaliacao     = db_query( $sSqlPeriodoAvaliacao );
-    $iTotalPeriodoAvaliacao = pg_num_rows( $rsPeriodoAvaliacao );
+    $iTotalPeriodoAvaliacao = $rsPeriodoAvaliacao === false || $rsPeriodoAvaliacao === null ? 0 : pg_num_rows( $rsPeriodoAvaliacao );
 
     if ( $rsPeriodoAvaliacao && $iTotalPeriodoAvaliacao > 0 ) {
 

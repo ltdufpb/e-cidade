@@ -45,7 +45,7 @@ db_fieldsmemory($result,0);
 
 
 $query = @db_query($clprontuariomedico->sql_query("","*","sd32_d_atendimento desc ","sd32_i_numcgs = $cgs" ));
-$linhas = @pg_num_rows($query);
+$linhas = $query === false || $query === null ? 0 : @pg_num_rows($query);
 
 if($linhas == 0){
  echo "<table width='100%'>

@@ -235,7 +235,7 @@ $sql .= " order by tiporeserva,{$sCampos} ";
 
 
 $rsDadosReserva = db_query($sql);
-$iNroReserva    = pg_num_rows($rsDadosReserva);
+$iNroReserva    = $rsDadosReserva === false || $rsDadosReserva === null ? 0 : pg_num_rows($rsDadosReserva);
 
 if( $iNroReserva == 0 ){
   db_redireciona("db_erros.php?fechar&db_erro=Não existem reserva de saldo para listar.");

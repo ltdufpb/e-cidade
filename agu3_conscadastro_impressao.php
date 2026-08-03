@@ -182,7 +182,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaBaseCar();
 
 	if($result) {
-		$linhas = pg_num_rows($result);
+		$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -215,7 +215,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaIsencaoRec();
 
 	if($result) {
-		$linhas = pg_num_rows($result);
+		$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -242,7 +242,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaConstrCar();
 
 	if($result) {
-		$linhas = pg_num_rows($result);
+		$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -333,7 +333,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaBaseCorresp();
 
 	if($result) {
-		$linhas = pg_num_rows($result);
+		$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -400,7 +400,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaHidroMatric();
 
 	if($result) {
-		$linhas = pg_num_rows($result);
+		$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -493,7 +493,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaLeitura(12);
 
 	if($result) {
-		$linhas = pg_num_rows($result);
+		$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -555,7 +555,7 @@ $rotulo = new rotulocampo();
 		$result = $Consulta->RecordSetAguaCalc();
 
 		if($result) {
-			$linhas = pg_num_rows($result);
+			$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 		} else {
 			$linhas = 0;
 		}

@@ -192,7 +192,7 @@ class AcompanhamentoCronograma extends cronogramaFinanceiro {
       throw new BusinessException(_M(self::MENSAGENS . "erro_busca_despesa_cronograma"));
     }
 
-    $iTotalDespesas = pg_num_rows($rsDotacoes);
+    $iTotalDespesas = $rsDotacoes === false || $rsDotacoes === null ? 0 : pg_num_rows($rsDotacoes);
     for ($iDespesa = 0; $iDespesa < $iTotalDespesas; $iDespesa++) {
 
       $oDadosDespesa = db_utils::fieldsMemory($rsDotacoes, $iDespesa);
@@ -209,7 +209,7 @@ class AcompanhamentoCronograma extends cronogramaFinanceiro {
       $sOrder  = "o131_mes";
       $sSqlMetasDaDespesa = $oDaoCronogramaDespesa->sql_query_metas_despesa($sCampos, $sWhere, $sOrder);
       $rsMetasDaDespesa   = db_query($sSqlMetasDaDespesa);
-      $iTotalMetasDespesa = pg_num_rows($rsMetasDaDespesa);
+      $iTotalMetasDespesa = $rsMetasDaDespesa === false || $rsMetasDaDespesa === null ? 0 : pg_num_rows($rsMetasDaDespesa);
       for ($iMetaDespesa = 0; $iMetaDespesa < $iTotalMetasDespesa; $iMetaDespesa++) {
 
         $oDadosMetaDespesa                                            = db_utils::fieldsMemory($rsMetasDaDespesa, $iMetaDespesa);
@@ -260,7 +260,7 @@ class AcompanhamentoCronograma extends cronogramaFinanceiro {
         $oStdMensagem->fonte  = $oReceita->o57_fonte;
         throw new BusinessException(_M(self::MENSAGENS . "erro_busca_meta_receita", $oStdMensagem));
       }
-      $iTotalMetas = pg_num_rows($rsBuscaMetasDaReceita);
+      $iTotalMetas = $rsBuscaMetasDaReceita === false || $rsBuscaMetasDaReceita === null ? 0 : pg_num_rows($rsBuscaMetasDaReceita);
       for ($iReceita = 0; $iReceita < $iTotalMetas; $iReceita++) {
 
         $oDadosMeta = db_utils::fieldsMemory($rsBuscaMetasDaReceita, $iReceita);

@@ -451,7 +451,7 @@ try {
       $sOrderRecHumanoMovimentacao = "ed118_data, ed118_hora";
       $sSqlRecHumanoMovimentacao   = $oDaoRecHumanoMovimentacao->sql_query_file('','*','',$sWhereRecHumanoMovimentacao);
       $rsRecHumanoMovimentacao     = pg_query( $sSqlRecHumanoMovimentacao );
-      $iLinhas                     = pg_num_rows( $rsRecHumanoMovimentacao );
+      $iLinhas                     = $rsRecHumanoMovimentacao === false || $rsRecHumanoMovimentacao === null ? 0 : pg_num_rows( $rsRecHumanoMovimentacao );
 
       $oRetorno->aMovimentacoes = [];
       if ( $iLinhas > 0 ) {

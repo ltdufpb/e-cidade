@@ -172,7 +172,7 @@ class DuplicarRelatorio
         $where = "o115_relatorio = {$this->relatorioBase->getSequencial()}";
         $consultaColunasRelatorio = $daoColuna->sql_query_file(null, "*", null, $where);
         $resultadoConsultaColunas = db_query($consultaColunasRelatorio);
-        $quantidadeLinhasConsulta = pg_num_rows($resultadoConsultaColunas);
+        $quantidadeLinhasConsulta = $resultadoConsultaColunas === false || $resultadoConsultaColunas === null ? 0 : pg_num_rows($resultadoConsultaColunas);
 
         if ($quantidadeLinhasConsulta == 0) {
             $consultaColunasRelatorio = "
@@ -190,7 +190,7 @@ class DuplicarRelatorio
                 WHERE o116_codparamrel = {$this->relatorioBase->getSequencial()}
             ";
             $resultadoConsultaColunas = db_query($consultaColunasRelatorio);
-            $quantidadeLinhasConsulta = pg_num_rows($resultadoConsultaColunas);
+            $quantidadeLinhasConsulta = $resultadoConsultaColunas === false || $resultadoConsultaColunas === null ? 0 : pg_num_rows($resultadoConsultaColunas);
         }
 
         if (!$resultadoConsultaColunas) {
@@ -225,7 +225,7 @@ class DuplicarRelatorio
             throw new Exception("Ocorreu um erro ao buscar o vínculo entre linhas e colunas do relatório base.");
         }
 
-        $quantidadeLinhasConsulta = pg_num_rows($resultadoLinhaColuna);
+        $quantidadeLinhasConsulta = $resultadoLinhaColuna === false || $resultadoLinhaColuna === null ? 0 : pg_num_rows($resultadoLinhaColuna);
         for ($linha = 0; $linha < $quantidadeLinhasConsulta; $linha++) {
             $linhaColuna = db_utils::fieldsMemory($resultadoLinhaColuna, $linha);
             $daoLinhaColuna->o116_sequencial = null;

@@ -126,7 +126,7 @@ class RelatorioCreditos
         $this->adicionarCabecalho();
 
         $lPreencher = false;
-        $iTotalCreditos = pg_num_rows($rsCreditos);
+        $iTotalCreditos = $rsCreditos === false || $rsCreditos === null ? 0 : pg_num_rows($rsCreditos);
         for ($iIndice = 0; $iIndice < $iTotalCreditos; $iIndice++) {
             $oCredito = db_utils::fieldsMemory($rsCreditos, $iIndice);
 

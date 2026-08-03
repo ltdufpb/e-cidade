@@ -119,7 +119,7 @@ try {
                 throw new Exception("Ocorreu um erro ao consultar as depesas.");
             }
 
-            $totalRegistros = pg_num_rows($resBusca);
+            $totalRegistros = $resBusca === false || $resBusca === null ? 0 : pg_num_rows($resBusca);
             if ($totalRegistros === 0) {
                 throw new Exception("Nenhuma despesa encontrada para o filtro selecionados.");
             }
@@ -181,7 +181,7 @@ try {
                 throw new Exception("Ocorreu um erro ao consultar as receitas.");
             }
 
-            $totalRegistros = pg_num_rows($resBusca);
+            $totalRegistros = $resBusca === false || $resBusca === null ? 0 : pg_num_rows($resBusca);
             if ($totalRegistros === 0) {
                 throw new Exception("Nenhuma receita encontrada para o filtro selecionados.");
             }
@@ -229,7 +229,7 @@ try {
                 if (!$resLancamentos) {
                     throw new Exception('Não foi possível consultar os lançamentos.'.pg_last_error());
                 }
-                $totalRegistros = pg_num_rows($resLancamentos);
+                $totalRegistros = $resLancamentos === false || $resLancamentos === null ? 0 : pg_num_rows($resLancamentos);
                 if ($totalRegistros == 0) {
                     throw new Exception('Não foi possível consultar os lançamentos.'.pg_last_error());
                 }

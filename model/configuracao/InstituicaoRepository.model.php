@@ -192,7 +192,7 @@ class InstituicaoRepository
         if (!$rsBuscaInstituicao) {
             throw new Exception('Ocorreu um erro ao consultar as instituções cadastradas.');
         }
-        $registros = pg_num_rows($rsBuscaInstituicao);
+        $registros = $rsBuscaInstituicao === false || $rsBuscaInstituicao === null ? 0 : pg_num_rows($rsBuscaInstituicao);
         for ($iRowInstituicao = 0; $iRowInstituicao < $registros; $iRowInstituicao++) {
             self::getInstituicaoByCodigo(db_utils::fieldsMemory($rsBuscaInstituicao, $iRowInstituicao)->codigo);
         }

@@ -226,7 +226,7 @@ for ($tiporel = 0; $tiporel <= 1; $tiporel++) {
 	//db_criatabela($res);
 	//exit;
 
-	$rows = pg_num_rows($res);
+	$rows = $res === false || $res === null ? 0 : pg_num_rows($res);
 	$pagina              = 1;
 	$tot_sup             = 0;
 	$tot_red             = 0;
@@ -542,7 +542,7 @@ $sql .= " order by orcprojeto.o39_codproj, o47_codsup ,o47_coddot";
 //--//
 $res = db_query($sql) or die($sql);
 
-$rows = pg_num_rows($res);
+$rows = $res === false || $res === null ? 0 : pg_num_rows($res);
 $pagina  = 0;
 $tot_sup = 0;
 $tot_red = 0;

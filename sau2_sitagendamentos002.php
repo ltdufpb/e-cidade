@@ -49,7 +49,7 @@ $SQL= "  SELECT sd02_i_codigo,
       ";
 
 $Query = @db_query($SQL);
-$Linhas = @pg_num_rows($Query);
+$Linhas = $Query === false || $Query === null ? 0 : @pg_num_rows($Query);
 if($Linhas == 0){
  echo "<table width='100%'>
         <tr>

@@ -202,7 +202,7 @@ class RelatorioDevolucoes {
     $this->configurar();
 
     $rsRegistros = $this->getDados();
-    $iTotalRegistros = pg_num_rows($rsRegistros);
+    $iTotalRegistros = $rsRegistros === false || $rsRegistros === null ? 0 : pg_num_rows($rsRegistros);
     $iUltimoNumpre = null;
     $lTotal = false;
     $aTotal= ['total'=>0, 'total_original' => 0, 'total_corrigido' =>0];

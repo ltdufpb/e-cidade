@@ -54,7 +54,7 @@
      }
 
   $result= db_query($sql);
-  $num= pg_num_rows($result);
+  $num= $result === false || $result === null ? 0 : pg_num_rows($result);
 }
 
 ?>

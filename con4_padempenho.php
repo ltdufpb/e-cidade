@@ -175,7 +175,7 @@ class padEmpenho
                  WHERE e60_numemp = {$e60_numemp};
             ";
         $rsSqlEmpAut = db_query($sql);
-        $iNumRowsEmpAut = pg_num_rows($rsSqlEmpAut);
+        $iNumRowsEmpAut = $rsSqlEmpAut === false || $rsSqlEmpAut === null ? 0 : pg_num_rows($rsSqlEmpAut);
 
         if ($iNumRowsEmpAut) {
             $oEmpAutItem = db_utils::fieldsMemory($rsSqlEmpAut, 0);
@@ -235,7 +235,7 @@ class padEmpenho
         $sql = $this->getSqlEmpenho($data_ini, $data_fim, $sele, $exercicio);
 
         $res = db_query($sql) or die($sql);
-        $rows = pg_num_rows($res);
+        $rows = $res === false || $res === null ? 0 : pg_num_rows($res);
 
         for ($x = 0; $x < $rows; $x++) {
             $dados = db_utils::fieldsMemory($res, $x);
@@ -324,7 +324,7 @@ class padEmpenho
             $sSqlEmpAutItem .= "WHERE e61_numemp = {$e60_numemp} ";
 
             $rsSqlEmpAutItem = db_query($sSqlEmpAutItem);
-            $iNumRowsEmpAutItem = pg_num_rows($rsSqlEmpAutItem);
+            $iNumRowsEmpAutItem = $rsSqlEmpAutItem === false || $rsSqlEmpAutItem === null ? 0 : pg_num_rows($rsSqlEmpAutItem);
 
             if ($iNumRowsEmpAutItem) {
                 $oEmpAutItem = db_utils::fieldsMemory($rsSqlEmpAutItem, 0);
@@ -346,7 +346,7 @@ class padEmpenho
                 ";
 
                 $rsSqlEmpEmpenho = db_query($sSqlEmpEmpenho);
-                $iNumRowsEmpEmpenho = pg_num_rows($rsSqlEmpEmpenho);
+                $iNumRowsEmpEmpenho = $rsSqlEmpEmpenho === false || $rsSqlEmpEmpenho === null ? 0 : pg_num_rows($rsSqlEmpEmpenho);
 
                 if ($iNumRowsEmpEmpenho) {
                     $oEmpEmpenho = db_utils::fieldsMemory($rsSqlEmpEmpenho, 0);
@@ -376,7 +376,7 @@ class padEmpenho
             $sSqlRegistroPreco .= "  where e62_numemp           = {$e60_numemp}                                    ";
             $sSqlRegistroPreco .= "    and pc10_solicitacaotipo = 5                                                ";
             $rsSqlRegistroPreco = db_query($sSqlRegistroPreco);
-            $iNumRowsRegistroPreco = pg_num_rows($rsSqlRegistroPreco);
+            $iNumRowsRegistroPreco = $rsSqlRegistroPreco === false || $rsSqlRegistroPreco === null ? 0 : pg_num_rows($rsSqlRegistroPreco);
             if ($iNumRowsRegistroPreco > 0) {
                 $sRegistroPreco = 'S';
             }

@@ -273,7 +273,7 @@ $dt_ini2 = $anousu . "-01-01";
 
 $sqlperiodo  = $clempresto->sql_rp_novo($anousu, $sele_work, $dt_ini2, $dt_fin, $sele_work1, $sql_where_externo, "$sql_order ");
 $result_restos_mde1 = @db_query($sqlperiodo);
-$numrows_restos_mde1 = @pg_num_rows($result_restos_mde1);
+$numrows_restos_mde1 = $result_restos_mde1 === false || $result_restos_mde1 === null ? 0 : @pg_num_rows($result_restos_mde1);
 
 $saldo     = 0;
 $cancelado = 0;
@@ -316,7 +316,7 @@ for ($i = 1; $i <= 7; $i++) {
 $total_rec_ini    = 0;
 $total_rec_atu    = 0;
 $total_rec_atebim = 0;
-$iTotalLinhasReceita = pg_num_rows($result_rec);
+$iTotalLinhasReceita = $result_rec === false || $result_rec === null ? 0 : pg_num_rows($result_rec);
 // RECEITA DE IMPOSTOS LIQUIDA [1...4] + TOTAL DAS RECEITAS[0]
 
 for ($i = 0; $i < $iTotalLinhasReceita; $i ++) {
@@ -387,7 +387,7 @@ $receitas_nobimes [6] = $receitas_nobimes [7] + $receitas_nobimes [8] + $receita
 //------------------------------------------------- Despesas -----------------------------------------
 
 ///db_criatabela($result_despesa);exit;
-$iTotalLinhasDespesa = pg_num_rows($result_despesa);
+$iTotalLinhasDespesa = $result_despesa === false || $result_despesa === null ? 0 : pg_num_rows($result_despesa);
 for($i = 0; $i < $iTotalLinhasDespesa; $i ++) {
 
   $oDespesa = db_utils::fieldsmemory($result_despesa, $i);

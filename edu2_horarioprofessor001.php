@@ -66,7 +66,7 @@ $codigo_escola = db_getsession("DB_coddepto");
                       where ed75_i_rechumano = ed58_i_rechumano
                       and ed75_i_escola = $codigo_escola) and ed58_ativo is true  ";
  $result = $clregenciahorario->sql_record($clregenciahorario->sql_query("","DISTINCT ed20_i_codigo,case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as z01_nome,case when ed20_i_tiposervidor = 1 then rechumanopessoal.ed284_i_rhpessoal else rechumanocgm.ed285_i_cgm end as identificacao","z01_nome"," $restricao"));
- $num = pg_num_rows($result);
+ $num = $result === false || $result === null ? 0 : pg_num_rows($result);
  $conta = "";
  while ($row=pg_fetch_array($result)){
   $conta = $conta+1;
@@ -92,7 +92,7 @@ $codigo_escola = db_getsession("DB_coddepto");
   $result_ano .= " inner join calendario  on  calendario.ed52_i_codigo = turmaac.ed268_i_calendario";
   $result_ano .= " where ed270_i_rechumano= $cod_rec order by ed52_i_ano desc";
   $result1 = db_query($result_ano) ;
-  $num_sub = pg_num_rows($result1);
+  $num_sub = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
   if ($num_sub>=1){
    echo "new Array(\"\", ''),\n";
    $conta_sub = "";
@@ -260,7 +260,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        $resultano .= " inner join escola  on  escola.ed18_i_codigo = turmaac.ed268_i_escola";
        $resultano .= " where ed270_i_rechumano= $rechumano and ed52_i_ano=$anohorario order by ed18_c_nome";
        $result2 = db_query($resultano) ;
-       $linhas2 = pg_num_rows($result2);
+       $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
        if($linhas2>0){
         ?><option value="">TODAS</option><?php 
         for($x=0;$x<$linhas2;$x++){

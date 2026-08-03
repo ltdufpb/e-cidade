@@ -137,7 +137,7 @@ for($z=0;$z<$clperiodoescola->numrows;$z++){
   $sql .= " AND ed270_i_turmaac = $turma";  
   $sql .= " AND ed268_i_escola = $escola $condicao";    
   $result2 = db_query($sql);
-  $linhas2 = pg_num_rows($result2);
+  $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
   if($linhas2>0){
    db_fieldsmemory($result2,0);
    $regente = $z01_nome;

@@ -58,7 +58,7 @@ $sql .= "   AND (ed75_i_saidaescola is null or ed75_i_saidaescola >= '$ed98_d_da
 $sql .= " ORDER BY z01_nome";
 
 $result        = db_query($sql);
-$linhas        = pg_num_rows($result);
+$linhas        = $result === false || $result === null ? 0 : pg_num_rows($result);
 $sErroMensagem = '';
 ?>
 <style type="text/css">
@@ -176,7 +176,7 @@ textarea[disabled] {
         $sql1 .= "   AND ed97_i_rechumano = {$ed97_i_rechumano}";
 
         $result1 = db_query( $sql1 );
-        $linhas1 = pg_num_rows( $result1 );
+        $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows( $result1 );
 
         if( $linhas1 > 0 ) {
           db_fieldsmemory( $result1, 0 );
@@ -209,7 +209,7 @@ textarea[disabled] {
         $iFaltasAbonadas        = "";
         $iFaltasNaoJustificadas = "";
 
-        $iTotalLicencas = pg_num_rows($rsLicenca);
+        $iTotalLicencas = $rsLicenca === false || $rsLicenca === null ? 0 : pg_num_rows($rsLicenca);
 
         if ( $iTotalLicencas > 0 ) {
 

@@ -52,7 +52,7 @@
   
   $rotulocampo = new rotulocampo;
   $clrotulolov = new rotulolov;
-  $fm_numfields = pg_num_fields($resultsql);
+  $fm_numfields = $resultsql === false || $resultsql === null ? 0 : pg_num_fields($resultsql);
 ?>                                           
 <script>
 function gera(){

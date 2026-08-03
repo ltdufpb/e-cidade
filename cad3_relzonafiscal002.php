@@ -59,7 +59,7 @@ $oPdfTable->addFormatting(7, PDFTable::FORMAT_DATE);
 $oDaoZonasValor = new cl_zonasvalor;
 $sSql           = $oDaoZonasValor->sql_query(null, $iAnousu, "*", "j50_zona");
 $rsZonasValor   = $oDaoZonasValor->sql_record( $sSql );
-$iTotal         = pg_num_rows($rsZonasValor);
+$iTotal         = $rsZonasValor === false || $rsZonasValor === null ? 0 : pg_num_rows($rsZonasValor);
 
 if( $rsZonasValor ){
 

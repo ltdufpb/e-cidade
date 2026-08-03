@@ -239,7 +239,7 @@ switch ($oParam->exec) {
       $sWhereParecerTurma  = "ed105_i_parecer = {$oParam->iCodigo}";
       $sSqlParecerTurma    = $oDaoParecerTurma->sql_query_file('','ed105_i_turma','', $sWhereParecerTurma);
       $rsParecerTurma      = pg_query( $sSqlParecerTurma );
-      $iLinhasParecerTurma = pg_num_rows( $rsParecerTurma );
+      $iLinhasParecerTurma = $rsParecerTurma === false || $rsParecerTurma === null ? 0 : pg_num_rows( $rsParecerTurma );
       $oRetorno->aTurmasVinculadas = [];
 
       if ( $iLinhasParecerTurma > 0 ) {

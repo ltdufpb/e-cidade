@@ -212,7 +212,7 @@ switch ($oGet->sOrdem) {
 
 $rsDadosCarne = db_query($sSqlDadosCarne) or die($sSqlDadosCarne);
 
-$iLinhasDadosCarne = pg_num_rows($rsDadosCarne);
+$iLinhasDadosCarne = $rsDadosCarne === false || $rsDadosCarne === null ? 0 : pg_num_rows($rsDadosCarne);
 $iTipoDebitoAtual = '';
 $iQtdOrigem = 0;
 $sOrigemAntes = '';
@@ -313,7 +313,7 @@ if ($iLinhasDadosCarne > 0) {
             $sSqlConsultaUnica .= "  ) as unica ";
 
             $rsConsultaUnica = db_query($sSqlConsultaUnica);
-            $iLinhasUnica = pg_num_rows($rsConsultaUnica);
+            $iLinhasUnica = $rsConsultaUnica === false || $rsConsultaUnica === null ? 0 : pg_num_rows($rsConsultaUnica);
 
             if ($iLinhasUnica > 0) {
 

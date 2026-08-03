@@ -428,7 +428,7 @@ group by z01_nome, abrev, rh01_numcgm,  z01_cgccpf, rh01_nasc
 order by z01_nome 
 ";
 $result=db_query($sql);
-$linhas=pg_num_rows($result);
+$linhas=$result === false || $result === null ? 0 : pg_num_rows($result);
 
 $nomearquivo_csv = "VisaVale_".db_formatar($pedido_dia,"s","0",2,"e",0).
                                db_formatar($pedido_mes,"s","0",2,"e",0).

@@ -511,7 +511,7 @@ $aTotais     = [];
  * Percorremos os registros retornados do banco
  */
 //foreach ($aDados as $oPagamento) {
-$iNumRows = pg_num_rows($rsSql);
+$iNumRows = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
 for ($i = 0; $i < $iNumRows; $i++) {
 
   $oPagamento = db_utils::fieldsMemory($rsSql, $i);

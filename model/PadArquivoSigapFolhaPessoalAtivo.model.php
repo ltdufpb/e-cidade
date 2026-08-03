@@ -252,7 +252,7 @@ final class PadArquivoSigapFolhaPessoalAtivo extends PadArquivoSigap
         // die($sSqlPessoal);
         
         $rsPessoal = db_query($sSqlPessoal);
-        $iTotalLinhas = pg_num_rows($rsPessoal);
+        $iTotalLinhas = $rsPessoal === false || $rsPessoal === null ? 0 : pg_num_rows($rsPessoal);
 
         $diaHoje = date('d');
         $sDiaMesAno = "{$this->iAno}-" . str_pad($this->iMes, 2, "0", STR_PAD_LEFT) . "-{$diaHoje}";
@@ -297,7 +297,7 @@ final class PadArquivoSigapFolhaPessoalAtivo extends PadArquivoSigap
             ";
 
             $rsFilhos = db_query($sqlFilhos);
-            $totalFilhos = pg_num_rows($rsFilhos);
+            $totalFilhos = $rsFilhos === false || $rsFilhos === null ? 0 : pg_num_rows($rsFilhos);
             $this->aDadosAgrupados[$oPessoal->rh02_regist] = pg_fetch_all($rsFilhos);
 
             $oPessoalRetorno = new stdClass();

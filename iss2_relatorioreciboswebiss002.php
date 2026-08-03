@@ -177,7 +177,7 @@ try {
   $sSql .= " order by integra_recibo.data_emissao, integra_cad_empresa.nome_empresa, integra_cadastro.nome asc";
 
   $rsRecibos = db_query($connWebiss, $sSql);
-  $iRecibos  = pg_num_rows($rsRecibos);
+  $iRecibos  = $rsRecibos === false || $rsRecibos === null ? 0 : pg_num_rows($rsRecibos);
   $aRecibos  = [];
 
   /**

@@ -158,7 +158,7 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 		$rsdadosimovel =  db_query("select * from proprietario
                    						  inner join itbimatric on it06_matric = j01_matric
 				                   	where it06_guia = ".$clitbi->it01_guia);
-		$numdados = pg_num_rows($rsdadosimovel);
+		$numdados = $rsdadosimovel === false || $rsdadosimovel === null ? 0 : pg_num_rows($rsdadosimovel);
 		if($numdados > 0){
 			db_fieldsmemory($rsdadosimovel,0);
 			$clitbidadosimovel->it22_itbi        = $clitbi->it01_guia;
@@ -179,7 +179,7 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 																	inner join iptubase on it06_matric = j01_matric
 																	inner join cgm on z01_numcgm = j01_numcgm
 															where it06_guia = ".$clitbi->it01_guia);
-			$numdados = pg_num_rows($rsdadosimovel);
+			$numdados = $rsdadosimovel === false || $rsdadosimovel === null ? 0 : pg_num_rows($rsdadosimovel);
 			if($numdados > 0){
 				db_fieldsmemory($rsdadosimovel,0);
 			}
@@ -221,7 +221,7 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
                  					  inner join itbimatric on it06_matric = j42_matric
                             inner join cgm        on z01_numcgm  = j42_numcgm
 				               	where it06_guia = ".$clitbi->it01_guia);
-		$numoutros = pg_num_rows($rsoutros);
+		$numoutros = $rsoutros === false || $rsoutros === null ? 0 : pg_num_rows($rsoutros);
 		if($numdados > 0){
         for($i=0;$i<$numoutros;$i++){
 				db_fieldsmemory($rsoutros,$i);

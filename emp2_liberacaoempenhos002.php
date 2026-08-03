@@ -132,7 +132,7 @@ $sSql .= " {$sWhere}                                                            
 $sSql .= "  order by e60_numemp                                                                                       ";
 
 $rsSql   = db_query($sSql);
-$iRsSql  = pg_num_rows($rsSql);
+$iRsSql  = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
 
 if ($iRsSql == 0){
 	

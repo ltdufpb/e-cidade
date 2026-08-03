@@ -44,11 +44,11 @@ if ($sqlerro == false) {
 
     $sqlorigem = "select * from empresto where e91_anousu =   $anoorigem limit 1";
     $resultorigem = db_query($sqlorigem);
-    $linhasorigem = pg_num_rows($resultorigem);
+    $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
     $sqldestino = "select * from empresto where e91_anousu = {$anodestino} limit 1";
     $resultdestino = db_query($sqldestino);
-    $linhasdestino = pg_num_rows($resultdestino);
+    $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
     if (($linhasorigem > 0) && ($linhasdestino == 0)) {
         include(modification("classes/db_empresto_classe.php"));
@@ -87,7 +87,7 @@ if ($sqlerro == false) {
         $sqlemp .= "     and e60_anousu = {$anoorigem} ";
 
         $resultemp = db_query($sqlemp);
-        $linhasemp = pg_num_rows($resultemp);
+        $linhasemp = $resultemp === false || $resultemp === null ? 0 : pg_num_rows($resultemp);
 
         for ($e = 0; $e < $linhasemp; $e++) {
             db_fieldsmemory($resultemp, $e);
@@ -130,7 +130,7 @@ if ($sqlerro == false) {
             }
 
             $resultemp2 = db_query($sqlemp2);
-            $linhasemp2 = pg_num_rows($resultemp2);
+            $linhasemp2 = $resultemp2 === false || $resultemp2 === null ? 0 : pg_num_rows($resultemp2);
             if ($linhasemp2 == 0) {
 
                 $iTipo = getCodigoTipo($e64_codele, $iAnoBusca);
@@ -170,7 +170,7 @@ if ($sqlerro == false) {
                 db_fieldsmemory($resultemp2, 0);
                 $sqlemp3 = " select e90_codigo from emprestotipo where e90_estrut like '" . $c60_estrut . "%'";
                 $resultemp3 = db_query($sqlemp3);
-                $linhasemp3 = pg_num_rows($resultemp3);
+                $linhasemp3 = $resultemp3 === false || $resultemp3 === null ? 0 : pg_num_rows($resultemp3);
 
                 if ($linhasemp3 > 0) {
                     db_fieldsmemory($resultemp3, 0);
@@ -314,7 +314,7 @@ if ($sqlerro == false) {
             $sqlemp4 .= "from empresto where e91_anousu = {$anoorigem}";
 
             $resultemp4 = db_query($sqlemp4);
-            $linhasemp4 = pg_num_rows($resultemp4);
+            $linhasemp4 = $resultemp4 === false || $resultemp4 === null ? 0 : pg_num_rows($resultemp4);
 
             for ($m = 0; $m < $linhasemp4; $m++) {
                 db_fieldsmemory($resultemp4, $m);
@@ -332,7 +332,7 @@ if ($sqlerro == false) {
                 $sqlemp5 .= "         c71_coddoc  ";
 
                 $resultemp5 = db_query($sqlemp5);
-                $linhasemp5 = pg_num_rows($resultemp5);
+                $linhasemp5 = $resultemp5 === false || $resultemp5 === null ? 0 : pg_num_rows($resultemp5);
 
                 $vlranu = 0;
                 $vlrliq = 0;

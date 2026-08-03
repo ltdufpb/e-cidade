@@ -183,7 +183,7 @@ class ESocialEnvioRepository
         $sqlEsocialEnvio .= " ORDER BY rh213_data DESC, rh213_evento";
         $rsEsocialEnvio = db_query($sqlEsocialEnvio);
 
-        $totalRegistros = pg_num_rows($rsEsocialEnvio);
+        $totalRegistros = $rsEsocialEnvio === false || $rsEsocialEnvio === null ? 0 : pg_num_rows($rsEsocialEnvio);
 
         if (!$rsEsocialEnvio) {
             throw new \Exception("Nenhum registro foi encontrado com os filtros informados.");

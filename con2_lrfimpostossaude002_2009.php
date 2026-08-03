@@ -311,7 +311,7 @@ $sqlperiodo = " select e91_recurso,
 */
 $sqlperiodo  = $clempresto->sql_rp_novo($anousu, $sele_work, $dt_ini2, $dt_fin, $sele_work1, $sql_where_externo, "$sql_order ");
 $result_restos_mde1 = @db_query($sqlperiodo);
-$numrows_restos_mde1 = @pg_num_rows($result_restos_mde1);
+$numrows_restos_mde1 = $result_restos_mde1 === false || $result_restos_mde1 === null ? 0 : @pg_num_rows($result_restos_mde1);
 
 $saldo     = 0;
 $cancelado = 0;

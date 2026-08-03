@@ -41,7 +41,7 @@ $rs      = db_query($sSql);
 $aSituacoes = [ 'TODOS'];
 if ( $rs && pg_num_rows($rs) > 0) {
 
-  $iLinhas = pg_num_rows($rs);
+  $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
   for ($i = 0; $i < $iLinhas; $i++) {
 
     $oDados       = db_utils::fieldsMemory($rs, $i);

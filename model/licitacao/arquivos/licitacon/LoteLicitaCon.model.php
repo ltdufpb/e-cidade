@@ -78,7 +78,7 @@ class LoteLicitaCon extends ArquivoLicitaCon
             throw new DBException($sMsgErro);
         }
 
-        $iTotalLotes = pg_num_rows($rsLotes);
+        $iTotalLotes = $rsLotes === false || $rsLotes === null ? 0 : pg_num_rows($rsLotes);
         for ($iLinha = 0; $iLinha < $iTotalLotes; $iLinha++) {
             $oLinha = db_utils::fieldsMemory($rsLotes, $iLinha);
             $oLicitacao = LicitacaoRepository::getByCodigo($oLinha->l20_codigo);

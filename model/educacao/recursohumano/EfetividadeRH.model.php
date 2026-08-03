@@ -155,7 +155,7 @@ class EfetividadeRH {
       throw new DBException( _M( self::MENSAGENS_EFETIVIDADERH . 'erro_buscar_efetividades', $oErro ) );
     }
 
-    $iQuantidadeLinhas = pg_num_rows($rsEfetividade);
+    $iQuantidadeLinhas = $rsEfetividade === false || $rsEfetividade === null ? 0 : pg_num_rows($rsEfetividade);
 
     for( $iContador = 0; $iContador < $iQuantidadeLinhas; $iContador++ ) {
 

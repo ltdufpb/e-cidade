@@ -206,7 +206,7 @@ class AguaCategoriaConsumo {
        * @todo persistir ordenação e remover essa lógica
        */
       $iOrdem = 1;
-      $iQuantidadeEstruturas = pg_num_rows($rsDados);
+      $iQuantidadeEstruturas = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
       for ($iRegistro = 0; $iRegistro < $iQuantidadeEstruturas; $iRegistro++) {
 
         $iCodigoEstrutura = db_utils::fieldsMemory($rsDados, $iRegistro)->x37_sequencial;

@@ -238,7 +238,7 @@ class Dirf2012 extends Dirf {
     /**
      * processa as anulações de empenho reduzindo os valores de pagamentos anteriores.
      */
-    $iNumRowsPag = pg_num_rows($rsDadosContabilidade);
+    $iNumRowsPag = $rsDadosContabilidade === false || $rsDadosContabilidade === null ? 0 : pg_num_rows($rsDadosContabilidade);
     for ($iPag = 0; $iPag < $iNumRowsPag; $iPag++) {
 
       $oPagamento = db_utils::fieldsMemory($rsDadosContabilidade, $iPag);
@@ -259,7 +259,7 @@ class Dirf2012 extends Dirf {
         $oPagamento->valor_estornado -= $nDeducao;
         while ($oPagamento->valor_estornado > 0) {
 
-          $iNumRowsPag2 = pg_num_rows($rsDadosContabilidade);
+          $iNumRowsPag2 = $rsDadosContabilidade === false || $rsDadosContabilidade === null ? 0 : pg_num_rows($rsDadosContabilidade);
           for ($iPag2 = 0; $iPag2 < $iNumRowsPag2; $iPag2++) {
 
             $oPagamento2 = db_utils::fieldsMemory($rsDadosContabilidade, $iPag2);
@@ -678,7 +678,7 @@ class Dirf2012 extends Dirf {
     $sSqlDesdobramento .= " where (valor_pago_total - valor_estornado_total) >= 6000 ";
 
     $rsDesdobramentos = db_query($sSqlDesdobramento);
-    $iDesdobramentos  = pg_num_rows($rsDesdobramentos);
+    $iDesdobramentos  = $rsDesdobramentos === false || $rsDesdobramentos === null ? 0 : pg_num_rows($rsDesdobramentos);
 
     if(!$rsDesdobramentos) {
       throw new DBException("Não foi possível verificar pagamentos sem retenção\n\n" . pg_last_error());
@@ -841,7 +841,7 @@ class Dirf2012 extends Dirf {
     $ssqlPensoes .= " group by z01_nome, z01_cgccpf";
 
     $rsTotalPensoes = db_query($ssqlPensoes);
-    $iTotalPensoes  = pg_num_rows($rsTotalPensoes);
+    $iTotalPensoes  = $rsTotalPensoes === false || $rsTotalPensoes === null ? 0 : pg_num_rows($rsTotalPensoes);
     $sInformacaoComplementar = '';
 
     if ($iTotalPensoes > 0) {

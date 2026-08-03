@@ -112,7 +112,7 @@ class ImportacaoDividaAtiva extends \ImportacaoDiversosCobrancaAdministrativa
         $this->onProgressBarSetMessageLog("Buscando débitos na base de dados (Etapa 3/11)");
 
         $rsBuscaDebitos = $this->buscarDebitos($sWhere);
-        $iTotalRegistros = pg_num_rows($rsBuscaDebitos);
+        $iTotalRegistros = $rsBuscaDebitos === false || $rsBuscaDebitos === null ? 0 : pg_num_rows($rsBuscaDebitos);
 
         if ($iTotalRegistros == 0) {
             throw new \Exception("Nenhum registro encontrado.");

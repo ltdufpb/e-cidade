@@ -123,7 +123,7 @@ $clrotulo->label("c58_sequencial");
                 <?php
 
           			  $resulttipo = db_query("select 3 as k73_sequencial,'Todos' as k73_descricao union all select k73_sequencial,k73_descricao from cancdebitostipo ");
-          			  $linhasTipo = pg_num_rows($resulttipo);
+          			  $linhasTipo = $resulttipo === false || $resulttipo === null ? 0 : pg_num_rows($resulttipo);
           			  $tipo = [];
 
           			  if($linhasTipo > 0 ){

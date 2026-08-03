@@ -79,7 +79,7 @@ try {
             }
 
             $itensParaIncluir = [];
-            $totalProcessos = pg_num_rows($rsMultasDoProcesso);
+            $totalProcessos = $rsMultasDoProcesso === false || $rsMultasDoProcesso === null ? 0 : pg_num_rows($rsMultasDoProcesso);
 
             $deleteReceitaDeMulta = <<<DELETE
                    delete from arrecad
@@ -152,7 +152,7 @@ SQL;
                     throw new \Exception("Ocorreu algo inesperado. Não foi possível encontrar os débitos do processo: {$oParam->oDados->v70_sequencial}");
                 }
 
-                $iTotalLinhas = pg_num_rows($rsDebitos);
+                $iTotalLinhas = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
                 $daoArrecad = new cl_arrecad;
 
                 for ($j = 0; $j < $iTotalLinhas; $j++) {

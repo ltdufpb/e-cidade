@@ -282,7 +282,7 @@ if ($oParam->exec == "consultarNotas") {
       $oDaoRetencaoempagemov        = db_utils::getDao("retencaoempagemov");
       $sSqlRetencaoempagemov        = $oDaoRetencaoempagemov->sql_query_file("", "*", "", "e27_empagemov= {$oNota->iCodMov}");
       $rsRetencaoempagemov          = $oDaoRetencaoempagemov->sql_record($sSqlRetencaoempagemov);
-      $iTotalLinhaRetencaoempagemov = pg_num_rows($rsRetencaoempagemov);
+      $iTotalLinhaRetencaoempagemov = $rsRetencaoempagemov === false || $rsRetencaoempagemov === null ? 0 : pg_num_rows($rsRetencaoempagemov);
       for($iLinhaRetencaoempagemov  = 0; $iLinhaRetencaoempagemov < $iTotalLinhaRetencaoempagemov; $iLinhaRetencaoempagemov++) {
 
         $oResultRetencaoempagemov = db_utils::fieldsMemory($rsRetencaoempagemov, $iLinhaRetencaoempagemov);

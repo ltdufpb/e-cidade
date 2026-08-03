@@ -63,7 +63,7 @@ require_once(modification("libs/db_usuariosonline.php"));
                      $qr
                      order by codmod";
   $result = db_query($sql);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   $RecordsetTabMod = $result;
 
   if($numrows == 0) {
@@ -107,7 +107,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 
       if(pg_num_rows($pk) > 0) {
 
-        $Npk = pg_num_rows($pk);
+        $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 		    $virgula = "";
 		    $virconc = "";
 
@@ -122,7 +122,7 @@ require_once(modification("libs/db_usuariosonline.php"));
                           where codarq = ".pg_fetch_result($result,$i,"codarq").
 			              " order by a.seqarq");
 
-	    $Ncampos = pg_num_rows($campo);
+	    $Ncampos = $campo === false || $campo === null ? 0 : pg_num_rows($campo);
 
       if ($Ncampos > 0) {
         fputs($fd, "/**\n * MODULO: " . trim( pg_fetch_result($result, $i, "nomemod") ) . "\n */\n");
@@ -137,7 +137,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 						                 inner join db_syscampo b on b.codcam = f.codcam
 						                 inner join db_sysarquivo q on q.codarq = f.referen
                                   where f.codarq = " . pg_fetch_result($result, $i, "codarq") );
-	      $Nforkey     = pg_num_rows($forkey);
+	      $Nforkey     = $forkey === false || $forkey === null ? 0 : pg_num_rows($forkey);
 		    $campofk     = "";
 		    $campofktipo = "";
 
@@ -449,7 +449,7 @@ require_once(modification("libs/db_usuariosonline.php"));
                      . str_repeat(' ', 27) . "'func_" . trim(pg_fetch_result($result, $i, 'nomearq'))
                      . ".php?funcao_js=parent.js_preenchepesquisa|" . trim(pg_fetch_result($pk, 0, 'nomecam')) );
 
-          $Npk     = pg_num_rows($pk);
+          $Npk     = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 		      $virgula = "";
 		      $virconc = "";
 
@@ -470,7 +470,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 
         if (pg_num_rows($pk) > 1) {
 
-          $Npk = pg_num_rows($pk);
+          $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 		      $virgula = "";
 		      $virconc = "";
 
@@ -488,7 +488,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 
 	      if(pg_num_rows($pk) > 1) {
 
-          $Npk = pg_num_rows($pk);
+          $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 	        $virgula = "";
 	        $virconc = "";
 

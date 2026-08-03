@@ -307,7 +307,7 @@ try {
                 $sSqlPercPatro .= "     and r33_instit = " . db_getsession('DB_instit');
 
                 $rsPercPatro = db_query($sSqlPercPatro);
-                $iLinhasPercPatro = pg_num_rows($rsPercPatro);
+                $iLinhasPercPatro = $rsPercPatro === false || $rsPercPatro === null ? 0 : pg_num_rows($rsPercPatro);
 
             }
 
@@ -354,7 +354,7 @@ try {
                 $sSqlPercPatro .= "     and r33_instit = " . db_getsession('DB_instit');
 
                 $rsPercPatro = db_query($sSqlPercPatro);
-                $iLinhasPercPatro = pg_num_rows($rsPercPatro);
+                $iLinhasPercPatro = $rsPercPatro === false || $rsPercPatro === null ? 0 : pg_num_rows($rsPercPatro);
 
             }
 
@@ -534,7 +534,7 @@ try {
 
             if ($rsContas) {
 
-                $iLinhasContas = pg_num_rows($rsContas);
+                $iLinhasContas = $rsContas === false || $rsContas === null ? 0 : pg_num_rows($rsContas);
                 $aListaContas = [];
                 $aListaContas = db_utils::getCollectionByRecord($rsContas, false, false, true);
 

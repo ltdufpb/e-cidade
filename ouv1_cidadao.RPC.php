@@ -721,7 +721,7 @@ if ($oParam->acao == "incluir") {
 
     $sWhere = "ov02_sequencial = ".$oParam->chave." and ov02_ativo is true";
     $rsCidadao = $clcidadao->sql_record($clcidadao->sql_query_cidadaotiporetornocgm(null,null,$campos,null,$sWhere));
-    $iNumRows = pg_num_rows($rsCidadao);
+    $iNumRows = $rsCidadao === false || $rsCidadao === null ? 0 : pg_num_rows($rsCidadao);
 
     if ($iNumRows>0){
 

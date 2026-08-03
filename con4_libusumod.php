@@ -166,7 +166,7 @@ input {
                                              where libcliente is true
                                              order by lower(nome_modulo)");
 			}
-			  $numrows = pg_num_rows($result);
+			  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			  for($i = 0;$i < $numrows;$i++) {
 			    echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."\" ".($modulo==pg_fetch_result($result,$i,"id_item")?"selected":"").">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
 			  }  
@@ -198,7 +198,7 @@ input {
 			  <select onDblClick="document.form1.selecionar.click()" name="usuario" size="18" onChange="js_msg_status(this.value.substr(this.value.search('##') + 2))" onBlur="js_lmp_status()">
                   <?php 
 			  $result = db_query("select id_usuario,nome,login from db_usuarios where usuext = 0 and usuarioativo = 1 order by lower(login)");
-			  $numrows = pg_num_rows($result);
+			  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 			  for($i = 0;$i < $numrows;$i++) {
 			    echo "<option value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"login")."</option>\n";
 			  }  

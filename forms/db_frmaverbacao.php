@@ -122,7 +122,7 @@ if ($db_opcao==1){
 
 $sqltipo ="select * from averbatipo where j93_datalimite >= current_date or j93_datalimite is null order by j93_codigo";
 $result_tipo = db_query($sqltipo);
-$linhas_tipo = pg_num_rows($result_tipo);
+$linhas_tipo = $result_tipo === false || $result_tipo === null ? 0 : pg_num_rows($result_tipo);
 db_selectrecord('j75_tipo',$result_tipo,true,$opc,"","","","","js_submit();");
 if (!isset($j75_tipo)){
 	if($linhas_tipo>0){

@@ -72,7 +72,7 @@ if ( empty($rsVistorias) ) {
 }
 
 
-$iResultadoVistorias = pg_num_rows($rsVistorias);
+$iResultadoVistorias = $rsVistorias === false || $rsVistorias === null ? 0 : pg_num_rows($rsVistorias);
 
 /**
  * Caso não haja retorno algum para localização, buscamo o retorno para as vistorias de sanitário
@@ -114,7 +114,7 @@ if (empty($iResultadoVistorias)) {
   }
 }
 
-$iResultadoVistorias = pg_num_rows($rsVistorias);
+$iResultadoVistorias = $rsVistorias === false || $rsVistorias === null ? 0 : pg_num_rows($rsVistorias);
 
 if ($iResultadoVistorias == 0) {
 

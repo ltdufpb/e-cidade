@@ -157,7 +157,7 @@ class PagamentoFornecedorBanrisul extends PagamentoFornecedorTXTBase implements 
     $sSqlMovimento .= "            end ) > 0 																																				";
 
     $rsCodigoMovimento     = db_query($sSqlMovimento);
-    $iTotalLinhasMovimento = pg_num_rows($rsCodigoMovimento);
+    $iTotalLinhasMovimento = $rsCodigoMovimento === false || $rsCodigoMovimento === null ? 0 : pg_num_rows($rsCodigoMovimento);
     if ($iTotalLinhasMovimento > 0) {
 
       if ($iTotalLinhasMovimento > 1) {

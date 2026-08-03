@@ -202,7 +202,7 @@ SQL_BUSCA_LANCAMENTO;
             throw new Exception('Ocorreu um erro ao consultar os valores do conta corrente.');
         }
 
-        $totalRegistros = pg_num_rows($resBusca);
+        $totalRegistros = $resBusca === false || $resBusca === null ? 0 : pg_num_rows($resBusca);
         if ($totalRegistros === 0) {
             return;
         }

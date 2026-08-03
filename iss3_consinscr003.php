@@ -163,7 +163,7 @@ if ( isset($numeroDaInscricao) ) {
 }
 
 $rsSqlDadosInscricao = db_query($sSqlDadosInscricao);
-$iNumRowsIncricao    = pg_num_rows($rsSqlDadosInscricao);
+$iNumRowsIncricao    = $rsSqlDadosInscricao === false || $rsSqlDadosInscricao === null ? 0 : pg_num_rows($rsSqlDadosInscricao);
 
 if ( isset($referenciaanterior) || !empty($cpfCnpj) ) {
     $numeroDaInscricao = null;
@@ -705,7 +705,7 @@ if (!empty($iCodigoInscricao) && $iCodigoInscricao > 0 && pg_num_rows($rsSqlDado
                   <?php 
                   $sql="select * from varfix inner join varfixval on q33_codigo=q34_codigo and q33_inscr=$iCodigoInscricao";
                   $varfix=db_query($sql);
-                  $numrows=pg_num_rows($varfix);
+                  $numrows=$varfix === false || $varfix === null ? 0 : pg_num_rows($varfix);
                   if ($numrows>0)
                   {
                       ?>

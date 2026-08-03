@@ -214,7 +214,7 @@ $where            = "  c61_instit in ({$sInstituicoes})   ";
  */
 $rsDadosRelatorio = db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fim,false,$where);
 @db_query("drop table work_pl");
-$iNumRows = pg_num_rows($rsDadosRelatorio);
+$iNumRows = $rsDadosRelatorio === false || $rsDadosRelatorio === null ? 0 : pg_num_rows($rsDadosRelatorio);
 for ($iParam = 1; $iParam <= 18; $iParam++) {
 
   if ($iParam == 10) {

@@ -273,7 +273,7 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 
 
   $result  =  @db_query($sqlMov);
-    $numrows =  @pg_num_rows($result);
+    $numrows =  $result === false || $result === null ? 0 : @pg_num_rows($result);
     if($numrows==0){
       $sqlerro =true;
       $erro_msg = "Erro. Contate suporte";

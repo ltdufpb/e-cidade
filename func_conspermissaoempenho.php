@@ -169,7 +169,7 @@ if (isset($oGet->relpermempenho) && $oGet->relpermempenho = 't') {
 			                $sSqlAnoExercicio .= " from db_permemp                 ";
 			                $sSqlAnoExercicio .= " order by db20_anousu desc       "; 
 			                $rsAnoExercicio    = db_query($sSqlAnoExercicio);
-			                $iNumRows          = pg_num_rows($rsAnoExercicio);
+			                $iNumRows          = $rsAnoExercicio === false || $rsAnoExercicio === null ? 0 : pg_num_rows($rsAnoExercicio);
 			                
 			                $aAnoExercicio = [];
 			                if ($iNumRows > 0) {

@@ -150,7 +150,7 @@ final class PadArquivoSigapComprovanteLiquidacao extends PadArquivoSigap {
     $sSqlLiquidacoes .= "     and e60_instit in ($sListaInstit) and e91_anousu = ".db_getsession("DB_anousu");
     $sSqlLiquidacoes .= "     order by c75_data";
     $rsLiquidacoes           = db_query($sSqlLiquidacoes);
-    $iTotalLinhasLiquidacoes = pg_num_rows($rsLiquidacoes);
+    $iTotalLinhasLiquidacoes = $rsLiquidacoes === false || $rsLiquidacoes === null ? 0 : pg_num_rows($rsLiquidacoes);
     for ($i = 0; $i < $iTotalLinhasLiquidacoes; $i++) {
 
       $sDiaMesAno      =  "{$iAno}-".str_pad($iMes, 2, "0", STR_PAD_LEFT)."-".str_pad($iDia, 2, "0", STR_PAD_LEFT);

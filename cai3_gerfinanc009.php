@@ -215,7 +215,7 @@ if(isset($inscricao) && !empty($inscricao)) {
   echo "<input type=\"hidden\" name=\"ver_numcgm\" value=\"".pg_fetch_result($result,0,"k00_numcgm")."\">\n";
   echo "<table border=\"0\" cellspacing=\"0\" cellpadding=\"3\" id=\"tabdebitos\">\n";
 //cria o cabeçalho 
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   echo "<tr bgcolor=\"#FFCC66\">\n";
   echo "<th class=\"borda\" style=\"font-size:12px\" nowrap>&nbsp;</th>\n";
   echo "<th class=\"borda\" style=\"font-size:12px\" nowrap>Numpre</th>\n";

@@ -87,7 +87,7 @@ class AnexoXVIIBalancoGeral extends RelatoriosLegaisBase
                                            'true',
                                            'true');
 
-     $iTotalLinhasPlano = pg_num_rows($rsPlano);
+     $iTotalLinhasPlano = $rsPlano === false || $rsPlano === null ? 0 : pg_num_rows($rsPlano);
      /**
       * percorremos a slinhas cadastradas no relatorio, e adicionamos os valores cadastrados manualmente.
       */

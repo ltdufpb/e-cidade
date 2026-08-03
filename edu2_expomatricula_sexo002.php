@@ -38,7 +38,7 @@ $sql = "select * from aluno
 		where ed57_i_escola=$escola";
 
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 //db_criatabela($result);
 //exit;
@@ -117,7 +117,7 @@ $head3 = "Mês: ".$mes;
                    and ed60_c_concluida='N'
                    and ed57_i_escola = $escola";
 	$result2 = db_query($sql2);
-    $linhas2= pg_num_rows($result2);
+    $linhas2= $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
     //die("Quantidade de alunos na escola: ".$linhas2);
   for($idade=6;$idade<20;$idade++){
 
@@ -148,7 +148,7 @@ $head3 = "Mês: ".$mes;
                       and $calendario-extract(year from ed47_d_nasc)".$part_sql2;
 
 	   	  $result3 = db_query($sql3);
-          $linhas3 = pg_num_rows($result3);
+          $linhas3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
 		  if($linhas3>0){
 		     $tlinha=$tlinha+1;
 			 db_fieldsmemory($result3,0);

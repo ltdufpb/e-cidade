@@ -260,7 +260,7 @@ class ExportacaoSituacaoAlunoCenso2013 {
     $sSql .= "  where {$sWhere}";
 
     $rs      = db_query($sSql);
-    $iLinhas = pg_num_rows($rs);
+    $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
     $aAlunosFiltrados = [];
     for ($i = 0; $i < $iLinhas; $i++) {

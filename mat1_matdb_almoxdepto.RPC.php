@@ -101,7 +101,7 @@ try {
                 throw new BusinessException("Não foi encontrado nenhum departamento cadastrado para a instituição.");
             }
 
-            $qtdDepartamentos = pg_num_rows($rsDepartamentos);
+            $qtdDepartamentos = $rsDepartamentos === false || $rsDepartamentos === null ? 0 : pg_num_rows($rsDepartamentos);
             $oRetorno->departamentos = [];
             for ($i = 0; $i < $qtdDepartamentos; $i++) { 
                 $oRetorno->departamentos[] = db_utils::fieldsMemory($rsDepartamentos, $i);

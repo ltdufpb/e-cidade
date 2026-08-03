@@ -161,7 +161,7 @@ function js_label(liga,evt,descr,quant,vlr){
           </tr>
         <?php          
 	  $re=db_query("select d03_tipos,d03_descr,d04_quant,d04_vlrcal,d04_vlrval,d04_mult from editalserv inner join editaltipo on d03_tipos=d04_tipos where d04_contri=$d02_contri");
-          $numlinhas= pg_num_rows($re);
+          $numlinhas= $re === false || $re === null ? 0 : pg_num_rows($re);
 	    $dad="";
  	    for($f=0; $f<$numlinhas; $f++){
 	       db_fieldsmemory($re,$f);

@@ -118,7 +118,7 @@ if(isset($tecnico)&& $tecnico != ""){
 
 $ultatend = 0;
 $tamanho = 4;
-$numlinha = pg_num_rows($result);
+$numlinha = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 for($x=0; $x< $numlinha;$x++){
  db_fieldsmemory($result,$x);

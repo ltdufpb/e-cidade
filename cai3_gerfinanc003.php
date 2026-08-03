@@ -331,7 +331,7 @@ if (!isset($emite_recibo_protocolo) and !isset($reemite_recibo)) {
                     $sSqlArrecad .= "     and k00_numpar   = {$iNumpar}       ";
                     $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}'   ";
                     $rsSqlArrecad = db_query($sSqlArrecad);
-                    $iNumRows = pg_num_rows($rsSqlArrecad);
+                    $iNumRows = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
 
                     if ($iNumRows == 0) {
                         if ($aDados["tipo_debito"] == 3 || $aDados["tipo_debito"] == 5) {
@@ -1480,7 +1480,7 @@ if (isset($tipo_debito)) {
         ";
 
                                     $result = db_query($sqlhist) or die($sqlhist);
-                                    $tot = pg_num_rows($result);
+                                    $tot = $result === false || $result === null ? 0 : pg_num_rows($result);
 
                                     if ($tot > 0) {
                                         $histant = pg_fetch_result($result, 0, "k00_origem") . "-" . pg_fetch_result($result, 0,
@@ -1711,7 +1711,7 @@ $pdf1->datacalc = db_formatar($minvenc, "d");
 $pdf1->predatacalc = db_formatar($minvenc, "d");
 $pdf1->taxabanc = db_formatar($taxabancaria, 'f');
 $pdf1->recorddadospagto = $DadosPagamento;
-$pdf1->linhasdadospagto = pg_num_rows($DadosPagamento);
+$pdf1->linhasdadospagto = $DadosPagamento === false || $DadosPagamento === null ? 0 : pg_num_rows($DadosPagamento);
 $pdf1->receita = 'k00_receit';
 $pdf1->valor = 'valor';
 $pdf1->receitared = 'codreduz';
@@ -1854,7 +1854,7 @@ $sqlReceitas = " select k00_receit as codreceita,
                           tabplan.k02_reduz,
                           taborc.k02_codigo";
 $rsReceitas = db_query($sqlReceitas) or die($sqlReceitas);
-$intnumrows = pg_num_rows($rsReceitas);
+$intnumrows = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 for ($x = 0; $x < $intnumrows; $x++) {
     db_fieldsmemory($rsReceitas, $x);
     $pdf1->arraycodreceitas[$x] = $codreceita;
@@ -1891,7 +1891,7 @@ $pdf1->predescr9 = str_pad($k03_numpre . "000", 11, 0, STR_PAD_LEFT); // cod. de
 
 $sSqlMsgCarne = "select k03_msgbanco from numpref where k03_anousu = " . db_getsession('DB_anousu');
 $rsMsgcarne = db_query($sSqlMsgCarne);
-$iNumrows = pg_num_rows($rsMsgcarne);
+$iNumrows = $rsMsgcarne === false || $rsMsgcarne === null ? 0 : pg_num_rows($rsMsgcarne);
 if ($iNumrows > 0) {
     db_fieldsmemory($rsMsgcarne, 0);
 } else {
@@ -2102,7 +2102,7 @@ if ($oRegraEmissao->isCobranca()) {
                     $rsDadosPartilha = db_query($sSqlPartilha);
 
                     if ($rsDadosPartilha) {
-                        $iLinhasPartilha = pg_num_rows($rsDadosPartilha);
+                        $iLinhasPartilha = $rsDadosPartilha === false || $rsDadosPartilha === null ? 0 : pg_num_rows($rsDadosPartilha);
                         for ($iInd = 0; $iInd < $iLinhasPartilha; $iInd++) {
                             $aDadosPartilha = db_utils::fieldsMemory($rsDadosPartilha, $iInd);
 

@@ -67,7 +67,7 @@ switch ($oParam->exec) {
 
     $rsSqlDocumentos = db_query($sSqlDocumentos);
 
-    $oRetorno->iTotalDocumentos = pg_num_rows($rsSqlDocumentos);
+    $oRetorno->iTotalDocumentos = $rsSqlDocumentos === false || $rsSqlDocumentos === null ? 0 : pg_num_rows($rsSqlDocumentos);
     
     $oRetorno->aDocumentos = [];
     
@@ -97,7 +97,7 @@ switch ($oParam->exec) {
 
     $rs = db_query($sql);
 
-    $oRetorno->total = pg_num_rows($rs);
+    $oRetorno->total = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
     if ($oRetorno->total > 0) {
       $oRetorno->aDocumentos = db_utils::getCollectionByRecord($rs, false, false, true);

@@ -55,7 +55,7 @@ class ReajustePadroes{
   public function validaPadroes() {
 
     $rsPadroesInvalidos     = $this->getPadroesInvalidos();
-    $iTotalPadroesInvalidos = pg_num_rows($rsPadroesInvalidos);
+    $iTotalPadroesInvalidos = $rsPadroesInvalidos === false || $rsPadroesInvalidos === null ? 0 : pg_num_rows($rsPadroesInvalidos);
 
     if ($iTotalPadroesInvalidos  > 0 ) {
       

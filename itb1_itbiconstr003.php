@@ -94,7 +94,7 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
     	
        $sWhere		   = " it08_guia = {$it08_guia}";
        $rsConsultaArea = db_query($clitbiconstr->sql_query(null,"it08_areatrans",null,$sWhere));
-       $iLinhasArea	   = pg_num_rows($rsConsultaArea);
+       $iLinhasArea	   = $rsConsultaArea === false || $rsConsultaArea === null ? 0 : pg_num_rows($rsConsultaArea);
 	   $nTotalArea     = 0;
         
        for ( $iInd=0; $iInd < $iLinhasArea; $iInd++  ) {

@@ -292,7 +292,7 @@ if ($_POST["vinculo"] == "A"){
   }
 
   $rsAtivos      = db_query($sSqlAtivos);
-  $iLinhasAtivos = pg_num_rows($rsAtivos);
+  $iLinhasAtivos = $rsAtivos === false || $rsAtivos === null ? 0 : pg_num_rows($rsAtivos);
 
   for($x = 0; $x < $iLinhasAtivos; $x++){
 
@@ -524,7 +524,7 @@ if ($_POST["vinculo"] == "A"){
   }
 
   $rsVersaoInativos = db_query($sSqlVersaoInativos);
-  $iLinhasInativos  = pg_num_rows($rsVersaoInativos);
+  $iLinhasInativos  = $rsVersaoInativos === false || $rsVersaoInativos === null ? 0 : pg_num_rows($rsVersaoInativos);
 
   for($x = 0; $x < $iLinhasInativos; $x++){
 
@@ -760,7 +760,7 @@ if ($_POST["vinculo"] == "A"){
   }
 
   $rsQueryPensionistas = db_query($sSqlVersaoPensionistas);
-  $iLinhasPensionistas = pg_num_rows($rsQueryPensionistas);
+  $iLinhasPensionistas = $rsQueryPensionistas === false || $rsQueryPensionistas === null ? 0 : pg_num_rows($rsQueryPensionistas);
 
   for($x = 0; $x < $iLinhasPensionistas; $x++){
 

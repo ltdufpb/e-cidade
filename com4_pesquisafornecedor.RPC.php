@@ -45,6 +45,6 @@ $sSqlCgm = $oCgm->sql_query_file(
 );
 
 $rsCgm    = db_query($sSqlCgm);
-$iNumRows = pg_num_rows($rsCgm);
+$iNumRows = $rsCgm === false || $rsCgm === null ? 0 : pg_num_rows($rsCgm);
 $array    = db_utils::getCollectionByRecord($rsCgm, false, false, true);
 echo $oJson->encode($array);

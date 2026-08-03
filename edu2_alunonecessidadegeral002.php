@@ -75,7 +75,7 @@ $rsAlunos = db_query($sSql);
 
 $rsEscolas = db_query($sSql);
 
-$iLinhasEscola = pg_num_rows($rsEscolas);
+$iLinhasEscola = $rsEscolas === false || $rsEscolas === null ? 0 : pg_num_rows($rsEscolas);
 
 
 if ($iLinhasEscola == 0) {

@@ -31,11 +31,11 @@ if ($sqlerro == false) {
   //empparametro
   $sqlorigem = "select * from empparametro where e39_anousu =  $anoorigem limit 1";
   $resultorigem = db_query($sqlorigem);
-  $linhasorigem = pg_num_rows($resultorigem);
+  $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
   $sqldestino = "select * from empparametro where e39_anousu =  $anodestino limit 1";
   $resultdestino = db_query($sqldestino);
-  $linhasdestino = pg_num_rows($resultdestino);
+  $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
 
   if (($linhasorigem > 0) && ($linhasdestino == 0 )) {
     
@@ -73,11 +73,11 @@ if ($sqlerro == false) {
     //empparamnum
     $sqlorigem = "select * from empparamnum where e29_anousu =  $anoorigem ";
     $resultorigem = db_query($sqlorigem);
-    $linhasorigem = pg_num_rows($resultorigem);
+    $linhasorigem = $resultorigem === false || $resultorigem === null ? 0 : pg_num_rows($resultorigem);
 
     $sqldestino = "select * from empparamnum where e29_anousu =  $anodestino limit 1";
     $resultdestino = db_query($sqldestino);
-    $linhasdestino = pg_num_rows($resultdestino);
+    $linhasdestino = $resultdestino === false || $resultdestino === null ? 0 : pg_num_rows($resultdestino);
     include(modification("classes/db_empparamnum_classe.php"));
     $clempparamnum = new cl_empparamnum;
     if (($linhasorigem > 0) && ($linhasdestino == 0 )) {

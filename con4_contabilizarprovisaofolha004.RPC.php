@@ -299,7 +299,7 @@ try {
     	 * Busca saldo alterio pela reduzido/conta
     	 */
     	$rsPlanoContaDados = db_planocontassaldo_matriz($oParam->iAno, $dtDataInicial, $dtDataFinal, false, $sWhere);
-    	$iTotalContas      = pg_num_rows($rsPlanoContaDados);
+    	$iTotalContas      = $rsPlanoContaDados === false || $rsPlanoContaDados === null ? 0 : pg_num_rows($rsPlanoContaDados);
 
     	for($iConta = 0; $iConta < $iTotalContas; $iConta++) {
 

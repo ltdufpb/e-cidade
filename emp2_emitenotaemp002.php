@@ -84,7 +84,7 @@ if(isset($e60_numemp) && $e60_numemp != ''){
   $dbwhere     = " e60_numemp = $e60_numemp ";
   $sql         = "select e60_anousu as anousu from empempenho where $dbwhere";
   $res_empenho = @db_query($sql);
-  $numrows_empenho = @pg_num_rows($res_empenho);
+  $numrows_empenho = $res_empenho === false || $res_empenho === null ? 0 : @pg_num_rows($res_empenho);
   if ($numrows_empenho != 0){
     db_fieldsmemory($res_empenho,0);
   }
@@ -515,7 +515,7 @@ for ($i = 0;$i < pg_num_rows($result);$i++) {
    //$pdf1->resumo           = $e60_resumo;
    $pdf1->licitacao        = $e60_codtipo;
    $pdf1->recorddositens   = $resultitem;
-   $pdf1->linhasdositens   = pg_num_rows($resultitem);
+   $pdf1->linhasdositens   = $resultitem === false || $resultitem === null ? 0 : pg_num_rows($resultitem);
    $pdf1->quantitem        = "e62_quant";
    $pdf1->valoritem        = "e62_vltot";
    $pdf1->valor            = "e62_vlrun";

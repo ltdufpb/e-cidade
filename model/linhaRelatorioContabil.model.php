@@ -180,7 +180,7 @@ class linhaRelatorioContabil
         $rsLinhas = db_query($sSqlLinhas);
         $aLinhas = [];
         $iLinha = 0;
-        $iNumRows = pg_num_rows($rsLinhas);
+        $iNumRows = $rsLinhas === false || $rsLinhas === null ? 0 : pg_num_rows($rsLinhas);
         for ($i = 0; $i < $iNumRows; $i++) {
             // echo "iLinha: {$iLinha} - oLinha:{$oLinha->o117_linha}\n";
 
@@ -245,7 +245,7 @@ class linhaRelatorioContabil
         $rsLinhas = db_query($sSqlLinhas);
         $aLinhas = [];
         $iLinha = 0;
-        $iNumRows = pg_num_rows($rsLinhas);
+        $iNumRows = $rsLinhas === false || $rsLinhas === null ? 0 : pg_num_rows($rsLinhas);
         for ($i = 0; $i < $iNumRows; $i++) {
             // echo "iLinha: {$iLinha} - oLinha:{$oLinha->o117_linha}\n";
 
@@ -300,7 +300,7 @@ class linhaRelatorioContabil
         $rsLinhas = db_query($sSqlLinhas);
         $aLinhas = [];
         $iLinha = 0;
-        $iNumRows = pg_num_rows($rsLinhas);
+        $iNumRows = $rsLinhas === false || $rsLinhas === null ? 0 : pg_num_rows($rsLinhas);
         for ($i = 0; $i < $iNumRows; $i++) {
             $oLinha = db_utils::fieldsMemory($rsLinhas, $i, false, false, $this->lEncode);
             if ($iLinha == $oLinha->o117_linha) {

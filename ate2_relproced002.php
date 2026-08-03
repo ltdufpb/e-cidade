@@ -57,7 +57,7 @@ inner join tarefacadmotivo on at54_sequencial = at34_tarefacadmotivo
 where at02_datafim<='$data1' and at02_datafim>='$data'
 order by  at54_nome";
 $resultmot= db_query($sqlmot) or die($sqlmot);
-$linhasmot=pg_num_rows($resultmot);
+$linhasmot=$resultmot === false || $resultmot === null ? 0 : pg_num_rows($resultmot);
 
 $pdf->Cell(65,6,"MÓDULOS",0,0,"C",1);
 
@@ -129,7 +129,7 @@ if($linhas >0){
     order by  descrproced";
     
     $resultproced = db_query($sqlproced);
-    $linhasproced = pg_num_rows($resultproced);
+    $linhasproced = $resultproced === false || $resultproced === null ? 0 : pg_num_rows($resultproced);
     if ($linhasproced>0){
       $total1 = 0 ;
       for($p=0;$p < $linhasproced;$p++) {
@@ -152,7 +152,7 @@ if($linhas >0){
         where at02_datafim<='$data1' and at02_datafim>='$data'
         order by  at54_nome";
         $resultmot1= db_query($sqlmot1) or die($sqlmot1);
-        $linhasmot1=pg_num_rows($resultmot1);
+        $linhasmot1=$resultmot1 === false || $resultmot1 === null ? 0 : pg_num_rows($resultmot1);
 				
         $quant = 0;
         $total = 0;

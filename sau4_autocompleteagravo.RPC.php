@@ -43,7 +43,7 @@ $aWhere[] = " trim(sd70_c_nome) like upper('%{$sName}%') ";
 $oDaoSauCid = new cl_sau_cid();
 $sSqlSauCid = $oDaoSauCid->sql_query_file(null, $sCampos, "label", implode(" and ", $aWhere));
 $rsSauCid   = db_query($sSqlSauCid);
-$iLinhas    = pg_num_rows($rsSauCid);
+$iLinhas    = $rsSauCid === false || $rsSauCid === null ? 0 : pg_num_rows($rsSauCid);
 
 $aRetorno = [];
 if ($iLinhas > 0) {

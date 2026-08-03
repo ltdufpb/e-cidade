@@ -95,7 +95,7 @@ class GeracaoArquivoTXTDirf {
     if (!$rsDadosInstituicao) {
       throw new DBException("Erro ao buscar os dados da Instituição.");
     }
-    $iNumRowsDadosInstituicao = pg_num_rows($rsDadosInstituicao);
+    $iNumRowsDadosInstituicao = $rsDadosInstituicao === false || $rsDadosInstituicao === null ? 0 : pg_num_rows($rsDadosInstituicao);
 
     if ($iNumRowsDadosInstituicao > 0) {
       $oDadosInstituicao  = db_utils::fieldsMemory($rsDadosInstituicao, 0);
@@ -162,7 +162,7 @@ class GeracaoArquivoTXTDirf {
       throw new DBException("Erro ao buscar os dados das receitas");
     }
 
-    $iTotalLinhas      = pg_num_rows($rsTipoReceitas);
+    $iTotalLinhas      = $rsTipoReceitas === false || $rsTipoReceitas === null ? 0 : pg_num_rows($rsTipoReceitas);
     $aLinhasDirf       = [];
 
     for ($i = 0; $i < $iTotalLinhas; $i++) {

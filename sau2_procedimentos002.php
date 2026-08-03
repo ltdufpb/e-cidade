@@ -59,7 +59,7 @@ $sql .= " GROUP BY sd63_c_procedimento,sd63_c_nome,db_depart.coddepto,db_depart.
 $sql .= " ORDER BY db_depart.coddepto,sd63_c_nome";
 
 $result = db_query( $sql );
-$linhas = pg_num_rows( $result );
+$linhas = $result === false || $result === null ? 0 : pg_num_rows( $result );
 
 if( $linhas == 0 ) {
 
@@ -162,7 +162,7 @@ for( $i = 0; $i < $linhas; $i++ ) {
   $sql1 .= " ORDER BY prontproced.sd29_d_data desc";
 
   $result1 = db_query( $sql1 );
-  $linhas1 = pg_num_rows( $result1 );
+  $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows( $result1 );
 
   $cont = 0;
   $cor1 = 0;

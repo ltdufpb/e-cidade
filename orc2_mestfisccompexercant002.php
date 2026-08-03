@@ -220,7 +220,7 @@ foreach ( $aListaAnosAnt as $iIndAno => $iAno) {
   // Calcula Receita Corrente de todos os anos anteriores ao de referência
   $sWhereReceita  = " o70_instit in ({$sListaInstit})";
 	$rsReceita      = db_receitasaldo(11,1,3,true,$sWhereReceita,$iAno,$dtDataIni,$dtDataFin,false);
-	$iLinhasReceita = pg_num_rows($rsReceita);
+	$iLinhasReceita = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
 	
 	db_query("drop table work_receita;");
 	
@@ -245,7 +245,7 @@ foreach ( $aListaAnosAnt as $iIndAno => $iAno) {
   // Calcula Despesa Corrente de todos os anos anteriores ao de referência
 	$sWhereDespesa  = " w.o58_instit in ({$sListaInstit})";
 	$rsDespesa      = db_dotacaosaldo(8,2,3,true,$sWhereDespesa,$iAno,$dtDataIni,$dtDataFin);
-	$iLinhasDespesa = pg_num_rows($rsDespesa);
+	$iLinhasDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
 	
 	for ( $iInd=0; $iInd < $iLinhasDespesa; $iInd++ ) {
 	  

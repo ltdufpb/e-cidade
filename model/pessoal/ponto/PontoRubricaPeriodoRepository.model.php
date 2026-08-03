@@ -135,7 +135,7 @@ class PontoRubricaPeriodoRepository extends BaseClassRepository {
       throw new DBException("Ocorreu um erro ao buscar as rubricas por servidor.");
     }
 
-    $iTotalLinhas = pg_num_rows($rsPontoSalarioDataLimite);
+    $iTotalLinhas = $rsPontoSalarioDataLimite === false || $rsPontoSalarioDataLimite === null ? 0 : pg_num_rows($rsPontoSalarioDataLimite);
     if ($iTotalLinhas == 0) {
       return null;
     }

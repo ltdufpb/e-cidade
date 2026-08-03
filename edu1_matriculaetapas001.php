@@ -207,7 +207,7 @@ if ( isset( $incluir ) ) {
                                                                               $sWhereTurmaTurnoReferente
                                                                            );
       $rsTurmaTurnoReferente     = db_query( $sSqlTurmaTurnoReferente );
-      $iTotalTurmaTurnoReferente = pg_num_rows( $rsTurmaTurnoReferente );
+      $iTotalTurmaTurnoReferente = $rsTurmaTurnoReferente === false || $rsTurmaTurnoReferente === null ? 0 : pg_num_rows( $rsTurmaTurnoReferente );
       
       if ( $rsTurmaTurnoReferente && $iTotalTurmaTurnoReferente > 0 ) {
       

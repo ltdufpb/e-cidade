@@ -406,7 +406,7 @@ function js_desmarcarTodos(){
                             where c60_anousu = $anousu";
         $sql_contas = analiseQueryPlanoOrcamento($sql_contas);
         $res_contas = @db_query($sql_contas);
-        $numrows    = @pg_num_rows($res_contas);
+        $numrows    = $res_contas === false || $res_contas === null ? 0 : @pg_num_rows($res_contas);
 
         if ($numrows > 0){
              $lista_contas_analiticas = "";
@@ -463,7 +463,7 @@ function js_desmarcarTodos(){
 
   $sql_instit     = "select codigo from db_config";
   $res_insit      = @db_query($sql_instit);
-  $numrows_instit = @pg_num_rows($res_insit);
+  $numrows_instit = $res_insit === false || $res_insit === null ? 0 : @pg_num_rows($res_insit);
   if ($numrows_instit > 0){
        $lista_instit = "";
        $virgula      = "";
@@ -480,7 +480,7 @@ function js_desmarcarTodos(){
                                                                              c61_instit in ($lista_instit)";
        $sql_reduz = analiseQueryPlanoOrcamento($sql_reduz);
        $res_reduz     = @db_query($sql_reduz);
-       $numrows_reduz = @pg_num_rows($res_reduz);
+       $numrows_reduz = $res_reduz === false || $res_reduz === null ? 0 : @pg_num_rows($res_reduz);
        if ($numrows_reduz > 0){
             for($i=0; $i < $numrows_reduz; $i++){
                  $lista_reduz .= $virgula.pg_fetch_result($res_reduz,$i,"c61_codcon");

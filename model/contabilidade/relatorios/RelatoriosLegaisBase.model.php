@@ -723,7 +723,7 @@ class RelatoriosLegaisBase
         }
 
         $nValorLinha = 0;
-        $iTotalLinhas = pg_num_rows($Recordset);
+        $iTotalLinhas = $Recordset === false || $Recordset === null ? 0 : pg_num_rows($Recordset);
         for ($iLinha = 0; $iLinha < $iTotalLinhas; $iLinha++) {
             $oDados = new stdClass();
             $oDadosResource = db_utils::fieldsMemory($Recordset, $iLinha);

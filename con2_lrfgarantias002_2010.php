@@ -102,7 +102,7 @@ $nLimiteAlerta = 28.8;
 $anousu        = db_getsession("DB_anousu");
 
 $resultinst = db_query("select codigo,munic,db21_tipoinstit from db_config");
-$numrowsinstit = pg_num_rows($resultinst);
+$numrowsinstit = $resultinst === false || $resultinst === null ? 0 : pg_num_rows($resultinst);
 $virgula     = "";
 for($x = 0; $x < $numrowsinstit; $x ++) {
 
@@ -378,7 +378,7 @@ foreach ($aColunas as $oColunas) {
 $where      = "  c61_instit in ($sTodasInstit)"; 
 $rsAnterior = db_planocontassaldo_matriz($anousu, $sDtInicial01, $sDtFinal01, false, $where,"", "true", "false");
 @db_query("drop table work_pl");
-$iLinhasAnterior = pg_num_rows($rsAnterior); 
+$iLinhasAnterior = $rsAnterior === false || $rsAnterior === null ? 0 : pg_num_rows($rsAnterior); 
 
 for ($i = 0; $i < $iLinhasAnterior; $i++) {
 
@@ -413,7 +413,7 @@ for ($i = 0; $i < $iLinhasAnterior; $i++) {
 
 $rsPeriodo = db_planocontassaldo_matriz($anousu, $sDtInicial01, $sDtFinal01, false, $where,"", "true", "false");
 @db_query("drop table work_pl");
-$iLinhasPeriodo = pg_num_rows($rsPeriodo); 
+$iLinhasPeriodo = $rsPeriodo === false || $rsPeriodo === null ? 0 : pg_num_rows($rsPeriodo); 
 
 for ($i = 0; $i < $iLinhasPeriodo; $i++) {
 

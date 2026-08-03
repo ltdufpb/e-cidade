@@ -347,7 +347,7 @@ for ($mes = 1; $mes < 13; $mes++) {
     db_query("rollback");
     $valor = 0;
 
-    $iNumRows = pg_num_rows($result_rec);
+    $iNumRows = $result_rec === false || $result_rec === null ? 0 : pg_num_rows($result_rec);
     for ($i = 0; $i < $iNumRows; $i++) {
         db_fieldsmemory($result_rec, $i);
         if ($tipo_balanco == 1) {

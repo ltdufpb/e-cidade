@@ -50,7 +50,7 @@ try {
       throw new DBException('Falha ao buscar os períodos de avaliação.');
     }
 
-    $iTotalPeriodos = pg_num_rows($result1);
+    $iTotalPeriodos = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
     if($iTotalPeriodos > 0 ) {
 
@@ -197,7 +197,7 @@ try {
               db_redireciona("db_erros.php?fechar=true&db_erro={$sMessage}");
             }
 
-            $linhas = pg_num_rows($result);
+            $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
             if( $linhas == 0 ) {
               $desabilitar = "disabled";

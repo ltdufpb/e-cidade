@@ -255,7 +255,7 @@ class RelatorioNotaLiquidacaoSuspensaoPagamento {
       throw new DBException(_M(self::CAMINHO_MENSAGENS . 'erro_busca_notas_suspensas'));
     }
 
-    $iTotalRegistros = pg_num_rows($rsBuscaNotas);
+    $iTotalRegistros = $rsBuscaNotas === false || $rsBuscaNotas === null ? 0 : pg_num_rows($rsBuscaNotas);
     if ($iTotalRegistros == 0) {
       throw new BusinessException(_M(self::CAMINHO_MENSAGENS . 'notas_nao_encontradas'));
     }

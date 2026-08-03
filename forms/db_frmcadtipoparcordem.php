@@ -34,7 +34,7 @@ $sqltipoparc = "select distinct k40_codigo, k40_descr,k40_ordem
 					  and '".date("Y-m-d",db_getsession("DB_datausu")) . "' <= k40_dtfim
 					  order by k40_ordem";
 $resulttipoparc = db_query($sqltipoparc) or die($sqltipoparc);
-$linhastipoparc = pg_num_rows($resulttipoparc);
+$linhastipoparc = $resulttipoparc === false || $resulttipoparc === null ? 0 : pg_num_rows($resulttipoparc);
 if($linhastipoparc > 0 ){
 
 ?>

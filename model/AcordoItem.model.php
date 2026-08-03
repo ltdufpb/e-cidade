@@ -2621,7 +2621,7 @@ class AcordoItem
           $sWhere);
 
         $rsExecucoes = db_query($sSqlExecucoes);
-        $iTotalExecucoes = pg_num_rows($rsExecucoes);
+        $iTotalExecucoes = $rsExecucoes === false || $rsExecucoes === null ? 0 : pg_num_rows($rsExecucoes);
 
         for ($iExecucao = 0; $iExecucao < $iTotalExecucoes; $iExecucao++) {
             $oDadosExecucao = db_utils::fieldsMemory($rsExecucoes, $iExecucao);

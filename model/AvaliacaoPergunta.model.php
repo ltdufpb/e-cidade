@@ -807,7 +807,7 @@ class AvaliacaoPergunta
         if (!$rsFormula) {
             throw new DBException("Erro ao pesquisar formula para sugestao da pergunta.");
         }
-        $iTotalLinhas = pg_num_rows($rsFormula);
+        $iTotalLinhas = $rsFormula === false || $rsFormula === null ? 0 : pg_num_rows($rsFormula);
         if ($iTotalLinhas == 0) {
             return null;
         }

@@ -817,7 +817,7 @@ if ($tipo=="de" ){//desdobramento
 
 
     $resdesdob = retorna_desdob(substr((string) $o56_elemento, 0, 7), $desdobramentos, $clorcelemento);
-$numrows   = pg_num_rows($resdesdob);
+$numrows   = $resdesdob === false || $resdesdob === null ? 0 : pg_num_rows($resdesdob);
 
 for ($i = 0; $i < $numrows; $i ++) {
     db_fieldsmemory($resdesdob,$i);

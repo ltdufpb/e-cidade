@@ -384,7 +384,7 @@ try {
             // remove permissoes deste usuario
             $sqlPermissoesUsuario = $daoUsuarioPermissao->sql_query(null, $id_usuario, "*", null, $dbwhere);
             $rs = db_query($sqlPermissoesUsuario);
-            $rows = pg_num_rows($rs);
+            $rows = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             for ($x = 0; $x < $rows; $x++) {
                 db_fieldsmemory($rs, $x);
                 $daoPermissaoAtividade->excluir(null, " db69_codperm = {$db20_codperm}");
@@ -415,7 +415,7 @@ try {
                 throw new Exception('Erro ao buscar orgaos');
             }
 
-            $numrows = pg_num_rows($rs);
+            $numrows = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             for ($i = 0; $i < $numrows; $i++) {
                 db_fieldsmemory($rs, $i);
 
@@ -474,7 +474,7 @@ try {
             // remove permissoes deste usuario
             $sqlPermissoesUsuario = $daoUsuarioPermissao->sql_query(null, $id_usuario, "*", null, $dbwhere);
             $rs = db_query($sqlPermissoesUsuario);
-            $rows = pg_num_rows($rs);
+            $rows = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             for ($x = 0; $x < $rows; $x++) {
                 db_fieldsmemory($rs, $x);
                 $daoPermissaoAtividade->excluir(null, " db69_codperm = {$db20_codperm}");

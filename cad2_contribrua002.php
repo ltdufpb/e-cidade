@@ -67,7 +67,7 @@ $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 4;
 $total = 0;
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 for($x = 0; $x < $numrows; $x++){
    db_fieldsmemory($result,$x);
 
@@ -78,7 +78,7 @@ for($x = 0; $x < $numrows; $x++){
    $pdf->setfont('arial','b',10);
    $pdf->cell(180,$alt,$RLj14_codigo.": ".$j14_codigo." - ".$j14_nome,"B",1,"L",0);
    $result_contrib = db_query("select distinct z01_numcgm,z01_nome,j39_numero,j39_compl from proprietario_nome inner join proprietario_ender on proprietario_ender.j01_matric=proprietario_nome.j01_matric where j14_codigo=$j14_codigo");
-   $numrows_contrib = pg_num_rows($result_contrib);
+   $numrows_contrib = $result_contrib === false || $result_contrib === null ? 0 : pg_num_rows($result_contrib);
    if ($numrows_contrib==0){
    		$pdf->cell(160,$alt,"Não existem contribuintes vinculadas.",0,1,"C",0);
    		$pdf->setfont('arial','b',8);

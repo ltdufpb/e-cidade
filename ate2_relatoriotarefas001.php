@@ -279,7 +279,7 @@ $pdf->setfont('Arial','B',9); // seta a fonte como arial, bold e tamanho 9
 
 $ultatend = 0;
 $tamanho = 4;
-$numlinha = pg_num_rows($result);
+$numlinha = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $p=0;
 if (isset($tipo_rel)&&$tipo_rel=="c"){
@@ -331,7 +331,7 @@ if (isset($tipo_rel)&&$tipo_rel=="c"){
       where at43_tarefa=$at40_sequencial 
       order by at43_sequencial";
       $res_tarefalog = db_query($sql);
-      $numrows       = pg_num_rows($res_tarefalog);
+      $numrows       = $res_tarefalog === false || $res_tarefalog === null ? 0 : pg_num_rows($res_tarefalog);
       if ($numrows > 0){
         for($i=0; $i < $numrows; $i++){
           db_fieldsmemory($res_tarefalog,$i);
@@ -433,7 +433,7 @@ if (isset($tipo_rel)&&$tipo_rel=="c"){
       where at43_tarefa=$at40_sequencial 
       order by at43_sequencial";
       $res_tarefalog = db_query($sql) or die($sql);
-      $numrows       = pg_num_rows($res_tarefalog);
+      $numrows       = $res_tarefalog === false || $res_tarefalog === null ? 0 : pg_num_rows($res_tarefalog);
       if ($numrows > 0){
 				$pdf->Ln(5);
 				$pdf->setfont('Arial','B',12); // seta a fonte como arial, bold e tamanho 9

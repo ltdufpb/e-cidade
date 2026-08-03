@@ -71,7 +71,7 @@ class Pergunta
         if (!$rsPerguntas) {
             throw new \DBException('Erro ao pesquisar Perguntas da pergunta '.$codigo);
         }
-        $iTotalLinhas = pg_num_rows($rsPerguntas);
+        $iTotalLinhas = $rsPerguntas === false || $rsPerguntas === null ? 0 : pg_num_rows($rsPerguntas);
         if ($iTotalLinhas == 0) {
             throw new \DBException('pergunta '.$codigo. 'não encontrada no sistema.');
         }
@@ -102,7 +102,7 @@ class Pergunta
         if (!$rsPerguntas) {
             throw new \DBException('Erro ao pesquisar Perguntas do formulario '.$formulario->getNome());
         }
-        $iTotalLinhas = pg_num_rows($rsPerguntas);
+        $iTotalLinhas = $rsPerguntas === false || $rsPerguntas === null ? 0 : pg_num_rows($rsPerguntas);
         if ($iTotalLinhas == 0) {
             return [];
         }

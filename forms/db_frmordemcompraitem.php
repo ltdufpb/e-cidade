@@ -126,7 +126,7 @@ function js_marca(obj){
 	    order by e60_numemp";
 
    $result=db_query($sql);
-   $numrows = pg_num_rows($result);  
+   $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);  
 
    if($numrows>0){
    	echo "<tr class='bordas'>";

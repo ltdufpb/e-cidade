@@ -227,7 +227,7 @@ $sSql .= "                 $ordem                                               
 $sSql .= "      ) as x order by {$sOrdem}";
 
 $result = db_query($sSql) or die ($sSql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $QuebraPagina = 10;
 $total = 0;

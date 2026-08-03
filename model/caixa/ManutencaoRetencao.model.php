@@ -218,7 +218,7 @@ class ManutencaoRetencao {
 			throw new DBException("Houve um erro ao buscar os lançamentos da retenção.");
 		}
 
-		$iLinhas = pg_num_rows($rsLancamentosRetencao);
+		$iLinhas = $rsLancamentosRetencao === false || $rsLancamentosRetencao === null ? 0 : pg_num_rows($rsLancamentosRetencao);
 		for ($i = 0; $i < $iLinhas; $i++) {
 			$aLancamentos[] = db_utils::fieldsMemory($rsLancamentosRetencao, $i)->lancamento;
 		}
@@ -251,7 +251,7 @@ class ManutencaoRetencao {
 			throw new DBException("Houve um erro ao buscar os dados da tesouraria da retenção.");
 		}
 
-		$iLinhas = pg_num_rows($rsLancamentoCorrente);
+		$iLinhas = $rsLancamentoCorrente === false || $rsLancamentoCorrente === null ? 0 : pg_num_rows($rsLancamentoCorrente);
 		for ($i = 0; $i < $iLinhas; $i++) {
 			$aTesouraria[] = db_utils::fieldsMemory($rsLancamentoCorrente, $i);
 		}

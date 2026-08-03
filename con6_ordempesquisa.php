@@ -161,7 +161,7 @@
 	}
 	$result = db_query($sql);
 
- 	$num = pg_num_rows($result);
+ 	$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //    Tabela que mostra o resultado da consulta sql realizada
@@ -196,7 +196,7 @@
 
   $verificaSituacao = db_query("select codordem from db_ordemfim where codordem = $ordemAtual limit 1");
 
-  $numItemsEncontrados = pg_num_rows($verificaSituacao);
+  $numItemsEncontrados = $verificaSituacao === false || $verificaSituacao === null ? 0 : pg_num_rows($verificaSituacao);
 
   if ($numItemsEncontrados == 0) {$finalizado = "Não";} else {$finalizado = "Sim";}
 
@@ -308,7 +308,7 @@
   								 where o.codordem = $numOrdem
 								 order by datainicial, codandam
 								");
-  $numSelecionaAndamento = pg_num_rows($selecionaAndamento);
+  $numSelecionaAndamento = $selecionaAndamento === false || $selecionaAndamento === null ? 0 : pg_num_rows($selecionaAndamento);
   
   for ($i=0;$i<$numSelecionaAndamento;$i++) {
   echo "
@@ -431,7 +431,7 @@
 							 and u.usuext = 0
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_num_rows($result);
+		$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
 		  echo "<option  ".(db_getsession("DB_id_usuario") == pg_fetch_result($result,$i,"id_usuario")?"selected":"")." style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"login")."</option>\n";
 		}  
@@ -458,7 +458,7 @@
 							 and u.usuext = 0
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_num_rows($result);
+		$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
 		  echo "<option  ".(db_getsession("DB_id_usuario") == pg_fetch_result($result,$i,"id_usuario")?"selected":"")." style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"login")."</option>\n";
 		}  
@@ -485,7 +485,7 @@
 							 and u.usuext = 0
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_num_rows($result);
+		$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
 		  echo "<option  ".(db_getsession("DB_id_usuario") == pg_fetch_result($result,$i,"id_usuario")?"selected":"")." style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"login")."</option>\n";
 		}  

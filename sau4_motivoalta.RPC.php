@@ -79,7 +79,7 @@ try {
       }
 
       $oRetorno->aMotivosAlta = [];
-      $iTotalMotivoAlta       = pg_num_rows( $rsMotivoAlta );
+      $iTotalMotivoAlta       = $rsMotivoAlta === false || $rsMotivoAlta === null ? 0 : pg_num_rows( $rsMotivoAlta );
 
       for( $iContador = 0; $iContador < $iTotalMotivoAlta; $iContador++ ) {
 

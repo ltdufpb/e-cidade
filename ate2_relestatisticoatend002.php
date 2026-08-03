@@ -128,7 +128,7 @@ if(isset($tecnico)&& $tecnico != ""){
 
 $ultatend = 0;
 $tamanho = 4;
-$numlinha = pg_num_rows($result);
+$numlinha = $result === false || $result === null ? 0 : pg_num_rows($result);
 $ultatend = 0;
 
 
@@ -195,7 +195,7 @@ if ($datafim != "--"){
 } 
 
 $result3 = db_query($tec);
-$tec = pg_num_rows($result3);
+$tec = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3);
 
 
     $pdf->cell(80,$tamanho,$at01_nomecli,1,0,"C",0);

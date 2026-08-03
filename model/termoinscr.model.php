@@ -298,7 +298,7 @@ class termoinscr
                     $sqlPossuidor   .= "   from cfiptu                                  ";
                     $sqlPossuidor   .= "  where j18_anousu= ".db_getsession("DB_anousu") ;
                     $resultPossuidor = db_query($sqlPossuidor);
-                    $linhasPossuidor = pg_num_rows($resultPossuidor);
+                    $linhasPossuidor = $resultPossuidor === false || $resultPossuidor === null ? 0 : pg_num_rows($resultPossuidor);
                     $possuidor = "POSSUIDOR";
                     if ($linhasPossuidor > 0) {
                         $oTextoPossuido = db_utils::fieldsmemory($resultPossuidor, 0);
@@ -314,14 +314,14 @@ class termoinscr
                       select *
                       from fc_busca_envolvidos({$lRegra},{$oPardiv->v04_envolcdaiptu},'M',{$oOrigens->matric})";
                     $rsEnvol      = db_query($sSqlEnvol) or die($sSqlEnvol);
-                    $iLinhasEnvol = pg_num_rows($rsEnvol);
+                    $iLinhasEnvol = $rsEnvol === false || $rsEnvol === null ? 0 : pg_num_rows($rsEnvol);
                     if ($oPardiv->v04_envolcdaiptu == 2 && $iLinhasEnvol == 0) {
                         $sSqlEnvol  = " select j01_numcgm as rinumcgm,   ";
                         $sSqlEnvol .= "        1          as ritipoenvol ";
                         $sSqlEnvol .= "   from iptubase                  ";
                         $sSqlEnvol .= "  where j01_matric = {$oOrigens->matric}    ";
                         $rsEnvol      = db_query($sSqlEnvol) or die($sSqlEnvol);
-                        $iLinhasEnvol = pg_num_rows($rsEnvol);
+                        $iLinhasEnvol = $rsEnvol === false || $rsEnvol === null ? 0 : pg_num_rows($rsEnvol);
                     }
 
                     for ($i = 0; $i < $iLinhasEnvol; $i++) {
@@ -344,7 +344,7 @@ class termoinscr
                         $sSqlDadosEnvol .= "   from cgm                             ";
                         $sSqlDadosEnvol .= "  where z01_numcgm = {$oEnvol->rinumcgm}";
                         $rsDadosEnvol      = db_query($sSqlDadosEnvol) or die($sSqlDadosEnvol);
-                        $iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
+                        $iLinhasDadosEnvol = $rsDadosEnvol === false || $rsDadosEnvol === null ? 0 : pg_num_rows($rsDadosEnvol);
                         if ($iLinhasDadosEnvol > 0) {
                             $oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol, 0);
                             if (trim((string) $oDadosEnvol->z01_dtfalecimento) != '' && strlen((string) $oDadosEnvol->z01_cgccpf) == 11
@@ -456,7 +456,7 @@ class termoinscr
                         select *
                         from fc_busca_envolvidos({$lRegra},{$oPardiv->v04_envolcdaiss},'I',{$oOrigens->inscr})";
                     $rsEnvol      = db_query($sSqlEnvol) or die($sSqlEnvol);
-                    $iLinhasEnvol = pg_num_rows($rsEnvol);
+                    $iLinhasEnvol = $rsEnvol === false || $rsEnvol === null ? 0 : pg_num_rows($rsEnvol);
                     for ($i = 0; $i < $iLinhasEnvol; $i++) {
                         $oDevedor = new stdClass();
                         $oEnvol = db_utils::fieldsMemory($rsEnvol, $i);
@@ -480,7 +480,7 @@ class termoinscr
                         $sSqlDadosEnvol .= "   from cgm                             ";
                         $sSqlDadosEnvol .= "  where z01_numcgm = {$oEnvol->rinumcgm}";
                         $rsDadosEnvol      = db_query($sSqlDadosEnvol);
-                        $iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
+                        $iLinhasDadosEnvol = $rsDadosEnvol === false || $rsDadosEnvol === null ? 0 : pg_num_rows($rsDadosEnvol);
                         if ($iLinhasDadosEnvol > 0) {
                             $oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol, 0);
 
@@ -796,7 +796,7 @@ class termoinscr
                 $rsDebitos = db_query($sqlDebitosOriginais);
 
                 if ($rsDebitos) {
-                    $iNumRowsArrecad = pg_num_rows($rsDebitos);
+                    $iNumRowsArrecad = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
                } else {
                            $iNumRowsArrecad = 0;
                }
@@ -878,7 +878,7 @@ class termoinscr
                         $rsDebitosAtualizados = db_query($sqlDebitosAtualizados);
 
                         if ($rsDebitosAtualizados) {
-                            $iNumRowsTermo = pg_num_rows($rsDebitosAtualizados);
+                            $iNumRowsTermo = $rsDebitosAtualizados === false || $rsDebitosAtualizados === null ? 0 : pg_num_rows($rsDebitosAtualizados);
                     } else {
                                 $iNumRowsTermo = 0;
                     }

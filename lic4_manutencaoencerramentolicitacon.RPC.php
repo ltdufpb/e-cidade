@@ -75,7 +75,7 @@ try {
       }
 
       $aLicitacoes = [];
-      $iTotalRegistros = pg_num_rows($rsBuscaLicitacao);
+      $iTotalRegistros = $rsBuscaLicitacao === false || $rsBuscaLicitacao === null ? 0 : pg_num_rows($rsBuscaLicitacao);
       for ($iRow = 0; $iRow < $iTotalRegistros; $iRow++) {
 
         $oStdRegistros = db_utils::fieldsMemory($rsBuscaLicitacao, $iRow);

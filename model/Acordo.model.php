@@ -2657,7 +2657,7 @@ class Acordo
         if (!$rsParalizacao) {
             throw new DBException("Erro ao pesquisar paralizações do acordo");
         }
-        $iTotalParalizacoes = pg_num_rows($rsParalizacao);
+        $iTotalParalizacoes = $rsParalizacao === false || $rsParalizacao === null ? 0 : pg_num_rows($rsParalizacao);
         for ($iParalizacoes = 0; $iParalizacoes < $iTotalParalizacoes; $iParalizacoes++) {
             $dadosParalizacao = db_utils::fieldsMemory($rsParalizacao, $iParalizacoes);
             $oDaoAcordoParalisacaoMovimentacao->excluir(null, 'ac48_acordoparalisacao=' . $dadosParalizacao->ac47_sequencial);
@@ -3146,7 +3146,7 @@ class Acordo
         if (!$rsEventos) {
             throw  new DBException("Erro ao consultar eventos do contrato {$this->getCodigo()}");
         }
-        $iTotalLinhas = pg_num_rows($rsEventos);
+        $iTotalLinhas = $rsEventos === false || $rsEventos === null ? 0 : pg_num_rows($rsEventos);
         for ($iEvento = 0; $iEvento < $iTotalLinhas; $iEvento++) {
             $oDadosEvento = db_utils::fieldsMemory($rsEventos, $iEvento);
             $oEvento = new AcordoEvento();

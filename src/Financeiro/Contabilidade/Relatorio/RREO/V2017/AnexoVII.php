@@ -306,7 +306,7 @@ class AnexoVII
     private function agruparPorPoderes($rsResource, $lIntraOrcamentaria = true)
     {
 
-        $iTotalRegistros = pg_num_rows($rsResource);
+        $iTotalRegistros = $rsResource === false || $rsResource === null ? 0 : pg_num_rows($rsResource);
         for ($iRow = 0; $iRow < $iTotalRegistros; $iRow++) {
             $oStdRestos = \db_utils::fieldsMemory($rsResource, $iRow);
             if (empty($oStdRestos->tipo_instituicao)) {

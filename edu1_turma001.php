@@ -181,7 +181,7 @@ if( isset( $incluir ) ) {
       $sql .= "    AND ed34_i_serie = {$iSerieTurma} ";
       $query  = db_query($sql);
 
-      $linhas = pg_num_rows($query);
+      $linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
 
       for ($x = 0; $x < $linhas; $x++) {
 

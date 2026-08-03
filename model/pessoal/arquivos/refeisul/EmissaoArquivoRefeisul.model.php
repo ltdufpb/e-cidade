@@ -141,7 +141,7 @@ class EmissaoArquivoRefeisul {
 		}
 		
 		$aServidores  = [];
-		$iTotalLinhas = pg_num_rows($rsDadosRefeisul);
+		$iTotalLinhas = $rsDadosRefeisul === false || $rsDadosRefeisul === null ? 0 : pg_num_rows($rsDadosRefeisul);
 		if ($iTotalLinhas == 0) {
 			
 			$sMensagem  = "Não foram encontrados registros para a geração do arquivo nessa competência ";

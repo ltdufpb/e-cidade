@@ -79,7 +79,7 @@ $escola = db_getsession("DB_coddepto");
         <?php 
         $sql    = " select me35_i_codigo,me35_c_nomealimento from mer_alimento order by me35_c_nomealimento";
         $result = db_query($sql);
-        $linhas = pg_num_rows($result);
+        $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
         for ($x=0; $x<$linhas; $x++) {
         	
       	  db_fieldsmemory($result,$x);
@@ -96,7 +96,7 @@ $escola = db_getsession("DB_coddepto");
         <?php 
         $sql    = " select me30_i_codigo,me30_c_descricao from mer_grupoalimento order by me30_c_descricao";
         $result = db_query($sql);
-        $linhas = pg_num_rows($result);
+        $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
         for ($x=0; $x<$linhas; $x++) {
             
           db_fieldsmemory($result,$x);

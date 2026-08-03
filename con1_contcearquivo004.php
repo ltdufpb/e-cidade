@@ -95,7 +95,7 @@ if (isset($incluir)) {
   
   $rsResponsaveis   = $clcontcearquivoresp->sql_record($clcontcearquivoresp->sql_query_file(null,"*",null,"c12_contcearquivo = {$icodigonovo}"));
   if ($rsResponsaveis) {
-	  $iNumResponsaveis = pg_num_rows($rsResponsaveis); 
+	  $iNumResponsaveis = $rsResponsaveis === false || $rsResponsaveis === null ? 0 : pg_num_rows($rsResponsaveis); 
 	  for ($i = 0 ; $i < $iNumResponsaveis; $i++) {
 	  	
 	  	$oResponsaveis = db_utils::fieldsMemory($rsResponsaveis,$i);

@@ -176,7 +176,7 @@ class ExportacaoCenso2016 extends ExportacaoCenso2015 implements IExportacaoCens
   protected function getDadosAluno() {
 
     $rsMatricula  = $this->buscaAlunos();
-    $iTotalAlunos = pg_num_rows($rsMatricula);
+    $iTotalAlunos = $rsMatricula === false || $rsMatricula === null ? 0 : pg_num_rows($rsMatricula);
 
     $aAlunosComMatriculas = [];
     for ($i = 0; $i < $iTotalAlunos; $i++) {
@@ -227,7 +227,7 @@ class ExportacaoCenso2016 extends ExportacaoCenso2015 implements IExportacaoCens
       throw new DBException("Erro ao buscar os alunos de turmas AEE.\n" . pg_last_error());
     }
 
-    $iLinhas = pg_num_rows($rsAlunosAEE);
+    $iLinhas = $rsAlunosAEE === false || $rsAlunosAEE === null ? 0 : pg_num_rows($rsAlunosAEE);
     for ($i = 0; $i < $iLinhas; $i++) {
 
       $oAluno      = db_utils::fieldsMemory($rsAlunosAEE, $i);

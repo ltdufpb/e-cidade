@@ -96,9 +96,9 @@ if( !empty($unidade) ){
 
 }
 $query_pront = db_query($sql_pront);
-$linhas_pront = pg_num_rows($query_pront);
+$linhas_pront = $query_pront === false || $query_pront === null ? 0 : pg_num_rows($query_pront);
 $query_agenda = db_query($sql_agenda);
-$linhas_agenda = pg_num_rows($query_agenda);
+$linhas_agenda = $query_agenda === false || $query_agenda === null ? 0 : pg_num_rows($query_agenda);
 
 if($linhas_pront == 0 and $linhas_agenda == 0){
  echo "<table width='100%'>

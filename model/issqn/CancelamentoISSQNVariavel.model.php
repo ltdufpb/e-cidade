@@ -130,7 +130,7 @@ class CancelamentoISSQNVariavel {
         $sSqlCancDebReg   .= "  k21_numpar = {$oDebito->iNumpar}                                     \n";
 
         $rResultCancDebReg = db_query($sSqlCancDebReg);
-        $iLinhasCancDebReg = pg_num_rows($rResultCancDebReg);
+        $iLinhasCancDebReg = $rResultCancDebReg === false || $rResultCancDebReg === null ? 0 : pg_num_rows($rResultCancDebReg);
 
         if ($rResultCancDebReg && $iLinhasCancDebReg > 0) {
 
@@ -138,7 +138,7 @@ class CancelamentoISSQNVariavel {
 
           $sSqlDeb     = "SELECT * FROM cancdebitosreg WHERE k21_codigo = {$oCancDebReg->cancdebitos}";
           $rResultDeb  = db_query($sSqlDeb);
-          $iLinhasDeb  = pg_num_rows($rResultDeb);
+          $iLinhasDeb  = $rResultDeb === false || $rResultDeb === null ? 0 : pg_num_rows($rResultDeb);
 
           if ($iLinhasDeb = 0) {
 
@@ -153,7 +153,7 @@ class CancelamentoISSQNVariavel {
           // Exclusão da cancdebitosproc
           $sSqlProcReg     = "SELECT * FROM cancdebitosprocreg WHERE k24_codigo = {$oCancDebReg->cancdebitosproc}";
           $rResultProcReg  = db_query($sSqlProcReg);
-          $iLinhasProcReg  = pg_num_rows($rResultProcReg);
+          $iLinhasProcReg  = $rResultProcReg === false || $rResultProcReg === null ? 0 : pg_num_rows($rResultProcReg);
 
           if ($iLinhasProcReg = 0) {
 
@@ -194,7 +194,7 @@ class CancelamentoISSQNVariavel {
         $sSqlIssVar   .= "  q05_numpar = {$oDebito->iNumpar}                      \n";
 
         $rResultIssVar = db_query($sSqlIssVar);
-        $iLinhasIssVar = pg_num_rows($rResultIssVar);
+        $iLinhasIssVar = $rResultIssVar === false || $rResultIssVar === null ? 0 : pg_num_rows($rResultIssVar);
 
         if ($rResultIssVar && $iLinhasIssVar > 0) {
 
@@ -203,7 +203,7 @@ class CancelamentoISSQNVariavel {
           // Exclusão da issvarsemmov
           $sSqlSemMovReg    = "SELECT * FROM  issvarsemmovreg WHERE q15_issvarsemmov = {$oIssVar->issvarsemmov}";
           $rResultSemMovReg = db_query($sSqlSemMovReg);
-          $iLinhasSemMovReg = pg_num_rows($rResultSemMovReg);
+          $iLinhasSemMovReg = $rResultSemMovReg === false || $rResultSemMovReg === null ? 0 : pg_num_rows($rResultSemMovReg);
 
           if ($iLinhasSemMovReg = 0) {
 

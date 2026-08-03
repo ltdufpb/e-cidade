@@ -374,7 +374,7 @@ input {
                                 and i.libcliente is true
 			    order by lower(m.nome_modulo)");
 		      }
-		      $numrows = pg_num_rows($result);
+		      $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		      if($numrows>0){
 		        for($i = 0;$i < $numrows;$i++) {
 			   $sql = "select p.id_modulo 
@@ -478,7 +478,7 @@ input {
 							 and u.usuext = 0
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_num_rows($result);
+		$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
 		  echo "<option style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"login")."</option>\n";
 		  //echo "<option ".(pg_result($result,$i,"usuext") == 2?"style='color: blue;font-weight:bold'":"")." value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
@@ -499,7 +499,7 @@ input {
 							 and u.usuext = 2
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_num_rows($result);
+		$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
 		  echo "<option style='text-align:left;color:black;letter-spacing:normal;' value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"nome")."</option>\n";
 		  //echo "<option ".(pg_result($result,$i,"usuext") == 2?"style='color: blue;font-weight:bold'":"")." value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
@@ -619,7 +619,7 @@ input {
                             and i.libcliente is true
                           order by {$sOrdenacao} asc");
 
-			  $numrows = pg_num_rows($sub);
+			  $numrows = $sub === false || $sub === null ? 0 : pg_num_rows($sub);
               if($numrows > 0) {
                 for($x = 0;$x < $numrows;$x++) {                  
 				  $valor = pg_fetch_result($sub,$x,"id_item_filho");

@@ -125,7 +125,7 @@ db_inicio_transacao();
 	if($numrows>0){
 	  static $pri=true;
 	  $re=db_query("select d03_tipos,d03_descr,d04_quant,d04_vlrcal,d04_vlrval from editalserv inner join editaltipo on d03_tipos=d04_tipos where d04_contri=$numcontri");  
-	  $numlinhas= pg_num_rows($re);
+	  $numlinhas= $re === false || $re === null ? 0 : pg_num_rows($re);
 	  if($pri){
 	    echo "
 	     <tr>

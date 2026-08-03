@@ -418,7 +418,7 @@ class EventoLicitacao {
     $sWhere         = "l47_liclicitaevento = {$this->iCodigo}";
     $sSqlDocumentos = $oDaoDocumentos->sql_query_file(null, "l47_sequencial", null, $sWhere);
     $rsDocumentos   = db_query($sSqlDocumentos);
-    $iQuantidade    = pg_num_rows($rsDocumentos);
+    $iQuantidade    = $rsDocumentos === false || $rsDocumentos === null ? 0 : pg_num_rows($rsDocumentos);
 
     if ($rsDocumentos && $iQuantidade > 0) {
 

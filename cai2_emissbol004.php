@@ -136,7 +136,7 @@ $sql  = "
 $result = db_query($sql);
 //db_criatabela($result);
 //exit;
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 //$num = 1;
 $xconta = '';
 for($conta=0;$conta<$num;$conta++){
@@ -211,7 +211,7 @@ $sql  = "select x.*,
 //echo $sql;
 $result1 = db_query($sql);
 //db_criatabela($result);
-$numrows = pg_num_rows($result1);
+$numrows = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
 $velho_nump_id     = ""; 
 $velho_nump_data   = "";

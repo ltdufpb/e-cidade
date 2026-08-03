@@ -93,7 +93,7 @@ $sql_turma =
 
 
 $rs_turma = db_query($sql_turma);
-$linhas_turma = pg_num_rows($rs_turma);
+$linhas_turma = $rs_turma === false || $rs_turma === null ? 0 : pg_num_rows($rs_turma);
 
 
 for ($x = 0; $x < $linhas_turma; $x++) {
@@ -116,7 +116,7 @@ for ($x = 0; $x < $linhas_turma; $x++) {
 
 
     $rs_ano = db_query($sql_ano);
-    $linhas_ano = pg_num_rows($rs_ano);
+    $linhas_ano = $rs_ano === false || $rs_ano === null ? 0 : pg_num_rows($rs_ano);
 
 
     for ($y = 0; $y < $linhas_ano; $y++) {
@@ -141,7 +141,7 @@ for ($x = 0; $x < $linhas_turma; $x++) {
             ";
 
         $rs_aluno = db_query($sql_aluno);
-        $linhas_aluno = pg_num_rows($rs_aluno);
+        $linhas_aluno = $rs_aluno === false || $rs_aluno === null ? 0 : pg_num_rows($rs_aluno);
 
         $oPdf->SetFont('Arial', '', $tamanho_fonte-2 );
 

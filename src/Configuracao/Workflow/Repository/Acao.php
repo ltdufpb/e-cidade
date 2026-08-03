@@ -41,7 +41,7 @@ class Acao extends DataBaseRepository
                 throw new DBException($msgErro);
             }
 
-            $totalAcoes = pg_num_rows($rsTransicao);
+            $totalAcoes = $rsTransicao === false || $rsTransicao === null ? 0 : pg_num_rows($rsTransicao);
                 
             return db_utils::makeCollectionFromRecord($rsTransicao, fn($retorno) => $retorno);
         }

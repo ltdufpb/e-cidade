@@ -122,7 +122,7 @@ if ($_POST["vinculo"] == "A"){
 ";
   
   $result = db_query($sql);
-  $num = pg_num_rows($result);
+  $num = $result === false || $result === null ? 0 : pg_num_rows($result);
   for($x = 0;$x < pg_num_rows($result);$x++){
     
 		db_atutermometro($x,$num,'termometro');
@@ -258,7 +258,7 @@ $sql = "
   
   //echo $sql;
   $result = db_query($sql);
-  $num = pg_num_rows($result);
+  $num = $result === false || $result === null ? 0 : pg_num_rows($result);
   for($x = 0;$x < pg_num_rows($result);$x++){
     
 		db_atutermometro($x,$num,'termometro');
@@ -396,7 +396,7 @@ $sql = "
   
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_num_rows($result);
+  $num = $result === false || $result === null ? 0 : pg_num_rows($result);
   for($x = 0;$x < pg_num_rows($result);$x++){
     
   	db_atutermometro($x,$num,'termometro');

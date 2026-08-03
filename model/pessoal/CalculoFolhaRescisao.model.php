@@ -206,7 +206,7 @@ class CalculoFolhaRescisao extends CalculoFolha {
 
       if ($rsDbQuery) {
 
-        $iQuantidadeRubricasDuplicadas = pg_num_rows($rsDbQuery);
+        $iQuantidadeRubricasDuplicadas = $rsDbQuery === false || $rsDbQuery === null ? 0 : pg_num_rows($rsDbQuery);
         $sRubricasDuplicadas           = "";
 
         if($iQuantidadeRubricasDuplicadas > 0) {

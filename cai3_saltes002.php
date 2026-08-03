@@ -301,7 +301,7 @@ for ($i = 0; $i < pg_num_rows($result); $i ++) {
 						     	 and c60_codsis in (5,6)
 						 order by k13_conta";
 			$result_contas = db_query($sql);
-			$nrows = pg_num_rows($result_contas);
+			$nrows = $result_contas === false || $result_contas === null ? 0 : pg_num_rows($result_contas);
 			for ($h = 0; $h < $nrows; $h ++) {
 				db_fieldsmemory($result_contas, $h);
 				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
@@ -351,7 +351,7 @@ for ($i = 0; $i < pg_num_rows($result); $i ++) {
 
 					order by k13_descr";
 			$result_contas = db_query($sql);
-			$nrows = pg_num_rows($result_contas);
+			$nrows = $result_contas === false || $result_contas === null ? 0 : pg_num_rows($result_contas);
 			for ($h = 0; $h < $nrows; $h ++) {
 
 				db_fieldsmemory($result_contas, $h);
@@ -462,7 +462,7 @@ for ($i = 0; $i < pg_num_rows($result); $i ++) {
 							 and c60_codsis in (5,6)
 							 order by k13_descr";
 			$result_contas = db_query($sql);
-			$nrows = pg_num_rows($result_contas);
+			$nrows = $result_contas === false || $result_contas === null ? 0 : pg_num_rows($result_contas);
 			for ($h = 0; $h < $nrows; $h ++) {
 				db_fieldsmemory($result_contas, $h);
 				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");

@@ -64,7 +64,7 @@ if ( isset($btnProcessaBase) ) {
   
   $sSqlCfPess  = $oCfPess->sql_query_file($oCfPess->r11_anousu, $oCfPess->r11_mesusu);
   $rsSqlCfPess = db_query($rsConectaLiberaBase, $sSqlCfPess);
-  $iRowCfPess  = pg_num_rows($rsSqlCfPess);
+  $iRowCfPess  = $rsSqlCfPess === false || $rsSqlCfPess === null ? 0 : pg_num_rows($rsSqlCfPess);
   
   /**
    * Caso existam registros para a competência informada, a operação será abortada.
@@ -87,7 +87,7 @@ if ( isset($btnProcessaBase) ) {
       $sSqlFolhaEmpRubrica .= "  where {$sWherePadraoExclusao}                                            ";
 
       $rsExecExcFolhaEmpRubrica  = db_query($rsConectaLiberaBase, $sSqlFolhaEmpRubrica);      
-      $iLinhasExcFolhaEmpRubrica = pg_num_rows($rsExecExcFolhaEmpRubrica);
+      $iLinhasExcFolhaEmpRubrica = $rsExecExcFolhaEmpRubrica === false || $rsExecExcFolhaEmpRubrica === null ? 0 : pg_num_rows($rsExecExcFolhaEmpRubrica);
 
       if ( !$lSqlErro ) {
 
@@ -129,7 +129,7 @@ if ( isset($btnProcessaBase) ) {
       $sSqlEmpFolhaEmpenho .= " where {$sWherePadraoExclusao};";
 
       $rsEmpFolhaEmpenho      = db_query($rsConectaLiberaBase, $sSqlEmpFolhaEmpenho);
-      $iLinhasEmpFolhaEmpenho = pg_num_rows($rsEmpFolhaEmpenho);
+      $iLinhasEmpFolhaEmpenho = $rsEmpFolhaEmpenho === false || $rsEmpFolhaEmpenho === null ? 0 : pg_num_rows($rsEmpFolhaEmpenho);
       
       if ( !$lSqlErro ) {
         
@@ -167,7 +167,7 @@ if ( isset($btnProcessaBase) ) {
       $sSqlOrcReservaRhEmpFolha .= "  where {$sWherePadraoExclusao}";
       
       $rsOrcReservaRhEmpFolha      = db_query($rsConectaLiberaBase, $sSqlOrcReservaRhEmpFolha);
-      $iLinhasOrcReservaRhEmpFolha = pg_num_rows($rsOrcReservaRhEmpFolha);
+      $iLinhasOrcReservaRhEmpFolha = $rsOrcReservaRhEmpFolha === false || $rsOrcReservaRhEmpFolha === null ? 0 : pg_num_rows($rsOrcReservaRhEmpFolha);
       
       if ( !$lSqlErro ) {
 

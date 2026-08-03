@@ -150,7 +150,7 @@ if (!$rsMateriais) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Ocorreu um erro ao buscar os materiais.');
   exit;
 }
-$iNumRowsItens = pg_num_rows($rsMateriais);
+$iNumRowsItens = $rsMateriais === false || $rsMateriais === null ? 0 : pg_num_rows($rsMateriais);
 $aGrupos       = [];
 $iMaximaCodigo = 0;
 $aGlobal = [];

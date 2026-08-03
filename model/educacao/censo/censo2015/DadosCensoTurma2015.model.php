@@ -1059,7 +1059,7 @@ class DadosCensoTurma2015 extends DadosCensoTurma {
         throw new Exception("Erro ao buscar disciplinas do censo.\n" .pg_last_error());
       }
 
-      $iLinhas = pg_num_rows($rsDisciplina);
+      $iLinhas = $rsDisciplina === false || $rsDisciplina === null ? 0 : pg_num_rows($rsDisciplina);
       for ($i = 0; $i < $iLinhas; $i++) {
         static::$aEtapasDisciplinas[$iEtapa][] = db_utils::fieldsMemory($rsDisciplina, $i)->ed272_i_censodisciplina;
       }

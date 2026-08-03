@@ -144,7 +144,7 @@ abstract class IntegracaoBase {
 
       $sSqlQueryInstituicoes = "select * from instituicoes";
       $rsLicitacoes          = db_query($this->rsConexaoDestino, $sSqlQueryInstituicoes);
-      $iTotalInstituicoes    = pg_num_rows($rsLicitacoes);
+      $iTotalInstituicoes    = $rsLicitacoes === false || $rsLicitacoes === null ? 0 : pg_num_rows($rsLicitacoes);
       for ($iInstituicao = 0; $iInstituicao < $iTotalInstituicoes; $iInstituicao++) {
 
         $oInstituicao                                               = db_utils::fieldsMemory($rsLicitacoes,

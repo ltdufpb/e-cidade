@@ -200,7 +200,7 @@ $sql = "select
 //echo "Local --> $local  Tip_fol --> $tip_fol   ".$sql;exit;
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 //echo 'ENTROU 111';exit;
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos no período de '.$mes.' / '.$ano.$erroajuda.".");

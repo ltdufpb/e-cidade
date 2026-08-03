@@ -304,7 +304,7 @@ class cl_empautret {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_num_rows($result);
+     $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empautret";
@@ -317,7 +317,7 @@ class cl_empautret {
    }
    function db_deleteEmpAutRet($autorizacao){
      $result_exclusoes = @db_query("select distinct e66_seqretencao from empautret where e66_autori = " .$autorizacao);
-     $numrows_exclusoes = pg_num_rows($result_exclusoes);
+     $numrows_exclusoes = $result_exclusoes === false || $result_exclusoes === null ? 0 : pg_num_rows($result_exclusoes);
      if($result_exclusoes==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
        $this->erro_sql   = "Problemas ao buscar dados para exclusão. Exclusão Abortada.\\n";

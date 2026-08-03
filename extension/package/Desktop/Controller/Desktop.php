@@ -219,7 +219,7 @@ class Desktop extends Controller
             return [];
         }
 
-        $total = pg_num_rows($result);
+        $total = $result === false || $result === null ? 0 : pg_num_rows($result);
         $bases = [];
         for ($index = 0; $index < $total; $index++) {
             $bases[] = pg_fetch_result($result, $index, 'datname');

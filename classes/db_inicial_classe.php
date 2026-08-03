@@ -616,7 +616,7 @@ class cl_inicial
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_num_rows($result);
+        $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:inicial";
@@ -974,7 +974,7 @@ class cl_inicial
             $sSqlParcelamentos .= "  inner join termo on v07_parcel = v14_parcel";
             $sSqlParcelamentos .= "  where v14_certid = {$oCertidoesInicial->v13_certid} ";
             $rsParcelamentos = db_query($sSqlParcelamentos);
-            $iLinhasParcel = pg_num_rows($rsParcelamentos);
+            $iLinhasParcel = $rsParcelamentos === false || $rsParcelamentos === null ? 0 : pg_num_rows($rsParcelamentos);
 
             for ($iIndParcel = 0; $iIndParcel < $iLinhasParcel; $iIndParcel++) {
                 $oDadosParcel = db_utils::fieldsMemory($rsParcelamentos, $iIndParcel);
@@ -987,7 +987,7 @@ class cl_inicial
 
                 if ($rsDadosDebitoCorrigido != false) {
 
-                    $iLinhasDebito = pg_num_rows($rsDadosDebitoCorrigido);
+                    $iLinhasDebito = $rsDadosDebitoCorrigido === false || $rsDadosDebitoCorrigido === null ? 0 : pg_num_rows($rsDadosDebitoCorrigido);
 
                     for ($iIndDebito = 0; $iIndDebito < $iLinhasDebito; $iIndDebito++) {
                         $nValor += db_utils::fieldsMemory($rsDadosDebitoCorrigido, $iIndDebito)->total;
@@ -1004,7 +1004,7 @@ class cl_inicial
             $sSqlDadosDebitos .= "                           and arrecad.k00_numpar = divida.v01_numpar";
             $sSqlDadosDebitos .= "  where v14_certid in ($oCertidoesInicial->v13_certid)";
             $rsDadosDebitos = db_query($sSqlDadosDebitos);
-            $iLinhasDadosDebitos = pg_num_rows($rsDadosDebitos);
+            $iLinhasDadosDebitos = $rsDadosDebitos === false || $rsDadosDebitos === null ? 0 : pg_num_rows($rsDadosDebitos);
 
             for ($iIndDadosDebitos = 0; $iIndDadosDebitos < $iLinhasDadosDebitos; $iIndDadosDebitos++) {
 

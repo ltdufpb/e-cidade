@@ -115,7 +115,7 @@ try {
         $sSqlEntradas  .= "        inner join matestoque       on m71_codmatestoque = m70_codigo ";
         $sSqlEntradas  .= "  where m70_codigo = {$oDadosItem->m70_codigo}";
         $rsEntradas     = db_query($sSqlEntradas);
-        $iTotalEntradas = pg_num_rows($rsEntradas);
+        $iTotalEntradas = $rsEntradas === false || $rsEntradas === null ? 0 : pg_num_rows($rsEntradas);
         $lPoissuiEntradaInconsistente = false;
         for ($iEntrada = 0; $iEntrada < $iTotalEntradas; $iEntrada++) {
 
@@ -236,7 +236,7 @@ function corrigirTransferencia($oDadosTransferencia) {
   $sSqlItensTransferencia .= " order by m82_codigo, m70_codmatmater, m70_coddepto";
 
   $rsItensTransferencia     = db_query($sSqlItensTransferencia);
-  $iTotalItens              = pg_num_rows($rsItensTransferencia);
+  $iTotalItens              = $rsItensTransferencia === false || $rsItensTransferencia === null ? 0 : pg_num_rows($rsItensTransferencia);
   $aItensAgrupadosPorDepto  = [];
 
   for ($i = 0; $i < $iTotalItens; $i++) {
@@ -396,7 +396,7 @@ function corrigirMovimentacoes($iCodigoLancamento, $nQuantidade, $nQuantidadeAte
   $sSqlEntradas  .= "   order by to_timestamp(m80_data || ' ' || m80_hora, 'YYYY-MM-DD HH24:MI:SS') ";
 
   $rsMovimentacoes     = db_query($sSqlEntradas);
-  $iTotalMovimentacoes = pg_num_rows($rsMovimentacoes);
+  $iTotalMovimentacoes = $rsMovimentacoes === false || $rsMovimentacoes === null ? 0 : pg_num_rows($rsMovimentacoes);
   $nValorMovimentado   = 0;
   $oPrimeiraMovimentacaoNegativa = null;
   for ($iMov = 0; $iMov < $iTotalMovimentacoes; $iMov++) {

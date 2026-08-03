@@ -63,7 +63,7 @@ class cl_logexcgeral {
                  ed256_t_descr = text = Descrição
                  ";
    //funcao construtor da classe
-   function cl_logexcgeral() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("logexcgeral");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
@@ -493,7 +493,7 @@ class cl_logexcgeral {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = $result === false || $result === null ? 0 : pg_numrows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:logexcgeral";

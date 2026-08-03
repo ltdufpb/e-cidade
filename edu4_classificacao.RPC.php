@@ -141,7 +141,7 @@ try {
   	  if (!$rsDocumentoTemplate) {
   	  	throw new DBException( _M(ARQUIVO_MSG_EDU4_CLASSIFICACAORPC."erro_buscar_modelo_ata") );
   	  }
-  	  $iLinhas = pg_num_rows($rsDocumentoTemplate);
+  	  $iLinhas = $rsDocumentoTemplate === false || $rsDocumentoTemplate === null ? 0 : pg_num_rows($rsDocumentoTemplate);
   	  if ($iLinhas == 0) {
   	    //throw new BusinessException( _M(ARQUIVO_MSG_EDU4_CLASSIFICACAORPC."nenhum_modelo_cadastrado") );
         $oModelo             = new stdClass();

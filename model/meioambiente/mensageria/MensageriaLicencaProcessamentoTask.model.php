@@ -114,7 +114,7 @@ class MensageriaLicencaProcessamentoTask extends Task implements iTarefa {
     $oDaoMensageriaUsuario = db_utils::getDao('mensagerialicenca_db_usuarios');
     $sSqlUsuarios          = $oDaoMensageriaUsuario->sql_query_usuariosNotificar('am16_sequencial', 'am16_dias');
     $rsUsuarios            = db_query($sSqlUsuarios);
-    $iTotalUsuarios        = pg_num_rows($rsUsuarios);
+    $iTotalUsuarios        = $rsUsuarios === false || $rsUsuarios === null ? 0 : pg_num_rows($rsUsuarios);
 
     if ($iTotalUsuarios == 0) {
       throw new Exception("Nenhum usuário para notificar.");
@@ -178,7 +178,7 @@ class MensageriaLicencaProcessamentoTask extends Task implements iTarefa {
       $sSqlLicenca = $oDaoLicencaEmpreendimento->sql_query_licenca_parecer('am13_sequencial, am08_sequencial, am08_tipolicenca', $sWhere);
       $rsLicenca   = $oDaoLicencaEmpreendimento->sql_record($sSqlLicenca);
 
-      $iTotalLincecas = pg_num_rows($rsLicenca);
+      $iTotalLincecas = $rsLicenca === false || $rsLicenca === null ? 0 : pg_num_rows($rsLicenca);
 
       if ($iTotalLincecas == 0) {
         continue;

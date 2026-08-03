@@ -113,7 +113,7 @@ $rsBairro   = db_query( $sSqlBairro );
 
 if( $rsBairro && pg_num_rows( $rsBairro ) > 0 ) {
 
-  $iTotalBairros = pg_num_rows( $rsBairro );
+  $iTotalBairros = $rsBairro === false || $rsBairro === null ? 0 : pg_num_rows( $rsBairro );
 
   /**
    * Percorre os bairros retornados, indexando o array dos dados agrupados que serão impressos pelo nome do bairro,
@@ -152,7 +152,7 @@ if ( !$rsTriagemAgravo || pg_num_rows( $rsTriagemAgravo ) == 0 ) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado");
 }
 
-$iTotalTriagemAgravo = pg_num_rows( $rsTriagemAgravo );
+$iTotalTriagemAgravo = $rsTriagemAgravo === false || $rsTriagemAgravo === null ? 0 : pg_num_rows( $rsTriagemAgravo );
 
 /**
  * Percorre os dados retornados e monta o array agrupado por Bairro > Agravo > demais informações

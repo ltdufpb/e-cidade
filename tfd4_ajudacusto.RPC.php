@@ -95,7 +95,7 @@ try {
         throw new DBException( _M( MENSAGENS_TFD4_AJUDACUSTO_RPC . 'erro_buscar_ajudas_custo', $oErro ) );
       }
 
-      $iTotalAjudasCusto      = pg_num_rows( $rsAjudaCusto );
+      $iTotalAjudasCusto      = $rsAjudaCusto === false || $rsAjudaCusto === null ? 0 : pg_num_rows( $rsAjudaCusto );
 
       if ( $iTotalAjudasCusto == 0) {
 

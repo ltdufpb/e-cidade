@@ -45,13 +45,13 @@ if (isset($incluir)) {
 	
   $sqlr="select * from mer_estoqueitem where me19_i_matrequi=".$codrequi;
   $resultr = db_query($sqlr);
-  $linhasr = pg_num_rows($resultr);
+  $linhasr = $resultr === false || $resultr === null ? 0 : pg_num_rows($resultr);
   
   if ($linhasr==0) {
   	
 	$sql = $cl_matrequiitem->sql_query("","*","","m41_codmatrequi=".$codrequi);
 	$result = db_query($sql);
-	$linhas = pg_num_rows($result);
+	$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 	$vet    = explode(",",(string) $lista);
     db_inicio_transacao();
     
@@ -60,7 +60,7 @@ if (isset($incluir)) {
 	  db_fieldsmemory($result,$vet[$x]);
 	  $sqlv        = "select * from mer_estoque where me18_i_codmater=".$m41_codmatmater; 
 	  $resultv     = db_query($sqlv);  
-	  $linhasv     = pg_num_rows($resultv);
+	  $linhasv     = $resultv === false || $resultv === null ? 0 : pg_num_rows($resultv);
 	  $sqlvalor    = "select * from matestoque where m70_codmatmater=".$m41_codmatmater;
 	  $resultvalor = db_query($sqlvalor);  
 	  db_fieldsmemory($resultvalor,0);	   

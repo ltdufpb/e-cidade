@@ -233,7 +233,7 @@ try {
       }
 
       $oRetorno->aHorarios = [];
-      $iLinhas             = pg_num_rows($rsGradeHorarios);
+      $iLinhas             = $rsGradeHorarios === false || $rsGradeHorarios === null ? 0 : pg_num_rows($rsGradeHorarios);
 
       for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
         $oRetorno->aHorarios[] = db_utils::fieldsMemory( $rsGradeHorarios, $iContador )->tf02_c_horario;
@@ -272,7 +272,7 @@ try {
       }
 
       $oRetorno->aAcompanhantes = [];
-      $iLinhas                  = pg_num_rows($rsAcompanhantes);
+      $iLinhas                  = $rsAcompanhantes === false || $rsAcompanhantes === null ? 0 : pg_num_rows($rsAcompanhantes);
 
       for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
 
@@ -334,7 +334,7 @@ try {
 
       if ($rsPassageiros && pg_num_rows($rsPassageiros) > 0) {
 
-        $iLinhas = pg_num_rows($rsPassageiros);
+        $iLinhas = $rsPassageiros === false || $rsPassageiros === null ? 0 : pg_num_rows($rsPassageiros);
         for ($i = 0; $i < $iLinhas; $i++) {
 
           $oDados          = db_utils::fieldsMemory($rsPassageiros, $i);

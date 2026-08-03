@@ -65,7 +65,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
   $sql1      .= "  FROM microarea  ";
   $sql1      .= "  ORDER BY sd34_v_descricao";
   $sql_result = db_query( $sql1 );
-  $num        = pg_num_rows( $sql_result );
+  $num        = $sql_result === false || $sql_result === null ? 0 : pg_num_rows( $sql_result );
   $conta      = "";
 
   $aArrayPai = [];
@@ -81,7 +81,7 @@ $oDaoSetorAmbulatorial  = new cl_setorambulatorial();
     $sub_sql   .= " WHERE sd35_i_microarea = '{$cod_micro}' ";
     $sub_sql   .= " ORDER BY sd33_v_descricao";
     $sub_result = db_query( $sub_sql );
-    $num_sub    = pg_num_rows( $sub_result );
+    $num_sub    = $sub_result === false || $sub_result === null ? 0 : pg_num_rows( $sub_result );
 
     if($num_sub>=1){
 

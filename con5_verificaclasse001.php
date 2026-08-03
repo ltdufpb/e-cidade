@@ -97,7 +97,7 @@ if (is_dir($dir)) {
 
 												// ver tabela db_sysclasses
 												$result = db_query($sql);	
-												$linhasres = pg_num_rows($result);
+												$linhasres = $result === false || $result === null ? 0 : pg_num_rows($result);
 												if($linhasres>0){
 													$exibe = montaMetodoEx($lines,$line_num);
 													$exibe = addslashes((string) $exibe);

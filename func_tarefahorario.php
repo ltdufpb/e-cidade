@@ -79,7 +79,7 @@ function testa_horarios($at40_responsavel,$at40_sequencial) {
 																																		                                                     (at40_horainidia <= '$horafim' and at40_horafim >= '$horainidia')"));
 	if($cltarefa->numrows > 0) {
 		$NumRows    = $cltarefa->numrows;
-		$NumFields  = pg_num_fields($result);
+		$NumFields  = $result === false || $result === null ? 0 : pg_num_fields($result);
 		$vet_update = [];
 		$vet_keys   = [];
 					

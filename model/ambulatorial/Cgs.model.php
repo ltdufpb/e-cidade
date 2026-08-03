@@ -372,7 +372,7 @@ class Cgs
             throw new DBException(_M(ARQUIVO_MENSAGEM_CGS . "erro_buscar_cns", $oErro));
         }
 
-        $iLinhasCartaoSus = pg_num_rows($rsCartaoSus);
+        $iLinhasCartaoSus = $rsCartaoSus === false || $rsCartaoSus === null ? 0 : pg_num_rows($rsCartaoSus);
         $aCartaoSus = [];
 
         if ($iLinhasCartaoSus > 0) {
@@ -685,7 +685,7 @@ class Cgs
                 throw new BusinessException(_M(ARQUIVO_MENSAGEM_CGS . "erro_buscar_requisicoes", $oMsgErro));
             }
 
-            $iLinhas = pg_num_rows($rsRequisicao);
+            $iLinhas = $rsRequisicao === false || $rsRequisicao === null ? 0 : pg_num_rows($rsRequisicao);
 
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDadosRequisicao = db_utils::fieldsMemory($rsRequisicao, $i);

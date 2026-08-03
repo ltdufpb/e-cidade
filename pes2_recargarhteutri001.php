@@ -71,7 +71,7 @@ if (isset($gera)){
   }
 
   $result = $clrhteutri->sql_record($clrhteutri->sql_query(null,"rh67_regist,rh67_dias, rh67_vales, z01_nome, z01_cgccpf ",$xordem,$where));
-  $xxnum = pg_num_rows($result);
+  $xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 
   if(0 == 1){
     for($x = 0;$x < pg_num_rows($result);$x++){

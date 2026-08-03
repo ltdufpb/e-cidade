@@ -78,7 +78,7 @@ try {
     throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_dados_aluno', $oErro ) );
   }
 
-  $iLinhasAluno = pg_num_rows( $rsResult );
+  $iLinhasAluno = $rsResult === false || $rsResult === null ? 0 : pg_num_rows( $rsResult );
 
   if( $iLinhasAluno == 0 ) {
     throw new BusinessException(_M(MENSAGENS_EDU2_FICHAALUNO001 . 'nenhum_registro_encontrado'));
@@ -93,7 +93,7 @@ try {
     throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_tipo_sanguineo', $oErro ) );
   }
 
-  $iLinhas           = pg_num_rows( $rsTipoSanguineo );
+  $iLinhas           = $rsTipoSanguineo === false || $rsTipoSanguineo === null ? 0 : pg_num_rows( $rsTipoSanguineo );
   $aTiposSanguineos  = [];
 
   if ( $iLinhas > 0) {
@@ -582,7 +582,7 @@ try {
     }
 
     $iCont               = 0;
-    $iLinhasNecessidades = pg_num_rows( $rsResult22 );
+    $iLinhasNecessidades = $rsResult22 === false || $rsResult22 === null ? 0 : pg_num_rows( $rsResult22 );
 
     if( $iLinhasNecessidades > 0 ) {
 
@@ -703,7 +703,7 @@ try {
         throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_matriculas_aluno', $oErro ) );
       }
 
-      $iLinhas11      = pg_num_rows( $rsResult1 );
+      $iLinhas11      = $rsResult1 === false || $rsResult1 === null ? 0 : pg_num_rows( $rsResult1 );
       $iEscolaEmissao = db_getsession("DB_coddepto");
 
       if( $iLinhas11 > 0 ) {
@@ -786,7 +786,7 @@ try {
               throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_situacao_aluno', $oErro ) );
             }
 
-            $iLinhasMatricula = pg_num_rows( $rsResult221 );
+            $iLinhasMatricula = $rsResult221 === false || $rsResult221 === null ? 0 : pg_num_rows( $rsResult221 );
             if( $iLinhasMatricula > 0 ) {
 
               db_fieldsmemory($rsResult221, 0);
@@ -868,7 +868,7 @@ try {
             throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_dados_conselho', $oErro ) );
           }
 
-          $iLinhasAprovCons = pg_num_rows( $rsAprovConselho );
+          $iLinhasAprovCons = $rsAprovConselho === false || $rsAprovConselho === null ? 0 : pg_num_rows( $rsAprovConselho );
 
           $aAprovadoBaixaFrequencia   = [];
           $aAprovadoConselhoRegimento = [];
@@ -1040,7 +1040,7 @@ try {
         throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_dados_historico', $oErro ) );
       }
 
-      $iLinhas3  = pg_num_rows($rsResult3);
+      $iLinhas3  = $rsResult3 === false || $rsResult3 === null ? 0 : pg_num_rows($rsResult3);
       $iContador = 0;
 
       if( $iLinhas3 > 0 ) {
@@ -1136,7 +1136,7 @@ try {
                 throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_resultado_historico', $oErro ) );
               }
 
-              $iLinhasResultadoHistorico = pg_num_rows( $rsResult11 );
+              $iLinhasResultadoHistorico = $rsResult11 === false || $rsResult11 === null ? 0 : pg_num_rows( $rsResult11 );
 
               $oPdf->cell( 5, 4,               "", "L", 0, "C", 0);
               $oPdf->cell(85, 4,     "Disciplina",   1, 0, "C", 0);
@@ -1246,7 +1246,7 @@ try {
                 throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_resultado_historico', $oErro ) );
               }
 
-              $iLinhasResultadoForaHistorico = pg_num_rows( $rsResult22 );
+              $iLinhasResultadoForaHistorico = $rsResult22 === false || $rsResult22 === null ? 0 : pg_num_rows( $rsResult22 );
 
               $oPdf->cell( 5, 4,               "", "L", 0, "C", 0);
               $oPdf->cell(85, 4,     "Disciplina",   1, 0, "C", 0);
@@ -1390,7 +1390,7 @@ try {
         throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_movimentacoes', $oErro ) );
       }
 
-      $iLinhasMovimentacoes = pg_num_rows( $rsResult );
+      $iLinhasMovimentacoes = $rsResult === false || $rsResult === null ? 0 : pg_num_rows( $rsResult );
 
       if( $iLinhasMovimentacoes > 0 ) {
 
@@ -1420,7 +1420,7 @@ try {
         throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_movimentacoes_cancelamento', $oErro ) );
       }
 
-      $iLinhasMovimentacoesCancelamento = pg_num_rows( $rsResult1 );
+      $iLinhasMovimentacoesCancelamento = $rsResult1 === false || $rsResult1 === null ? 0 : pg_num_rows( $rsResult1 );
 
       if( $iLinhasMovimentacoesCancelamento > 0 ) {
 
@@ -1443,7 +1443,7 @@ try {
         throw new DBException( _M( MENSAGENS_EDU2_FICHAALUNO001 . 'erro_buscar_movimentacoes_encerramento', $oErro ) );
       }
 
-      $iLinhasMovimentacoesEncerramento = pg_num_rows( $rsResult2 );
+      $iLinhasMovimentacoesEncerramento = $rsResult2 === false || $rsResult2 === null ? 0 : pg_num_rows( $rsResult2 );
 
       if( $iLinhasMovimentacoesEncerramento > 0 ) {
 

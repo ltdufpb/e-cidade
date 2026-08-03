@@ -145,7 +145,7 @@ if ($oProtParam->p90_modelcapaproc != 3) {
 
     $result = db_query($sql);
 
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
     if (pg_num_rows($result) == 0) {
 

@@ -115,7 +115,7 @@
   
     //exclusao das ocorrencias 
     $result  = $clhistocorrenciamatric->sql_record($clhistocorrenciamatric->sql_query("", "ar25_histocorrencia", "ar25_histocorrencia", "ar25_matric = $x01_matric"));
-    $numrows = pg_num_rows($result);
+    $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
     
     if ($numrows > 0) {
       for($i = 0; $i < $numrows; $i++) {

@@ -101,7 +101,7 @@
             $sSqlDataDebitos .= "              where datadebitos is not null order by datadebitos desc                                                                                                       ";
   
            $rsDataDebitos    = db_query($sSqlDataDebitos);
-           $iNroDatas        = pg_num_rows($rsDataDebitos);
+           $iNroDatas        = $rsDataDebitos === false || $rsDataDebitos === null ? 0 : pg_num_rows($rsDataDebitos);
            
            $aDatas[''] = 'SELECIONE';
            for( $iInd=0; $iInd < $iNroDatas; $iInd++ ){

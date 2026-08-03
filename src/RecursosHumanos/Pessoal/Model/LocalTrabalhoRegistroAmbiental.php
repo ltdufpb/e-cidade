@@ -300,7 +300,7 @@ class LocalTrabalhoRegistroAmbiental
                 throw new \DBException($msg);
             }
 
-            $totalRegistro = pg_num_rows($rs);
+            $totalRegistro = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             for ($i = 0; $i < $totalRegistro; $i++) {
                 $registroAmbiental = \db_utils::fieldsMemory($rs, $i);
                 $registrosAmbientais[] = new LocalTrabalhoRegistroAmbiental($registroAmbiental->rh258_sequencial);

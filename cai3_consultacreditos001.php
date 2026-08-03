@@ -158,7 +158,7 @@ $iInstituicao = db_getsession("DB_instit");
             //echo $sSqlCreditosDisponiveis; die;
 
             $rsCreditosDisponiveis    = db_query($sSqlCreditosDisponiveis);
-            $iLinhasCreditos          = pg_num_rows($rsCreditosDisponiveis);
+            $iLinhasCreditos          = $rsCreditosDisponiveis === false || $rsCreditosDisponiveis === null ? 0 : pg_num_rows($rsCreditosDisponiveis);
 
             if ($iLinhasCreditos > 0) {
             ?>
@@ -233,7 +233,7 @@ $iInstituicao = db_getsession("DB_instit");
                                                 WHERE c.k00_numpre = {$oCredito->k00_numpre}";
                         $rsSqlOrigemCredito = db_query($sqlOrigemCredito);
                         if($rsSqlOrigemCredito) {
-                            $iLinhasOrigemCredito = pg_num_rows($rsSqlOrigemCredito);
+                            $iLinhasOrigemCredito = $rsSqlOrigemCredito === false || $rsSqlOrigemCredito === null ? 0 : pg_num_rows($rsSqlOrigemCredito);
                             $aCreditos = [];
                             for ( $xInd=0; $xInd < $iLinhasOrigemCredito; $xInd++ ) {
                                 $oOrigemCredito = db_utils::fieldsMemory($rsSqlOrigemCredito,$xInd);

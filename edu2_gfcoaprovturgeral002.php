@@ -60,7 +60,7 @@ if($clturma->numrows>0){
           ORDER BY ed41_i_sequencia,ed59_i_ordenacao
          ";
  $result1 = db_query($sql1);
- $linhas1 = pg_num_rows($result1);
+ $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
  //seleciona disciplinas da turma escolhida
  $sql2 = "SELECT DISTINCT
                  ed232_c_descr as disciplina,
@@ -80,7 +80,7 @@ if($clturma->numrows>0){
           ORDER BY ed59_i_ordenacao
          ";
  $result2 = db_query($sql2);
- $linhas2 = pg_num_rows($result2);
+ $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
  //db_criatabela($result2);
  //exit;
  if($linhas1==0){?>

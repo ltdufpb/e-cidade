@@ -102,7 +102,7 @@ $result=$clvarfixval->sql_record($clvarfixval->sql_query_file(null,"*",null," q3
 
 	 $sqlprocfiscalv = "select y113_sequencial from procfiscalvarfix where y113_varfix =  $q33_codigo ";
 	 $resultprocfiscalv = db_query($sqlprocfiscalv);
-	 $linhasprocfiscalv = pg_num_rows($resultprocfiscalv);
+	 $linhasprocfiscalv = $resultprocfiscalv === false || $resultprocfiscalv === null ? 0 : pg_num_rows($resultprocfiscalv);
 	 if($linhasprocfiscalv>0){
 	 	 db_fieldsmemory($resultprocfiscalv,0);
 	   $clprocfiscalvarfix->y113_sequencial =$y113_sequencial;
@@ -147,7 +147,7 @@ $sqlprocfiscal = "select y113_procfiscal as procfiscal,z01_nome as nome
 										 inner join cgm on y101_numcgm=z01_numcgm
 										 where y113_varfix = $chavepesquisa ";
 	 $resultprocfiscal = db_query($sqlprocfiscal);
-	 $linhasprocfiscal = pg_num_rows($resultprocfiscal);
+	 $linhasprocfiscal = $resultprocfiscal === false || $resultprocfiscal === null ? 0 : pg_num_rows($resultprocfiscal);
 	 if($linhasprocfiscal>0){
 	 	db_fieldsmemory($resultprocfiscal,0);
 	 }else{

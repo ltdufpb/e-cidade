@@ -105,7 +105,7 @@ try {
                     throw new DBException("Erro ao buscar os atributos do eSocial.");
                 }
 
-                $linhasAtributosEsocial = pg_num_rows($rsAttributosEsocial);
+                $linhasAtributosEsocial = $rsAttributosEsocial === false || $rsAttributosEsocial === null ? 0 : pg_num_rows($rsAttributosEsocial);
                 for ($linha = 0; $linha < $linhasAtributosEsocial; $linha++) {
 
                     $dadosAfastamento = db_utils::fieldsMemory($rsAttributosEsocial, $linha);
@@ -186,7 +186,7 @@ try {
                 throw new DBException("Erro ao buscar os atributos dinâmicos.");
             }
 
-            $totalAtributos = pg_num_rows($rsMapeamentoAtributos);
+            $totalAtributos = $rsMapeamentoAtributos === false || $rsMapeamentoAtributos === null ? 0 : pg_num_rows($rsMapeamentoAtributos);
 
             for ($i = 0; $i < $totalAtributos; $i++) {
                 $dadosMapeamentoAtributos = db_utils::fieldsMemory($rsMapeamentoAtributos, $i);
@@ -387,7 +387,7 @@ function adicionarOpcoes($dadosAfastamento, $codigoAtributoEsocial) {
             throw new DBException("Erro ao buscar opções de atributos.");
         }
 
-        $linhasOpcoesAtributo = pg_num_rows($rsOpcoesAtributo);
+        $linhasOpcoesAtributo = $rsOpcoesAtributo === false || $rsOpcoesAtributo === null ? 0 : pg_num_rows($rsOpcoesAtributo);
 
         for($i = 0; $i < $linhasOpcoesAtributo; $i++) {
 

@@ -345,7 +345,7 @@ function js_validaLinha(idLinha){
             $sqlOutros .= " union ";
             $sqlOutros .= " select j92_sequencial,j92_descr from tesintertipo ";
             $rsOutros = db_query($sqlOutros);
-            $intOutros = pg_num_rows($rsOutros);
+            $intOutros = $rsOutros === false || $rsOutros === null ? 0 : pg_num_rows($rsOutros);
 
             for ($iOutros = 0; $iOutros < $intOutros; $iOutros++) {
                 db_fieldsmemory($rsOutros, $iOutros);
@@ -360,7 +360,7 @@ function js_validaLinha(idLinha){
             $sqlIdbql .= "   and j34_lote  != '" . @str_pad((string) $j34_lote, 4, "0", STR_PAD_LEFT) . "'";
 
             $rsIdbql = db_query($sqlIdbql);
-            $intIdbql = pg_num_rows($rsIdbql);
+            $intIdbql = $rsIdbql === false || $rsIdbql === null ? 0 : pg_num_rows($rsIdbql);
 
             for ($iIdbql = 0; $iIdbql < $intIdbql; $iIdbql++) {
                 db_fieldsmemory($rsIdbql, $iIdbql);
@@ -372,7 +372,7 @@ function js_validaLinha(idLinha){
             $sqlOri .= "select j64_sequencial, j64_descricao from orientacao ";
 
             $rsOri = db_query($sqlOri);
-            $intOri = pg_num_rows($rsOri);
+            $intOri = $rsOri === false || $rsOri === null ? 0 : pg_num_rows($rsOri);
 
             for ($iOri = 0; $iOri < $intOri; $iOri++) {
                 db_fieldsmemory($rsOri, $iOri);

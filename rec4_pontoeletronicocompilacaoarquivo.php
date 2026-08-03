@@ -105,7 +105,7 @@ if (isset($processar)) {
                               ORDER BY data, hora";
 
         $rsDadosRelatorio = db_query($sSqlDadosRelatorio);
-        $qtdeRegistros = pg_num_rows($rsDadosRelatorio);
+        $qtdeRegistros = $rsDadosRelatorio === false || $rsDadosRelatorio === null ? 0 : pg_num_rows($rsDadosRelatorio);
         if ($qtdeRegistros == 0) {
             throw new BusinessException("Não há servidores para esta seleção.");
         }
@@ -117,7 +117,7 @@ if (isset($processar)) {
         $dataFim = \DateTime::createFromFormat('Y-m-d', $dadosUltimoRegistro->data);
 
         $dadosRelatorio = [];
-        $totalLinhas = pg_num_rows($rsDadosRelatorio);
+        $totalLinhas = $rsDadosRelatorio === false || $rsDadosRelatorio === null ? 0 : pg_num_rows($rsDadosRelatorio);
 
         $oInstituicao = \InstituicaoRepository::getInstituicaoSessao();
 

@@ -157,7 +157,7 @@ $sSql   .= "           rh02_anousu,                                             
 $sSql   .= "           rh02_mesusu;                                                                ";
 
 $rsSql     = db_query($sSql);
-$iNumRows  = pg_num_rows($rsSql);
+$iNumRows  = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
 
 if ($iNumRows == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=O filtro selecionado não retornou nenhum registro.');

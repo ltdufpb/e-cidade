@@ -63,7 +63,7 @@ try {
                                                            where e60_anousu = {$iAnoSessao}
                                                            group by e60_numemp having count(*) > 1) as x)";
       $rsBuscaEmpenhos = db_query($sSqlBuscaEmpenhos);
-      $iTotalRegistros = pg_num_rows($rsBuscaEmpenhos);
+      $iTotalRegistros = $rsBuscaEmpenhos === false || $rsBuscaEmpenhos === null ? 0 : pg_num_rows($rsBuscaEmpenhos);
       if ($iTotalRegistros == 0) {
         throw new Exception("Nenhum empenho encontrado.");
       }

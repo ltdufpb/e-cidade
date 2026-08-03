@@ -83,7 +83,7 @@ class IntegracaoLicitacao extends IntegracaoBase implements IItemIntegracao {
     );
 
     $rsLicitacoes           = db_query($this->rsConexaoOrigem, $sSqlLicitacao);
-    $iTotalLicitacoes       = pg_num_rows($rsLicitacoes);
+    $iTotalLicitacoes       = $rsLicitacoes === false || $rsLicitacoes === null ? 0 : pg_num_rows($rsLicitacoes);
     $oLicitacaoTableManager = new tableDataManager($this->rsConexaoDestino, 'licitacoes', null, true, 500);
     for ($iLicitacao = 0; $iLicitacao < $iTotalLicitacoes; $iLicitacao++) {
 
@@ -132,7 +132,7 @@ class IntegracaoLicitacao extends IntegracaoBase implements IItemIntegracao {
       throw new Exception("Erro ao pesquisar os itens da licitacao ".pg_last_error());
     }
 
-    $iTotalItens                  = pg_num_rows($rsItensLicitacao);
+    $iTotalItens                  = $rsItensLicitacao === false || $rsItensLicitacao === null ? 0 : pg_num_rows($rsItensLicitacao);
     $oTableManagerLicitacoesItens = new tableDataManager($this->rsConexaoDestino, "licitacoes_itens", null, true, 500);
     for ($iItens = 0; $iItens < $iTotalItens; $iItens++) {
 
@@ -219,7 +219,7 @@ class IntegracaoLicitacao extends IntegracaoBase implements IItemIntegracao {
     // Se existir, monta adiciona os tipos na busca como tipo 4 - outros
     if ($rsOutros) {
         $aTipoOutros      = [];
-        $quantidadeOutros = pg_num_rows($rsOutros);
+        $quantidadeOutros = $rsOutros === false || $rsOutros === null ? 0 : pg_num_rows($rsOutros);
         for ( $i=0; $i < $quantidadeOutros; $i++ ) {
             $outro = db_utils::fieldsMemory($rsOutros,$i);
             $aTipoOutros[] = $outro->l48_documento;
@@ -246,7 +246,7 @@ class IntegracaoLicitacao extends IntegracaoBase implements IItemIntegracao {
       throw new Exception("Erro ao importar os documentos das licitações: " . pg_last_error());
     }
 
-    $iTotalDocumentos                  = pg_num_rows($rsDocumentosLicitacao);
+    $iTotalDocumentos                  = $rsDocumentosLicitacao === false || $rsDocumentosLicitacao === null ? 0 : pg_num_rows($rsDocumentosLicitacao);
     $oTableManagerLicitacoesDocumentos = new tableDataManager($this->rsConexaoDestino,
       "licitacoes_documentos", "id", true, 500
     );

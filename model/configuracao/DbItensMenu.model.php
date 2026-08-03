@@ -382,7 +382,7 @@ class DbItensMenu {
       throw new DBException( _M( CAMINHO_MENSAGENS_ITENS . "erro_buscar_itens_filho" ) );
     }
 
-    $iLinhasDbMenu = pg_num_rows( $rsDbMenu );
+    $iLinhasDbMenu = $rsDbMenu === false || $rsDbMenu === null ? 0 : pg_num_rows( $rsDbMenu );
     if ( $iLinhasDbMenu == 0 ) {
       return $this->aItensFilho;
     }

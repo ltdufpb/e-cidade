@@ -125,7 +125,7 @@ $clturno->rotulo->label("ed15_c_nome");
              GROUP BY $campos
             ";
      $result = db_query($sql);
-     echo $linhas = pg_num_rows($result);
+     echo $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
      if($linhas!=0){
       db_fieldsmemory($result,0);
       echo "<script>".$funcao_js."('$ed15_c_nome',false);</script>";

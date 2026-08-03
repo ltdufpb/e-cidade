@@ -81,7 +81,7 @@ if($clatendimento->numrows>0) {
 $sql4   = "select distinct at10_codcli, at10_nome, at10_usuario from db_usuclientes
            where at10_codcli = $clientes order by at10_nome";
 $result_usucliente = db_query($sql4);
-$numlinha = pg_num_rows($result_usucliente);
+$numlinha = $result_usucliente === false || $result_usucliente === null ? 0 : pg_num_rows($result_usucliente);
 for ($z = 0; $z < $numlinha; $z ++) {
 	if(isset($at10_usuario)||$at10_usuario!="") {
 		if($at10_usuario == pg_fetch_result($result_usucliente, $z, "at10_usuario")) {
@@ -156,7 +156,7 @@ echo $at08_modulo;
 $sqlmod = "select id_item, nome_modulo from db_modulos order by nome_modulo";
 echo "<option value=''>Selecione o modulo</option>";
 $result_modulo = db_query($sqlmod);
-$numlinha = pg_num_rows($result_modulo);
+$numlinha = $result_modulo === false || $result_modulo === null ? 0 : pg_num_rows($result_modulo);
 echo ($sqlmod);
 for ($a = 0; $a < $numlinha; $a ++) {
 	$modulo_iditem = pg_fetch_result($result_modulo, $a, "id_item");

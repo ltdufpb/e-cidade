@@ -298,7 +298,7 @@ $sql_dados_gerfs .= "          rubric      \n";
 $aMatriculasProcessadas = [];
 $result_dados_gerfs = db_query($sql_dados_gerfs);
 
-$numrows_dados_gerfs = pg_num_rows($result_dados_gerfs);
+$numrows_dados_gerfs = $result_dados_gerfs === false || $result_dados_gerfs === null ? 0 : pg_num_rows($result_dados_gerfs);
 $mes_anterior = "";
 $ano_anterior = "";
 $contaIarray = 1;
@@ -591,7 +591,7 @@ if ($impressao_rubricas == false) {
 
             $result_dados_work_ficha_financ = db_query($sql_dados_work_ficha_financ);
 
-            $numrows_dados_work_ficha_financ = pg_num_rows($result_dados_work_ficha_financ);
+            $numrows_dados_work_ficha_financ = $result_dados_work_ficha_financ === false || $result_dados_work_ficha_financ === null ? 0 : pg_num_rows($result_dados_work_ficha_financ);
             $imprimir_cabecalho_rubricas = true;
             $conta_mes_ano = 0;
             $base_impressa = false;
@@ -761,7 +761,7 @@ if ($impressao_rubricas == false) {
     $result_dados_impressao_rub = db_query($sql_dados_impressao_rub);
 
 //  db_criatabela($result_dados_impressao_rub);exit;
-    $numrows_dados_impressao_rub = pg_num_rows($result_dados_impressao_rub);
+    $numrows_dados_impressao_rub = $result_dados_impressao_rub === false || $result_dados_impressao_rub === null ? 0 : pg_num_rows($result_dados_impressao_rub);
 
     $arr_provn_rubricas = [];
     $arr_descn_rubricas = [];

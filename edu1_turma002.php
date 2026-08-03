@@ -127,7 +127,7 @@ function verificaAtividadeComplementarDisponivel($iTurma) {
         return false;
     }
 
-    $numLinhas = pg_num_rows($rsTurmaCensoEtapa);
+    $numLinhas = $rsTurmaCensoEtapa === false || $rsTurmaCensoEtapa === null ? 0 : pg_num_rows($rsTurmaCensoEtapa);
 
     for ($i = 0; $i < $numLinhas; $i++) {
         $vinculo = db_utils::fieldsMemory($rsTurmaCensoEtapa, $i);

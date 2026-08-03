@@ -84,7 +84,7 @@ final class cronogramaMetaReceita {
       $rsTotalArrecadadoMes   = db_query($sSqlTotalArrecadadoMes);
       if ($rsTotalArrecadadoMes) {
 
-        $iTotalMeses      = pg_num_rows($rsTotalArrecadadoMes);
+        $iTotalMeses      = $rsTotalArrecadadoMes === false || $rsTotalArrecadadoMes === null ? 0 : pg_num_rows($rsTotalArrecadadoMes);
         $oMesBase         = db_utils::fieldsMemory($rsTotalArrecadadoMes, 0);
         $oMes             = new stdClass();
         $nPercentual      = 0;

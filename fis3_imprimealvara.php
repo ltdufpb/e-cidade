@@ -152,7 +152,7 @@ if ( pg_num_rows($resparag) == 0 ) {
      db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do alvara sanitario!');
      exit;
 }
-$numrows = pg_num_rows($resparag);
+$numrows = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
 for($i=0;$i<$numrows;$i++){
   db_fieldsmemory($resparag,$i);
   if ($db04_ordem == '1'){

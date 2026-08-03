@@ -91,9 +91,9 @@ class AnexoSumarioGeralReceita extends RelatoriosLegaisBase {
                                                    '',
                                                    'true',
                                                    'false');                                        
-    $iTotalLinhasReceita = pg_num_rows($rsReceita);
-    $iTotalLinhasDespesa = pg_num_rows($rsDespesa);
-    $iTotalLinhasPlano   = pg_num_rows($rsPlano);
+    $iTotalLinhasReceita = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
+    $iTotalLinhasDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
+    $iTotalLinhasPlano   = $rsPlano === false || $rsPlano === null ? 0 : pg_num_rows($rsPlano);
     $aLinhasRelatorio    = $this->oRelatorioLegal->getLinhasCompleto();
     $aFuncoes            = [];
     /*

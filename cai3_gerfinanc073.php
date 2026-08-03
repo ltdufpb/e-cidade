@@ -103,7 +103,7 @@ if (isset($oGet->marcarvencidas) && isset($oGet->marcartodas)) {
             $sSqlArrecad .= "     and k00_numpar   = {$iNumpar}       ";
             $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}'   ";
             $rsSqlArrecad = db_query($sSqlArrecad);
-            $iNumRows = pg_num_rows($rsSqlArrecad);
+            $iNumRows = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
 
             if ($iNumRows == 0) {
                 if ($_POST["tipo_debito"] == 3 || $_POST["tipo_debito"] == 5) {

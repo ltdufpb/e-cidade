@@ -145,7 +145,7 @@ class Processamento
             $mensagem = "Não foi possível encontrar os atributos configurados para os lançamentos informados..";
             throw new \Exception($mensagem);
         }
-        $totalLinhas = pg_num_rows($rsLancamentos);
+        $totalLinhas = $rsLancamentos === false || $rsLancamentos === null ? 0 : pg_num_rows($rsLancamentos);
         $lancamentos = [];
 
         for ($i = 0; $i < $totalLinhas; $i++) {
@@ -595,7 +595,7 @@ class Processamento
         $where .= "              where c125_mesusu = 0 and substr(c125_hashcontaatributos, 1, 15) = '{$estrutural}')";
         $sqlSaldoInicial = $daoConplano->sql_query(null, null, $campos, null, $where);
         $rsSaldoInicial = db_query($sqlSaldoInicial);
-        $totalLinhas = pg_num_rows($rsSaldoInicial);
+        $totalLinhas = $rsSaldoInicial === false || $rsSaldoInicial === null ? 0 : pg_num_rows($rsSaldoInicial);
         if ($totalLinhas == 0) {
             return false;
         }
@@ -676,7 +676,7 @@ SQL;
             throw new \Exception("Houve um problema ao buscar o saldo do conta corrente.");
         }
 
-        $totalLinhas = pg_num_rows($rsUltimoSaldo);
+        $totalLinhas = $rsUltimoSaldo === false || $rsUltimoSaldo === null ? 0 : pg_num_rows($rsUltimoSaldo);
         if ($totalLinhas == 0) {
             return false;
         }
@@ -747,7 +747,7 @@ SQL;
             throw new \DBException($mensagem);
         }
 
-        $totalRegistros = pg_num_rows($buscaValorAtributos);
+        $totalRegistros = $buscaValorAtributos === false || $buscaValorAtributos === null ? 0 : pg_num_rows($buscaValorAtributos);
         if ($totalRegistros == 0) {
             return false;
         }

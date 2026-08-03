@@ -98,7 +98,7 @@ if (@$q02_inscr!="") {
     $sSqlIss .= "   where issbase.q02_inscr = {$q02_inscr} ";
 
     $rsIss      = db_query($sSqlIss);
-    $iLinhasIss = pg_num_rows($rsIss);
+    $iLinhasIss = $rsIss === false || $rsIss === null ? 0 : pg_num_rows($rsIss);
     if ($iLinhasIss > 0) {
         db_fieldsmemory($rsIss, 0);
 

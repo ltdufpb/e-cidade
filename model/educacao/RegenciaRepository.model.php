@@ -190,7 +190,7 @@
       }
 
       $aRegencias = [];
-      $iLinhas    = pg_num_rows($rs);
+      $iLinhas    = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
       for ($i=0; $i < $iLinhas; $i++) {
         $aRegencias[] = self::getRegenciaByCodigo( db_utils::fieldsMemory($rs, $i)->ed59_i_codigo );
       }

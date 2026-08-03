@@ -35,7 +35,7 @@ parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //echo "area =$area <br> sani =$codsani <br>opcao= $opcao<br>seq=$seq<br>";
 $sql = "select * from sanitario where y80_codsani=$codsani";
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($linhas>0){
   db_fieldsmemory($result,0);
   if($opcao==1){
@@ -46,7 +46,7 @@ if($linhas>0){
      $opcao='Alterar';     
   }
   $resultinc = db_query($sqlinc);
-  $linhasinc = pg_num_rows($resultinc);
+  $linhasinc = $resultinc === false || $resultinc === null ? 0 : pg_num_rows($resultinc);
   if($linhasinc>0){
     $areat="";
     for($i=0;$i<$linhasinc;$i++){

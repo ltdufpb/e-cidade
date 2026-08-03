@@ -160,8 +160,8 @@ $escola = db_getsession("DB_nomedepto");
     $mudar = true;
    }
    $result = db_query($sql);
-   $linhas = pg_num_rows($result);
-   $ncampos = pg_num_fields($result);
+   $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
+   $ncampos = $result === false || $result === null ? 0 : pg_num_fields($result);
    ?>
    <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
     <tr>

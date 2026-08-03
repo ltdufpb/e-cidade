@@ -126,7 +126,7 @@ $db_botao = true;
               order by ed130_i_sequencia asc
               ";
       $result = db_query($sql);
-      $linhas = pg_num_rows($result);
+      $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
       db_query("BEGIN");
       $erro_trigger = false;
       for($t=0;$t<$linhas;$t++){

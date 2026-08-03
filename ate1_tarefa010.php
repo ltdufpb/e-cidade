@@ -75,7 +75,7 @@ $usuario = db_getsession("DB_id_usuario");
 $sqlerro ='false';
 $sqltarefa = "select * from tarefa where at40_sequencial = $tarefa ";
 $resulttarefa = db_query($sqltarefa);
-$linhatarefa = pg_num_rows($resulttarefa);
+$linhatarefa = $resulttarefa === false || $resulttarefa === null ? 0 : pg_num_rows($resulttarefa);
 if($linhatarefa>0){
 	db_fieldsmemory($resulttarefa, 0);
 	$data = date("Y-m-d");
@@ -111,7 +111,7 @@ if($linhatarefa>0){
 if($sqlerro=='false'){
 	$sqltarsyspro = "select * from tarefasyscadproced where at37_tarefa= $tarefa ";
 	$resulttarsyspro = db_query($sqltarsyspro);
-	$linhatarsyspro = pg_num_rows($resulttarsyspro);
+	$linhatarsyspro = $resulttarsyspro === false || $resulttarsyspro === null ? 0 : pg_num_rows($resulttarsyspro);
 	if($linhatarsyspro>0){
 		db_fieldsmemory($resulttarsyspro, 0); 
 		$cl_tarefasyscadproced->at37_tarefa       = $at40_sequencial;
@@ -128,7 +128,7 @@ if($sqlerro=='false'){
 if($sqlerro=='false'){
 	$sqlmodulo = "select * from tarefamodulo where at49_tarefa= $tarefa ";
 	$resultmodulo = db_query($sqlmodulo);
-	$linhamodulo = pg_num_rows($resultmodulo);
+	$linhamodulo = $resultmodulo === false || $resultmodulo === null ? 0 : pg_num_rows($resultmodulo);
 	if($linhamodulo>0){
 		db_fieldsmemory($resultmodulo, 0); 
 		$cltarefamodulo->at49_tarefa = $at40_sequencial;
@@ -145,7 +145,7 @@ if($sqlerro=='false'){
 if($sqlerro=='false'){
 	$sqlmotivo = "select * from tarefamotivo where at55_tarefa= $tarefa ";
 	$resultmotivo = db_query($sqlmotivo);
-	$linhamotivo = pg_num_rows($resultmotivo);
+	$linhamotivo = $resultmotivo === false || $resultmotivo === null ? 0 : pg_num_rows($resultmotivo);
 	if($linhamotivo>0){
 		db_fieldsmemory($resultmotivo, 0);
 		$cltarefamotivo ->at55_tarefa = $at40_sequencial;
@@ -180,7 +180,7 @@ if($sqlerro=='false'){
 if($sqlerro=='false'){
 	$sqlitem = "select * from tarefaitem where at44_tarefa= $tarefa ";
 	$resultitem = db_query($sqlitem);
-	$linhaitem = pg_num_rows($resultitem);
+	$linhaitem = $resultitem === false || $resultitem === null ? 0 : pg_num_rows($resultitem);
 	if($linhaitem>0){
 		db_fieldsmemory($resultitem, 0);
 		$cltarefaitem ->at44_tarefa    = $at40_sequencial;
@@ -196,7 +196,7 @@ if($sqlerro=='false'){
 if($sqlerro=='false'){
 	$sqlusu= "select * from tarefausu where at42_tarefa= $tarefa ";
 	$resultusu = db_query($sqlusu);
-	$linhausu = pg_num_rows($resultusu);
+	$linhausu = $resultusu === false || $resultusu === null ? 0 : pg_num_rows($resultusu);
 	if($linhausu>0){
 		db_fieldsmemory($resultusu, 0);
 		$cltarefausu ->at42_tarefa    = $at40_sequencial;
@@ -214,7 +214,7 @@ if($sqlerro=='false'){
 if($sqlerro=='false'){
 	$sqlcli= "select * from tarefaclientes where at70_tarefa= $tarefa ";
 	$resultcli = db_query($sqlcli);
-	$linhacli = pg_num_rows($resultcli);
+	$linhacli = $resultcli === false || $resultcli === null ? 0 : pg_num_rows($resultcli);
 	if($linhacli>0){
 		db_fieldsmemory($resultcli, 0);
 		$cltarefaclientes ->at70_tarefa    = $at40_sequencial;
@@ -232,7 +232,7 @@ if($sqlerro=='false'){
 if($sqlerro=='false'){
 	$sqlenvol= "select * from tarefaenvol where at45_tarefa= $tarefa ";
 	$resultenvol = db_query($sqlenvol);
-	$linhaenvol = pg_num_rows($resultenvol);
+	$linhaenvol = $resultenvol === false || $resultenvol === null ? 0 : pg_num_rows($resultenvol);
 	if($linhaenvol>0){
 		for($i = 0;$i < $linhaenvol; $i++){
 			db_fieldsmemory($resultenvol, $i);
@@ -253,7 +253,7 @@ if($sqlerro=='false'){
 if($sqlerro=='false'){
 	$sqllanc= "select * from tarefa_lanc where at36_tarefa= $tarefa ";
 	$resultlanc = db_query($sqllanc);
-	$linhalanc = pg_num_rows($resultlanc);
+	$linhalanc = $resultlanc === false || $resultlanc === null ? 0 : pg_num_rows($resultlanc);
 	if($linhalanc>0){
 		db_fieldsmemory($resultlanc, 0);
 		$cltarefa_lanc ->at36_tarefa  = $at40_sequencial;
@@ -273,7 +273,7 @@ if($sqlerro=='false'){
 if($sqlerro=='false'){
 	$sqllog= "select * from tarefalog where at43_tarefa= $tarefa ";
 	$resultlog = db_query($sqllog);
-	$linhalog = pg_num_rows($resultlog);
+	$linhalog = $resultlog === false || $resultlog === null ? 0 : pg_num_rows($resultlog);
 	if($linhalog>0){
 		for($i = 0;$i < $linhalog; $i++){
 			db_fieldsmemory($resultlog, $i);
@@ -298,7 +298,7 @@ if($sqlerro=='false'){
 			$log = $cltarefalog ->at43_sequencial;
 			$sqllogsit= "select * from tarefalogsituacao where at48_tarefalog = $at43_sequencial";
 			$resultlogsit = db_query($sqllogsit);
-			$linhalogsit = pg_num_rows($resultlogsit);
+			$linhalogsit = $resultlogsit === false || $resultlogsit === null ? 0 : pg_num_rows($resultlogsit);
 			if($linhalogsit>0){
 				for($x = 0;$x < $linhalogsit; $x++){
 					db_fieldsmemory($resultlogsit, $x);
@@ -319,7 +319,7 @@ if($sqlerro=='false'){
 if($sqlerro=='false'){
 	$sqlproced= "select * from tarefaproced where at41_tarefa =$tarefa ";
 	$resultproced = db_query($sqlproced);
-	$linhaproced = pg_num_rows($resultproced);
+	$linhaproced = $resultproced === false || $resultproced === null ? 0 : pg_num_rows($resultproced);
 	if($linhaproced>0){
 		db_fieldsmemory($resultproced, 0);
 		$cltarefaproced ->at41_tarefa = $at40_sequencial;
@@ -335,7 +335,7 @@ if($sqlerro=='false'){
 if($sqlerro=='false'){
 	$sqlanexo= "select * from tarefaanexos where at25_tarefa = $tarefa ";
 	$resultanexo = db_query($sqlanexo);
-	$linhaanexo = pg_num_rows($resultanexo);
+	$linhaanexo = $resultanexo === false || $resultanexo === null ? 0 : pg_num_rows($resultanexo);
 	if($linhaanexo>0){
 		db_fieldsmemory($resultanexo, 0);
 		$cltarefaanexos ->at25_tarefa = $at40_sequencial;

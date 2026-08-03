@@ -38,7 +38,7 @@ $head2 = "";
 $sql = "select * from tarefa_agenda where at13_tarefa = 6";
 $result = db_query($sql);
 
-$numlinha = pg_num_rows($result);
+$numlinha = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 $pdf->open();
 $total_geral = 0;

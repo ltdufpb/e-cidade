@@ -2287,7 +2287,7 @@ class cl_gera_sql_folha {
   function sql_record($sql){
     $result = @db_query($sql);
     if($result !== false){
-      $this->numrows_exec = pg_num_rows($result);
+      $this->numrows_exec = $result === false || $result === null ? 0 : pg_num_rows($result);
     }
 
     return $result;

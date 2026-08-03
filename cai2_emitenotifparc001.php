@@ -192,7 +192,7 @@ function js_emite(tiporel){
 		            $sSqlOrdEndEnt .= "  where codcam = 9856  ";
 
 		            $rsOrdEndEnt    = db_query($sSqlOrdEndEnt) or die($sSqlOrdEndEnt);
-		            $iNroOrdEndEnt  = pg_num_rows($rsOrdEndEnt);
+		            $iNroOrdEndEnt  = $rsOrdEndEnt === false || $rsOrdEndEnt === null ? 0 : pg_num_rows($rsOrdEndEnt);
 
 		            for ($x=0; $x < $iNroOrdEndEnt; $x++) {
 

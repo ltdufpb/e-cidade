@@ -85,7 +85,7 @@ class EventoConLicitaCon extends ArquivoLicitaCon {
   private function processarEventos() {
 
     $rsAcordoEventos = $this->getEventos();
-    $iTotalEventos = pg_num_rows($rsAcordoEventos);
+    $iTotalEventos = $rsAcordoEventos === false || $rsAcordoEventos === null ? 0 : pg_num_rows($rsAcordoEventos);
     $aTiposEventos = TipoEventoAcordo::getSiglas();
     $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
 

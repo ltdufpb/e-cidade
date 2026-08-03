@@ -316,7 +316,7 @@ if(isset($emite2)){
                                          );
 //echo $sqlDentro;exit;
   $res = db_query($sqlDentro);
-  $num = pg_num_rows($res);
+  $num = $res === false || $res === null ? 0 : pg_num_rows($res);
   if($num == 0){
     $erro_msg = "No existe clculo no perodo de $mesfolha / $anofolha";
     $sqlerro = true;

@@ -92,7 +92,7 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
       return true;
     }
 
-    $iTotalRegistros           = pg_num_rows($rsSqlBalanceteVerificacao);
+    $iTotalRegistros           = $rsSqlBalanceteVerificacao === false || $rsSqlBalanceteVerificacao === null ? 0 : pg_num_rows($rsSqlBalanceteVerificacao);
 
     for ($iRowBalancete = 0; $iRowBalancete < $iTotalRegistros; $iRowBalancete++) {
 
@@ -118,7 +118,7 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
       return true;
     }
 
-    $iTotalRegistros           = pg_num_rows($rsSqlBalanceteVerificacao);
+    $iTotalRegistros           = $rsSqlBalanceteVerificacao === false || $rsSqlBalanceteVerificacao === null ? 0 : pg_num_rows($rsSqlBalanceteVerificacao);
 
     for ($iRowBalancete = 0; $iRowBalancete < $iTotalRegistros; $iRowBalancete++) {
 
@@ -193,7 +193,7 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
                                                        $this->getDataInicial()->getDate(),
                                                        $this->getDataFinal()->getDate());
     $rsBuscaRestosAPagar = db_query($sSqlRestosaPagar);
-    $iTotalRegistros     = pg_num_rows($rsBuscaRestosAPagar);
+    $iTotalRegistros     = $rsBuscaRestosAPagar === false || $rsBuscaRestosAPagar === null ? 0 : pg_num_rows($rsBuscaRestosAPagar);
     if (!$rsBuscaRestosAPagar) {
       throw new Exception("Não foi possível verificar os empenhos de restos à pagar.");
       }
@@ -219,7 +219,7 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
                                           $this->iAnoUsu,
                                           $this->getDataInicial()->getDate(),
                                           $this->getDataFinal()->getDate());
-    $iTotalRegistros = pg_num_rows($rsBalanceteDespesa);
+    $iTotalRegistros = $rsBalanceteDespesa === false || $rsBalanceteDespesa === null ? 0 : pg_num_rows($rsBalanceteDespesa);
     if (!$rsBalanceteDespesa) {
       throw new Exception("Não foram encontradas despesas para os filtros selecionados.");
     }

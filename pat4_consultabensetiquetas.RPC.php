@@ -101,7 +101,7 @@ if($oParam->exec == 'pesquisa'){
   $sQueryBensEtiqueta .= "  order by t52_descr "; 
   
   $rsQueryBensEtiqueta = db_query($sQueryBensEtiqueta);
-  $iNumRows = pg_num_rows($rsQueryBensEtiqueta);
+  $iNumRows = $rsQueryBensEtiqueta === false || $rsQueryBensEtiqueta === null ? 0 : pg_num_rows($rsQueryBensEtiqueta);
   if($iNumRows > 0){
   	$oRetorno->dados = db_utils::getCollectionByRecord($rsQueryBensEtiqueta,false,false,true);
   	$oRetorno->status  = 0;
@@ -171,7 +171,7 @@ if($oParam->exec == 'pesquisa'){
 	  $sQueryBensEtiqueta .= "  where t52_bem in (".$oParam->bens.")";
     
 	  $rsQueryBensEtiqueta = db_query($sQueryBensEtiqueta);
-	  $iNumRows = pg_num_rows($rsQueryBensEtiqueta);
+	  $iNumRows = $rsQueryBensEtiqueta === false || $rsQueryBensEtiqueta === null ? 0 : pg_num_rows($rsQueryBensEtiqueta);
 	  
 	  if($iNumRows > 0){
 	  

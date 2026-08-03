@@ -210,7 +210,7 @@ if (isset($orgaos) && isset($unidades)) {
 
 $result = db_query($sSql);
 $linhas = $cldbbens->numrows;
-$xxnum  = pg_num_rows($result);
+$xxnum  = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 if ($xxnum == 0) {
 

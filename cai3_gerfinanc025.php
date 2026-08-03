@@ -65,7 +65,7 @@ $sql = "select k03_tipo
         where k00_tipo = $tipo and k00_instit = ".db_getsession('DB_instit') ;
 //die($sql);
 $result = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($numrows > 0){
   db_fieldsmemory($result,0);
 }else{

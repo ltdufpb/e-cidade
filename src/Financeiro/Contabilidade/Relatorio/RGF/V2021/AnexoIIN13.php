@@ -242,7 +242,7 @@ class AnexoIIN13 extends AnexoI
 
         $meses = $this->getMesesParaProcessar();
         $rsReceitas = $receitaMensal->getDados();
-        $totalLinhas = pg_num_rows($rsReceitas);
+        $totalLinhas = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
         $receitas = [];
         for ($i = 0; $i < $totalLinhas; $i++) {
             $dadosReceita = \db_utils::fieldsMemory($rsReceitas, $i);

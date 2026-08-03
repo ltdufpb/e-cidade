@@ -352,7 +352,7 @@ $numrows = 0;
 if ($veinclu == false ) {
 
   $resulta = @db_query( $sSql );
-  $numrows = @pg_num_rows( $resulta );
+  $numrows = $resulta === false || $resulta === null ? 0 : @pg_num_rows( $resulta );
 
   if ( $numrows == 0 && $veinclu == false ) {
     db_redireciona("jur1_emiteinicial001.php?invalido=true");
@@ -562,7 +562,7 @@ if(isset($incluir)) {
                           and v13_certid = " . ${$x} . "  ) as x";
 
         $result = db_query($sql);
-        $numso  = pg_num_rows($result);
+        $numso  = $result === false || $result === null ? 0 : pg_num_rows($result);
 
         for($xr = 0; $xr < $numso; $xr++) {
 

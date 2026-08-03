@@ -43,7 +43,7 @@ $sql = $clpcmater->sql_query_desdobra(null,"distinct pc01_codmater as cod,
                                            else '' end as label","2",
                "pc01_descrmater ilike '".$sName."%' and pc07_codele is not null and pc01_ativo is false");
 $result   = db_query($sql);
-$iNumRows = pg_num_rows($result);
+$iNumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $array    = db_utils::getCollectionByRecord($result,false,false, true);
 echo $oJson->encode($array);
 

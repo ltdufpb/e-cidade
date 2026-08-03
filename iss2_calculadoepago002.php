@@ -110,7 +110,7 @@ select q01_anousu as ano,
 group by ano, receita,codrec
 ";
 $resultfixo= db_query($sqlfixo);
-$linhasfixo= pg_num_rows($resultfixo);
+$linhasfixo= $resultfixo === false || $resultfixo === null ? 0 : pg_num_rows($resultfixo);
 db_fieldsmemory($resultfixo,0);
 
 // variavel calculado
@@ -174,7 +174,7 @@ select q05_ano,
 ) as y
 ";
 $resultvarcalc= db_query($sqlvarcalc);
-$linhasvarcalc= pg_num_rows($resultvarcalc);
+$linhasvarcalc= $resultvarcalc === false || $resultvarcalc === null ? 0 : pg_num_rows($resultvarcalc);
 db_fieldsmemory($resultvarcalc,0);
 
 $sqlvencvar = "
@@ -191,7 +191,7 @@ where k00_dtvenc < '".date("Y-m-d", db_getsession("DB_datausu"))."'
 group by k00_inscr
 ) as x ";
 $resultvencvar= db_query($sqlvencvar);
-$linhasvencvar= pg_num_rows($resultvencvar);
+$linhasvencvar= $resultvencvar === false || $resultvencvar === null ? 0 : pg_num_rows($resultvencvar);
 db_fieldsmemory($resultvencvar,0);
 
 $sqlqtdpagvar = "
@@ -207,7 +207,7 @@ where q05_ano = $anousu
 group by k00_inscr
 ) as x ";
 $resultqtdpagvar= db_query($sqlqtdpagvar);
-$linhasqtdpagvar= pg_num_rows($resultqtdpagvar);
+$linhasqtdpagvar= $resultqtdpagvar === false || $resultqtdpagvar === null ? 0 : pg_num_rows($resultqtdpagvar);
 db_fieldsmemory($resultqtdpagvar,0);
 
 
@@ -224,7 +224,7 @@ where q05_ano = $anousu
 group by k00_inscr
 ) as x ";
 $resultdivida= db_query($sqldivida);
-$linhasdivida= pg_num_rows($resultdivida);
+$linhasdivida= $resultdivida === false || $resultdivida === null ? 0 : pg_num_rows($resultdivida);
 db_fieldsmemory($resultdivida,0);
 
 $head2 = "ESTATÍSTICAS DO ISSQN CALCULADO E PAGO";

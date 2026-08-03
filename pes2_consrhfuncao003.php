@@ -188,7 +188,7 @@ if(isset($selecao) && !empty($selecao)) {
 
   $result_funcionarios = db_query($sql1);
 
-$numrows = pg_num_rows($result_funcionarios);
+$numrows = $result_funcionarios === false || $result_funcionarios === null ? 0 : pg_num_rows($result_funcionarios);
 if($numrows == 0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado");
 }

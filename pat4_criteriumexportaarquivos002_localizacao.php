@@ -36,7 +36,7 @@ $sSqlLocalizacao .= " 	from db_depart 																				";
 $sSqlLocalizacao .=	" where instit = $iIdDaEmpresa												";
 
 $rsLocalizacao    = db_query($sSqlLocalizacao);
-$iNumeroLinhas    = pg_num_rows($rsLocalizacao);
+$iNumeroLinhas    = $rsLocalizacao === false || $rsLocalizacao === null ? 0 : pg_num_rows($rsLocalizacao);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oLocalizacao = db_utils::fieldsMemory($rsLocalizacao,$i);

@@ -104,7 +104,7 @@ background-color:#ccddcc;
            where p87_codtransferint = $p88_codigo
 	   ";
        $result=db_query($sql);
-       $numrows=pg_num_rows($result);
+       $numrows=$result === false || $result === null ? 0 : pg_num_rows($result);
        if($numrows>0){ 
           echo "
 	  <br><br>

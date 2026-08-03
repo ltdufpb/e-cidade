@@ -115,7 +115,7 @@ try {
             throw new DBException(  _M( MENSAGEM_REQUISICAO_EXAME . "erro_buscar_dados_requisicao_prontuario", $oErro) );
           }
 
-          $iLinhasRequisicaoExame = pg_num_rows( $rsExameRequisicao );
+          $iLinhasRequisicaoExame = $rsExameRequisicao === false || $rsExameRequisicao === null ? 0 : pg_num_rows( $rsExameRequisicao );
           $oRetorno->iRequisicao  = null;
           $oRetorno->sObservacao  = '';
           $oRetorno->aListaExames      = [];
@@ -290,7 +290,7 @@ try {
         throw new DBException(  _M( MENSAGEM_REQUISICAO_EXAME . "erro_buscar_exames_vinculados", $oErro) );
       }
 
-      $iLinhasExameRequisicao = pg_num_rows($rsExameRequisicaoExame);
+      $iLinhasExameRequisicao = $rsExameRequisicaoExame === false || $rsExameRequisicaoExame === null ? 0 : pg_num_rows($rsExameRequisicaoExame);
       $aExamesCadastrados     = [];
 
       for ( $iContadorExame = 0; $iContadorExame < $iLinhasExameRequisicao; $iContadorExame++ ) {
@@ -360,7 +360,7 @@ try {
         throw new DBException(  _M( MENSAGEM_REQUISICAO_EXAME . "erro_buscar_dados_requisicao_prontuario", $oErro) );
       }
 
-      $iLinhasRequisicaoExame = pg_num_rows( $rsExameRequisicao );
+      $iLinhasRequisicaoExame = $rsExameRequisicao === false || $rsExameRequisicao === null ? 0 : pg_num_rows( $rsExameRequisicao );
       $oRetorno->iRequisicao  = null;
       $oRetorno->sObservacao  = '';
       $oRetorno->aExames      = [];

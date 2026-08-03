@@ -340,7 +340,7 @@ class Construcao
             throw new \DBException("Erro ao buscar o CGM vinculado a matrícula.");
         }
 
-        $iLinhas = pg_num_rows($rsIptuBase);
+        $iLinhas = $rsIptuBase === false || $rsIptuBase === null ? 0 : pg_num_rows($rsIptuBase);
 
         switch ($iLinhas) {
             case 1:

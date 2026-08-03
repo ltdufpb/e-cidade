@@ -80,7 +80,7 @@ if(!isset($_POST['mod'])){
        inner join db_itensmenu on db_modulos.id_item = db_itensmenu.id_item
   where libcliente is true
   order by lower(nome_modulo)");
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   for($i = 0;$i < $numrows;$i++) {
     echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."\">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
   }  
@@ -180,7 +180,7 @@ if(!isset($_POST['mod'])){
     and m.id_item = $item 
     and i.itemativo = $ambiente
     order by {$sOrdenacao}");			  
-    $numrows = pg_num_rows($sub);
+    $numrows = $sub === false || $sub === null ? 0 : pg_num_rows($sub);
     if($numrows > 0) {
       for($x = 0;$x < $numrows;$x++) {
         $libcliente = pg_fetch_result($sub,$x,"libcliente");
@@ -190,7 +190,7 @@ if(!isset($_POST['mod'])){
         from db_permissao p inner join db_usuarios u on u.id_usuario = p.id_usuario
         where p.id_item = $valor" 
         );			 
-        $numrows1 = pg_num_rows($sub1);
+        $numrows1 = $sub1 === false || $sub1 === null ? 0 : pg_num_rows($sub1);
         $usuarios = "<br>";
         $login    = "<br>";
         for($y = 0;$y < $numrows1;$y++) {                  

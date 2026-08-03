@@ -115,7 +115,7 @@ function db_numrows($rsResultSet, $sArquivoLog="") {
   if(!$rsResultSet) {
     return 0;
   }
-  $iNumRows = @pg_num_rows($rsResultSet);
+  $iNumRows = $rsResultSet === false || $rsResultSet === null ? 0 : @pg_num_rows($rsResultSet);
 
   $sErro = pg_result_error($rsResultSet);
 

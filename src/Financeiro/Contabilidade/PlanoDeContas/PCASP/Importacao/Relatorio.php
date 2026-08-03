@@ -101,7 +101,7 @@ class Relatorio {
         throw new \Exception("Ocorreu um erro ao buscar os reduzidos.");
       }
 
-      $iTotalRegistros = pg_num_rows($rsBuscaReduzidos);
+      $iTotalRegistros = $rsBuscaReduzidos === false || $rsBuscaReduzidos === null ? 0 : pg_num_rows($rsBuscaReduzidos);
       for ($iRowReduzido = 0; $iRowReduzido < $iTotalRegistros; $iRowReduzido++) {
 
         $oStdDadosImprimir      = \db_utils::fieldsMemory($rsBuscaReduzidos, $iRowReduzido);

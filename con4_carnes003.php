@@ -166,7 +166,7 @@ function removeElem(cod) {
             echo "<img style=\"position:absolute;left:0px; top:0px\" src=\"".$arquivo."\" border=\"0\" onclick=\"js_posicao()\">\n";			  
 		    ///escreve os campos///
 			$reccampos = db_query("select nomecam,posxmodelo,posymodelo from db_carnescampos where codmodelo = $codigo");
-			$numcampos = pg_num_rows($reccampos);
+			$numcampos = $reccampos === false || $reccampos === null ? 0 : pg_num_rows($reccampos);
 //			if($numcampos > 0) {			  
 			  //escreve as div
 			  for($i = 0;$i < $numcampos;$i++) {

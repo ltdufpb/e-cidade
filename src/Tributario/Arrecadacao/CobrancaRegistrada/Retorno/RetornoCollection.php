@@ -41,7 +41,7 @@ class RetornoCollection implements \Countable, \Iterator, \ArrayAccess
     $this->iNumRows = 0;
 
     if ($rsResource) {
-      $this->iNumRows = pg_num_rows($rsResource);
+      $this->iNumRows = $rsResource === false || $rsResource === null ? 0 : pg_num_rows($rsResource);
     }
 
     $this->rsResource = $rsResource;

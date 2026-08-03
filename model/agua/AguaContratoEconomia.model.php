@@ -290,7 +290,7 @@ class AguaContratoEconomia {
       throw new DBException('Não foi possível procurar as matrículas.');
     }
 
-    $iQuantidadeMatriculas = pg_num_rows($rsMatriculas);
+    $iQuantidadeMatriculas = $rsMatriculas === false || $rsMatriculas === null ? 0 : pg_num_rows($rsMatriculas);
     if ($iQuantidadeMatriculas === 0) {
       throw new BusinessException('Nenhuma Matrícula encontrada.');
     }

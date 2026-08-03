@@ -127,7 +127,7 @@ $DB_BASE     = "ontem_20130220_1900";
         throw new Exception("Nao foi possível buscar as planilhas criadas pelo menu antigo do sistema.\n\n");
       }
 
-      $iTotalPlanilhas = pg_num_rows($rsBuscaPlanilha);
+      $iTotalPlanilhas = $rsBuscaPlanilha === false || $rsBuscaPlanilha === null ? 0 : pg_num_rows($rsBuscaPlanilha);
       if ($iTotalPlanilhas == 0) {
         throw new Exception("Nenhuma planilha encontrada para a instituicao {$oInstituicao->codigo} - {$oInstituicao->nomeinst}\n\n");
       }

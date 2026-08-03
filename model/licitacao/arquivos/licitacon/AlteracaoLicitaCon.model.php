@@ -93,7 +93,7 @@ class AlteracaoLicitaCon extends ArquivoLicitaCon
             throw new DBException('Ocorreu um erro ao buscar as informações para o arquivo ' . self::NOME_ARQUIVO . '.TXT.');
         }
 
-        $iTotalAcordos = pg_num_rows($rsBuscaAcordos);
+        $iTotalAcordos = $rsBuscaAcordos === false || $rsBuscaAcordos === null ? 0 : pg_num_rows($rsBuscaAcordos);
         if ($iTotalAcordos == 0) {
             return;
         }
@@ -143,7 +143,7 @@ class AlteracaoLicitaCon extends ArquivoLicitaCon
                 throw new DBException("Não foi possível buscar eventos existentes para o acordo de código {$oStdAcordo->sequencial_acordo}.");
             }
 
-            $iTotalEventos = pg_num_rows($rsBuscaPosicao);
+            $iTotalEventos = $rsBuscaPosicao === false || $rsBuscaPosicao === null ? 0 : pg_num_rows($rsBuscaPosicao);
             for ($iRowEvento = 0; $iRowEvento < $iTotalEventos; $iRowEvento++) {
                 $oStdValorPosicaoAnterior = end($oStdAcordo->posicoes);
 

@@ -417,7 +417,7 @@ if(($db_opcao!=2 )&&($db_opcao!=3 )){
 				    where at47_tarefa = $at43_tarefa
 	";
 	$ressit = db_query($sqlsit);
-	$linhassit = pg_num_rows($ressit);
+	$linhassit = $ressit === false || $ressit === null ? 0 : pg_num_rows($ressit);
 	if($linhassit>0){
 	  db_fieldsmemory($ressit,0);
 	}

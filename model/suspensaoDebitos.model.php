@@ -256,7 +256,7 @@ class suspensaoDebitos {
         $sSqlCertidao .=  "     or termo.v07_numpre = {$iNumpre} )              ";
 
         $rsCertidao = db_query($sSqlCertidao);
-        $iLinhaCert = pg_num_rows($rsCertidao);
+        $iLinhaCert = $rsCertidao === false || $rsCertidao === null ? 0 : pg_num_rows($rsCertidao);
         $oCertidao  = db_utils::fieldsMemory($rsCertidao,0);
 
         if (!empty($iLinhaCert)) {
@@ -285,7 +285,7 @@ class suspensaoDebitos {
           }
 
           $rsCertidaoNumpre = db_query($sSql);
-          $iLinha           = pg_num_rows($rsCertidaoNumpre);
+          $iLinha           = $rsCertidaoNumpre === false || $rsCertidaoNumpre === null ? 0 : pg_num_rows($rsCertidaoNumpre);
 
           /**
            * Verificamos se na CDA contem mais debitos, alem dos suspensos.
@@ -363,7 +363,7 @@ class suspensaoDebitos {
   	$sSqlVerificaDebito .= "  where {$sCamposWhere}									 	  			   ";
 
   	$rsVerificaDebito    = db_query($sSqlVerificaDebito);
-  	$iLinhaArrecad 		   = pg_num_rows($rsVerificaDebito);
+  	$iLinhaArrecad 		   = $rsVerificaDebito === false || $rsVerificaDebito === null ? 0 : pg_num_rows($rsVerificaDebito);
 
   	if ( $iLinhaArrecad > 0 ) {
 
@@ -509,7 +509,7 @@ class suspensaoDebitos {
     $sSqlTipoCertid .= "     or certter.v14_certid = {$iCertid} )                                ";
 
     $rsTipoCertid  = db_query($sSqlTipoCertid);
-    $iLinhasCertid = pg_num_rows($rsTipoCertid);
+    $iLinhasCertid = $rsTipoCertid === false || $rsTipoCertid === null ? 0 : pg_num_rows($rsTipoCertid);
 
   	if ( $iLinhasCertid > 0 ) {
 
@@ -620,7 +620,7 @@ class suspensaoDebitos {
            */
           $rsDadosTermo    = $oDaoCertter->sql_record($oDaoCertter->sql_query_deb(null,null,"distinct v07_numpre,v07_parcel","","v14_certid=$iCertid and v14_parcel=$oCertid->v14_parcel"));
 
-  	      $iLinhasDadosTermo = pg_num_rows($rsDadosTermo);
+  	      $iLinhasDadosTermo = $rsDadosTermo === false || $rsDadosTermo === null ? 0 : pg_num_rows($rsDadosTermo);
 
   	      if ( $iLinhasDadosTermo > 0 ){
 

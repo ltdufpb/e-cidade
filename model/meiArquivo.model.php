@@ -646,7 +646,7 @@ class MeiArquivo {
 
     	$sSqlSIAFI        = $oMunicipioSIAFI->sql_query_file(null,$sCamposSIAFI,"q110_codigo",$sWhereSIAFI);
     	$rsMunicipioSIAFI = $oMunicipioSIAFI->sql_record($sSqlSIAFI);
-    	$iLinhasSIAFI     = pg_num_rows($rsMunicipioSIAFI);
+    	$iLinhasSIAFI     = $rsMunicipioSIAFI === false || $rsMunicipioSIAFI === null ? 0 : pg_num_rows($rsMunicipioSIAFI);
 
     	$aDescrSIAFI['0'] = '';
 
@@ -1231,7 +1231,7 @@ class MeiArquivo {
                           and not exists (select 1 from parissqn where q60_alvbaixadiv = 1)";
 
       $rsDebitos    = db_query($sSqlDebitos);
-      $iRowsDebitos = pg_num_rows($rsDebitos);
+      $iRowsDebitos = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
 
       if( $iRowsDebitos > 0 ){
           $aMsg[]['12'] = "Existem débitos para este contribuinte! CGM : {$iCodCgmEmpresa}";
@@ -2113,7 +2113,7 @@ class MeiArquivo {
 
     $sSqlImporta    = $oDaoMeiImporta->sql_query_reg(null,"*",null,$sWhereImporta);
     $rsMeiImporta   = $oDaoMeiImporta->sql_record($sSqlImporta);
-    $iRowsImporta   = pg_num_rows($rsMeiImporta);
+    $iRowsImporta   = $rsMeiImporta === false || $rsMeiImporta === null ? 0 : pg_num_rows($rsMeiImporta);
 
     $aRegProcessa = [];
 
@@ -2686,7 +2686,7 @@ class MeiArquivo {
                                                  )";
 
            $rsAtivCalculo  = db_query($sSqlAtivCalc);
-           $iRowsAtiv      = pg_num_rows($rsAtivCalculo);
+           $iRowsAtiv      = $rsAtivCalculo === false || $rsAtivCalculo === null ? 0 : pg_num_rows($rsAtivCalculo);
 
            //if ($iFormula > 1) {
               $aListaAtivCalc = [];
@@ -3118,7 +3118,7 @@ class MeiArquivo {
 													    and k03_tipo = 3";
 
 		      $rsDebitos    = db_query($sSqlDebitos);
-		      $iRowsDebitos = pg_num_rows($rsDebitos);
+		      $iRowsDebitos = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
 
 		      if( $iRowsDebitos > 0 ){
 		      	throw new Exception("{$sMsgErro} existem débitos para este contribuinte!");
@@ -3257,7 +3257,7 @@ class MeiArquivo {
                                                  )";
 
            $rsAtivCalculo  = db_query($sSqlAtivCalc);
-           $iRowsAtiv      = pg_num_rows($rsAtivCalculo);
+           $iRowsAtiv      = $rsAtivCalculo === false || $rsAtivCalculo === null ? 0 : pg_num_rows($rsAtivCalculo);
 
            $aListaAtivCalc = [];
 
@@ -3382,7 +3382,7 @@ class MeiArquivo {
       $sWhereSimples    .= " and (q39_dtbaixa is null or q39_dtbaixa > '{$sDataEvento}') ";
       $sSqlSimples       = $oDaoIssCadSimples->sql_query_baixa(null, "*", "q38_sequencial desc", $sWhereSimples);
       $rsSqlSimples      = db_query($sSqlSimples);
-      $iRegistrosSimples = pg_num_rows($rsSqlSimples);
+      $iRegistrosSimples = $rsSqlSimples === false || $rsSqlSimples === null ? 0 : pg_num_rows($rsSqlSimples);
 
       if (empty($rsSqlSimples)) {
         throw new DBException("Erro ao consultar contribuinte no cadastro do simples nacional.");
@@ -3520,7 +3520,7 @@ class MeiArquivo {
 
     $sSqlImporta    = $oDaoMeiImporta->sql_query_reg(null,"*",null,$sWhereImporta);
     $rsMeiImporta   = $oDaoMeiImporta->sql_record($sSqlImporta);
-    $iRowsImporta   = pg_num_rows($rsMeiImporta);
+    $iRowsImporta   = $rsMeiImporta === false || $rsMeiImporta === null ? 0 : pg_num_rows($rsMeiImporta);
 
     if ( $iRowsImporta > 0 ) {
 
@@ -3652,7 +3652,7 @@ class MeiArquivo {
 
     $sSqlImporta    = $oDaoMeiImporta->sql_query_reg(null,"*",null,$sWhereImporta);
     $rsMeiImporta   = $oDaoMeiImporta->sql_record($sSqlImporta);
-    $iRowsImporta   = pg_num_rows($rsMeiImporta);
+    $iRowsImporta   = $rsMeiImporta === false || $rsMeiImporta === null ? 0 : pg_num_rows($rsMeiImporta);
 
     if ( $iRowsImporta > 0 ) {
 

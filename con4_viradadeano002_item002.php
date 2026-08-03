@@ -33,11 +33,11 @@ if($sqlerro==false) {
   // DEPARTAMENTO
   $sqldeporigem = "select * from db_departorg where db01_anousu = $anoorigem limit 1";
   $resultdeporigem = db_query($sqldeporigem);
-  $linhasdeporigem = pg_num_rows($resultdeporigem);
+  $linhasdeporigem = $resultdeporigem === false || $resultdeporigem === null ? 0 : pg_num_rows($resultdeporigem);
 
   $sqldepdestino = "select * from db_departorg where db01_anousu = $anodestino limit 1";
   $resultdepdestino = db_query($sqldepdestino);
-  $linhasdepdestino = pg_num_rows($resultdepdestino);
+  $linhasdepdestino = $resultdepdestino === false || $resultdepdestino === null ? 0 : pg_num_rows($resultdepdestino);
 
   if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
     

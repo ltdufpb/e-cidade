@@ -41,7 +41,7 @@ $sql = "select
 
 //die($sql);       
 $result  = db_query($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($numrows>0){
   db_fieldsmemory($result,0,true);
 }

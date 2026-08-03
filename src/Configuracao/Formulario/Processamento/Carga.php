@@ -57,7 +57,7 @@ class Carga
     public function executar()
     {
         $resource = $this->rodarConsultar();
-        $iTotalLinhas = pg_num_rows($resource);
+        $iTotalLinhas = $resource === false || $resource === null ? 0 : pg_num_rows($resource);
         for ($iLinha = 0; $iLinha < $iTotalLinhas; $iLinha++) {
             $oDadosConsulta = \db_utils::fieldsMemory($resource, $iLinha);
             $this->salvarFormulario($this->formulario, $oDadosConsulta);

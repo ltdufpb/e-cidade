@@ -128,7 +128,7 @@ input {
 	$cor1 = "#CAF59A";
 	$cor2 = "#B0FDD2";
 	$cor = "";
-	$numrows = pg_num_rows($result);
+	$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 	for($i = 0;$i < $numrows;$i++) {
 	  db_fieldsmemory($result,$i);
 	  echo "<tr bgcolor=\"".($cor = $cor==$cor1?$cor2:$cor1)."\" style=\"cursor: hand\" onClick=\"location.href='sys3_campos001.php?".base64_encode("tabela=$codarq")."'\">\n";

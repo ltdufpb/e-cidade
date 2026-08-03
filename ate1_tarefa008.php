@@ -391,7 +391,7 @@ if (isset($db_opcao)&&$db_opcao == 22) {
 function testa_horarios($result, $cltarefa) {
 	$retorno    = false;
 	$NumRows    = $cltarefa->numrows;
-	$NumFields  = pg_num_fields($result);
+	$NumFields  = $result === false || $result === null ? 0 : pg_num_fields($result);
 	$db_diaini  = "";
 	$db_diafim  = "";
 	$db_horaini = "";

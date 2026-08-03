@@ -55,7 +55,7 @@ $sql = "select at06_datalanc,nome,count(*) as quant
 		group by at06_datalanc,nome 
 		order by nome";
 $result = db_query($sql);
-$linhas  = pg_num_rows($result);
+$linhas  = $result === false || $result === null ? 0 : pg_num_rows($result);
 $pdf->Cell(40,6,"DATA",1,0,"C",1);
 $pdf->Cell(80,6,"NOME",1,0,"C",1);
 $pdf->Cell(40,6,"QUANT.",1,1,"C",1);

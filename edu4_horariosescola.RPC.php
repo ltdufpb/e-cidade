@@ -64,7 +64,7 @@ try {
         throw new DBException( _M(MENSAGEM_HORARIOESCOLA_RPC . "erro_buscar_horarios") );
       }
 
-      $iLinhas = pg_num_rows($rsHorarioEscola);
+      $iLinhas = $rsHorarioEscola === false || $rsHorarioEscola === null ? 0 : pg_num_rows($rsHorarioEscola);
 
       if ( $iLinhas > 0 ) {
 

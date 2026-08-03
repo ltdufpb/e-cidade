@@ -332,7 +332,7 @@ if ($func_lota != 'l') {
 	                             {$where} and rhlota.r70_codigo = {$r70_codigo}
                                  {$xordem} {$xasc}";
         $rsMatriculas = db_query($sqlMatriculas);
-        $iQtdMatriculas = pg_num_rows($rsMatriculas);
+        $iQtdMatriculas = $rsMatriculas === false || $rsMatriculas === null ? 0 : pg_num_rows($rsMatriculas);
         for ($i = 0; $i < $iQtdMatriculas; $i++) {
           $oDadosMatricula = db_utils::fieldsMemory($rsMatriculas, $i);
           

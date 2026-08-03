@@ -195,7 +195,7 @@ class PreProcesso
      */
     private function makeCollection($result)
     {
-        $totalRegistros = pg_num_rows($result);
+        $totalRegistros = $result === false || $result === null ? 0 : pg_num_rows($result);
         $preProcessoCollection = new PreProcessoCollection();
 
         for ($contador = 0; $contador < $totalRegistros; $contador++) {

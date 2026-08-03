@@ -286,7 +286,7 @@ class AgenteNocivo
                 throw new \DBException($msg);
             }
 
-            $totalAgente = pg_num_rows($rs);
+            $totalAgente = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             for ($i = 0; $i < $totalAgente; $i++) {
                 $agente = \db_utils::fieldsMemory($rs, $i);
                 $agentes[] = new AgenteNocivo($agente->rh256_sequencial);

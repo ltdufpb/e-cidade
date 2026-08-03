@@ -186,7 +186,7 @@ if ($clpcparam->numrows > 0){
 		                         solandam.pc43_depto = ".db_getsession("DB_coddepto");
 
                $result_andam = @db_query($sql);
-               $numrows      = @pg_num_rows($result_andam);
+               $numrows      = $result_andam === false || $result_andam === null ? 0 : @pg_num_rows($result_andam);
 
                if ($numrows == 0){
                     $db_botao = false;     

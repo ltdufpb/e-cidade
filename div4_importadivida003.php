@@ -404,7 +404,7 @@ if (isset ($procreg) && $procreg == 't') {
 					               k00_receit
                          $order_k00_numpar  ";
 		$result_pesq_divida = db_query($sql_pesq);
-		$numrows = pg_num_rows($result_pesq_divida);
+		$numrows = $result_pesq_divida === false || $result_pesq_divida === null ? 0 : pg_num_rows($result_pesq_divida);
 
 		if (isset ($numrows) && $numrows == 0) {
 			db_msgbox("Nenhum registro para o filtro selecionado !");
@@ -496,7 +496,7 @@ if (isset ($procreg) && $procreg == 't') {
 						$resultjadivida = db_query($sqljadivida);
 
 						$jaexiste        = false;
-						$numrowsjadivida = pg_num_rows($resultjadivida);
+						$numrowsjadivida = $resultjadivida === false || $resultjadivida === null ? 0 : pg_num_rows($resultjadivida);
 
 							// Trata tipo de Debito 20 - Saneamento Basico
 							if ($numrowsjadivida > 0 && $k03_tipo = 20) {
@@ -704,7 +704,7 @@ if (isset ($procreg) && $procreg == 't') {
 
 						$sqlBk = " select * from arrecad where k00_numpre = $k00_numpre and k00_receit = $k00_receit";
 						$rsBk  = db_query($sqlBk) or die($sqlBk);
-						$intBk = pg_num_rows($rsBk);
+						$intBk = $rsBk === false || $rsBk === null ? 0 : pg_num_rows($rsBk);
 
 						if ($intBk == 0) {
 

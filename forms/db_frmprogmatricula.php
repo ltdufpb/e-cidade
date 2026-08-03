@@ -110,7 +110,7 @@ if(isset($ed112_c_situacao) && $ed112_c_situacao!="A"){
              WHERE ed75_i_rechumano = $ed112_i_rhpessoal
             ";
     $result1 = db_query($sql1);
-    $linhas1 = pg_num_rows($result1);
+    $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
     if($linhas1>0){
      $x = ['S'=>'SIM'];
      db_select('ed112_c_dacesso',$x,true,$db_opcao," style='width:80px;height:15px;font-size:10px;padding:0px;'");

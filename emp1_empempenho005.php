@@ -211,7 +211,7 @@ if (isset($alterar)) {
     if (!$sqlerro && isset($e64_codele)) {
         $result = $clempempitem->sql_record($clempempitem->sql_query_file($e60_numemp, null, "e62_numemp,e62_sequen,e62_item"));
 
-        $iNumRows = pg_num_rows($result);
+        $iNumRows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
         for ($i = 0; $i < $iNumRows; $i++) {
             $oRow = db_utils::fieldsMemory($result, $i);
@@ -235,7 +235,7 @@ if (isset($alterar)) {
               where c53_tipo = 10 and c75_numemp = $e60_numemp ";
         $rsSql = db_query($sSql);
 
-        $iNumRows = pg_num_rows($rsSql);
+        $iNumRows = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
         if (isset($e56_codele) && $e56_codele != "") {
             for ($i = 0; $i < $iNumRows; $i++) {
                 $oRow = db_utils::fieldsMemory($rsSql, $i);

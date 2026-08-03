@@ -71,7 +71,7 @@ if( $erro == false ){
           //pega colunas
           fputs( $fd, "\nCOLUNAS|" );
           $separator="";
-          $i = pg_num_fields($result);
+          $i = $result === false || $result === null ? 0 : pg_num_fields($result);
           for ($j = 0; $j < $i; $j++) {
                $fieldname = pg_field_name($result, $j);
                fputs( $fd, $separator.$fieldname );
@@ -79,7 +79,7 @@ if( $erro == false ){
           }//fim for colunas
 
           //pega dados
-          $i = pg_num_rows($result);
+          $i = $result === false || $result === null ? 0 : pg_num_rows($result);
           for ($j = 0; $j < $i; $j++) {
                fputs( $fd, "\nDADOS|" );
                $separator="";

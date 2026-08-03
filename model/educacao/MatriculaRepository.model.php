@@ -119,7 +119,7 @@ class MatriculaRepository {
       throw new DBException( _M( MENSAGEM_MATRICULA_REPOSITORY . 'erro_buscar_matriculas_turma', $oErro ) );
     }
 
-    $iTotalLinhas     = pg_num_rows( $rsMatricula );
+    $iTotalLinhas     = $rsMatricula === false || $rsMatricula === null ? 0 : pg_num_rows( $rsMatricula );
     $aMatriculasTurma = [];
 
     if ($iTotalLinhas > 0) {
@@ -158,7 +158,7 @@ class MatriculaRepository {
       throw new DBException( _M( MENSAGEM_MATRICULA_REPOSITORY . 'erro_buscar_matriculas_turma', $oErro ) );
     }
 
-    $iTotalLinhas     = pg_num_rows( $rsMatricula );
+    $iTotalLinhas     = $rsMatricula === false || $rsMatricula === null ? 0 : pg_num_rows( $rsMatricula );
     $aMatriculasTurma = [];
 
     if ($iTotalLinhas > 0) {
@@ -304,7 +304,7 @@ class MatriculaRepository {
       throw new DBException( _M( MENSAGEM_MATRICULA_REPOSITORY . 'erro_buscar_matriculas', $oErro ) );
     }
 
-    $iTotalMatriculas = pg_num_rows( $rsMatricula );
+    $iTotalMatriculas = $rsMatricula === false || $rsMatricula === null ? 0 : pg_num_rows( $rsMatricula );
     if( $iTotalMatriculas == 0 ) {
       return $aMatriculas;
     }
@@ -365,7 +365,7 @@ class MatriculaRepository {
 
     $aMatriculasEncerradas = [];
 
-    $iLinhas = pg_num_rows($rsMatriculasEncerradas);
+    $iLinhas = $rsMatriculasEncerradas === false || $rsMatriculasEncerradas === null ? 0 : pg_num_rows($rsMatriculasEncerradas);
     for( $i = 0; $i < $iLinhas; $i++) {
 
       $oDados                  = db_utils::fieldsMemory($rsMatriculasEncerradas, $i);

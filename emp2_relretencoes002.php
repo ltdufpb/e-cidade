@@ -128,7 +128,7 @@ $sqlRet = "select distinct *
                      e50_codord";
 
 $rsOps       = db_query($sqlRet) or die($sqlRet);
-$iNumRowsOps = pg_num_rows($rsOps);
+$iNumRowsOps = $rsOps === false || $rsOps === null ? 0 : pg_num_rows($rsOps);
 
 //die($sql1);
 //echo db_criatabela($result1); echo $sql1."<br>";
@@ -189,7 +189,7 @@ for ($i=0; $i < $iNumRowsOps; $i++) {
     $sql3          .= " from ({$sqlNumpres}) as x";
     $sql3          .= " group by k00_receit, k02_drecei ";
 		$rsNumpres      = db_query($sql3) or die($sql3);
-    $iNumrowsNumpre = pg_num_rows($rsNumpres);
+    $iNumrowsNumpre = $rsNumpres === false || $rsNumpres === null ? 0 : pg_num_rows($rsNumpres);
     
 		
     if ($iNumrowsNumpre == 0) {
@@ -330,7 +330,7 @@ for ($i=0; $i < $iNumRowsOps; $i++) {
 			  			   	   where e53_codord = ".$oRetencoes->e50_codord;
 			 
 			 $rsPagOp = db_query($sqlPagOp) or die($sqlPagOp);
-			 $iNumRowsPagOp = pg_num_rows($rsPagOp); 
+			 $iNumRowsPagOp = $rsPagOp === false || $rsPagOp === null ? 0 : pg_num_rows($rsPagOp); 
 			 
 			 for ($ii = 0; $ii < $iNumRowsPagOp; $ii++){
 					 $oPagOp = db_utils::fieldsMemory($rsPagOp,$ii);

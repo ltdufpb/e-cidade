@@ -137,7 +137,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	  db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento da CDA!');
 	  exit; 
 	}
-	$numrows = pg_num_rows($resparag);
+	$numrows = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
 	for($i=0;$i<$numrows;$i++){
 	  db_fieldsmemory($resparag,$i);
 
@@ -252,7 +252,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	if( $valorminimo > 0 ){
 	  db_fieldsmemory($result,0); 
 	  $res_debitos = debitos_numpre($v07_numpre,0,0,$dataemis,$anoemis,0);
-	  $num = pg_num_rows($res_debitos);
+	  $num = $res_debitos === false || $res_debitos === null ? 0 : pg_num_rows($res_debitos);
 	  for($i = 0;$i < $num;$i++) {
 	    db_fieldsmemory($res_debitos,$i); 
 	    $flt_total  += $total;
@@ -318,7 +318,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 							inner join termo on termo.v07_parcel = certter.v14_parcel  
 							where v14_certid = {$inic}";
 	$resultcert = db_query($sqlcert);						
-	$linhascert = pg_num_rows($resultcert);					
+	$linhascert = $resultcert === false || $resultcert === null ? 0 : pg_num_rows($resultcert);					
 	if($linhascert > 0){
 		db_fieldsmemory($resultcert,0);
 	}
@@ -360,7 +360,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
   $aInscr  = [];
 
   $rsCert  = db_query($sql);
-  $iLinhas = pg_num_rows($rsCert);
+  $iLinhas = $rsCert === false || $rsCert === null ? 0 : pg_num_rows($rsCert);
 	
 	for ($xy = 0; $xy < $iLinhas; $xy++) {
 
@@ -380,7 +380,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 		$sSqlPardiv .= "   where v04_instit = ".db_getsession("DB_instit") ;
 
 		$rsPardiv      = db_query($sSqlPardiv) or die($sSqlPardiv);
-		$iLinhasPardiv = pg_num_rows($rsPardiv);
+		$iLinhasPardiv = $rsPardiv === false || $rsPardiv === null ? 0 : pg_num_rows($rsPardiv);
 
 		$oPardiv = db_utils::fieldsMemory($rsPardiv,0);
 
@@ -418,7 +418,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 					$sqlPossuidor .= "  where j18_anousu= ".db_getsession("DB_anousu") ;
 
 					$resultPossuidor = db_query($sqlPossuidor);
-					$linhasPossuidor = pg_num_rows($resultPossuidor);
+					$linhasPossuidor = $resultPossuidor === false || $resultPossuidor === null ? 0 : pg_num_rows($resultPossuidor);
 
 					if($linhasPossuidor>0){
 						db_fieldsmemory($resultPossuidor,0);
@@ -433,7 +433,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 
 					$sSqlEnvol    = " select * from fc_busca_envolvidos({$lRegra},{$oPardiv->v04_envolcdaiptu},'M',{$matric})";
 					$rsEnvol      = db_query($sSqlEnvol) or die($sSqlEnvol);
-					$iLinhasEnvol = pg_num_rows($rsEnvol);
+					$iLinhasEnvol = $rsEnvol === false || $rsEnvol === null ? 0 : pg_num_rows($rsEnvol);
 
 					
 					if ($oPardiv->v04_envolcdaiptu == 2 && $iLinhasEnvol == 0 ) {
@@ -444,7 +444,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 						$sSqlEnvol .= "  where j01_matric = {$matric}    ";
 
 						$rsEnvol      = db_query($sSqlEnvol) or die($sSqlEnvol);
-						$iLinhasEnvol = pg_num_rows($rsEnvol);
+						$iLinhasEnvol = $rsEnvol === false || $rsEnvol === null ? 0 : pg_num_rows($rsEnvol);
 
 					}
 
@@ -467,7 +467,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 						$sSqlDadosEnvol .= "  where z01_numcgm = {$oEnvol->rinumcgm}";
 
 						$rsDadosEnvol      = db_query($sSqlDadosEnvol) or die($sSqlDadosEnvol);
-						$iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
+						$iLinhasDadosEnvol = $rsDadosEnvol === false || $rsDadosEnvol === null ? 0 : pg_num_rows($rsDadosEnvol);
 						
 						if ($iLinhasDadosEnvol > 0) {
 
@@ -583,7 +583,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 
 				$sSqlEnvol    = " select * from fc_busca_envolvidos({$lRegra},{$oPardiv->v04_envolcdaiss},'I',{$inscr})";
 				$rsEnvol      = db_query($sSqlEnvol) or die($sSqlEnvol);
-				$iLinhasEnvol = pg_num_rows($rsEnvol);
+				$iLinhasEnvol = $rsEnvol === false || $rsEnvol === null ? 0 : pg_num_rows($rsEnvol);
 				
 				for ($i = 0; $i < $iLinhasEnvol; $i++ ) {
 				
@@ -604,7 +604,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 					$sSqlDadosEnvol .= "	where z01_numcgm = {$oEnvol->rinumcgm}";
 					
 					$rsDadosEnvol			 = db_query($sSqlDadosEnvol);
-					$iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
+					$iLinhasDadosEnvol = $rsDadosEnvol === false || $rsDadosEnvol === null ? 0 : pg_num_rows($rsDadosEnvol);
 				
 					if ($iLinhasDadosEnvol > 0) {
 						$oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol,0);			
@@ -807,13 +807,13 @@ $result_arrecad=db_query("select * from arrecad where k00_numpre=$v07_numpre lim
 if (pg_num_rows($result_arrecad)>0){
 
   $result2 = debitos_numpre($v07_numpre,0,0,$dataemis,$anoemis,0);
-  $num		 = pg_num_rows($result2);
+  $num		 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 
 }else{
   $result_arreold=db_query("select * from arreold where k00_numpre=$v07_numpre limit 1");
   if(pg_num_rows($result_arreold)>0) {
     $result2 = debitos_numpre_old($v07_numpre,0,0,$dataemis,$anoemis,0);
-    $num = pg_num_rows($result2);
+    $num = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
   } else {
     $sqlprocuraarreforo    = "select k00_numpre,
     k00_numpar,

@@ -55,7 +55,7 @@ elseif(isset($aterar))
  $query = @db_query($conexao,$sqlvalor);
  if($query)
  {
-  $linhas = pg_num_rows($query);
+  $linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
   if($linhas<>0)
    $array = @pg_fetch_array($query,0);
  }

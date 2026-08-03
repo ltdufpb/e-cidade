@@ -76,7 +76,7 @@ input {
 <td>
 <?php 
 $result = db_query("select codcam,nomecam from db_syscampo where nomecam like '$campo%'");
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 if($numrows > 0) {
   echo "<select name=\"voltacampo\" size=\"15\" style=\"width:200px\">\n";
   for($i = 0;$i < $numrows;$i++) {

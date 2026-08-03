@@ -261,14 +261,14 @@ $sSqlRetencoes = "select {$sCampoQuebrarSql}, dados.*
                                  from ({$sSqlRetencoes}) as dados
                                 order by {$sCampoOrdenar}";
 $rsRetencoes = db_query($sSqlRetencoes);
-$iTotalRetencoes = pg_num_rows($rsRetencoes);
+$iTotalRetencoes = $rsRetencoes === false || $rsRetencoes === null ? 0 : pg_num_rows($rsRetencoes);
 if ($iTotalRetencoes == 0 || !$rsRetencoes) {
     db_redireciona("db_erros.php?fechar=true&db_erro=Não foram encontradas retenções.");
     exit;
 }
 
 $aRetencoes = [];
-$iTotalRetencoes = pg_num_rows($rsRetencoes);
+$iTotalRetencoes = $rsRetencoes === false || $rsRetencoes === null ? 0 : pg_num_rows($rsRetencoes);
 
 for ($i = 0; $i < $iTotalRetencoes; $i++) {
     $oRetencao = db_utils::fieldsMemory($rsRetencoes, $i);

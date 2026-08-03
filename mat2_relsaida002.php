@@ -124,7 +124,7 @@ if (isset($listausu)&&trim($listausu)!=""&&isset($quebra_usu)&&$quebra_usu=="N")
                    where id_usuario in ($listausu)";
      $resultado = @db_query($sql);
      $numrows   = 0;
-     $numrows   = @pg_num_rows($resultado);
+     $numrows   = $resultado === false || $resultado === null ? 0 : @pg_num_rows($resultado);
 
      if ($numrows > 0){
           $head6 = "Usuários: ";
@@ -242,7 +242,7 @@ if($listar_serv == "T") {
 
 
 $res_saida_atend = @db_query($sql);
-$numrows_atend   = @pg_num_rows($res_saida_atend);
+$numrows_atend   = $res_saida_atend === false || $res_saida_atend === null ? 0 : @pg_num_rows($res_saida_atend);
 
 $pdf = new PDF();
 $pdf->Open();

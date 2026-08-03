@@ -244,7 +244,7 @@ $sqlSuspensao .= " $where   ";
 $sqlSuspensao .= " $orderby ";
 
 $rsSuspensao    = db_query($sqlSuspensao) or die($sqlSuspensao);
-$iRowsSuspensao = pg_num_rows($rsSuspensao);
+$iRowsSuspensao = $rsSuspensao === false || $rsSuspensao === null ? 0 : pg_num_rows($rsSuspensao);
 
 $aResumos = [];
 $aAgrupaResumo['estrutural']  = 'k02_estorc';

@@ -167,7 +167,7 @@ $sql .= "	order by " . ($quebrarentrega == "s"?"x01_entrega, ":"") . "j14_nome, 
 //die( $sql );
 
 $result = db_query($sql) or die($sql);
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 if ($numrows == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Nao existem itens cadastrados para fazer a consulta.');

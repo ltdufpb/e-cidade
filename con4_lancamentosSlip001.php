@@ -114,7 +114,7 @@ $DB_BASE     = "ontem_20130220_1900";
         throw new Exception("[ERRO 002] Nao foi possível buscar os dados dos Slips.");
       }
 
-      $iTotalRegistroSlip = pg_num_rows($rsBuscaSlip);
+      $iTotalRegistroSlip = $rsBuscaSlip === false || $rsBuscaSlip === null ? 0 : pg_num_rows($rsBuscaSlip);
       $aSlipsEncontrados  = [];
       for ($iRowSlip = 0; $iRowSlip < $iTotalRegistroSlip; $iRowSlip++) {
 
@@ -135,7 +135,7 @@ $DB_BASE     = "ontem_20130220_1900";
         $sSqlBuscaSaltes      .= "   from saltes ";
         $sSqlBuscaSaltes      .= "  where k13_conta in ({$oStdDadoSlip->k17_debito}, {$oStdDadoSlip->k17_credito})";
         $rsBuscaSaltes         = db_query($sSqlBuscaSaltes);
-        $iTotalRegistrosSaltes = pg_num_rows($rsBuscaSaltes);
+        $iTotalRegistrosSaltes = $rsBuscaSaltes === false || $rsBuscaSaltes === null ? 0 : pg_num_rows($rsBuscaSaltes);
         $iCodigoVinculo        = 13;
         $sDescricaoVinculo     = "Dep. Diversas Origens - Pagamento";
         if ($iTotalRegistrosSaltes == 2) {

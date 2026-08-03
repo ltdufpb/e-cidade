@@ -651,7 +651,7 @@ class GeradorCDA
             if ($lGerarFundamentacao) {
 
                 $rsFundamentacao = db_query($sSqlFundamentacao);
-                $iTotalFundamentacao = pg_num_rows($rsFundamentacao);
+                $iTotalFundamentacao = $rsFundamentacao === false || $rsFundamentacao === null ? 0 : pg_num_rows($rsFundamentacao);
 
                 if ($iTotalFundamentacao > 0) {
 
@@ -706,7 +706,7 @@ class GeradorCDA
             $resMetCalculo = db_query($sMetCalculo);
             if ($resMetCalculo) {
 
-                $iNumRows = pg_num_rows($resMetCalculo);
+                $iNumRows = $resMetCalculo === false || $resMetCalculo === null ? 0 : pg_num_rows($resMetCalculo);
                 for ($v = 0; $v < $iNumRows; $v++) {
 
                     $oMetodologia = db_utils::fieldsmemory($resMetCalculo, $v);
@@ -2146,7 +2146,7 @@ class GeradorCDA
                 if (pg_num_rows($rsArrecad) > 0) {
 
                     $rsDebitos = debitos_numpre($oNumpre->v07_numpre, 0, 0, $dataemis, $anoemis, 0);
-                    $iTotalDebitos = pg_num_rows($rsDebitos);
+                    $iTotalDebitos = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
 
                 } else {
 
@@ -2157,7 +2157,7 @@ class GeradorCDA
                     if (pg_num_rows($result_arreold) > 0) {
 
                         $rsDebitos = debitos_numpre_old($oDadosCertidao->v07_numpre, 0, 0, $dataemis, $anoemis, 0);
-                        $iTotalDebitos = pg_num_rows($rsDebitos);
+                        $iTotalDebitos = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
 
                     } else {
 
@@ -2389,7 +2389,7 @@ class GeradorCDA
             if (pg_num_rows($rsArrecad) > 0) {
 
                 $rsDebitos = debitos_numpre($oNumpre->v07_numpre, 0, 0, $dataemis, $anoemis, 0);
-                $iTotalDebitos = pg_num_rows($rsDebitos);
+                $iTotalDebitos = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
 
             } else {
 
@@ -2397,7 +2397,7 @@ class GeradorCDA
                 if (pg_num_rows($result_arreold) > 0) {
 
                     $rsDebitos = debitos_numpre_old($oNumpre->v07_numpre, 0, 0, $dataemis, $anoemis, 0);
-                    $iTotalDebitos = pg_num_rows($rsDebitos);
+                    $iTotalDebitos = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
 
                 } else {
                     $sqlprocuraarreforo = " select k00_numpre,
@@ -2602,7 +2602,7 @@ class GeradorCDA
 
 
                 $rsDadosDebitos = db_query($sSqlDadosDebito);
-                $iLinhasDebitos = pg_num_rows($rsDadosDebitos);
+                $iLinhasDebitos = $rsDadosDebitos === false || $rsDadosDebitos === null ? 0 : pg_num_rows($rsDadosDebitos);
 
 
                 if ($iLinhasDebitos > 0) {
@@ -2957,7 +2957,7 @@ class GeradorCDA
             if (pg_num_rows($rsArrecad) > 0) {
 
                 $rsDebitos = debitos_numpre($oNumpre->v07_numpre, 0, 0, $dataemis, $anoemis, 0);
-                $iTotalDebitos = pg_num_rows($rsDebitos);
+                $iTotalDebitos = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
 
             } else {
 
@@ -2966,7 +2966,7 @@ class GeradorCDA
                 if (pg_num_rows($result_arreold) > 0) {
 
                     $rsDebitos = debitos_numpre_old($oDadosCertidao->v07_numpre, 0, 0, $dataemis, $anoemis, 0);
-                    $iTotalDebitos = pg_num_rows($rsDebitos);
+                    $iTotalDebitos = $rsDebitos === false || $rsDebitos === null ? 0 : pg_num_rows($rsDebitos);
 
                 } else {
 

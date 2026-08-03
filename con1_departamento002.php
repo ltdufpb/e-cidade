@@ -100,7 +100,7 @@ function js_verificaFormulario() {
 		    <?php 
 			  db_postmemory($_POST);
 			  $result = db_query("select * from db_depart where descrdepto like '".$descrdepto."%'");
-			  $num = pg_num_rows($result);
+			  $num = $result === false || $result === null ? 0 : pg_num_rows($result);
 			  for ($i=0;$i<$num;$i++) {
 			?>
 			<tr  style="cursor:hand"  onClick="location.href='con1_departamento002.php?retornoCod=<?php  echo pg_fetch_result($result,$i,"coddepto") ?>&retornoDescr=<?php  echo pg_fetch_result($result,$i,"descrdepto")?>&retornonomeresponsavel= <?php  echo pg_fetch_result($result,$i,"nomeresponsavel") ?>&retornoemailresponsavel= <?php  echo pg_fetch_result($result,$i,"emailresponsavel")?>'" title="Clique aqui">

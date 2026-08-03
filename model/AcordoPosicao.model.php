@@ -518,7 +518,7 @@ class AcordoPosicao
             throw new DBException("Erro ao pesquisar os dados do itens da posição do contrato");
         }
 
-        $iTotalLinhas = pg_num_rows($rsItens);
+        $iTotalLinhas = $rsItens === false || $rsItens === null ? 0 : pg_num_rows($rsItens);
         for ($i = 0; $i < $iTotalLinhas; $i++) {
             $this->aItens[] = (new AcordoItem(db_utils::fieldsMemory($rsItens, $i)->ac20_sequencial));
         }
@@ -1150,7 +1150,7 @@ class AcordoPosicao
         }
 
         $oQuadro->aPeriodos = [];
-        $iTotalPeriodos = pg_num_rows($rsPeriodos);
+        $iTotalPeriodos = $rsPeriodos === false || $rsPeriodos === null ? 0 : pg_num_rows($rsPeriodos);
 
         for ($i = 0; $i < $iTotalPeriodos; $i++) {
             $oDado = db_utils::fieldsMemory($rsPeriodos, $i, false, false, true);

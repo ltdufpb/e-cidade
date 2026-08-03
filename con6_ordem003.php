@@ -115,7 +115,7 @@
 											inner join db_usuarios u on u.id_usuario = d.id_usuario
 	                                        where d.coddepto = $depto
 	                                       ");
-	$numRetornaListaDeDestinatarios = pg_num_rows($retornaListaDeDestinatarios);
+	$numRetornaListaDeDestinatarios = $retornaListaDeDestinatarios === false || $retornaListaDeDestinatarios === null ? 0 : pg_num_rows($retornaListaDeDestinatarios);
 	$destinatario = "";
 	for ($i=0;$i<$numRetornaListaDeDestinatarios;$i++) {
 	  $destinatario = $destinatario.", ".pg_fetch_result($retornaListaDeDestinatarios,$i,"nome")." <".pg_fetch_result($retornaListaDeDestinatarios,$i,"email").">";

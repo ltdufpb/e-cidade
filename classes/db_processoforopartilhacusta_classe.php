@@ -57,7 +57,7 @@ class cl_processoforopartilhacusta {
                  v77_dispensalancamentorecibo = bool = Dispensa cobrança
                  ";
    //funcao construtor da classe
-   function cl_processoforopartilhacusta() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoforopartilhacusta");
      $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
@@ -448,7 +448,7 @@ class cl_processoforopartilhacusta {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_num_rows($result);
+     $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
       if ($this->numrows == 0) {
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:processoforopartilhacusta";

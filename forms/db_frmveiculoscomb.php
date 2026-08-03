@@ -95,7 +95,7 @@ $sSqlVeiculos .= "            and veiculoscomb.ve06_veiculos = {$ve06_veiculos} 
 $sSqlVeiculos .= "   from veiccadcomb ";
 
 $rsVeiculos = db_query($sSqlVeiculos);
-$iNumRows = pg_num_rows($rsVeiculos);
+$iNumRows = $rsVeiculos === false || $rsVeiculos === null ? 0 : pg_num_rows($rsVeiculos);
 //echo "$sSqlVeiculos";exit;
  for ($i=0; $i < $iNumRows;$i++) {
    db_fieldsmemory($rsVeiculos,$i);
@@ -122,7 +122,7 @@ $iNumRows = pg_num_rows($rsVeiculos);
 else{
   $sSqlVeiculos  =  "  select * from veiccadcomb order by ve26_descr ";
   $rsVeiculos = db_query($sSqlVeiculos);
-  $iNumRows = pg_num_rows($rsVeiculos);
+  $iNumRows = $rsVeiculos === false || $rsVeiculos === null ? 0 : pg_num_rows($rsVeiculos);
 
  for ($i=0; $i < $iNumRows;$i++) {
    db_fieldsmemory($rsVeiculos,$i);

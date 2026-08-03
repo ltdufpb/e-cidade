@@ -479,7 +479,7 @@ class PeriodoAula
             return;
         }
 
-        $iLinhas = pg_num_rows($rsDias);
+        $iLinhas = $rsDias === false || $rsDias === null ? 0 : pg_num_rows($rsDias);
         for ($i = 0; $i < $iLinhas; $i++) {
             $iCodigoDiaDiario = db_utils::fieldsMemory($rsDias, $i)->ed302_diarioclasse;
 

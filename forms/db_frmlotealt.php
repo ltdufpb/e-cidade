@@ -344,7 +344,7 @@ function js_checa() {
           $sqlPonto  .= "  union ";
           $sqlPonto  .= " select j64_sequencial, j64_descricao from orientacao ";
           $rsPonto    = db_query($sqlPonto);
-          $intPonto   = pg_num_rows($rsPonto);
+          $intPonto   = $rsPonto === false || $rsPonto === null ? 0 : pg_num_rows($rsPonto);
 
           for ($iPonto=0;$iPonto<$intPonto;$iPonto++) { 
               db_fieldsmemory($rsPonto,$iPonto);

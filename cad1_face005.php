@@ -60,7 +60,7 @@ if (isset($alterarface) && $alterarface=='t') {
 												   and face.j37_face = $j37_face ) as x";
 
 	$rsverificaruas = db_query($sqlverificaruas);
-	$intnumrows     = pg_num_rows($rsverificaruas);
+	$intnumrows     = $rsverificaruas === false || $rsverificaruas === null ? 0 : pg_num_rows($rsverificaruas);
 	if (isset ($intnumrows) && $intnumrows > 0) {
 
 		$confirm     = 't';

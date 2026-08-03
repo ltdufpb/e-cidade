@@ -164,7 +164,7 @@ class Jornada extends \BaseClassRepository {
             throw new DBException($msg);
         }
 
-        $qtdeJornadas = pg_num_rows($rsJornadas);
+        $qtdeJornadas = $rsJornadas === false || $rsJornadas === null ? 0 : pg_num_rows($rsJornadas);
         if($qtdeJornadas == 0) {
             return [];
         }
@@ -212,7 +212,7 @@ class Jornada extends \BaseClassRepository {
             throw new DBException($msg);
         }
 
-        $qtdeJornadas = pg_num_rows($rsJornadas);
+        $qtdeJornadas = $rsJornadas === false || $rsJornadas === null ? 0 : pg_num_rows($rsJornadas);
         if($qtdeJornadas == 0) {
             return [];
         }

@@ -356,7 +356,7 @@ class AcordoEvento {
     if (!$rsDocumentos) {
       throw new DBException("Erro ao pesquisar os documentos do evento de codigo {$this->getCodigo()}");
     }
-    $iTotalLinhas = pg_num_rows($rsDocumentos);
+    $iTotalLinhas = $rsDocumentos === false || $rsDocumentos === null ? 0 : pg_num_rows($rsDocumentos);
 
     for ($iDocumento = 0; $iDocumento < $iTotalLinhas; $iDocumento++) {
       $this->aDocumentos[] = new DocumentoEventoAcordo(db_utils::fieldsMemory($rsDocumentos, $iDocumento)->ac57_sequencial);

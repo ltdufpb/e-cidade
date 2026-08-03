@@ -92,7 +92,7 @@ $sNome = $z01_nome ?? '';
       exit;
     }
 
-    $linhas1 = pg_num_rows($query1);
+    $linhas1 = $query1 === false || $query1 === null ? 0 : pg_num_rows($query1);
 
     if ( $linhas1 > 0 ) {
 

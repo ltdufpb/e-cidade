@@ -89,7 +89,7 @@ select z.*, proprietario_nome.proprietario from (
 inner join proprietario_nome on proprietario_nome.j01_matric = z.j41_matric $where $ordem $modo  
 ";
 $result = db_query($sql);
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 $pdf->AddPage();
 $pdf->SetFont('Arial','B',7);
 $pdf->Cell(25,05,"Matrícula",1,0,"C",1);

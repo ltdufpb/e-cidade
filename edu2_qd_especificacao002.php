@@ -139,7 +139,7 @@ $sql   .= "  and ed11_i_ensino in ($nivelensino) ";
 $sql   .= "  limit 1 ";
 
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($linhas == 0) {?>
 
   <table width='100%'>
@@ -220,7 +220,7 @@ $sql            .= " and ed221_c_origem = 'S' ";
 $sql            .= " and ed11_i_ensino in ($nivelensino) ";
 $sql            .= " order by ed10_ordem, ed11_i_sequencia";
 $result1         = db_query($sql);
-$linhas1         = pg_num_rows($result1);
+$linhas1         = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 $largura_colunas = floor(162/$linhas1);
 $pdf->Addpage("");
 $cor = "0";
@@ -249,7 +249,7 @@ $sql_trans   .= " AND ed221_c_origem = 'S' ";
 $sql_trans   .= " GROUP BY ed47_v_sexo,idadealuno,seriealuno ";
 $sql_trans   .= " ORDER BY idadealuno,seriealuno";
 $result_trans = db_query($sql_trans);
-$linhas_trans = pg_num_rows($result_trans);
+$linhas_trans = $result_trans === false || $result_trans === null ? 0 : pg_num_rows($result_trans);
 $primeiro     = pg_fetch_result($result1,0,'ed10_i_codigo');
 $pdf->cell($largura_colunas*$linhas1+28,4,"TRANSFERÊNCIAS",1,1,"C",$cor);
 $pdf->cell(20,5,"",1,0,"C",$cor);
@@ -481,7 +481,7 @@ $sql_trans   .= " AND ed221_c_origem = 'S' ";
 $sql_trans   .= " GROUP BY ed47_v_sexo,idadealuno,seriealuno ";
 $sql_trans   .= " ORDER BY idadealuno,seriealuno ";
 $result_trans = db_query($sql_trans);
-$linhas_trans = pg_num_rows($result_trans);
+$linhas_trans = $result_trans === false || $result_trans === null ? 0 : pg_num_rows($result_trans);
 $primeiro     = pg_fetch_result($result1,0,'ed10_i_codigo');
 $pdf->cell($largura_colunas*$linhas1+28,4,"EVASÃO / CANCELAMENTO / MATRICULA TRANCADA / MATRICULA INDEFERIDA",1,1,"C",$cor);
 $pdf->cell(20,5,"",1,0,"C",$cor);
@@ -712,7 +712,7 @@ $sql_trans   .= " AND ed221_c_origem = 'S' ";
 $sql_trans   .= " GROUP BY ed47_v_sexo,idadealuno,seriealuno ";
 $sql_trans   .= " ORDER BY idadealuno,seriealuno";
 $result_trans = db_query($sql_trans);
-$linhas_trans = pg_num_rows($result_trans);
+$linhas_trans = $result_trans === false || $result_trans === null ? 0 : pg_num_rows($result_trans);
 $primeiro     = pg_fetch_result($result1,0,'ed10_i_codigo');
 $pdf->cell($largura_colunas*$linhas1+28,4,"FALECIMENTO",1,1,"C",$cor);
 $pdf->cell(20,5,"",1,0,"C",$cor);
@@ -956,7 +956,7 @@ if ($imprimelista == "yes") {
   $sql_trans   .= " AND ed221_c_origem = 'S' ";
   $sql_trans   .= " ORDER BY idadealuno,ed47_d_nasc,ed47_v_nome";
   $result_trans = db_query($sql_trans);
-  $linhas_trans = pg_num_rows($result_trans);
+  $linhas_trans = $result_trans === false || $result_trans === null ? 0 : pg_num_rows($result_trans);
   $primeiro     = "";
   $contador     = 0;
   $pdf->setfont('arial','b',7);
@@ -1035,7 +1035,7 @@ if ($imprimelista == "yes") {
   $sql_evadi   .= " AND ed221_c_origem = 'S' ";
   $sql_evadi   .= " ORDER BY idadealuno,ed47_d_nasc,ed47_v_nome";
   $result_evadi = db_query($sql_evadi);
-  $linhas_evadi = pg_num_rows($result_evadi);
+  $linhas_evadi = $result_evadi === false || $result_evadi === null ? 0 : pg_num_rows($result_evadi);
   $primeiro     = "";
   $contador     = 0;
   $pdf->setfont('arial','b',7);
@@ -1115,7 +1115,7 @@ if ($imprimelista == "yes") {
   $sql_falec   .= "AND ed221_c_origem = 'S' ";
   $sql_falec   .= "ORDER BY idadealuno,ed47_d_nasc,ed47_v_nome ";
   $result_falec = db_query($sql_falec);
-  $linhas_falec = pg_num_rows($result_falec);
+  $linhas_falec = $result_falec === false || $result_falec === null ? 0 : pg_num_rows($result_falec);
   $primeiro     = "";
   $contador     = 0;
   $pdf->setfont('arial','b',7);

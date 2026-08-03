@@ -170,7 +170,7 @@ if(isset($ver_matric)){
             $sSqlArrecad .= "     and k00_dtvenc   > '{$sDataVenc}'   ";
               
             $rsSqlArrecad = db_query($sSqlArrecad);
-            $iNumRows     = pg_num_rows($rsSqlArrecad);
+            $iNumRows     = $rsSqlArrecad === false || $rsSqlArrecad === null ? 0 : pg_num_rows($rsSqlArrecad);
             if ($iNumRows == 0) {
                   
               $numpar1 .= $virgula.$numpar;

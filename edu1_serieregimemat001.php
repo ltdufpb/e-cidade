@@ -61,7 +61,7 @@ if (isset($excluir)) {
          and ed31_i_regimemat = $ed223_i_regimemat
          and ed77_i_escola = $escola";
  $result= db_query($sql);
- $linhas = pg_num_rows($result);
+ $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
  if($linhas>0){
  	db_msgbox("Registro não pode ser excluído pois já esta vinculado a uma base curricular");
  	db_redireciona("edu1_serieregimemat001.php?ed223_i_serie=$ed223_i_serie&ed11_c_descr=$ed11_c_descr");

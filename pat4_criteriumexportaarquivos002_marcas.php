@@ -34,7 +34,7 @@ $sSqlMarca .= "       t65_descricao as nome_da_marca";
 $sSqlMarca .= "     from bensmarca";
 
 $rsMarca   			= db_query($sSqlMarca);
-$iNumeroLinhas 	= pg_num_rows($rsMarca);
+$iNumeroLinhas 	= $rsMarca === false || $rsMarca === null ? 0 : pg_num_rows($rsMarca);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oMarca     = db_utils::fieldsMemory($rsMarca,$i);

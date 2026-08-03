@@ -49,7 +49,7 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Excluir") {
 
     $sql1 = "select * from cgmcorreto where z10_codigo = $z10_codigo";
     $result1 = db_query($sql1);
-    $linhas1 = pg_num_rows($result1);
+    $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
     if ($linhas1 > 0) {
         db_fieldsmemory($result1, 0);
         if ($z10_proc == 't') {

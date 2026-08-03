@@ -208,7 +208,7 @@ if ($_POST) {
 
   if ($rsCalculo) {
 
-	  $iTotalLinha = pg_num_rows($rsCalculo);
+	  $iTotalLinha = $rsCalculo === false || $rsCalculo === null ? 0 : pg_num_rows($rsCalculo);
 
 	  if ($tipo_arquivo == "A") {
 

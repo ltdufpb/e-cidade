@@ -120,7 +120,7 @@ order by d.id_acount;
 
 $result1 = db_query($sql1);
 //db_criatabela($result1);exit;
-$xxnum1  = pg_num_rows($result1);
+$xxnum1  = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
 for($xx = 0; $xx < pg_num_rows($result1);$xx++){
    db_fieldsmemory($result1,$xx);
@@ -153,7 +153,7 @@ for($xx = 0; $xx < pg_num_rows($result1);$xx++){
        ";
    $result2 = db_query($sql2);
 //   db_criatabela($result2);
-   $xxnum2  = pg_num_rows($result2);
+   $xxnum2  = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 
    for($y = 0; $y < pg_num_rows($result2);$y++){
       db_fieldsmemory($result2,$y);
@@ -210,7 +210,7 @@ if($tipo_alt == 'a'){
 $sql_temp = "select * from ww_acount $xtipo $xordem";
 //echo $sql_temp;
 $res_temp = db_query($sql_temp);
-$xxnum = pg_num_rows($res_temp);
+$xxnum = $res_temp === false || $res_temp === null ? 0 : pg_num_rows($res_temp);
 //db_criatabela($res_temp);exit;
 
 if ($xxnum == 0){

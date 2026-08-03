@@ -114,7 +114,7 @@ for ($tiporel = 0; $tiporel <= 1; ++$tiporel) {
     ";
     $res = db_query($sql);
 
-    $linhas = pg_num_rows($res);
+    $linhas = $res === false || $res === null ? 0 : pg_num_rows($res);
     $iTotalLinhas += $linhas;
 
     $head2 = 'RELATORIO DE SUPLEMENTAÇÔES POR RECURSO';

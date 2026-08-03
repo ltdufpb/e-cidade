@@ -1314,7 +1314,7 @@ if (isset($_POST ["pesquisar"]) || isset($matricula) || isset($inscricao)) {
     $sqlprest .= "   and q21_status = 1                               ";
 
     $resultprest = db_query($sqlprest);
-    $linhaspret = pg_num_rows($resultprest);
+    $linhaspret = $resultprest === false || $resultprest === null ? 0 : pg_num_rows($resultprest);
     if ($linhaspret > 0) {
         $prestador = true;
     } else {
@@ -1433,7 +1433,7 @@ if (isset($_POST ["pesquisar"]) || isset($matricula) || isset($inscricao)) {
     $justificado = false;
 
     if ($resultarrejustreg) {
-        $linhasarrejustreg = pg_num_rows($resultarrejustreg);
+        $linhasarrejustreg = $resultarrejustreg === false || $resultarrejustreg === null ? 0 : pg_num_rows($resultarrejustreg);
         if ($linhasarrejustreg > 0) {
             $justificado = true;
         }
@@ -1696,7 +1696,7 @@ if (isset($_POST ["pesquisar"]) || isset($matricula) || isset($inscricao)) {
 
 
                             if ($result) {
-                                $numrows = pg_num_rows($result);
+                                $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
                             } else {
                                 $numrows = 0;
                             }
@@ -1872,7 +1872,7 @@ if (isset($_POST ["pesquisar"]) || isset($matricula) || isset($inscricao)) {
                                                                 and arrecad.k00_dtvenc < current_date;";
 
                                          $rsCGMsCPFCNPJ = db_query($sSqlCGMsCPFCNPJ) or die($sSqlCGMsCPFCNPJ);
-                                         $totLin = pg_num_rows($rsCGMsCPFCNPJ);
+                                         $totLin = $rsCGMsCPFCNPJ === false || $rsCGMsCPFCNPJ === null ? 0 : pg_num_rows($rsCGMsCPFCNPJ);
 
                                          if ($totLin > 0) {
                                             for ($idx = 0; $idx < $totLin; $idx++) {

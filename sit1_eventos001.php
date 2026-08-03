@@ -191,7 +191,7 @@ input {
 		  <option value="0">Evento</option>
 		  <?php 
 		  $result = db_query($conn,"select cs_odigo,s_descricao from db_secretaria order by s_codigo");
-		  $numrows = pg_num_rows($result);
+		  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 		  for($i = 0;$i < $numrows;$i++) {
 		    echo "<option value=\"".pg_fetch_result($result,$i,"codigo")."\" ".(@$secretaria==pg_fetch_result($result,$i,"codigo")?"selected":"").">".pg_fetch_result($result,$i,"descricao")."</option>\n";
 		  }

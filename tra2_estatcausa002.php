@@ -96,7 +96,7 @@
               group by tr07_idcausa";
          // echo $sql2;exit;
           $rs2      = db_query($sql2);
-          $numrows2 = pg_num_rows($rs2);
+          $numrows2 = $rs2 === false || $rs2 === null ? 0 : pg_num_rows($rs2);
           $ln       = pg_fetch_array($rs2);
           $sum      +=  $ln["quantidade"];
           if ($numrows2 > 0){

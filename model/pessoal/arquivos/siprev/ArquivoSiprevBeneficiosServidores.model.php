@@ -188,7 +188,7 @@ class ArquivoSiprevBeneficiosServidores extends ArquivoSiprevBase {
       throw new DBException('Erro ao buscar as rubricas de auxílio doença e salário maternidade.');
     }
 
-    $iLinhasInssIrf = pg_num_rows($rsInssIrf);
+    $iLinhasInssIrf = $rsInssIrf === false || $rsInssIrf === null ? 0 : pg_num_rows($rsInssIrf);
 
     for($iContador = 0; $iContador < $iLinhasInssIrf; $iContador++) {
 

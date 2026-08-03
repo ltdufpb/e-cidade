@@ -197,7 +197,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
         throw new DBException('Falha ao buscar os dados do aproveitamento da avaliação.');
       }
 
-      $iTotalLinhas = pg_num_rows( $rsDiarioAvaliacao );
+      $iTotalLinhas = $rsDiarioAvaliacao === false || $rsDiarioAvaliacao === null ? 0 : pg_num_rows( $rsDiarioAvaliacao );
 
       for ($iDiario = 0; $iDiario < $iTotalLinhas; $iDiario++) {
 
@@ -927,7 +927,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
       if (!$rsFaltas) {
         throw new BusinessException('Erro ao retornar faltas do aluno');
       }
-      $iNumeroFaltas = pg_num_rows($rsFaltas);
+      $iNumeroFaltas = $rsFaltas === false || $rsFaltas === null ? 0 : pg_num_rows($rsFaltas);
       for($iFalta = 0; $iFalta < $iNumeroFaltas; $iFalta++) {
 
         $oDadosFalta = db_utils::fieldsMemory($rsFaltas, $iFalta);
@@ -1262,7 +1262,7 @@ class DiarioAvaliacaoDisciplina extends DiarioDisciplina {
     $this->aOrdemPeriodoProporcionalidade = [];
     if ( $rsDiarioRegra && pg_num_rows($rsDiarioRegra) > 0 ) {
 
-      $iLinhas = pg_num_rows($rsDiarioRegra);
+      $iLinhas = $rsDiarioRegra === false || $rsDiarioRegra === null ? 0 : pg_num_rows($rsDiarioRegra);
       for ($i = 0; $i < $iLinhas; $i++) {
         $this->aOrdemPeriodoProporcionalidade[] = db_utils::fieldsMemory($rsDiarioRegra, $i)->ed125_ordemperiodo;
       }

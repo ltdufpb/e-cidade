@@ -105,7 +105,7 @@ $sql = "select distinct o52_funcao
 	order by o52_funcao";
 $result = db_query($sql);
 $sql = "";
-$quantascolunas = pg_num_rows($result);
+$quantascolunas = $result === false || $result === null ? 0 : pg_num_rows($result);
 // $opcao = "1";
 if($opcao == 1)
   $xvalor = 'dot_ini';

@@ -174,7 +174,7 @@ class RelatorioNotasPendentes {
         throw new DBException(_M(self::PATH_MENSAGEM . "erro_busca_movimento_pendente"));
       }
 
-      $iTotalRegistros = pg_num_rows($rsBuscaNotas);
+      $iTotalRegistros = $rsBuscaNotas === false || $rsBuscaNotas === null ? 0 : pg_num_rows($rsBuscaNotas);
       if ($iTotalRegistros == 0) {
         continue;
       }

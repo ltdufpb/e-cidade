@@ -156,7 +156,7 @@ final class PadArquivoSigapPagamentoFinanceiro extends PadArquivoSigap {
 
 
     $rsPagamentos = db_query($sSqlPagamentos);
-    $iTotalLinhas = pg_num_rows($rsPagamentos);
+    $iTotalLinhas = $rsPagamentos === false || $rsPagamentos === null ? 0 : pg_num_rows($rsPagamentos);
     $iTotal=0;
     $this->addLog("\n".str_repeat("-", 30)."PagamentoFinanciero".str_repeat("-", 30)."\n");
     for ($i = 0; $i < $iTotalLinhas; $i++) {

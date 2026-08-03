@@ -139,7 +139,7 @@ try {
             if (!$rs) {
                 throw new DBException("Não foi possivel buscar as taxas de iptu para o exercicio {$oParametros->exercicio}.");
             }
-            $taxas = pg_num_rows($rs);
+            $taxas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
             $oRetorno->taxas = [];
             for ($i = 0; $i < $taxas; $i++) { 
                 $taxa = db_utils::fieldsMemory($rs, $i);

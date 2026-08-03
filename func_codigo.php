@@ -32,11 +32,11 @@
 	$fonteorig="";
 	$sqltab ="select * from pg_tables where tablename = 'temp_classeatualiza'";
 	$resulttab = db_query($sqltab);
-	$linhatab = pg_num_rows($resulttab);
+	$linhatab = $resulttab === false || $resulttab === null ? 0 : pg_num_rows($resulttab);
 	if($linhatab>0){
 		$sql = "select * from temp_classeatualiza where seq = $seq";
 		$result = db_query($sql);
-		$linha = pg_num_rows($result);
+		$linha = $result === false || $result === null ? 0 : pg_num_rows($result);
 		db_fieldsmemory($result,0);
 		
 	}

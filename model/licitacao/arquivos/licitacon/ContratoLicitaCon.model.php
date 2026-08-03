@@ -68,7 +68,7 @@ class ContratoLicitaCon extends ArquivoLicitaCon
             $this->oCabecalho->getDataGeracao(),
             $this->oCabecalho->getInstituicao()
         );
-        $iTotalContratos = pg_num_rows($rsContratos);
+        $iTotalContratos = $rsContratos === false || $rsContratos === null ? 0 : pg_num_rows($rsContratos);
         $aContratos = [];
 
         for ($iContrato = 0; $iContrato < $iTotalContratos; $iContrato++) {
@@ -112,7 +112,7 @@ class ContratoLicitaCon extends ArquivoLicitaCon
                 }
 
                 $oDadosContrato->ac16_valor = 0;
-                $iTotalAcordosInclusao = pg_num_rows($rsAcordoInclusao);
+                $iTotalAcordosInclusao = $rsAcordoInclusao === false || $rsAcordoInclusao === null ? 0 : pg_num_rows($rsAcordoInclusao);
 
                 for ($iInclusao = 0; $iInclusao < $iTotalAcordosInclusao; $iInclusao++) {
                     $oDadosInclusao = db_utils::fieldsMemory($rsAcordoInclusao, $iInclusao);
@@ -207,7 +207,7 @@ class ContratoLicitaCon extends ArquivoLicitaCon
         $oStdAcordo->posicoes = [];
         $soma = 0;
         $posicoes = $this->getPosicoes($oStdAcordo->ac16_sequencial);
-        $iTotalEventos = pg_num_rows($posicoes);
+        $iTotalEventos = $posicoes === false || $posicoes === null ? 0 : pg_num_rows($posicoes);
 
         for ($iRowEvento = 0; $iRowEvento < $iTotalEventos; $iRowEvento++) {
             $oStdValorPosicaoAnterior = end($oStdAcordo->posicoes);
@@ -292,7 +292,7 @@ class ContratoLicitaCon extends ArquivoLicitaCon
         }
 
         if (pg_num_rows($rsEvento) > 0) {
-            $iTotalEventos = pg_num_rows($rsEvento);
+            $iTotalEventos = $rsEvento === false || $rsEvento === null ? 0 : pg_num_rows($rsEvento);
 
             for ($i = 0; $i < $iTotalEventos; $i++) {
                 $oEvento = db_utils::fieldsMemory($rsEvento, $i);

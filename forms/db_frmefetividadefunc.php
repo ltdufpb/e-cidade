@@ -55,7 +55,7 @@ $sql = "SELECT DISTINCT ed20_i_codigo as ed97_i_rechumano,
         ORDER BY z01_nome
        ";
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
 ?>
 <form name="form1" method="post" action="">
@@ -138,7 +138,7 @@ if ($linhas > 0) {
             AND ed97_i_rechumano = $ed97_i_rechumano
           ";
    $result1 = db_query($sql1);
-   $linhas1 = pg_num_rows($result1);
+   $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
 
    if ($linhas1 > 0) {
       db_fieldsmemory($result1, 0);
@@ -163,7 +163,7 @@ if ($linhas > 0) {
     $sOrdemRecHumanoAusente  = " ed348_inicio ";
     $sSqlRecHumanoAusente    = $oDaoRecHumanoAusente->sql_query_tipo_ausencia(null, $sCamposRecHumanoAusente, $sOrdemRecHumanoAusente, $sWhereRecHumanoAusente);
     $rsRecHumanoAusente      = db_query($sSqlRecHumanoAusente);
-    $iTotalAusencias         = pg_num_rows($rsRecHumanoAusente);
+    $iTotalAusencias         = $rsRecHumanoAusente === false || $rsRecHumanoAusente === null ? 0 : pg_num_rows($rsRecHumanoAusente);
 
     if ( !$rsRecHumanoAusente ) {
       throw new DBException('Falha ao consultar as ausências do funcionário.');

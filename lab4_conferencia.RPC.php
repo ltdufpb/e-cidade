@@ -106,7 +106,7 @@ try {
 
           $rsPermissaoLaboratorio       = db_query($sql);
 
-          $iLinhasPermissaoLaboratorio = pg_num_rows($rsPermissaoLaboratorio);
+          $iLinhasPermissaoLaboratorio = $rsPermissaoLaboratorio === false || $rsPermissaoLaboratorio === null ? 0 : pg_num_rows($rsPermissaoLaboratorio);
 
           if($iLinhasPermissaoLaboratorio == 0){
             $oDaoLaboratorio = new cl_lab_laboratorio();

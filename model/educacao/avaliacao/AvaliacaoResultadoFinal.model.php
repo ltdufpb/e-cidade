@@ -412,7 +412,7 @@ class AvaliacaoResultadoFinal {
         throw new DBException( _M( MENSAGENS_AVALIACAO_RESULTADO_FINAL . 'erro_buscar_aprovacao_conselho', $oErro ) );
       }
 
-    	$iTotalAprovConselho = pg_num_rows( $rsAprovConselho );
+    	$iTotalAprovConselho = $rsAprovConselho === false || $rsAprovConselho === null ? 0 : pg_num_rows( $rsAprovConselho );
 
     	if ($iTotalAprovConselho > 0) {
 

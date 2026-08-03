@@ -110,7 +110,7 @@ $sSqlBuscaMaterial .= "   where {$sWhereBuscaMaterial}";
 $sSqlBuscaMaterial .= "  order by matmater.m60_descr     ";
 
 $rsBuscaMaterial = db_query($sSqlBuscaMaterial);
-$iTotalMaterial  = pg_num_rows($rsBuscaMaterial);
+$iTotalMaterial  = $rsBuscaMaterial === false || $rsBuscaMaterial === null ? 0 : pg_num_rows($rsBuscaMaterial);
 
 $aWhereCalculoMovimentacao[] = "(matestoqueini.m80_data >= '{$oGet->dtDataInicial}' and matestoqueini.m80_data <= '{$oGet->dtDataFinal}')";
 $aWhereCalculoMovimentacao[] = "db_depart.instit = {$iInstituicao}";

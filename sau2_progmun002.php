@@ -57,7 +57,7 @@ $data2 = str_replace("X","-",$data2);
                      sd02_c_razao";
 //echo $SQL_rel;
   $Query_rel = db_query($SQL_rel);
-  $Linhas_rel = pg_num_rows($Query_rel);
+  $Linhas_rel = $Query_rel === false || $Query_rel === null ? 0 : pg_num_rows($Query_rel);
 if($Linhas_rel == 0){
  echo "<table width='100%'>
         <tr>

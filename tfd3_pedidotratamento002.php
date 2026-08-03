@@ -43,7 +43,7 @@ $rsTratamentos    = db_query($sSqlTratamentos);
 $aTratamentos = [];
 if ( $rsTratamentos && pg_num_rows($rsTratamentos) > 0) {
 
-  $iLinha = pg_num_rows($rsTratamentos);
+  $iLinha = $rsTratamentos === false || $rsTratamentos === null ? 0 : pg_num_rows($rsTratamentos);
 
   for ($i = 0; $i < $iLinha; $i++) {
 

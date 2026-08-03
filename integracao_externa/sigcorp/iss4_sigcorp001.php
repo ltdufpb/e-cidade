@@ -241,7 +241,7 @@ try {
                             where processado is false";
 
   $rsIntegraCadastro      = db_query($connDestino,$sSqlIntegraCadastro);
-  $iLinhasIntegraCadastro = pg_num_rows($rsIntegraCadastro);
+  $iLinhasIntegraCadastro = $rsIntegraCadastro === false || $rsIntegraCadastro === null ? 0 : pg_num_rows($rsIntegraCadastro);
 
   if ( $iLinhasIntegraCadastro > 0 ) {
 
@@ -366,7 +366,7 @@ try {
 	$sSqlReceitaPrefeitura .= "   from tabrec  				         ";
 
 	$rsReceitaPrefeitura      = db_query($connOrigem,$sSqlReceitaPrefeitura);
-	$iLinhasReceitaPrefeitura = pg_num_rows($rsReceitaPrefeitura);
+	$iLinhasReceitaPrefeitura = $rsReceitaPrefeitura === false || $rsReceitaPrefeitura === null ? 0 : pg_num_rows($rsReceitaPrefeitura);
 
 	if ( $iLinhasReceitaPrefeitura > 0 ) {
 
@@ -543,7 +543,7 @@ try {
 	$sSqlInflatorPrefeitura .= "   from inflan  					  	               ";
 
 	$rsInflatorPrefeitura      = db_query($connOrigem,$sSqlInflatorPrefeitura);
-	$iLinhasInflatorPrefeitura = pg_num_rows($rsInflatorPrefeitura);
+	$iLinhasInflatorPrefeitura = $rsInflatorPrefeitura === false || $rsInflatorPrefeitura === null ? 0 : pg_num_rows($rsInflatorPrefeitura);
 	$aListaInflator 		       = [];
 
 	if ( $iLinhasInflatorPrefeitura > 0 ) {
@@ -630,7 +630,7 @@ try {
 		  $sSqlInflatorDetalhePrefeitura .= "  where i02_codigo = '{$oInflator->iCodInflatorOrigem}'";
 
 		  $rsInflatorDetalhePrefeitura      = db_query($connOrigem,$sSqlInflatorDetalhePrefeitura);
-	    $iLinhasInflatorDetalhePrefeitura = pg_num_rows($rsInflatorDetalhePrefeitura);
+	    $iLinhasInflatorDetalhePrefeitura = $rsInflatorDetalhePrefeitura === false || $rsInflatorDetalhePrefeitura === null ? 0 : pg_num_rows($rsInflatorDetalhePrefeitura);
 
 	    for ( $iInd=0; $iInd < $iLinhasInflatorDetalhePrefeitura; $iInd++ ) {
 
@@ -726,7 +726,7 @@ try {
 		  $sSqlJMPrefeitura .= "  where k02_corr = '{$oInflator->iCodInflatorOrigem}'            ";
 
 		  $rsJMPrefeitura      = db_query($connOrigem,$sSqlJMPrefeitura);
-	    $iLinhasJMPrefeitura = pg_num_rows($rsJMPrefeitura);
+	    $iLinhasJMPrefeitura = $rsJMPrefeitura === false || $rsJMPrefeitura === null ? 0 : pg_num_rows($rsJMPrefeitura);
 		  $aListaJM 	         = [];
 
 
@@ -809,7 +809,7 @@ try {
 
 
 				$rsRecJMPrefeitura      = db_query($connOrigem,$sSqlRecJMPrefeitura);
-				$iLinhasRecJMPrefeitura = pg_num_rows($rsRecJMPrefeitura);
+				$iLinhasRecJMPrefeitura = $rsRecJMPrefeitura === false || $rsRecJMPrefeitura === null ? 0 : pg_num_rows($rsRecJMPrefeitura);
 
 				for ( $iInd=0; $iInd < $iLinhasRecJMPrefeitura; $iInd++ ) {
 
@@ -1076,7 +1076,7 @@ try {
 	$sSqlSocioPrefeitura .= "        left  join bairro        on bairro.j13_codi         = db_cgmbairro.j13_codi ";
 
 	$rsSocioPrefeitura      = db_query($connOrigem,$sSqlSocioPrefeitura);
-	$iLinhasSocioPrefeitura = pg_num_rows($rsSocioPrefeitura);
+	$iLinhasSocioPrefeitura = $rsSocioPrefeitura === false || $rsSocioPrefeitura === null ? 0 : pg_num_rows($rsSocioPrefeitura);
 
 	if ( $iLinhasSocioPrefeitura > 0 ) {
 
@@ -1620,7 +1620,7 @@ try {
 	$sSqlDadosEmpresa .= "        left  join db_usuarios on db_usuarios.id_usuario = db_usuacgm.id_usuario              ";
 
   $rsDadosEmpresa 	   = db_query($connOrigem,$sSqlDadosEmpresa) or die("Erro:{$sSqlDadosEmpresa}");
-	$iLinhasDadosEmpresa = pg_num_rows($rsDadosEmpresa);
+	$iLinhasDadosEmpresa = $rsDadosEmpresa === false || $rsDadosEmpresa === null ? 0 : pg_num_rows($rsDadosEmpresa);
 	$aListaEmpresa       = [];
 
 	if ( $iLinhasDadosEmpresa > 0 ) {
@@ -1705,7 +1705,7 @@ try {
       $sSqlListaAtividades .= "                        and q07_datafi is null )                           ";
 
       $rsListaAtividades      = db_query($connOrigem,$sSqlListaAtividades);
-      $iLinhasListaAtividades = pg_num_rows($rsListaAtividades);
+      $iLinhasListaAtividades = $rsListaAtividades === false || $rsListaAtividades === null ? 0 : pg_num_rows($rsListaAtividades);
 
       if ( $iLinhasListaAtividades > 0 ) {
         $sTipoInscricao = 'E';
@@ -1761,7 +1761,7 @@ try {
 		  	                               where q07_inscr = {$oDadosEmpresa->inscricao} ";
 
 		  	$rsValidaAtividadeNew      = db_query($connOrigem,$sSqlValidaAtividadeNew);
-		  	$iLinhasValidaAtividadeNew = pg_num_rows($rsValidaAtividadeNew);
+		  	$iLinhasValidaAtividadeNew = $rsValidaAtividadeNew === false || $rsValidaAtividadeNew === null ? 0 : pg_num_rows($rsValidaAtividadeNew);
 
 		  	if ($iLinhasValidaAtividadeNew > 0) {
 		  		for ($iIndValAtiv=0; $iIndValAtiv < $iLinhasValidaAtividadeNew; $iIndValAtiv++) {
@@ -1778,7 +1778,7 @@ try {
 								                                                                             order by sequencial desc limit 1 )";
 
         $rsValidaAtividadeOld      = db_query($connDestino,$sSqlValidaAtividadeOld);
-        $iLinhasValidaAtividadeOld = pg_num_rows($rsValidaAtividadeOld);
+        $iLinhasValidaAtividadeOld = $rsValidaAtividadeOld === false || $rsValidaAtividadeOld === null ? 0 : pg_num_rows($rsValidaAtividadeOld);
 
         if ($iLinhasValidaAtividadeOld > 0) {
           for ($iIndValAtiv=0; $iIndValAtiv < $iLinhasValidaAtividadeOld; $iIndValAtiv++) {
@@ -1823,7 +1823,7 @@ try {
                                  where q95_cgmpri = {$oDadosEmpresa->cgm} ";
 
         $rsValidaSocioNew      = db_query($connOrigem,$sSqlValidaSocioNew);
-        $iLinhasValidaSocioNew = pg_num_rows($rsValidaSocioNew);
+        $iLinhasValidaSocioNew = $rsValidaSocioNew === false || $rsValidaSocioNew === null ? 0 : pg_num_rows($rsValidaSocioNew);
 
         if ($iLinhasValidaSocioNew > 0) {
           for ($iIndValSocio=0; $iIndValSocio < $iLinhasValidaSocioNew; $iIndValSocio++) {
@@ -1841,7 +1841,7 @@ try {
 
 
         $rsValidaSocioOld      = db_query($connDestino,$sSqlValidaSocioOld);
-        $iLinhasValidaSocioOld = pg_num_rows($rsValidaSocioOld);
+        $iLinhasValidaSocioOld = $rsValidaSocioOld === false || $rsValidaSocioOld === null ? 0 : pg_num_rows($rsValidaSocioOld);
 
         if ($iLinhasValidaSocioOld > 0) {
           for ($iIndValSocio=0; $iIndValSocio < $iLinhasValidaSocioOld; $iIndValSocio++) {
@@ -2374,7 +2374,7 @@ try {
 	$sSqlIntegraRecibo .= "  where integra_recibo.processado is false                                                                   ";
 
 	$rsIntegraRecibo      = db_query($connDestino,$sSqlIntegraRecibo);
-	$iLinhasIntegraRecibo = pg_num_rows($rsIntegraRecibo);
+	$iLinhasIntegraRecibo = $rsIntegraRecibo === false || $rsIntegraRecibo === null ? 0 : pg_num_rows($rsIntegraRecibo);
 
 	if ( $iLinhasIntegraRecibo > 0 ) {
 
@@ -2676,7 +2676,7 @@ try {
 	$sSqlIntegraReciboAnulado .= "  where integra_recibo_anulado.processado is false   ";
 
 	$rsIntegraReciboAnulado      = db_query($connDestino,$sSqlIntegraReciboAnulado);
-	$iLinhasIntegraReciboAnulado = pg_num_rows($rsIntegraReciboAnulado);
+	$iLinhasIntegraReciboAnulado = $rsIntegraReciboAnulado === false || $rsIntegraReciboAnulado === null ? 0 : pg_num_rows($rsIntegraReciboAnulado);
 
 	if ( $iLinhasIntegraReciboAnulado > 0 ) {
 
@@ -2740,7 +2740,7 @@ try {
   $sSqlReciboSemBaixa .= "  where integra_recibo_baixa_detalhe.sequencial is null;                             ";
 
   $rsReciboSemBaixa      = db_query($connDestino,$sSqlReciboSemBaixa);
-  $iLinhasReciboSemBaixa = pg_num_rows($rsReciboSemBaixa);
+  $iLinhasReciboSemBaixa = $rsReciboSemBaixa === false || $rsReciboSemBaixa === null ? 0 : pg_num_rows($rsReciboSemBaixa);
 
   if ( $iLinhasReciboSemBaixa > 0 ) {
 

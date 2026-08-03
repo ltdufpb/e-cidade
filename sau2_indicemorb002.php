@@ -77,7 +77,7 @@ $sql = "SELECT
   ORDER BY {$ordercid}";
 
 $query = db_query($sql);
-$linhas = pg_num_rows($query);
+$linhas = $query === false || $query === null ? 0 : pg_num_rows($query);
 //db_criatabela($query);
 //exit;
 if($linhas == 0){
@@ -217,7 +217,7 @@ for ($i = 0;$i < $linhas;$i++){
     ORDER BY {$orderpac}";
   
   $result1 = db_query($sql1);
-  $linhas1 = pg_num_rows($result1);
+  $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
   $cont = 0;
   $cor1 = "1";
   $cor2 = "0";

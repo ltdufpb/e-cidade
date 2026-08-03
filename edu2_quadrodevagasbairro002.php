@@ -69,7 +69,7 @@ $sSql = $oDaoTurma->sql_query_turmaMatriculasAtivas(null, $sCampos, $sOrder, $sW
 $rs = db_query($sSql);
 
 if ($rs && pg_num_rows($rs) > 0) {
-    $iLinhas = pg_num_rows($rs);
+    $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
     for ($i = 0; $i < $iLinhas; $i++) {
         $codigosEscolasId[$i] = db_utils::fieldsMemory($rs, $i)->ed18_i_codigo;
         $codigosCalendariosId[$i] = db_utils::fieldsMemory($rs, $i)->ed52_i_codigo;
@@ -95,7 +95,7 @@ $sSql = $oDaoTurma->sql_query_turmaMatriculasAtivas(null, $sCampos, null, $sWher
 $rs = db_query($sSql);
 
 if ($rs && pg_num_rows($rs) > 0) {
-    $iLinhas = pg_num_rows($rs);
+    $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
     for ($i = 0; $i < $iLinhas; $i++) {
         $aEtapas[] = db_utils::fieldsMemory($rs, $i)->ed11_i_codigo;
     }

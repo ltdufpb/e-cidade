@@ -90,7 +90,7 @@ class AgendaAtividadeProfissionalRepository {
       return $aAgendas;
     }
 
-    $iLinhas = pg_num_rows($rsAgenda);
+    $iLinhas = $rsAgenda === false || $rsAgenda === null ? 0 : pg_num_rows($rsAgenda);
     for ($i = 0; $i < $iLinhas; $i++) {
 
       $iCodigo    = db_utils::fieldsMemory($rsAgenda, $i)->ed129_codigo;

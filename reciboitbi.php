@@ -343,7 +343,7 @@ $result = $clitbinome->sql_record($clitbinome->sql_query(""," it03_nome as nomec
 if($clitbinome->numrows  > 0){
   $traco = '';
   $proprietarios .= "-".'ADQUIRENTES : ';
-  $num = pg_num_rows($result);
+  $num = $result === false || $result === null ? 0 : pg_num_rows($result);
   for ($p = 0;$p < $num;$p++){
     db_fieldsmemory($result,$p);
     // acumula o numero compradores homens e mulheres para colocar na observação da guia
@@ -373,7 +373,7 @@ $resultcons = $clitbiconstr->sql_record( $clitbiconstr->sql_query(null,"*",null,
 $linhasresultcons = $clitbiconstr->numrows;
 
 if($clitbiconstr->numrows  > 0){
-  $num = pg_num_rows($resultcons);
+  $num = $resultcons === false || $resultcons === null ? 0 : pg_num_rows($resultcons);
   $linhasresultcons = $num;
   $areatotal = 0;
   $areatrans = 0;
@@ -426,7 +426,7 @@ $transmitentesf = 0;
 if($clitbinome->numrows  > 0){
   $traco = '';
   $propri .= "-".'OUTRO(S) TRANSMITENTE(S) : ';
-  $num = pg_num_rows($result);
+  $num = $result === false || $result === null ? 0 : pg_num_rows($result);
 
   // acumula o numero compradores homens e mulheres para colocar na observação da guia
   for ($p = 0;$p < $num;$p++){
@@ -904,7 +904,7 @@ if($oRegraEmissao->isCobranca()){
 
   $sqltipo= "select k00_tipo,k03_tipo,k00_descr from arretipo where k03_tipo = 8";
   $resulttipo = db_query($sqltipo);
-  $linhastipo = pg_num_rows($resulttipo);
+  $linhastipo = $resulttipo === false || $resulttipo === null ? 0 : pg_num_rows($resulttipo);
   if($linhastipo>0){
     db_fieldsmemory($resulttipo,0);
     $tipo_exerc = $k00_descr."/ ".date('Y',db_getsession('DB_datausu'));
@@ -1011,7 +1011,7 @@ if($oRegraEmissao->isCobranca()){
           $sSqlTipoCertidao .= "   from fc_tipocertidao($j01_matric,'m','$dtEmissao','',$k03_regracnd)  ";
 
           $rsTipoCertidao    = db_query($sSqlTipoCertidao);
-          $iTipoCertidao     = pg_num_rows($rsTipoCertidao);
+          $iTipoCertidao     = $rsTipoCertidao === false || $rsTipoCertidao === null ? 0 : pg_num_rows($rsTipoCertidao);
           if ( $iTipoCertidao > 0 ) {
             db_fieldsmemory($rsTipoCertidao,0);
           }

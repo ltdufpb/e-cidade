@@ -209,7 +209,7 @@ if (isset ($geracda)) {
 	  $sqlperm .= "   and k60_instit = {$instit}                          ";
 
 	  $resultperm = db_query($sqlperm);
-	  $linhasperm = pg_num_rows($resultperm);
+	  $linhasperm = $resultperm === false || $resultperm === null ? 0 : pg_num_rows($resultperm);
 	  if ($linhasperm > 0) {
 	    throw new Exception("Lista com tipos de débitos não permitidos !");
 	  }
@@ -221,7 +221,7 @@ if (isset ($geracda)) {
     $sqltipo .= " where k60_codigo = {$k60_codigo}                         ";
     $sqltipo .= "   and k60_instit = {$instit}                             ";
     $resulttipo = db_query($sqltipo);
-    $linhastipo = pg_num_rows($resulttipo);
+    $linhastipo = $resulttipo === false || $resulttipo === null ? 0 : pg_num_rows($resulttipo);
     if ($linhastipo == 0) {
       throw new Exception("Sem tipos de débitos definidos na lista !");
     }
@@ -306,7 +306,7 @@ if (isset ($geracda)) {
                         order by  k00_tipo, {$campos} ; ";
 
     $rsResult = db_query($sql);
-    $mat      = pg_num_rows($rsResult);
+    $mat      = $rsResult === false || $rsResult === null ? 0 : pg_num_rows($rsResult);
 
     if ($mat == 0){
       throw new Exception("Voce não pode gerar CDA para esta lista !");

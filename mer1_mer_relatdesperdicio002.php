@@ -30,7 +30,7 @@ $sql    = "select me22_i_codigo,me22_i_cardapio,me01_c_nome,me01_f_versao,me22_d
 $sql   .= "       inner join mer_cardapio on me22_i_cardapio=me01_i_codigo ";
 $sql   .= "       where me22_d_data between '".$inicio."' and '".$fim."'";
 $result = db_query($sql);
-$linhas = pg_num_rows($result);
+$linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($linhas == 0) {?>
 
  <table width='100%'>
@@ -87,7 +87,7 @@ for ($c=0; $c<$linhas; $c++) {
   $sql2    = " select me23_f_quant,me23_t_obs,m61_descr from mer_desper_und ";
   $sql2   .= "       inner join matunid on me23_i_unidade=m61_codmatunid where me23_i_desperdicio=$me22_i_codigo";
   $result2 = db_query($sql2);
-  $linhas2 = pg_num_rows($result2);
+  $linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
   for ($x=0; $x<$linhas2; $x++) {
   	
    	db_fieldsmemory($result2,$x);

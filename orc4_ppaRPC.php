@@ -74,7 +74,7 @@ if ($oParam->exec == "getParametros") {
     $sSqlParametros .= " order by o03_sequencial,o03_anoreferencia";
     $rsParametros    = db_query(analiseQueryPlanoOrcamento($sSqlParametros));
 
-    $iNumeroParametros = pg_num_rows($rsParametros);
+    $iNumeroParametros = $rsParametros === false || $rsParametros === null ? 0 : pg_num_rows($rsParametros);
 
     if ($rsParametros && $iNumeroParametros > 0) {
 

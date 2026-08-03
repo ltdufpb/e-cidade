@@ -66,7 +66,7 @@ try {
       }
 
       $oRetorno->aControlesMatriculas = [];
-      $iTotalLinhas = pg_num_rows( $rsControleMatricula );
+      $iTotalLinhas = $rsControleMatricula === false || $rsControleMatricula === null ? 0 : pg_num_rows( $rsControleMatricula );
 
       for ( $iContador = 0; $iContador < $iTotalLinhas; $iContador++ ) {
         $oDadosControle = db_utils::fieldsMemory( $rsControleMatricula, $iContador );

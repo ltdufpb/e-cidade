@@ -57,7 +57,7 @@ $clrotulo->label("ed06_i_codigo");
            ORDER BY ed47_v_nome
           ";
    $result = db_query($sql);
-   $linhas = pg_num_rows($result);
+   $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
    ?>
    <b>Alunos:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" style="font-size:9px;width:330px;height:120px" multiple>
@@ -126,7 +126,7 @@ $clrotulo->label("ed06_i_codigo");
            WHERE ed95_i_regencia = $regencia
           ";
    $result1 = db_query($sql1);
-   $linhas1 = pg_num_rows($result1);
+   $linhas1 = $result1 === false || $result1 === null ? 0 : pg_num_rows($result1);
    ?>
    <b>Períodos:</b><br>
    <select name="avaliacoesdiario" id="avaliacoesdiario" onclick="js_desabinc2()" style="font-size:9px;width:330px;height:100px" multiple>

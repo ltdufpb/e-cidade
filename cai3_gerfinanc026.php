@@ -129,7 +129,7 @@ MM_reloadPage(true);
   $sSqlSusp .= "  		   ar18_sequencial desc													 	 		                            ";
 
   $rsDebitosSuspensos = db_query($sSqlSusp);
-  $iLinhasDebitosSusp = pg_num_rows($rsDebitosSuspensos);
+  $iLinhasDebitosSusp = $rsDebitosSuspensos === false || $rsDebitosSuspensos === null ? 0 : pg_num_rows($rsDebitosSuspensos);
 
   echo "    <tr bgcolor='#FFCC66'> ";
   echo "      <th class='borda' style='font-size:12px' nowrap> Detalhes       </th> ";

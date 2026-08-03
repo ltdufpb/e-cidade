@@ -85,7 +85,7 @@ if (isset($incluir)){
                                                        "p87_codtransferint=".$dados[1]
                                                        );
       $result3  = db_query($sql3);
-      $numrows3 = pg_num_rows($result3); 
+      $numrows3 = $result3 === false || $result3 === null ? 0 : pg_num_rows($result3); 
       for($y = 0; $y < $numrows3; $y++) {
         
       	db_fieldsmemory($result3, $y);
@@ -172,12 +172,12 @@ background-color:#ccddcc;
        $depto=db_getsession("DB_coddepto");
        $sql=$clproctransferint->sql_query_andusu(null,"distinct p88_codigo,p88_data,p88_hora,p88_usuario,atual.nome",null,"p89_usuario=$usuario and p61_coddepto=$depto ");
        $result = db_query($sql);
-       $numrows=pg_num_rows($result);
+       $numrows=$result === false || $result === null ? 0 : pg_num_rows($result);
        for($i=0; $i<$numrows; $i++){
          db_fieldsmemory($result,$i);
 	 $sql2 = $clprocandamintand->sql_query_file(null,"*",null,"p86_codtrans=$p88_codigo");
 	 $result2=db_query($sql2);
-	 $numrows2=pg_num_rows($result2);
+	 $numrows2=$result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 	 if ($numrows2!=0){
 	   $soma++;
 	 }
@@ -206,7 +206,7 @@ background-color:#ccddcc;
 	   db_fieldsmemory($result,$i);
 	   $sql2 = $clprocandamintand->sql_query_file(null,"*",null,"p86_codtrans=$p88_codigo");
 	   $result2=db_query($sql2);
-	   $numrows2=pg_num_rows($result2);
+	   $numrows2=$result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 	   
 	   if ($numrows2==0){
 	     echo"

@@ -295,7 +295,7 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
   $pdf1->Stipcom= $pc50_descr; 
   $pdf1->Sresumo= $pc10_resumo;
   $pdf1->recorddositens = $result_itens;
-  $pdf1->linhasdositens = pg_num_rows($result_itens);
+  $pdf1->linhasdositens = $result_itens === false || $result_itens === null ? 0 : pg_num_rows($result_itens);
   $pdf1->item	        = 'pc11_seq';
   $pdf1->quantitem      = 'pc11_quant';
   $pdf1->descricaoitem  = 'pc01_descrmater';

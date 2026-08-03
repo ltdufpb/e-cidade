@@ -38,7 +38,7 @@ $clautolocal = new cl_autolocal;
 $clautoexec = new cl_autoexec;
 $sql = " ";
 $result = $clauto->sql_record($clauto->sql_query($codauto,"*",null," y50_codauto = $codauto and y50_instit = ".db_getsession('DB_instit') ));
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
   
 ?>
 

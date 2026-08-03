@@ -167,7 +167,7 @@ class cl_fate extends cl_contrib {
      //echo "<br>$sQueryContlotv<br>";
 
      $resultad=pg_query($sQueryContlotv);
-	   $nu=pg_num_rows($resultad);
+	   $nu=$resultad === false || $resultad === null ? 0 : pg_num_rows($resultad);
 	   
 	   if($nu>0){
 	     $total="";

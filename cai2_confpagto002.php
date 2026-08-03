@@ -270,7 +270,7 @@ if ($ordem == "d") {
 }
 
 $rsDadosBaixaBco = db_query($sql) or die($sql);
-$iLinhasBaixaBco = pg_num_rows($rsDadosBaixaBco); 
+$iLinhasBaixaBco = $rsDadosBaixaBco === false || $rsDadosBaixaBco === null ? 0 : pg_num_rows($rsDadosBaixaBco); 
 
 if ( $iLinhasBaixaBco == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem valores com diferença no período e banco escolhido.');

@@ -130,7 +130,7 @@ if(isset($codmatricula)){
            ORDER BY ed111_d_data ASC
            ";
    $sql_result = db_query($sql);
-   $linhas = pg_num_rows($sql_result);
+   $linhas = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
    ?>
    <select name="jatem" id="jatem" size="18"  multiple style="font-size:9px;width:350px;background:#DBDBDB">
     <?php 
@@ -165,7 +165,7 @@ if(isset($codmatricula)){
            ORDER BY ed111_d_data ASC
            ";
    $sql_result1 = db_query($sql1);
-   $linhas1 = pg_num_rows($sql_result1);
+   $linhas1 = $sql_result1 === false || $sql_result1 === null ? 0 : pg_num_rows($sql_result1);
    ?>
    <select name="convocacoes" id="convocacoes" size="18"  multiple style="font-size:9px;width:350px;">
     <?php 

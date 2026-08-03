@@ -352,7 +352,7 @@ class OrcamentoLicitacao
             throw new BusinessException($sMensagem);
         }
 
-        $iLinhas = pg_num_rows($rsVencedor);
+        $iLinhas = $rsVencedor === false || $rsVencedor === null ? 0 : pg_num_rows($rsVencedor);
         $aFornecedores = [];
 
         for ($i = 0; $i < $iLinhas; $i++) {

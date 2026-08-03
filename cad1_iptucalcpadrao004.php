@@ -44,7 +44,7 @@ db_postmemory($_POST);
  */
 $sqlalt = "select j10_sequencial from iptucalcpadrao where j10_matric = $j10_matric and j10_anousu=".db_getsession("DB_anousu");
 $resultalt = db_query($sqlalt);
-$linhasalt = pg_num_rows($resultalt);
+$linhasalt = $resultalt === false || $resultalt === null ? 0 : pg_num_rows($resultalt);
 if($linhasalt>0 or $forma==2){
   db_fieldsmemory($resultalt,0);
   db_redireciona("cad1_iptucalcpadrao005.php?liberaaba=true&chavepesquisa=$j10_sequencial&j10_matric=$j10_matric&forma=$forma&exec=$exec&perc=$perc&alt=true");

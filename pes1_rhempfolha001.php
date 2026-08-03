@@ -149,7 +149,7 @@ if(isset($confirma) || isset($gera)){
       //$ano_exercicio = 2008;
 
 	    $result  = db_query($sql);
-      $numrows = pg_num_rows($result);
+      $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
       $sqlerro = false;
 
       $arr_rubprinc = [];

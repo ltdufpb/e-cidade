@@ -570,7 +570,7 @@ class DadosCensoDocente extends DadosCenso {
 
     // echo "busca dados registro 51: <br> $sSqlTurmasRecursoHumano <br><br><br>";
     $rsDadosDocente          = db_query($sSqlTurmasRecursoHumano);
-    $iTotalLinhas            = pg_num_rows( $rsDadosDocente );
+    $iTotalLinhas            = $rsDadosDocente === false || $rsDadosDocente === null ? 0 : pg_num_rows( $rsDadosDocente );
     $aDocencia               = [];
 
     for ($iDocente = 0; $iDocente < $iTotalLinhas; $iDocente++) {
@@ -603,7 +603,7 @@ class DadosCensoDocente extends DadosCenso {
 
     if ( $rsDocenteAusente && pg_num_rows($rsDocenteAusente) > 0) {
 
-      $iLinhas = pg_num_rows($rsDocenteAusente);
+      $iLinhas = $rsDocenteAusente === false || $rsDocenteAusente === null ? 0 : pg_num_rows($rsDocenteAusente);
 
       for ($i = 0; $i < $iLinhas; $i++) {
 
@@ -618,7 +618,7 @@ class DadosCensoDocente extends DadosCenso {
 
         $sSqlTurmasDocenteAusente = $oDaoRegenciaHorario->sql_query_censo( null, $sCampos, "ed57_i_codigo", $sWhereAusente, null, $this->iAnoCenso );
         $rsDadosDocenteAusente    = db_query($sSqlTurmasDocenteAusente);
-        $iTotalLinhas             = pg_num_rows( $rsDadosDocenteAusente );
+        $iTotalLinhas             = $rsDadosDocenteAusente === false || $rsDadosDocenteAusente === null ? 0 : pg_num_rows( $rsDadosDocenteAusente );
 
         for ($iDocente = 0; $iDocente < $iTotalLinhas; $iDocente++) {
 
@@ -710,7 +710,7 @@ class DadosCensoDocente extends DadosCenso {
     if ( !$rsDadosDocente ) {
       throw new Exception("Erro ao buscar outras funções do profissional.\n".pg_last_error());
     }
-    $iLinhas = pg_num_rows($rsDadosDocente);
+    $iLinhas = $rsDadosDocente === false || $rsDadosDocente === null ? 0 : pg_num_rows($rsDadosDocente);
 
     $aOutrasFuncoes = [];
     for ($i = 0; $i < $iLinhas; $i++ ) {
@@ -738,7 +738,7 @@ class DadosCensoDocente extends DadosCenso {
     $sCampos           = "distinct ed265_i_codigo as codigo, ed265_c_descr   as descricao";
     $sSqlDisciplinas   = $oDaoDisciplinas->sql_query_disciplina_regencia_censo(null, $sCampos, null, $sWhere);
     $rsDisciplinas     = db_query($sSqlDisciplinas);
-    $iTotalDisciplinas = pg_num_rows( $rsDisciplinas );
+    $iTotalDisciplinas = $rsDisciplinas === false || $rsDisciplinas === null ? 0 : pg_num_rows( $rsDisciplinas );
     $aDisciplinas      = [];
 
     for( $iDisciplina = 0; $iDisciplina < $iTotalDisciplinas; $iDisciplina++ ) {
@@ -778,7 +778,7 @@ class DadosCensoDocente extends DadosCenso {
     }
 
     $aDisciplinas = [];
-    $iLinhas      = pg_num_rows( $rsRegencia );
+    $iLinhas      = $rsRegencia === false || $rsRegencia === null ? 0 : pg_num_rows( $rsRegencia );
 
     for( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
 
@@ -823,7 +823,7 @@ class DadosCensoDocente extends DadosCenso {
     $sCampos           .= " case when {$this->iAnoCenso} = 2014 then 1 else ed346_funcaoatividade end as funcao ";
     $sSqlHorario        = $oDaoTurmaACHorario->sql_query_vinculo_profissional(null, $sCampos, null, $sWhere);
     $rsHorario          = db_query($sSqlHorario);
-    $iTotalHorarios     = pg_num_rows( $rsHorario );
+    $iTotalHorarios     = $rsHorario === false || $rsHorario === null ? 0 : pg_num_rows( $rsHorario );
 
     for ($iDocente = 0; $iDocente < $iTotalHorarios; $iDocente++) {
 

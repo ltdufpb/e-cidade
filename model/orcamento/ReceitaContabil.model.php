@@ -819,7 +819,7 @@ class ReceitaContabil
                     $sErroMensagem .= "{$this->getAno()} ({$this->sEstruturalReceita})";
                     throw new BusinessException($sErroMensagem);
                 }
-                $iTotalLinhas = pg_num_rows($rsBuscaEstruturalMae);
+                $iTotalLinhas = $rsBuscaEstruturalMae === false || $rsBuscaEstruturalMae === null ? 0 : pg_num_rows($rsBuscaEstruturalMae);
                 for ($iDesdobramento = 0; $iDesdobramento < $iTotalLinhas; $iDesdobramento++) {
 
                     $oDesdobramento = new stdClass();

@@ -375,16 +375,16 @@ if (isset($_GET["lista"])) {
             $lim = 0;
         }
         if ($fim > pg_num_rows($rsNotifica)) {
-            $lim2 = pg_num_rows($rsNotifica);
+            $lim2 = $rsNotifica === false || $rsNotifica === null ? 0 : pg_num_rows($rsNotifica);
         } else {
             $lim2 = $fim;
         }
     } else {
         $lim1 = 0;
-        $lim2 = pg_num_rows($rsNotifica);
+        $lim2 = $rsNotifica === false || $rsNotifica === null ? 0 : pg_num_rows($rsNotifica);
     }
 
-    $numrows = pg_num_rows($rsNotifica);
+    $numrows = $rsNotifica === false || $rsNotifica === null ? 0 : pg_num_rows($rsNotifica);
     $valorTaxaExpediente = 0;
 
     for ($indx = 0; $indx < $numrows; $indx++) {
@@ -419,7 +419,7 @@ if (isset($_GET["lista"])) {
             $sSqlConsultaPaga .= "  where notidebitos.k53_notifica = {$notifica} 								    ";
 
             $rsConsultaPaga = db_query($sSqlConsultaPaga);
-            $iLinhasPaga = pg_num_rows($rsConsultaPaga);
+            $iLinhasPaga = $rsConsultaPaga === false || $rsConsultaPaga === null ? 0 : pg_num_rows($rsConsultaPaga);
 
             if ($iLinhasPaga > 0) {
                 for ($iInd = 0; $iInd < $iLinhasPaga; $iInd++) {
@@ -497,7 +497,7 @@ if (isset($_GET["lista"])) {
             $sql2 .= " group by k22_tipo,k00_descr";
 
             $result2 = db_query($sql2);
-            $num2 = pg_num_rows($result2);
+            $num2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
         }
 
         $sqlproced = "select distinct proced.v03_codigo, proced.v03_dcomp ";
@@ -804,7 +804,7 @@ if (isset($_GET["lista"])) {
               pg_num_rows($resultrecibo), $dt_venc);
             if ($desconto != 0) {
                 $result_desc = db_query("select * from tipoparc where cadtipoparc = $desconto");
-                $numrows_desc = pg_num_rows($result_desc);
+                $numrows_desc = $result_desc === false || $result_desc === null ? 0 : pg_num_rows($result_desc);
 
                 if ($numrows_desc > 0) {
                     db_fieldsmemory($result_desc, 0);
@@ -1190,7 +1190,7 @@ if (isset($_GET["lista"])) {
         $sSqlValoresRecibo .= " where k00_numnov = {$k03_numpre}";
         $sSqlValoresRecibo .= " group by k00_hist";
         $rsValoresRecibo = db_query($sSqlValoresRecibo);
-        $iTotalLinhasRecibo = pg_num_rows($rsValoresRecibo);
+        $iTotalLinhasRecibo = $rsValoresRecibo === false || $rsValoresRecibo === null ? 0 : pg_num_rows($rsValoresRecibo);
 
         if ($iTotalLinhasRecibo > 0) {
             for ($iHist = 0; $iHist < $iTotalLinhasRecibo; $iHist++) {

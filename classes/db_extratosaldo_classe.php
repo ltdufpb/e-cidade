@@ -588,7 +588,7 @@ class cl_extratosaldo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_num_rows($result);
+     $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:extratosaldo";
@@ -711,7 +711,7 @@ class cl_extratosaldo {
                                      k86_contabancaria";
 
      $rsSaldo  = db_query($sSqlSaldo);
-     $iNumRows = pg_num_rows($rsSaldo); 
+     $iNumRows = $rsSaldo === false || $rsSaldo === null ? 0 : pg_num_rows($rsSaldo); 
      if ($iNumRows > 0) {
      	  $k97_valorcredito = pg_fetch_result($rsSaldo,0,"valorcredito");
      	  $k97_valordebito  = pg_fetch_result($rsSaldo,0,"valordebito");
@@ -748,7 +748,7 @@ class cl_extratosaldo {
                                                "    k97_dtsaldofinal >= '$dData' 
                                                 and k97_contabancaria = $iContabancaria");
      $rsExtratoSaldo = db_query($sSqlExtratoSaldo);
-     $iNumRowsSaldo = pg_num_rows($rsExtratoSaldo);  
+     $iNumRowsSaldo = $rsExtratoSaldo === false || $rsExtratoSaldo === null ? 0 : pg_num_rows($rsExtratoSaldo);  
      for ( $x = 0; $x < $iNumRowsSaldo; $x++) {
 
      	  $iSeqExtrato      = pg_fetch_result($rsExtratoSaldo,$x,"k97_sequencial");
@@ -778,7 +778,7 @@ class cl_extratosaldo {
                                group by k86_data, 
                                         k86_contabancaria";
         $rsSaldo  = db_query($sSqlSaldo);
-        $iRows    = pg_num_rows($rsSaldo); 
+        $iRows    = $rsSaldo === false || $rsSaldo === null ? 0 : pg_num_rows($rsSaldo); 
         if ($iRows > 0) {
         	
           $k97_valorcredito = round( pg_fetch_result($rsSaldo,0,"valorcredito"),2);

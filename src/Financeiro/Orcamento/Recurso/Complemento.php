@@ -18,7 +18,7 @@ class Complemento
         $dao = new \cl_complementofonterecurso();
         $busca = $dao->sql_query_file(null, "*", 2);
         $resBusca = db_query($busca);
-        $totalRegistros = pg_num_rows($resBusca);
+        $totalRegistros = $resBusca === false || $resBusca === null ? 0 : pg_num_rows($resBusca);
         self::$itens = [];
         if ($totalRegistros > 0) {
             for ($row = 0; $row < $totalRegistros; $row++) {

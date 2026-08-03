@@ -408,7 +408,7 @@ if (pg_num_rows($rsResult)) {
 }
 
 $rsResult = db_query($sSql);
-$iNumRow  = pg_num_rows($rsResult);
+$iNumRow  = $rsResult === false || $rsResult === null ? 0 : pg_num_rows($rsResult);
 
 /**
  * Se não trazer nenhum registro.
@@ -559,7 +559,7 @@ foreach ($aServidores as $iIndex => $oServidor) {
   $oPDF->conta            = "{$oServidor->conta}-{$oServidor->dvconta}";
   $oPDF->lotacao          = $oServidor->estrutural;
   $oPDF->recordenvelope   = $rsResult;
-  $oPDF->linhasenvelope   = pg_num_rows($rsResult);
+  $oPDF->linhasenvelope   = $rsResult === false || $rsResult === null ? 0 : pg_num_rows($rsResult);
   $oPDF->valor            = 'valor';
   $oPDF->quantidade       = 'quantidade';
   $oPDF->tipo             = 'tipoevento';

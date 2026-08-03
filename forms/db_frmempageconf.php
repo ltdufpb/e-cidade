@@ -286,7 +286,7 @@ function js_anular(){
 		    $pardata = "";
 		    $sqlpar1 = "select k29_chqemitidonaoautent from caiparametro where k29_instit = ".db_getsession("DB_instit");
 	        $resultpar1 = db_query($sqlpar1);
-	        $linhaspar1 = pg_num_rows($resultpar1);
+	        $linhaspar1 = $resultpar1 === false || $resultpar1 === null ? 0 : pg_num_rows($resultpar1);
 	        if($linhaspar1>0){
 	          db_fieldsmemory($resultpar1, 0);
 	          if(($k29_chqemitidonaoautent !="")||($k29_chqemitidonaoautent == null)){

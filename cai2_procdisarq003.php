@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 
 $sqlhead = "select * from disarq where codret = $codret ";
 $resulthead = db_query($sqlhead);
-$linhashead = pg_num_rows($resulthead);
+$linhashead = $resulthead === false || $resulthead === null ? 0 : pg_num_rows($resulthead);
 if($linhashead >0){
   db_fieldsmemory($resulthead,0);
 
@@ -79,7 +79,7 @@ $total = 0;
  
 
 $result = db_query($sql);
-$linhas= pg_num_rows($result);
+$linhas= $result === false || $result === null ? 0 : pg_num_rows($result);
 if($linhas>0){
   for($i=0;$i<$linhas;$i++) {
     db_fieldsmemory($result,$i);

@@ -34,7 +34,7 @@ $sSqlForncedor .= "	FROM bens as B INNER JOIN cgm as C ON (B.t52_numcgm = C.z01_
 $sSqlForncedor .= " WHERE B.t52_instit = $iIdDaEmpresa ORDER BY C.z01_numcgm ASC";
 
 $rsFornecedor 	= db_query($sSqlForncedor); 
-$iNumeroLinhas 	= pg_num_rows($rsFornecedor);
+$iNumeroLinhas 	= $rsFornecedor === false || $rsFornecedor === null ? 0 : pg_num_rows($rsFornecedor);
 
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oFornecedor     = db_utils::fieldsMemory($rsFornecedor,$i);

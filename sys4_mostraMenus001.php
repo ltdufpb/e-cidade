@@ -100,7 +100,7 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
                           order by nome_modulo ";
 
       $result  = db_query( $sSqlModulos );
-      $numrows = pg_num_rows($result);
+      $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 
       echo "<select onDblClick=\"document.form1.mod.click()\" name=\"modulos\" size=\"18\"  >";
       for($i = 0;$i < $numrows;$i++) {
@@ -214,7 +214,7 @@ function submenus($item,$id,$mod) {
   $sSqlSubMenus .= " order by m.id_item,m.menusequencia";
 
   $rsSubMenus = db_query($sSqlSubMenus);
-  $iNumRows   = pg_num_rows($rsSubMenus);
+  $iNumRows   = $rsSubMenus === false || $rsSubMenus === null ? 0 : pg_num_rows($rsSubMenus);
 
   if($iNumRows > 0) {
     $sHtml = "";

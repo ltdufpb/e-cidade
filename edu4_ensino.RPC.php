@@ -205,7 +205,7 @@ try {
 
       if ( $rsDisciplinas && pg_num_rows($rsDisciplinas) > 0 ) {
 
-        $iLinhas = pg_num_rows($rsDisciplinas);
+        $iLinhas = $rsDisciplinas === false || $rsDisciplinas === null ? 0 : pg_num_rows($rsDisciplinas);
         for ( $i  = 0; $i < $iLinhas; $i++) {
 
           $oDados                        = db_utils::fieldsMemory($rsDisciplinas, $i);

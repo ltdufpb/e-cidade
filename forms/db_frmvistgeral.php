@@ -146,7 +146,7 @@ $clrotulo->label("z01_nome");
           $sSqlTipovist .= "order by y77_codtipo    ";
 
           $rsTipovist  = db_query($sSqlTipovist);
-          $intTipovist = pg_num_rows($rsTipovist);
+          $intTipovist = $rsTipovist === false || $rsTipovist === null ? 0 : pg_num_rows($rsTipovist);
           $aOpcoes =  ["0" => "Escolha o tipo de vistoria"];
           for ($ivist=0;$ivist < $intTipovist; $ivist++){
 

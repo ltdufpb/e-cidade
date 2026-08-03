@@ -509,7 +509,7 @@ for ( $ww = 0; $ww < $clmatricula->numrows; $ww ++ ) {
     $sql .= "  ORDER BY ed41_i_sequencia,ed59_i_ordenacao ";
 
     $result = db_query($sql);
-    $linhas0 = pg_num_rows($result);
+    $linhas0 = $result === false || $result === null ? 0 : pg_num_rows($result);
 
     /**
      * Percorre as informações adicionais retornadas da matrícula

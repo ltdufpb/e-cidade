@@ -111,7 +111,7 @@ if(!isset($_POST["b_estrut"])) { ?>
     $qr
     order by codmod";
   $result = db_query($sql);
-  $numrows = pg_num_rows($result);
+  $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
   $RecordsetTabMod = $result;
   if($numrows == 0) {
     if($tabmod == "t")
@@ -132,7 +132,7 @@ if(!isset($_POST["b_estrut"])) { ?>
           inner join db_syscampo c   on c.codcam = p.codcam
           where a.codarq = ".pg_fetch_result($result,$i,"codarq"));
       if(pg_num_rows($pk) > 0) {
-        $Npk = pg_num_rows($pk);
+        $Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
         $virgula = "";
         $virconc = "";
         for($p = 0;$p < $Npk;$p++) {
@@ -144,7 +144,7 @@ if(!isset($_POST["b_estrut"])) { ?>
           inner join db_sysarqcamp a   on a.codcam = c.codcam
           where codarq = ".pg_fetch_result($result,$i,"codarq").
           " order by a.seqarq");
-      $Ncampos = pg_num_rows($campo);
+      $Ncampos = $campo === false || $campo === null ? 0 : pg_num_rows($campo);
       if($Ncampos > 0) {
         fputs($fd,"//MODULO: ".trim(pg_fetch_result($result,$i,"nomemod"))."\n");        
         fputs($fd,'$cl'.trim(pg_fetch_result($result,$i,"nomearq")).'->rotulo->label();'."\n");
@@ -157,7 +157,7 @@ if(!isset($_POST["b_estrut"])) { ?>
             inner join db_syscampo b on b.codcam = f.codcam 
             inner join db_sysarquivo q on q.codarq = f.referen 
             where f.codarq = ".pg_fetch_result($result,$i,"codarq")); 
-          $Nforkey = pg_num_rows($forkey);
+          $Nforkey = $forkey === false || $forkey === null ? 0 : pg_num_rows($forkey);
         $campofk="";
         if($Nforkey > 0) { 
           fputs($fd,'$clrotulo = new rotulocampo;'."\n");
@@ -243,7 +243,7 @@ if(!isset($_POST["b_estrut"])) { ?>
               from db_sysarqarq a 
               inner join db_sysarquivo c on c.codarq = f.codarq 
               where a.codarq = ".pg_fetch_result($result,$i,"codarq")); 
-            $Narqarq = pg_num_rows($arqarq);
+            $Narqarq = $arqarq === false || $arqarq === null ? 0 : pg_num_rows($arqarq);
           if($Narqarq > 0) { 
             for($aa=0;$aa<$Narqarq;$qq++){ 
               $forkey = db_query("select * 
@@ -273,7 +273,7 @@ if(!isset($_POST["b_estrut"])) { ?>
                       inner join db_syscampo b on b.codcam = f.codcam 
                       inner join db_sysarquivo q on q.codarq = f.referen 
                       where f.codarq = ".pg_fetch_result($result,$i,"codarq")); 
-                    $Nforkey = pg_num_rows($forkey);
+                    $Nforkey = $forkey === false || $forkey === null ? 0 : pg_num_rows($forkey);
                   $campofk="";
                   fputs($fd,'?'."\n");
                   if($Nforkey > 0) { 

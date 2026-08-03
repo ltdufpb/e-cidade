@@ -182,7 +182,7 @@ class GeracaoArquivoPitIptu {
      * <imovel>
      */
     $rsImoveis     = $this->getImoveis();
-    $iTotalImoveis = pg_num_rows($rsImoveis);
+    $iTotalImoveis = $rsImoveis === false || $rsImoveis === null ? 0 : pg_num_rows($rsImoveis);
 
     for($iImoveis = 0; $iImoveis < $iTotalImoveis; $iImoveis++) {
 
@@ -280,7 +280,7 @@ class GeracaoArquivoPitIptu {
     $lProprietariosValidos = false;
     $oProprietarios        = $this->oDomDocument->createElement('PROPRIETARIOS');
     $rsDadosProprietarios  = $this->getProprietarios($iGuiaIPTU);
-    $iTotalProprietarios   = pg_num_rows($rsDadosProprietarios);
+    $iTotalProprietarios   = $rsDadosProprietarios === false || $rsDadosProprietarios === null ? 0 : pg_num_rows($rsDadosProprietarios);
 
     for($iProprietario = 0; $iProprietario < $iTotalProprietarios; $iProprietario++) {
 
@@ -452,7 +452,7 @@ class GeracaoArquivoPitIptu {
     $lBenfeitoria        = true;
     $rsDadosBenfeitorias = $this->getBenfeitorias($iGuiaIPTU);
     $oBenfeitorias       = $this->oDomDocument->createElement('BENFEITORIAS');
-    $iTotalBenfeitorias  = pg_num_rows($rsDadosBenfeitorias);
+    $iTotalBenfeitorias  = $rsDadosBenfeitorias === false || $rsDadosBenfeitorias === null ? 0 : pg_num_rows($rsDadosBenfeitorias);
 
     if ($iTotalBenfeitorias == 0) {
       return true;

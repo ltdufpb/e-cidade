@@ -69,7 +69,7 @@
   }else{
     $result00=db_query($sql01);
   }
-  $numrows00=pg_num_rows($result00);
+  $numrows00=$result00 === false || $result00 === null ? 0 : pg_num_rows($result00);
   
 ?>
 <html>

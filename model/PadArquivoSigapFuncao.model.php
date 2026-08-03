@@ -72,7 +72,7 @@ final class PadArquivoSigapFuncao extends PadArquivoSigap {
     $sSqlFuncao .= "  where o73_funcao > 0 ";
     $sSqlFuncao .= "    and o73_anousu <= {$iAno}";
     $rsFuncao    = db_query($sSqlFuncao);
-    $iTotalLinhas = pg_num_rows($rsFuncao);
+    $iTotalLinhas = $rsFuncao === false || $rsFuncao === null ? 0 : pg_num_rows($rsFuncao);
      
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       

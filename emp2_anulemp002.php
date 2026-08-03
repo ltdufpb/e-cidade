@@ -181,7 +181,7 @@ for($i = 0;$i < pg_num_rows($result);$i++){
    $pdf1->resumo           = $e60_resumo;
    $pdf1->licitacao        = $e60_codtipo;
    $pdf1->recorddositens   = $resultitem;
-   $pdf1->linhasdositens   = pg_num_rows($resultitem);
+   $pdf1->linhasdositens   = $resultitem === false || $resultitem === null ? 0 : pg_num_rows($resultitem);
 // $pdf1->quantitem        = "e62_quant";
    $pdf1->valoritem        = "e95_valor";
 // $pdf1->descricaoitem    = "pc01_descrmater";

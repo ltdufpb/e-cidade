@@ -79,7 +79,7 @@ $sqlPagamentos      = $clEmpAgeNotasOrdem->sql_query_empenho(null,$sCamposPagame
 
 $rsPagamentos = $clEmpAgeNotasOrdem->sql_record($sqlPagamentos);
 if($rsPagamentos !== false){
-  $iNumPagamentos = pg_num_rows($rsPagamentos);
+  $iNumPagamentos = $rsPagamentos === false || $rsPagamentos === null ? 0 : pg_num_rows($rsPagamentos);
 }else{
 	db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dados para o relatório.');
 }

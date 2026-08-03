@@ -248,7 +248,7 @@ $sSql .= "							end as z01_nome,                             ";
 
 $msgErro = "Ocorreu erro durante o processamento das informações!<br />Entre em contato com o Administrador do Sistema!";
 $result = db_query($sSql) or die(pg_last_error());
-$num = pg_num_rows($result);
+$num = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($num == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existe pagamentos efetuados no período de '.$mesini."/".$ano." até ".$mesfim."/".$ano);
 }

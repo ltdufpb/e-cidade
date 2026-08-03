@@ -92,7 +92,7 @@ class RazaoContaCorrente extends BaseClassRepository
         if (!$rs) {
             throw new DBException('Erro ao buscar dados para o processamento da Razão por Conta Corrente.');
         }
-        $totalDeRegistros = pg_num_rows($rs);
+        $totalDeRegistros = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         if ($totalDeRegistros == 0) {
             throw new DBException('Não foram encontradas movimentações para os filtros informados.');
         }

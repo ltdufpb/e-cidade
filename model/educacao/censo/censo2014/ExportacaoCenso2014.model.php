@@ -73,7 +73,7 @@ class ExportacaoCenso2014 extends ExportacaoCensoBase implements IExportacaoCens
       throw new DBException ( _M(MSG_EXPORTACAO_CENSO_2014."erro_buscar_turmas_unicas", $oErro) );
     }
 
-    $iLinhas = pg_num_rows( $rsTurmaUnica );
+    $iLinhas = $rsTurmaUnica === false || $rsTurmaUnica === null ? 0 : pg_num_rows( $rsTurmaUnica );
 
     for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
 

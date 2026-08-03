@@ -430,7 +430,7 @@ if (!$ultimaPagina) {
   $sSqlSerie .= "    ORDER BY ed62_i_anoref, ed11_i_sequencia ASC ";
 
   $rsSerie      = db_query($sSqlSerie);
-  $iLinhasSerie = pg_num_rows($rsSerie);
+  $iLinhasSerie = $rsSerie === false || $rsSerie === null ? 0 : pg_num_rows($rsSerie);
   $iContSerie   = 0;
 
   $aSeries       = [];
@@ -990,7 +990,7 @@ for ($iContPrincipal = 0; $iContPrincipal < $iLinhasAluno; $iContPrincipal++) {
   $sSqlUnion   .= "             $sCondicaoHistMpsFora";
   $sSqlUnion   .= "   ) AS X    ORDER BY ed62_i_anoref, ed11_i_sequencia, ed11_c_abrev, ordenacao ASC ";
   $rsUnion      = db_query($sSqlUnion);
-  $iLinhasUnion = pg_num_rows($rsUnion);
+  $iLinhasUnion = $rsUnion === false || $rsUnion === null ? 0 : pg_num_rows($rsUnion);
 
   $aSeries       = [];
   $aRetornoUnion = db_utils::getCollectionByRecord( $rsUnion );

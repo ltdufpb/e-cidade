@@ -310,7 +310,7 @@ a.nome:hover {
 	        $result_lim = db_query("select j47_anousu
 			                       from isenexe 
 		                           where j47_codigo = $j46_codigo order by  j47_anousu ");
-		    $numrows = pg_num_rows($result_lim);
+		    $numrows = $result_lim === false || $result_lim === null ? 0 : pg_num_rows($result_lim);
 			db_fieldsmemory($result_lim,1);
 			$anoini = $j47_anousu;
 			db_fieldsmemory($result_lim,$numrows-1);

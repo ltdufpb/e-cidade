@@ -64,7 +64,7 @@ class LocalTrabalhoRepository extends BaseClassRepository
             throw new \DBException('Erro ao buscar o local de trabalho do servidor: ' . $servidor->getCgm()->getNome());
         }
 
-        $linhas = pg_num_rows($rs);
+        $linhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         $this->locaisTrabalhoServidor[$matricula][$instituicaoServidor][$ano][$mes] = [];
 
         for($i = 0; $i < $linhas; $i++) {

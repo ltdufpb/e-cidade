@@ -1138,7 +1138,7 @@ $pdf1->datacalc= db_formatar($minvenc, "d");
 $pdf1->predatacalc= db_formatar($minvenc, "d");
 $pdf1->taxabanc= db_formatar($taxabancaria,'f');
 $pdf1->recorddadospagto= $DadosPagamento;
-$pdf1->linhasdadospagto= pg_num_rows($DadosPagamento);
+$pdf1->linhasdadospagto= $DadosPagamento === false || $DadosPagamento === null ? 0 : pg_num_rows($DadosPagamento);
 $pdf1->receita= 'k00_receit';
 $pdf1->valor= 'valor';
 $pdf1->receitared= 'codreduz';
@@ -1261,7 +1261,7 @@ select k00_receit as codreceita,
 
 
 $rsReceitas = db_query($sqlReceitas) or die($sqlReceitas);
-$intnumrows = pg_num_rows($rsReceitas);
+$intnumrows = $rsReceitas === false || $rsReceitas === null ? 0 : pg_num_rows($rsReceitas);
 for($x=0;$x<$intnumrows;$x++){
   db_fieldsmemory($rsReceitas,$x);
   $pdf1->arraycodreceitas[$x]   = $codreceita;
@@ -1306,7 +1306,7 @@ $pdf1->predescr7 = db_formatar(@$valor_parm,'f');  // qtd de URM ou valor
 $pdf1->predescr9 = str_pad($k03_numpre."000",11,0,STR_PAD_LEFT); // cod. de arrecadação
 /***************************************************************************************************************************************/
 $rsMsgcarne = db_query("select k03_msgbanco from numpref where k03_anousu = ".db_getsession('DB_anousu'));
-$iNumrows   = pg_num_rows($rsMsgcarne);
+$iNumrows   = $rsMsgcarne === false || $rsMsgcarne === null ? 0 : pg_num_rows($rsMsgcarne);
 if($iNumrows > 0){
   db_fieldsmemory($rsMsgcarne,0);
 }else{
@@ -1368,7 +1368,7 @@ $sSqlCodAutenticador       = " SELECT k12_codautent
                                              and corautent.k12_autent = cornump.k12_autent
                                 where k12_numnov = $k03_numpre ";
 $rsCodAutenticador         = db_query($sSqlCodAutenticador);
-$iNumrowsCodAutenticador   = pg_num_rows($rsCodAutenticador);
+$iNumrowsCodAutenticador   = $rsCodAutenticador === false || $rsCodAutenticador === null ? 0 : pg_num_rows($rsCodAutenticador);
 if($iNumrowsCodAutenticador > 0){
   db_fieldsmemory($rsCodAutenticador,0);
 }else{

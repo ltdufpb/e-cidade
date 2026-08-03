@@ -191,7 +191,7 @@ $sqlparag = "select *
 
 
 $resparag = db_query($sqlparag);
-$numrows  = pg_num_rows($resparag);
+$numrows  = $resparag === false || $resparag === null ? 0 : pg_num_rows($resparag);
 
 if($numrows == 0 ){
   

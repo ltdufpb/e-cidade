@@ -60,7 +60,7 @@ $clperiodocalendario = new cl_periodocalendario;
   $sql       .= "       AND ed52_c_passivo = 'N' ";
   $sql       .= "       ORDER BY ed52_i_ano DESC ";
   $sql_result = db_query($sql);
-  $num        = pg_num_rows($sql_result);
+  $num        = $sql_result === false || $sql_result === null ? 0 : pg_num_rows($sql_result);
   $conta      = "";
   while ($row = pg_fetch_array($sql_result)) {
     
@@ -80,7 +80,7 @@ $clperiodocalendario = new cl_periodocalendario;
     $sub_sql   .= "         AND ed221_c_origem = 'S' ";
     $sub_sql   .= "         ORDER BY ed57_c_descr,ed11_c_descr ";
     $sub_result = db_query($sub_sql);
-    $num_sub    = pg_num_rows($sub_result);
+    $num_sub    = $sub_result === false || $sub_result === null ? 0 : pg_num_rows($sub_result);
     if ($num_sub >= 1) {
         
       # Se achar alguma base para o curso, marca a palavra Todas
@@ -325,7 +325,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
    $sql   .= "       AND ed60_c_situacao = 'MATRICULADO' ";
    $sql   .= "       ORDER BY ed60_i_numaluno,ed47_i_codigo,ed47_v_nome,ed60_i_codigo ";
    $result = db_query($sql);
-   $linhas = pg_num_rows($result);
+   $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
    ?>
    <b>Selecione o Aluno:</b><br>
    <select name="alunosdiario" id="alunosdiario" size="10" onclick="js_desabinc()" 
@@ -421,7 +421,7 @@ $sql2 = "SELECT $campos
          ORDER BY ed47_v_nome,ed60_c_ativa
         ";
 $result2 = db_query($sql2);
-$linhas2 = pg_num_rows($result2);
+$linhas2 = $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 if($linhas2==0){
  ?>
  <font size="4">Nenhum registro encontrado</font>

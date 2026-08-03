@@ -151,7 +151,7 @@ $sql =  "
     WHERE $dbwhere ";
 
 $result = db_query($sql);
-$numrows = pg_num_rows($result); 
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result); 
 $alt="5";
 $pdf = new PDF(); 
 $pdf->Open(); 

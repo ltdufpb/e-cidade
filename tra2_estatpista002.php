@@ -92,7 +92,7 @@
       //echo $sql
       $sum = 0;
       $rs2      = db_query($sql2);
-      $numrows2 = pg_num_rows($rs2);
+      $numrows2 = $rs2 === false || $rs2 === null ? 0 : pg_num_rows($rs2);
       while ($ln = pg_fetch_array($rs2)){
           $pdf->setx(85+$x);
           $sum      +=  $ln["quantidade"];

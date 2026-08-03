@@ -199,7 +199,7 @@ order by c63_conta,lanc,e90_codmov
      ";
 //echo $sql;
 $result  =  @db_query($sql);
-$numrows =  @pg_num_rows($result);
+$numrows =  $result === false || $result === null ? 0 : @pg_num_rows($result);
 //db_criatabela($result);exit;
 if($numrows==0){
   $sqlerro =true;

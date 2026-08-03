@@ -419,7 +419,7 @@ class TipoAssentamento
                     throw new DBException("Ocorreu um erro ao buscar os assentamentos para este tipo.");
                 }
 
-                $iQtdeAssentamentos = pg_num_rows($rsAssentamentos);
+                $iQtdeAssentamentos = $rsAssentamentos === false || $rsAssentamentos === null ? 0 : pg_num_rows($rsAssentamentos);
 
                 if ($iQtdeAssentamentos == 0) {
                     return [];

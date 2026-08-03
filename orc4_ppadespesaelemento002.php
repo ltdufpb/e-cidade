@@ -119,7 +119,7 @@ $sSql .= "       o08_projativ,                                                  
 $sSql .= "       o55_descr                                                                                               ";
 
 $rsConsulta = db_query(analiseQueryPlanoOrcamento($sSql));
-$iNumRows = pg_num_rows($rsConsulta);
+$iNumRows = $rsConsulta === false || $rsConsulta === null ? 0 : pg_num_rows($rsConsulta);
 $aLinhasAcoes = db_utils::getCollectionByRecord($rsConsulta);
 
 /**
@@ -172,7 +172,7 @@ if ($iNumRows > 0) {
         $sSqlElemento .= "   order by o56_elemento                                                     ";
         $rsElemento = db_query($sSqlElemento);
 
-        $iNumRowsElemento = pg_num_rows($rsElemento);
+        $iNumRowsElemento = $rsElemento === false || $rsElemento === null ? 0 : pg_num_rows($rsElemento);
         for ($i = 0; $i < $iNumRowsElemento; $i++) {
             $oElemento = db_utils::fieldsMemory($rsElemento, $i);
             /**

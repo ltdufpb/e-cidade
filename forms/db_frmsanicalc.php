@@ -139,7 +139,7 @@ function js_habilitacalculo(){
     if(isset($y80_codsani) &&$y80_codsani!=""){
         $sql = $clsaniatividade->sql_query($y80_codsani,null,"*","y80_codsani","y83_codsani=$y80_codsani and  y83_dtfim is  null");
         $res = db_query($sql);
-        $lin = pg_num_rows($res);
+        $lin = $res === false || $res === null ? 0 : pg_num_rows($res);
         if ($lin==0){
           echo "<div><b> Nenhuma das atividades cadastradas possui calculo de sanitário. </b></div><br>";
         }else{

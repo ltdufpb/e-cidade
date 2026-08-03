@@ -82,7 +82,7 @@ function js_procurar(texto) {
 	else
   	  $sql = "select codexa,descr from exames where codmed = ".db_getsession("DB_id_usuario")." order by upper(descr)";
 	$result = db_query($sql);
-	$numrows = pg_num_rows($result);
+	$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 	for($i = 0;$i < $numrows;$i++) {
 	  db_fieldsmemory($result,$i);
 	  echo "<tr style=\"cursor:hand\" bgcolor=\"".($i%2==0?"#82C0FF":"#B9DCFF")."\" onclick=\"js_inserir(document.getElementById('celcodigo$i').innerText,document.getElementById('celdescr$i').innerText)\"> 

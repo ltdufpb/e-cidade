@@ -165,7 +165,7 @@ $dados = db_query("select z01_numcgm,z01_nome,z01_ender,z01_munic,z01_uf,z01_cgc
 from cgm where z01_numcgm = $z01_numcgm");
 
 //DEBITOS
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $TamMatric = 10;
 $TamNumpar = 4;
 $TamNumtot = 4;
@@ -278,7 +278,7 @@ for ($i = 0; $i < $numrows; $i++) {
   $numpre = pg_fetch_result($result,$i,"k00_numpre");  
   $sqlparcel = "select * from termo where v07_numpre = $xnumpre ";
   $resultparcel = db_query($sqlparcel);
-  $linhasparcel = pg_num_rows($resultparcel);
+  $linhasparcel = $resultparcel === false || $resultparcel === null ? 0 : pg_num_rows($resultparcel);
   if ($linhasparcel>0) {
     $temparcel  = true;
     $v07_parcel = pg_fetch_result($resultparcel, 0, "v07_parcel");   
@@ -514,7 +514,7 @@ for ($i = 0; $i < $numrows; $i++) {
 
 $sqlparcel = "select * from termo where v07_numpre = $xnumpre and v07_instit = ".db_getsession('DB_instit') ;
 $resultparcel = db_query($sqlparcel);
-$linhasparcel = pg_num_rows($resultparcel);
+$linhasparcel = $resultparcel === false || $resultparcel === null ? 0 : pg_num_rows($resultparcel);
 if ($linhasparcel>0) {
   $temparcel  = true;
   $v07_parcel = pg_fetch_result($resultparcel, 0, "v07_parcel");
@@ -691,7 +691,7 @@ $sSqlSuspensao .= " 			  arresusp.k00_numpar,									";
 $sSqlSuspensao .= " 			  arresusp.k00_receit 									";
 
 $rsSuspensao      = db_query($sSqlSuspensao);
-$iLinhasSuspensao = pg_num_rows($rsSuspensao);
+$iLinhasSuspensao = $rsSuspensao === false || $rsSuspensao === null ? 0 : pg_num_rows($rsSuspensao);
 $aSuspensao		 = [];
 
 

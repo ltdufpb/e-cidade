@@ -114,7 +114,7 @@ if(isset($confirma) || isset($gera)){
 	     ";
       $result  = db_query($sql);
 //      db_criatabela($result);
-      $numrows = pg_num_rows($result);
+      $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
       $sqlerro = false;
       db_inicio_transacao();
       for($i=0;$i<$numrows;$i++){

@@ -202,7 +202,7 @@ $sSql = " select distinct v03_descr, v03_tributaria
                   inner join tipoproced on v07_sequencial = v03_tributaria";
                              
 $resultproc = db_query($sSql);
-$numr       = pg_num_rows($resultproc);
+$numr       = $resultproc === false || $resultproc === null ? 0 : pg_num_rows($resultproc);
 
 $tra = "";
 $descr = "";
@@ -527,7 +527,7 @@ $pdf->cell(30, $alt, $inscrs, 0, 1, "R", 0);
 $pdf->cell(90, $alt, "Total de CGM's:", 0, 0, "L", 0);
 $pdf->cell(30, $alt, $cgms, 0, 1, "R", 0);
 //$result = db_query("select valor,v03_descr from (select distinct v01_proced,sum(v01_vlrhis) as valor from divida where v01_livro = $v01_livro group by v01_proced) as x inner join proced on v01_proced = v03_codigo");
-$numrows = pg_num_rows($result);
+$numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
 $matproc =  [];
 if ($numrows > 0) {
   for($x = 0; $x < $numrows; $x ++) {

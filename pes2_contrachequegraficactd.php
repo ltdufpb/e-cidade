@@ -359,7 +359,7 @@ if (isset($oPost->processar)) {
   $sSqlRhPessoalMov .= "   {$sOrder}                                                                                  ";
 
   $rsSql    = db_query($sSqlRhPessoalMov);
-  $iNumRows = pg_num_rows($rsSql);
+  $iNumRows = $rsSql === false || $rsSql === null ? 0 : pg_num_rows($rsSql);
   
   if ($iNumRows == 0) {
     
@@ -370,7 +370,7 @@ if (isset($oPost->processar)) {
     // ------------- busca url do site do cliente ----------------------
     $sqlDbConfig = " select url from db_config where prefeitura = true ";
     $rsDbConfig  = db_query($sqlDbConfig);
-    $iDbConfig   = pg_num_rows($rsDbConfig);
+    $iDbConfig   = $rsDbConfig === false || $rsDbConfig === null ? 0 : pg_num_rows($rsDbConfig);
     
     if ($iDbConfig > 0) {
       $oDbConfig = db_utils::fieldsMemory($rsDbConfig, 0);
@@ -452,7 +452,7 @@ if (isset($oPost->processar)) {
       $sSqlTipoFolha .= " order by {$sSigla}_regist,{$sSigla}_rubric                                                  ";
 
       $rsSqlTipoFolha    = db_query($sSqlTipoFolha);
-      $iNumRowsRubricas  = pg_num_rows($rsSqlTipoFolha);
+      $iNumRowsRubricas  = $rsSqlTipoFolha === false || $rsSqlTipoFolha === null ? 0 : pg_num_rows($rsSqlTipoFolha);
       
       $base_prev      = 0;
       $base_irrf      = 0;

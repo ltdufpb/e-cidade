@@ -67,7 +67,7 @@ class DemonstrativoDespesaEducacao extends RelatoriosLegaisBase {
     $rsDespesa        = db_dotacaosaldo(8, 2, 3, true, $sWhereDespesa, $this->iAnoUsu,
                                        $dDataInicial, $dDataFinal);
     
-    $iLinhasDespesa   = pg_num_rows($rsDespesa);
+    $iLinhasDespesa   = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
     for ($iLinha = 1; $iLinha <= $iTotalLinhas; $iLinha++ ) {
 
       $aLinhasRelatorio[$iLinha]->setPeriodo($this->iCodigoPeriodo);

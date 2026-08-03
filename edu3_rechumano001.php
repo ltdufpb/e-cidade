@@ -187,7 +187,7 @@ isset($mostraServidoresInativos) ?: $mostraServidoresInativos = 'false';
               ORDER BY z01_nome,ed01_c_descr
              ";
                             $result = db_query($sql);
-                            $linhas = pg_num_rows($result);
+                            $linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
                             if ($linhas > 0) {
                                 ?>
                                 <table border='1px' width="95%" bgcolor="#cccccc" style="" cellspacing="0px">

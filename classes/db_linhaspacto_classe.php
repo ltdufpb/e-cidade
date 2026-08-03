@@ -356,7 +356,7 @@ class cl_linhaspacto
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_num_rows($result);
+        $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:linhaspacto";
@@ -565,7 +565,7 @@ SQLBUSCA;
             throw new Exception("Ocorreu um erro ao executar a consulta das informações de saldo do Plano Orçamentário.");
         }
 
-        $totalRegistros = pg_num_rows($buscaDotacoes);
+        $totalRegistros = $buscaDotacoes === false || $buscaDotacoes === null ? 0 : pg_num_rows($buscaDotacoes);
         if ($totalRegistros === 0) {
             throw new Exception("Nenhum registro encontrado para o filtro informado.");
         }

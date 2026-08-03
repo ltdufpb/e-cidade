@@ -35,7 +35,7 @@ $sSqlCCusto .= "					from db_depart ";
 $sSqlCCusto .= "						where instit = $iIdDaEmpresa";
 
 $rsCCusto    		= db_query($sSqlCCusto);
-$iNumeroLinhas	= pg_num_rows($rsCCusto);
+$iNumeroLinhas	= $rsCCusto === false || $rsCCusto === null ? 0 : pg_num_rows($rsCCusto);
 for ($i=0; $i<$iNumeroLinhas; $i++) {
 	$oCCusto     = db_utils::fieldsMemory($rsCCusto,$i);
 	$oLayoutTxt->setByLineOfDBUtils($oCCusto,3,'03');

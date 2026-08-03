@@ -190,7 +190,7 @@ $sqlAutentica .= "  group by caixa, autent, arquivo, data, cheque, credor, class
 $sqlAutentica .= "  order by data, autent";
 
 $rsCorrente = pg_query($sqlAutentica);
-$intNumrows = pg_num_rows($rsCorrente);
+$intNumrows = $rsCorrente === false || $rsCorrente === null ? 0 : pg_num_rows($rsCorrente);
 for ($i = 0; $i < $intNumrows; $i ++) {
     db_fieldsmemory($rsCorrente, $i);
 

@@ -722,7 +722,7 @@ $sSqlSuspensao .= " 			      arresusp.k00_numpre,									                      
 $sSqlSuspensao .= " 			      arresusp.k00_numpar,									                            ";
 $sSqlSuspensao .= " 			      arresusp.k00_receit 									                            ";
 $rsSuspensao      = db_query($sSqlSuspensao);
-$iLinhasSuspensao = pg_num_rows($rsSuspensao);
+$iLinhasSuspensao = $rsSuspensao === false || $rsSuspensao === null ? 0 : pg_num_rows($rsSuspensao);
 $aSuspensao		 = [];
 
 if ( $iLinhasSuspensao > 0 ) {

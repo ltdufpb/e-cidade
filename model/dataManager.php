@@ -135,7 +135,7 @@ class tableDataManager {
 
     $sSqlTable         = "select * from {$this->sTableName} limit 0";
     $rsTableProperties = @pg_query($this->pConexao, $sSqlTable) or die($sSqlTable);
-    $iContaCampos      = pg_num_fields($rsTableProperties);
+    $iContaCampos      = $rsTableProperties === false || $rsTableProperties === null ? 0 : pg_num_fields($rsTableProperties);
 
     for($iCont=0; $iCont<$iContaCampos; $iCont++) {
 

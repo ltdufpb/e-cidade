@@ -147,7 +147,7 @@ try {
             $oRetorno->aEmprestimos = [];
 
             $oData = new DBDate(date('Y-m-d'));
-            $iLinhas = pg_num_rows($rsEmprestimos);
+            $iLinhas = $rsEmprestimos === false || $rsEmprestimos === null ? 0 : pg_num_rows($rsEmprestimos);
             for ($i = 0; $i < $iLinhas; $i++) {
 
                 $oDados = db_utils::fieldsMemory($rsEmprestimos, $i);

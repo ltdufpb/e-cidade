@@ -73,7 +73,7 @@ try {
                 throw new Exception("Ocorreu um erro ao consultar as contas.");
             }
 
-            $totalRegistros = pg_num_rows($rsConta);
+            $totalRegistros = $rsConta === false || $rsConta === null ? 0 : pg_num_rows($rsConta);
             if ($totalRegistros === 0) {
                 throw new Exception("Nenhuma conta encontrada para o filtro selecionados.");
             }

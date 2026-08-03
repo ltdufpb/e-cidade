@@ -55,7 +55,7 @@ $sql = " select q86_numcgm
     $pdf->SetLeftMargin(10);
 
     $result = db_query($sql);
-    $num = pg_num_rows($result);
+    $num = $result === false || $result === null ? 0 : pg_num_rows($result);
     $pdf->SetFont('Courier','B',8);
     $linha = 60;
     $TotPag = 0;

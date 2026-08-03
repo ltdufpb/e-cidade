@@ -190,7 +190,7 @@ function upgradeDatabase($connection, $root) {
     return false;
   }
 
-  $iCount   = pg_num_rows($rScriptsNotApplied);
+  $iCount   = $rScriptsNotApplied === false || $rScriptsNotApplied === null ? 0 : pg_num_rows($rScriptsNotApplied);
   $lApplied = false;
 
   db_log("AVISO: Existe(m) {$iCount} Script(s) para ser(em) aplicado(s) na base de dados ... ", $GLOBALS['sArquivoLog'], $GLOBALS['iParamLog']);

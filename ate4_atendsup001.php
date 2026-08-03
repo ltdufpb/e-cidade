@@ -619,7 +619,7 @@ if (isset ($alterar) && $alterar != "") {
 								";
 							//die($sqlsit);
 						  $ressit = db_query($sqlsit);
-							$linhassit = pg_num_rows($ressit);
+							$linhassit = $ressit === false || $ressit === null ? 0 : pg_num_rows($ressit);
 							if($linhassit>0){
 							  db_fieldsmemory($ressit,0);
 							}           
@@ -737,7 +737,7 @@ if (isset ($alterar) && $alterar != "") {
             }*/
             $sqlmod  = "select * from atenditemmod where at22_atenditem = $item and at22_codatend = $atendimento";
             $resmod = db_query ($sqlmod);
-            $linhasmod= pg_num_rows($resmod);
+            $linhasmod= $resmod === false || $resmod === null ? 0 : pg_num_rows($resmod);
             if($linhasmod>0){
               db_fieldsmemory($resmod, 0);
               $cltarefamodulo->at49_tarefa = $cltarefa->at40_sequencial;
@@ -907,7 +907,7 @@ if (isset ($alterar) && $alterar != "") {
             $sqlteste = "select codarea from db_syscadproced where codproced = $at29_syscadproced";
             //die($sqlteste);
             $resultteste = db_query($sqlteste) or die($sqlteste);
-            $linhasteste = pg_num_rows($resultteste);
+            $linhasteste = $resultteste === false || $resultteste === null ? 0 : pg_num_rows($resultteste);
             if ($linhasteste>0){
               db_fieldsmemory($resultteste, 0);
               //db_msgbox("codarea = $codarea  motivo =$at34_tarefacadmotivo");
@@ -926,7 +926,7 @@ if (isset ($alterar) && $alterar != "") {
               where at33_tarefacadmotivo = $at34_tarefacadmotivo 
               and at33_atendcadarea = $codarea";
               $resultmotarea = db_query($sqlmotarea) or die($sqlmotarea);
-              $linhasmotarea = pg_num_rows($resultmotarea);
+              $linhasmotarea = $resultmotarea === false || $resultmotarea === null ? 0 : pg_num_rows($resultmotarea);
               if ($linhasmotarea>0){
                 db_fieldsmemory($resultmotarea, 0);
               }

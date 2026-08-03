@@ -377,7 +377,7 @@ try {
                 $sSqlAlvaraAuto .= "    where q07_inscr = {$q07_inscr} ";
 
                 $rsAlvaraAuto      = db_query($sSqlAlvaraAuto);
-                $iLinhasAlvaraAuto = pg_num_rows($rsAlvaraAuto);
+                $iLinhasAlvaraAuto = $rsAlvaraAuto === false || $rsAlvaraAuto === null ? 0 : pg_num_rows($rsAlvaraAuto);
                 $aAlvaraAuto       = [];
                 $lGeraAutomatico   = 'true';
                 $iTipoalvara       = "";

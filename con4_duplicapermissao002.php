@@ -86,7 +86,7 @@ try {
     			$sSqlPermissoesDestino .= "where id_usuario = {$iItem[$i]} and anousu = {$oParametros->anodestino}";
 
           $rsPermissoesDestino     = db_query($sSqlPermissoesDestino);
-          $iTotalPermissoesDestino = pg_num_rows($rsPermissoesDestino);
+          $iTotalPermissoesDestino = $rsPermissoesDestino === false || $rsPermissoesDestino === null ? 0 : pg_num_rows($rsPermissoesDestino);
 
           if ( $iTotalPermissoesDestino > 0 ) {
           	$aDadosPermissoesDestino = db_utils::getCollectionByRecord($rsPermissoesDestino);
@@ -100,7 +100,7 @@ try {
     			$sSqlPermissoesOrigem .= "where db_permissao.id_usuario = {$iItem[$i]} and anousu = {$oParametros->anoorigem}";
 
           $rsPermissoesOrigem     = db_query($sSqlPermissoesOrigem);
-          $iTotalPermissoesOrigem = pg_num_rows($rsPermissoesOrigem);
+          $iTotalPermissoesOrigem = $rsPermissoesOrigem === false || $rsPermissoesOrigem === null ? 0 : pg_num_rows($rsPermissoesOrigem);
 
           if ( $iTotalPermissoesOrigem > 0 ) {
           	$aDadosPermissoesOrigem = db_utils::getCollectionByRecord($rsPermissoesOrigem);
@@ -279,7 +279,7 @@ try {
              */
             $sqlperfil    = "select * from db_permherda where id_usuario = ".$iItem[$i];
             $resultperfil = db_query($sqlperfil);
-            $linhasperfil = pg_num_rows($resultperfil);
+            $linhasperfil = $resultperfil === false || $resultperfil === null ? 0 : pg_num_rows($resultperfil);
 
             if ($linhasperfil > 0) {
 
@@ -298,7 +298,7 @@ try {
               $sqlduplicaperfil .= " and ( select count(*) from db_permissao a where a.id_usuario = {$iItem[$i]} and a.id_item = db_permissao.id_item and a.anousu = {$oParametros->anodestino} and a.id_instit = db_permissao.id_instit and a.id_modulo = db_permissao.id_modulo ) = 0 ";
 
               $resultduplicaperfil = db_query($sqlduplicaperfil);
-              $linhasduplicaperfil = pg_num_rows($resultduplicaperfil);
+              $linhasduplicaperfil = $resultduplicaperfil === false || $resultduplicaperfil === null ? 0 : pg_num_rows($resultduplicaperfil);
 
               if ($linhasduplicaperfil > 0) {
 
@@ -334,7 +334,7 @@ try {
                 $sSqlCache = "select distinct id_usuario from db_permherda where id_perfil in({$perfil})";
                 $rsCache   = db_query($sSqlCache);
 
-                $iNumRowsCache = pg_num_rows($rsCache);
+                $iNumRowsCache = $rsCache === false || $rsCache === null ? 0 : pg_num_rows($rsCache);
 
                 if ($iNumRowsCache > 0) {
 

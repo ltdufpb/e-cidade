@@ -58,7 +58,7 @@ $sql .= " GROUP BY sd63_c_procedimento,sd63_c_nome ";
 $sql .= " ORDER BY sd63_c_nome";
 
 $result = db_query( $sql );
-$linhas = pg_num_rows( $result );
+$linhas = $result === false || $result === null ? 0 : pg_num_rows( $result );
 
 if( $linhas == 0 ) {
 

@@ -366,7 +366,7 @@ class cl_orcparamrel
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_num_rows($result);
+        $this->numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
         if ($this->numrows==0) {
             $this->erro_banco = "";
             $this->erro_sql   = "Record Vazio na Tabela:orcparamrel";
@@ -467,7 +467,7 @@ class cl_orcparamrel
         }
 
         $r = @db_query($sql);
-        $rows = @pg_num_rows($r);
+        $rows = $r === false || $r === null ? 0 : @pg_num_rows($r);
 
         if ($rows > 0) {
             for ($x=0; $x < pg_num_rows($r); $x++) {
@@ -495,7 +495,7 @@ class cl_orcparamrel
             $sql.= " and orcparamseq.o69_codseq = $parametro   ";
         }
         $r = @db_query($sql);
-        $rows = @pg_num_rows($r);
+        $rows = $r === false || $r === null ? 0 : @pg_num_rows($r);
         if ($rows > 0) {
             for ($x=0; $x < pg_num_rows($r); $x++) {
                 $nivel = pg_fetch_result($r, $x, "o44_nivel");
@@ -516,7 +516,7 @@ class cl_orcparamrel
             $sql.= " and orcparamseq.o69_codseq = $parametro   ";
         }
         $r = @db_query($sql);
-        $rows = @pg_num_rows($r);
+        $rows = $r === false || $r === null ? 0 : @pg_num_rows($r);
         if ($rows > 0) {
             for ($x=0; $x < pg_num_rows($r); $x++) {
                 $nivel = pg_fetch_result($r, $x, "o44_nivelexclusao");
@@ -531,7 +531,7 @@ class cl_orcparamrel
 
         $sql_instit      = "select codigo from db_config where prefeitura is true limit 1";
         $res_instit      = @db_query($sql_instit);
-        $num_rows_instit = @pg_num_rows($res_instit);
+        $num_rows_instit = $res_instit === false || $res_instit === null ? 0 : @pg_num_rows($res_instit);
 
         if ($num_rows_instit > 0) {
             $codigo = pg_fetch_result($res_instit, 0, "codigo");
@@ -570,7 +570,7 @@ class cl_orcparamrel
         $sql .= " and orcparamelemento.o44_instit in ($instituicao) ";
 
         $r = @db_query(analiseQueryPlanoOrcamento($sql)) or die($sql);
-        $rows = @pg_num_rows($r);
+        $rows = $r === false || $r === null ? 0 : @pg_num_rows($r);
 
         // Caso nao tenha conta definida na instituicao pega como defautl da Prefeitura (1)
         if ($rows == 0 && $obrig == false) {
@@ -595,7 +595,7 @@ class cl_orcparamrel
         }
 
         $r = @db_query(analiseQueryPlanoOrcamento($sql)) or die($sql);
-        $rows = @pg_num_rows($r);
+        $rows = $r === false || $r === null ? 0 : @pg_num_rows($r);
 
         if ($rows > 0) {
             //echo $sql."<br>"; exit;
@@ -613,7 +613,7 @@ class cl_orcparamrel
     {
         $sql_instit      = "select codigo from db_config where prefeitura is true limit 1";
         $res_instit      = @db_query($sql_instit);
-        $num_rows_instit = @pg_num_rows($res_instit);
+        $num_rows_instit = $res_instit === false || $res_instit === null ? 0 : @pg_num_rows($res_instit);
 
         if ($num_rows_instit > 0) {
             $codigo = pg_fetch_result($res_instit, 0, "codigo");
@@ -653,7 +653,7 @@ class cl_orcparamrel
         $sql .= " and orcparamelemento.o44_instit in ($instituicao) ";
 
         $r = @db_query($sql) or die($sql);
-        $rows = @pg_num_rows($r);
+        $rows = $r === false || $r === null ? 0 : @pg_num_rows($r);
 
         // Caso nao tenha conta definida na instituicao pega como defautl da Prefeitura (1)
         if ($rows == 0 && $obrig == false) {
@@ -678,7 +678,7 @@ class cl_orcparamrel
         }
 
         $r = @db_query($sql) or die($sql);
-        $rows = @pg_num_rows($r);
+        $rows = $r === false || $r === null ? 0 : @pg_num_rows($r);
 
         if ($rows > 0) {
             //echo $sql."<br>"; exit;
@@ -714,7 +714,7 @@ class cl_orcparamrel
             $sql.= " and orcparamseq.o69_codseq = $parametro   ";
         }
         $r = @db_query($sql);
-        $rows = @pg_num_rows($r);
+        $rows = $r === false || $r === null ? 0 : @pg_num_rows($r);
         if ($rows > 0) {
             for ($x=0; $x < pg_num_rows($r); $x++) {
                 $matriz[$x] = pg_fetch_result($r, $x, "o44_codrec");
@@ -754,7 +754,7 @@ class cl_orcparamrel
         }
 
         $res_func = @db_query($sql_func);
-        $numrows  = @pg_num_rows($res_func);
+        $numrows  = $res_func === false || $res_func === null ? 0 : @pg_num_rows($res_func);
 
         if ($numrows > 0) {
             $tem_funcao = true;
@@ -763,7 +763,7 @@ class cl_orcparamrel
         }
 
         $r = @db_query($sql);
-        $rows = @pg_num_rows($r);
+        $rows = $r === false || $r === null ? 0 : @pg_num_rows($r);
 
         // Se não existir subfuncao, verifica se existe funcao definida.
         if ($rows == 0 && $tem_funcao == true) {
@@ -782,7 +782,7 @@ class cl_orcparamrel
             }
 
             $r = @db_query($sql);
-            $rows = @pg_num_rows($r);
+            $rows = $r === false || $r === null ? 0 : @pg_num_rows($r);
         }
         /*
             if ($parametro == 19){

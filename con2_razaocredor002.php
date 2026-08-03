@@ -610,8 +610,8 @@ group by c53_descr ";
 $result = pg_exec($sql);
 $result2 = pg_exec($sql2); 
 
-$xxnum = pg_num_rows($result);
-$xxnum2= pg_num_rows($result2);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
+$xxnum2= $result2 === false || $result2 === null ? 0 : pg_num_rows($result2);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Movimentações para este credor.');
 

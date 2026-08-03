@@ -205,7 +205,7 @@ final class PadArquivoSigapEmpenho extends PadArquivoSigap
         $sSqlEmpenho .= "        rubrica,";
         $sSqlEmpenho .= "        e60_emiss ";
         $rsEmpenho = db_query($sSqlEmpenho);
-        $iTotalLinhas = pg_num_rows($rsEmpenho);
+        $iTotalLinhas = $rsEmpenho === false || $rsEmpenho === null ? 0 : pg_num_rows($rsEmpenho);
 
         for ($i = 0; $i < $iTotalLinhas; $i++) {
 
@@ -277,7 +277,7 @@ final class PadArquivoSigapEmpenho extends PadArquivoSigap
             $sSqlTipoLicitacao .= "        inner join empempaut            on e61_autori                      = e54_autori                          ";
             $sSqlTipoLicitacao .= "  where e61_numemp = {$oEmpenho->e60_numemp}                                                                     ";
             $rsSqlTipoLicitacao = db_query($sSqlTipoLicitacao);
-            $iNumRowsTipoLicitacao = pg_num_rows($rsSqlTipoLicitacao);
+            $iNumRowsTipoLicitacao = $rsSqlTipoLicitacao === false || $rsSqlTipoLicitacao === null ? 0 : pg_num_rows($rsSqlTipoLicitacao);
             if ($iNumRowsTipoLicitacao > 0) {
 
                 $oTipoLicitacao = db_utils::fieldsMemory($rsSqlTipoLicitacao, 0);
@@ -292,7 +292,7 @@ final class PadArquivoSigapEmpenho extends PadArquivoSigap
                 $sSqlTipoCompra .= "        inner join pctipocompratribunal on pc50_pctipocompratribunal = l44_sequencial ";
                 $sSqlTipoCompra .= "  where e60_numemp = {$oEmpenho->e60_numemp}                                          ";
                 $rsSqlTipoCompra = db_query($sSqlTipoCompra);
-                $iNumRowsTipoCompra = pg_num_rows($rsSqlTipoCompra);
+                $iNumRowsTipoCompra = $rsSqlTipoCompra === false || $rsSqlTipoCompra === null ? 0 : pg_num_rows($rsSqlTipoCompra);
                 if ($iNumRowsTipoCompra > 0) {
 
                     $oTipoCompra = db_utils::fieldsMemory($rsSqlTipoCompra, 0);

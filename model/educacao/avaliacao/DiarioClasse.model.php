@@ -183,7 +183,7 @@ class DiarioClasse
         /**
          * Incluimos o diario do aluno, para as disciplinas que nao possuem diario.
          */
-        $iTotalRegenciasSemDiario = pg_num_rows($rsRegencias);
+        $iTotalRegenciasSemDiario = $rsRegencias === false || $rsRegencias === null ? 0 : pg_num_rows($rsRegencias);
         for ($i = 0; $i < $iTotalRegenciasSemDiario; $i++) {
             $oRegencia = db_utils::fieldsMemory($rsRegencias, $i);
             $sDiarioEncerrado = 'N';
@@ -1222,7 +1222,7 @@ class DiarioClasse
                 throw new DBException("Erro ao buscar os amparos do diário:\n" . pg_result_error($rsAmparoExclusao));
             }
 
-            $iLinhasAmparoExclusao = pg_num_rows($rsAmparoExclusao);
+            $iLinhasAmparoExclusao = $rsAmparoExclusao === false || $rsAmparoExclusao === null ? 0 : pg_num_rows($rsAmparoExclusao);
 
             if ($iLinhasAmparoExclusao > 0) {
                 for ($iContador = 0; $iContador < $iLinhasAmparoExclusao; $iContador++) {
@@ -1416,7 +1416,7 @@ class DiarioClasse
          *        caso aluno possua dois resultados finais e for avaliado por conceito, vai retornar o do procedimento
          */
         if ($rsMinimo && pg_num_rows($rsMinimo) > 0) {
-            $iLinhas = pg_num_rows($rsMinimo);
+            $iLinhas = $rsMinimo === false || $rsMinimo === null ? 0 : pg_num_rows($rsMinimo);
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDados = db_utils::fieldsMemory($rsMinimo, $i);
                 switch ($oDados->ed37_c_tipo) {
@@ -1472,7 +1472,7 @@ class DiarioClasse
             throw new DBException(_M(MENSAGENS_DIARIOCLASSE_MODEL . "erro_buscar_ordem_periodos", $oErro));
         }
 
-        $iTotalLinhas = pg_num_rows($rsDiarioRegraCalculo);
+        $iTotalLinhas = $rsDiarioRegraCalculo === false || $rsDiarioRegraCalculo === null ? 0 : pg_num_rows($rsDiarioRegraCalculo);
 
         if ($iTotalLinhas > 0) {
             for ($iContador = 0; $iContador < $iTotalLinhas; $iContador++) {

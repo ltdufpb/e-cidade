@@ -580,7 +580,7 @@ if ( isset($oPost->gerar) ) {
     $sSql    = " select {$sCampos} from ({$sSql}) as dd ";
 
     $rsLista = db_query($sSql);
-    $iTotal  = pg_num_rows($rsLista);
+    $iTotal  = $rsLista === false || $rsLista === null ? 0 : pg_num_rows($rsLista);
 
     $sArquivo          = "arquivoatuarial_{$sNomeArquivoProcessar}_". date("dmY"). "_.csv";
     $sNomeArquivo      = "tmp/{$sArquivo}";

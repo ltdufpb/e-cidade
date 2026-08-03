@@ -65,7 +65,7 @@ if ($iEscola == 0) { // Wallace 2018-06-13 Se escola estiver  vazia serão selec
 
     if ($rs && pg_num_rows($rs) > 0) {
 
-        $iLinhas = pg_num_rows($rs);
+        $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         for ($i = 0; $i < $iLinhas; $i++) { // Wallace 2018-06-13 Aloca os códigos da escola e calendário da escola em seus respectivos arrays
 
             $codigosEscolasId[] = db_utils::fieldsMemory($rs, $i)->ed18_i_codigo;
@@ -92,7 +92,7 @@ if ($iEscola == 0) { // Wallace 2018-06-13 Se escola estiver  vazia serão selec
     $rs = db_query($sSql);
 
     if ($rs && pg_num_rows($rs) > 0) {
-        $iLinhas = pg_num_rows($rs);
+        $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         for ($i = 0; $i < $iLinhas; $i++) { // Wallace 2018-06-13 Aloca os códigos das Etapas que no caso sempre serão todas
             $aEtapas[$i] = db_utils::fieldsMemory($rs, $i)->ed11_i_codigo;
 
@@ -131,7 +131,7 @@ if ($iEscola == 0) { // Wallace 2018-06-13 Se escola estiver  vazia serão selec
 
     if ($rs && pg_num_rows($rs) > 0) { // Wallace 2018-06-13 Aloca os códigos da escola e calendário da escola em seus respectivos arrays
 
-        $iLinhas = pg_num_rows($rs);
+        $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         for ($i = 0; $i < $iLinhas; $i++) { //Wallace 2018-06-13 Com os códigos alocados busca o objeto de cada Escola e Calendário da Escola.
             $codigosEscolasId[$i] = db_utils::fieldsMemory($rs, $i)->ed18_i_codigo;
             $codigosCalendariosId[$i] = db_utils::fieldsMemory($rs, $i)->ed52_i_codigo;
@@ -158,7 +158,7 @@ if ($iEscola == 0) { // Wallace 2018-06-13 Se escola estiver  vazia serão selec
 
     if ($rs && pg_num_rows($rs) > 0) { // Wallace 2018-06-13 Aloca os códigos das Etapas que no caso sempre serão todas
 
-        $iLinhas = pg_num_rows($rs);
+        $iLinhas = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         for ($i = 0; $i < $iLinhas; $i++) {
             $aEtapas[] = db_utils::fieldsMemory($rs, $i)->ed11_i_codigo;
         }

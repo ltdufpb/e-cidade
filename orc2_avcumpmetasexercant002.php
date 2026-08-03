@@ -134,7 +134,7 @@ $dtDataFin      = "{$iAnoAnt}-12-31";
 
 $sWhereReceita  = " o70_instit in ({$sListaInstit})";
 $rsReceita      = db_receitasaldo(11,1,3,true,$sWhereReceita,$iAnoAnt,$dtDataIni,$dtDataFin,false);
-$iLinhasReceita = pg_num_rows($rsReceita);
+$iLinhasReceita = $rsReceita === false || $rsReceita === null ? 0 : pg_num_rows($rsReceita);
 db_query("drop table work_receita");
 
 //db_criatabela($rsReceita);exit;
@@ -176,7 +176,7 @@ $oReceitasPrimarias->Realizada = $oReceitaTotal->Realizada - $nExcessaoRecPrimar
 
 $sWhereDespesa  = " w.o58_instit in ({$sListaInstit})";
 $rsDespesa      = db_dotacaosaldo(8,2,3,true,$sWhereDespesa,$iAnoAnt,$dtDataIni,$dtDataFin);
-$iLinhasDespesa = pg_num_rows($rsDespesa);
+$iLinhasDespesa = $rsDespesa === false || $rsDespesa === null ? 0 : pg_num_rows($rsDespesa);
 
 $nExcessaoDespPrimaria['Prevista']  = 0;
 $nExcessaoDespPrimaria['Realizada'] = 0;

@@ -67,7 +67,7 @@ include(modification("libs/db_usuariosonline.php"));
 			$qr
 			order by codmod";
      $result = db_query($sql);
-     $numrows = pg_num_rows($result);
+     $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
      $RecordsetTabMod = $result;
      if($numrows == 0) {
        echo "Não foi encontrada nenhuma tabela com o nome de $nometab";
@@ -106,7 +106,7 @@ include(modification("libs/db_usuariosonline.php"));
 				     inner join db_sysarqcamp a   on a.codcam = c.codcam
 				where codarq = ".pg_fetch_result($result,$i,"codarq").
 					    " order by a.seqarq");
-	    $Ncampos = pg_num_rows($campo);
+	    $Ncampos = $campo === false || $campo === null ? 0 : pg_num_rows($campo);
 
 	    if($Ncampos > 0) {
 
@@ -131,7 +131,7 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd1, '  $oDao' . ucfirst($sNomeArquivo) . '->incluir(');
 
 	      if (pg_num_rows($pk) > 0) {
-		    	$Npk     = pg_num_rows($pk);
+		    	$Npk     = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 			  	$virgula = "";
 
 		    	for ($p = 0;$p < $Npk;$p++) {
@@ -199,7 +199,7 @@ include(modification("libs/db_usuariosonline.php"));
 				     inner join db_sysarqcamp a   on a.codcam = c.codcam
 				where codarq = ".pg_fetch_result($result,$i,"codarq").
 					    " order by a.seqarq");
-	    $Ncampos = pg_num_rows($campo);
+	    $Ncampos = $campo === false || $campo === null ? 0 : pg_num_rows($campo);
 	    if($Ncampos > 0) {
 
 	    	$sNomeArquivo = trim(pg_fetch_result($result, $i, "nomearq"));
@@ -223,7 +223,7 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd2, '  $oDao' . ucfirst($sNomeArquivo) . '->alterar(');
 
 	      if (pg_num_rows($pk) > 0) {
-					$Npk = pg_num_rows($pk);
+					$Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 				  $virgula = "";
 
 					for($p = 0; $p < $Npk; $p++) {
@@ -258,7 +258,7 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd2, '  $result   = $oDao' . ucfirst($sNomeArquivo) . '->sql_record( $oDao'. ucfirst($sNomeArquivo) . '->sql_query($chavepesquisa');
 		      
 	      if (pg_num_rows($pk) > 1) {
-					$Npk = pg_num_rows($pk);
+					$Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 
 					for($p = 1; $p < $Npk; $p++) {
 					  fputs($fd2, ', $chavepesquisa' . $p);
@@ -314,7 +314,7 @@ include(modification("libs/db_usuariosonline.php"));
 				     inner join db_sysarqcamp a   on a.codcam = c.codcam
 				where codarq = ".pg_fetch_result($result,$i,"codarq").
 					    " order by a.seqarq");
-	    $Ncampos = pg_num_rows($campo);
+	    $Ncampos = $campo === false || $campo === null ? 0 : pg_num_rows($campo);
 
       if ($Ncampos > 0) {
 
@@ -343,7 +343,7 @@ include(modification("libs/db_usuariosonline.php"));
 
 	      if (pg_num_rows($pk) > 0) {
 
-					$Npk = pg_num_rows($pk);
+					$Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 					$virgula = "";
 
 					for($p = 0;$p < $Npk;$p++) {
@@ -370,7 +370,7 @@ include(modification("libs/db_usuariosonline.php"));
 
 	      if (pg_num_rows($pk) > 1) {
 
-					$Npk = pg_num_rows($pk);
+					$Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 
 					for($p = 1; $p < $Npk; $p++) {
 					  fputs($fd3,', $chavepesquisa' . $p);
@@ -430,7 +430,7 @@ include(modification("libs/db_usuariosonline.php"));
 				     inner join db_sysarqcamp a   on a.codcam = c.codcam
 				where codarq = ".pg_fetch_result($result,$i,"codarq").
 					    " order by a.seqarq");
-	    $Ncampos = pg_num_rows($campo);
+	    $Ncampos = $campo === false || $campo === null ? 0 : pg_num_rows($campo);
 
 	    if ($Ncampos > 0) {
 
@@ -458,7 +458,7 @@ include(modification("libs/db_usuariosonline.php"));
 
 	      if (pg_num_rows($pk) > 0) {
 
-					$Npk = pg_num_rows($pk);
+					$Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 					$virgula = "";
 
 					for ($p = 0; $p < $Npk; $p++) {
@@ -474,7 +474,7 @@ include(modification("libs/db_usuariosonline.php"));
 
 	      if (pg_num_rows($pk) > 0) {
 
-					$Npk = pg_num_rows($pk);
+					$Npk = $pk === false || $pk === null ? 0 : pg_num_rows($pk);
 					$virgula = "";
 
 					for ($p = 0; $p < $Npk; $p++) {

@@ -315,7 +315,7 @@ if(isset($processar)){
 								 	 and it03_princ is true ";
 
 	  $resultguia = db_query($sqlguia);
-	  $linhasguia = pg_num_rows($resultguia);
+	  $linhasguia = $resultguia === false || $resultguia === null ? 0 : pg_num_rows($resultguia);
 	  if($linhasguia>0){
 		db_fieldsmemory($resultguia,0);
 		$nome = $it03_nome;
@@ -324,7 +324,7 @@ if(isset($processar)){
 	  	//se não encotrar é pr é sem guia itbi
 			$sqlGuiaSemItbi = "select * from averbaguia where j104_averbacao = $chavepesquisa ";
 			$rsGuiaSemItbi  = db_query($sqlGuiaSemItbi);
-			$linhasGuiaSemItbi = pg_num_rows($rsGuiaSemItbi);
+			$linhasGuiaSemItbi = $rsGuiaSemItbi === false || $rsGuiaSemItbi === null ? 0 : pg_num_rows($rsGuiaSemItbi);
 			if($linhasGuiaSemItbi>0){
 				db_fieldsmemory($rsGuiaSemItbi,0);
 				$guianao = $j104_guia;
@@ -338,7 +338,7 @@ if(isset($processar)){
                       from averbadecisaojudicial
 	                   where j101_averbacao = $chavepesquisa";
     $resultsentenca = db_query($sqlsentenca);
-	  $linhassentenca = pg_num_rows($resultsentenca);
+	  $linhassentenca = $resultsentenca === false || $resultsentenca === null ? 0 : pg_num_rows($resultsentenca);
 	  if($linhassentenca>0){
 		  db_fieldsmemory($resultsentenca,0);
 	  }
@@ -350,7 +350,7 @@ if(isset($processar)){
 	                       left join averbaformalpartilhacgm on j102_averbaformalpartilha = j100_sequencial
 	                 where j100_averbacao = $chavepesquisa";
 	  $resultformal = db_query($sqlformal);
-	  $linhasformal = pg_num_rows($resultformal);
+	  $linhasformal = $resultformal === false || $resultformal === null ? 0 : pg_num_rows($resultformal);
 	  if($linhasformal>0){
 		db_fieldsmemory($resultformal,0);
 		$z01_numcgm1 = $j102_numcgm;

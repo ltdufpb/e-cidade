@@ -93,7 +93,7 @@ class ProcessamentoContaCorrente {
       throw new DBException(_M( self::MENSAGENS . 'erro_busca_lancamentos'));
     }
 
-    $iTotalRegistros = pg_num_rows($rsBuscaPartidas);
+    $iTotalRegistros = $rsBuscaPartidas === false || $rsBuscaPartidas === null ? 0 : pg_num_rows($rsBuscaPartidas);
     if ($iTotalRegistros == 0) {
       throw new BusinessException(_M( self::MENSAGENS . 'registros_nao_encontrados'));
     }

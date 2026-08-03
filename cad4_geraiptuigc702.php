@@ -247,8 +247,8 @@ aproveitei para colocar a barra de progresso no teu prog
 		
 		$denominacaoexercicio = $anos;
 		$exercicio		  	  = $anos;
-		$totalopcoespagamento = pg_num_rows($resultparc);
-		$parcelamentoreceb	  = pg_num_rows($resultparc);
+		$totalopcoespagamento = $resultparc === false || $resultparc === null ? 0 : pg_num_rows($resultparc);
+		$parcelamentoreceb	  = $resultparc === false || $resultparc === null ? 0 : pg_num_rows($resultparc);
 		$valorminimo		  = 0;
 		$juros				  = 0;
 		$quantidadedatas	  = 0;
@@ -347,7 +347,7 @@ aproveitei para colocar a barra de progresso no teu prog
 
     
     $processados = 1;
-    $numrowslistadeb = pg_num_rows($resultlistadeb);
+    $numrowslistadeb = $resultlistadeb === false || $resultlistadeb === null ? 0 : pg_num_rows($resultlistadeb);
     for ($x=0; $x < $numrowslistadeb; $x++) {
     	
       db_fieldsmemory($resultlistadeb, $x);
@@ -381,8 +381,8 @@ aproveitei para colocar a barra de progresso no teu prog
       $identificacaoguia    = $processados;
       $emissaoguia		    = date("Y-m-d",db_getsession("DB_datausu"));
       $validadeguia		   	= $maxvenc;
-      $totalopcoespag		= pg_num_rows($resulttipoparc);
-      $parcelasrecebimento	=	pg_num_rows($resulttipoparc);
+      $totalopcoespag		= $resulttipoparc === false || $resulttipoparc === null ? 0 : pg_num_rows($resulttipoparc);
+      $parcelasrecebimento	=	$resulttipoparc === false || $resulttipoparc === null ? 0 : pg_num_rows($resulttipoparc);
       $valortotalreceb		= $k22_vlrcor + $k22_encargos;
       $indicadorendcorresp	= "C";
       $codatividadecontrib	= "";

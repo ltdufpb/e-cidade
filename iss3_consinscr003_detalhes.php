@@ -207,7 +207,7 @@
   } else if ($solicitacao == "Baixa") {
     $sql    = "select * from tabativbaixa where q11_inscr=$inscricao";
     $result = db_query($sql);
-    $iLinhas = pg_num_rows($result);
+    $iLinhas = $result === false || $result === null ? 0 : pg_num_rows($result);
 
     if($iLinhas > 0) {
 

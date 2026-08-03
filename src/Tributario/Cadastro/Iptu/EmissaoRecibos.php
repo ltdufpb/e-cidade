@@ -448,7 +448,7 @@ class EmissaoRecibos
 
         $quantescolhida = $quantidade;
 
-        $total_reg = pg_num_rows($resultprinc);
+        $total_reg = $resultprinc === false || $resultprinc === null ? 0 : pg_num_rows($resultprinc);
 
 
         if ($quantescolhida == "") {
@@ -786,7 +786,7 @@ class EmissaoRecibos
             $sSqlValorMaxExec = "EXECUTE sSqlValorMax($j20_numpre)";
             $rsValorMax = \db_query($sSqlValorMaxExec) or die($sSqlValorMaxExec);
 
-            $intNumrowsValorMax = pg_num_rows($rsValorMax);
+            $intNumrowsValorMax = $rsValorMax === false || $rsValorMax === null ? 0 : pg_num_rows($rsValorMax);
 
             if ($intNumrowsValorMax > 0) {
                 extract((array)\db_utils::fieldsMemory($rsValorMax, 0));

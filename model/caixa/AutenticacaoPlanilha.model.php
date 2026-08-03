@@ -279,7 +279,7 @@ class AutenticacaoPlanilha {
       throw new DBException($sMsgErro);
     }
 
-    $iTotalReceitas = pg_num_rows($rsBuscaDadosPlanilha);
+    $iTotalReceitas = $rsBuscaDadosPlanilha === false || $rsBuscaDadosPlanilha === null ? 0 : pg_num_rows($rsBuscaDadosPlanilha);
     
     if ($iTotalReceitas == 0) {
       return false;
@@ -427,7 +427,7 @@ class AutenticacaoPlanilha {
       throw new BusinessException("Erro Técnico: Não foi possível localizar as receitas extras-orçamentárias para arrecadar.");
     }
 
-    $iTotalReceitasExtras = pg_num_rows($rsBuscaReceitaExtra);
+    $iTotalReceitasExtras = $rsBuscaReceitaExtra === false || $rsBuscaReceitaExtra === null ? 0 : pg_num_rows($rsBuscaReceitaExtra);
     if ($iTotalReceitasExtras == 0) {
       return false;
     }

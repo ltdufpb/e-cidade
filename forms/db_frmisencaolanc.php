@@ -119,7 +119,7 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
 					$sqlCadtipo .= "    	  inner join cadtipoorigem on k03_tipo = k14_cadtipo ";
 					$sqlCadtipo .= " where k14_cadorigem = $origem "; //(filtro escolhido para lancar a isencao)
 					$rsCadtipo   = db_query($sqlCadtipo);
-					$intCadtipo  = pg_num_rows($rsCadtipo);
+					$intCadtipo  = $rsCadtipo === false || $rsCadtipo === null ? 0 : pg_num_rows($rsCadtipo);
 					if($intCadtipo > 0){
 						for($i=0;$i<$intCadtipo;$i++){
 							db_fieldsmemory($rsCadtipo,$i);
@@ -163,7 +163,7 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
 				  $sqlItem  .= "        inner join cadtipoitemgrupo on k09_cadtipoitemgrupo = k37_sequencial ";
 				  $sqlItem  .= " where k09_cadtipo = $k03_tipo";
 				  $rsItem    = db_query($sqlItem);
-				  $intItem   = pg_num_rows($rsItem);
+				  $intItem   = $rsItem === false || $rsItem === null ? 0 : pg_num_rows($rsItem);
 					if($intItem > 0){
 				    for($iItem=0;$iItem<$intItem;$iItem++){
 					    db_fieldsmemory($rsItem,$iItem);

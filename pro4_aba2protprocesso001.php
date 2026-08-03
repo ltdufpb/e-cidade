@@ -71,7 +71,7 @@ if (isset($oPost->opcao) && $oPost->opcao == "Incluir") {
                                 and p30_procapensado  = {$p30_procapensado}
                               order by p30_procprincipal ";
   $rsProcessoApensados   = db_query($sSqlProcessoApensados);
-  $iProcessoApensados    = pg_num_rows($rsProcessoApensados);
+  $iProcessoApensados    = $rsProcessoApensados === false || $rsProcessoApensados === null ? 0 : pg_num_rows($rsProcessoApensados);
 
   if ($iProcessoApensados == 0) {
      if($sqlerro == false){

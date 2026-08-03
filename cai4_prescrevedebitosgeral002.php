@@ -74,7 +74,7 @@ $sqlLista = " select	distinct
       where k61_codigo = $lista and k03_tipo <> 5";
 //die($sqlLista);
 $resultLista = db_query($sqlLista);
-$linhasLista= pg_num_rows($resultLista);
+$linhasLista= $resultLista === false || $resultLista === null ? 0 : pg_num_rows($resultLista);
 
 $pdf = new PDF(); // abre a classe
 $pdf->Open(); // abre o relatorio

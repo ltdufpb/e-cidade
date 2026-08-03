@@ -54,7 +54,7 @@ class BemPlacaRepository
             throw new Exception("Não foi possível buscar o Bem.");
         }
 
-        $numrows = pg_num_rows($rs);
+        $numrows = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
 
         if ($numrows === 0) {
             return false;

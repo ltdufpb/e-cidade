@@ -269,7 +269,7 @@ function js_anoopcao(valor){
 <?php 
 $sql_nomes = "SELECT ed47_i_codigo as cod1,trim(ed47_v_nome) as nome1 FROM aluno WHERE trim(ed47_v_nome) like '%  %'";
 $result_nomes = db_query($sql_nomes);
-$linhas_nomes = pg_num_rows($result_nomes);
+$linhas_nomes = $result_nomes === false || $result_nomes === null ? 0 : pg_num_rows($result_nomes);
 for($t=0;$t<$linhas_nomes;$t++){
  db_fieldsmemory($result_nomes,$t);
  $nome_partes = explode(" ",(string) $nome1);
@@ -369,7 +369,7 @@ if(isset($processar)){
               ORDER BY vinculo_escola DESC
               ";
     $result11 = db_query($sql11);
-    $linhas11 = pg_num_rows($result11);
+    $linhas11 = $result11 === false || $result11 === null ? 0 : pg_num_rows($result11);
     if($linhas11==0){
       fwrite($ponteiro_log,"\n[Matr.INEP: $matcenso Turma INEP: $turmacenso Ano: $anocenso] $nome_censo2 : Nome cadastrado no censo não existe no sistema.");
       $erro_naoencontrado = true;
@@ -381,7 +381,7 @@ if(isset($processar)){
                ";
       $result21 = db_query($sql21);
       if($matcenso!=""){
-       $linhas21 = pg_num_rows($result21);
+       $linhas21 = $result21 === false || $result21 === null ? 0 : pg_num_rows($result21);
         
        $sql22 = "SELECT ed280_i_codigo
                  FROM alunomatcenso
@@ -390,7 +390,7 @@ if(isset($processar)){
                  AND ed280_i_aluno = $codigoaluno 
                 ";
        $result22 = db_query($sql22);
-       $linhas22 = pg_num_rows($result22);
+       $linhas22 = $result22 === false || $result22 === null ? 0 : pg_num_rows($result22);
        if($linhas22==0){
         $sql4 = "INSERT INTO alunomatcenso (ed280_i_codigo,
                                             ed280_i_aluno,

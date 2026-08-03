@@ -48,7 +48,7 @@ if ($sqlerro == false) {
             throw new Exception("Não existe Habilidades da Bncc para o ano de: {$iAnoOrigem} ", 2);
         }
 
-        $iLinhasBnccensinofundamental = pg_num_rows($rsBnccensinofundamental);
+        $iLinhasBnccensinofundamental = $rsBnccensinofundamental === false || $rsBnccensinofundamental === null ? 0 : pg_num_rows($rsBnccensinofundamental);
         for ($i = 0; $i < $iLinhasBnccensinofundamental; $i++) {
             $oDadosBnccensinofundamental = db_utils::fieldsMemory($rsBnccensinofundamental, $i);
             /*
@@ -95,7 +95,7 @@ if ($sqlerro == false) {
             throw new Exception("Não existem Habilidades da BNCC Educação Infantil para o ano de: {$iAnoOrigem} ", 2);
         }
 
-        $iLinhasBnccEducacaoInfantil = pg_num_rows($rsBnccEducacaoInfantil);
+        $iLinhasBnccEducacaoInfantil = $rsBnccEducacaoInfantil === false || $rsBnccEducacaoInfantil === null ? 0 : pg_num_rows($rsBnccEducacaoInfantil);
         for ($i = 0; $i < $iLinhasBnccEducacaoInfantil; $i++) {
             $oDadosBnccEducacaoInfantil = db_utils::fieldsMemory($rsBnccEducacaoInfantil, $i);
             /*
@@ -139,7 +139,7 @@ if ($sqlerro == false) {
             throw new Exception("Não existem Habilidades da BNCC para o ano de: {$iAnoOrigem}", 2);
         }
 
-        $linhasBnccReferencial = pg_num_rows($rsBnccReferencial);
+        $linhasBnccReferencial = $rsBnccReferencial === false || $rsBnccReferencial === null ? 0 : pg_num_rows($rsBnccReferencial);
 
         for ($i = 0; $i < $linhasBnccReferencial; $i++) {
             $dadosBnccReferencial = db_utils::fieldsMemory($rsBnccReferencial, $i);

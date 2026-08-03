@@ -95,7 +95,7 @@ $clcgm = new cl_cgm();
   $sSqlSusp .= "  order by arresusp.k00_numpre,										      ";
   $sSqlSusp .= "  	       arresusp.k00_numpar									      ";
   $rsDebitosSuspensos = db_query($sSqlSusp);
-  $iLinhasDebitosSusp = pg_num_rows($rsDebitosSuspensos);
+  $iLinhasDebitosSusp = $rsDebitosSuspensos === false || $rsDebitosSuspensos === null ? 0 : pg_num_rows($rsDebitosSuspensos);
 
 
   if($iLinhasDebitosSusp == 0){

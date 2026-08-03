@@ -318,7 +318,7 @@ if ($oPost->sAction == 'VerificaRefeicao') {
             AND ed57_i_escola = $escola
            ";
   $result_2 = db_query($sql_2);
-  $linhas2 = pg_num_rows($result_2);
+  $linhas2 = $result_2 === false || $result_2 === null ? 0 : pg_num_rows($result_2);
   $sql_3 = "SELECT *
             FROM mer_cardapiodia
              inner join mer_cardapioturma on me39_i_cardapiodia = me12_i_codigo
@@ -327,7 +327,7 @@ if ($oPost->sAction == 'VerificaRefeicao') {
             AND ed57_i_escola = $escola
            ";
   $result_3 = db_query($sql_3);
-  $linhas3 = pg_num_rows($result_3);
+  $linhas3 = $result_3 === false || $result_3 === null ? 0 : pg_num_rows($result_3);
   $retorno2 = $linhas2+$linhas3;
   $oJson = new services_json();
   echo $oJson->encode([$retorno1,$retorno2,$oPost->quadro]);

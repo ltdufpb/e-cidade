@@ -210,7 +210,7 @@ function buscarServidores($parametros)
         throw new BusinessException('Nenhuma escala encontrada para os servidores selecionados.');
     }
 
-    $totalRetorno = pg_num_rows($rsEscalaServidor);
+    $totalRetorno = $rsEscalaServidor === false || $rsEscalaServidor === null ? 0 : pg_num_rows($rsEscalaServidor);
     $parametros->dataInicial = new DBDate($parametros->dataInicial);
     $parametros->dataFinal = new DBDate($parametros->dataFinal);
 

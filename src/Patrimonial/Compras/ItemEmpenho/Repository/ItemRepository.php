@@ -57,7 +57,7 @@ class ItemRepository
         $sql = $daoItemAutorizacao->sql_query_file($autorizacao->getCodigoAutorizacao());
         $rs = db_query($sql);
 
-        $numrows = pg_num_rows($rs);
+        $numrows = $rs === false || $rs === null ? 0 : pg_num_rows($rs);
         if (!$rs || $numrows === 0) {
             return null;
         }

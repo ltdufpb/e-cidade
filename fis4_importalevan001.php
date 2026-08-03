@@ -158,7 +158,7 @@ if ( isset($importar) ) {
                  and q68_issvar is null";
 
       $result11  = db_query($sql11);
-      $numrows11 = pg_num_rows($result11);
+      $numrows11 = $result11 === false || $result11 === null ? 0 : pg_num_rows($result11);
 
       for($x=0; $x<$numrows11; $x++){
 

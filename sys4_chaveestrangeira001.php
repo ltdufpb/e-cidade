@@ -252,7 +252,7 @@ if (!isset($ref) && isset($_POST["ref"])) {
                         INNER JOIN db_sysmodulo d
                         ON d.codmod = m.codmod
                         ORDER BY d.nomemod,a.nomearq");
-                $numrows = pg_num_rows($result);
+                $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
                 for ($i = 0; $i < $numrows; $i++) {
                     echo "NomeTabelas['" . str_replace(" ", "_", trim(pg_fetch_result(
                                             $result,
@@ -277,7 +277,7 @@ if (!isset($ref) && isset($_POST["ref"])) {
                                         )) . "';\n";
                 }
                 $groupCampos = db_query("SELECT codarq FROM db_sysprikey GROUP BY codarq");
-                $numGroupCampos = pg_num_rows($groupCampos);
+                $numGroupCampos = $groupCampos === false || $groupCampos === null ? 0 : pg_num_rows($groupCampos);
                 for ($i = 0; $i < $numGroupCampos; $i++) {
                     $result = db_query("select p.codarq,c.nomecam 
                           from db_sysprikey p 
@@ -351,7 +351,7 @@ if (!isset($ref) && isset($_POST["ref"])) {
                     and f.codarq = $tabela
             and f.referen = $ref
             order by f.sequen");
-                    $num_linhas = pg_num_rows($result);
+                    $num_linhas = $result === false || $result === null ? 0 : pg_num_rows($result);
                     if ($num_linhas == 0) {
                         form($ref, $tab, "", "");
                     } else {

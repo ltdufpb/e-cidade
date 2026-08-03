@@ -487,7 +487,7 @@ class Processamento
         $dados = $this->getQuery();
         $rsDados = db_query($dados);
 
-        $totalLinhas = pg_num_rows($rsDados);
+        $totalLinhas = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
         $instancia = $this;
         $retorno = \db_utils::makeCollectionFromRecord($rsDados, function ($dados) use ($instancia) {
 
@@ -513,7 +513,7 @@ class Processamento
         $dados = $this->getQueryMsc();
         $rsDados = db_query($dados);
 
-        $totalLinhas = pg_num_rows($rsDados);
+        $totalLinhas = $rsDados === false || $rsDados === null ? 0 : pg_num_rows($rsDados);
         $instancia = $this;
         $retorno = \db_utils::makeCollectionFromRecord($rsDados, function ($dados) use ($instancia) {
 

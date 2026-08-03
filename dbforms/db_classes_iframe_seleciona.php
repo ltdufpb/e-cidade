@@ -130,7 +130,7 @@ if($mostra_totalizador=="S"){
     if($posicao_totalizador=="A"){
         if(isset($sql) && $sql!=""){
             $result  = db_query($sql);
-            $numrows = pg_num_rows($result);
+            $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
             if($numrows > 0){
                 $matriz_campos = explode(",", $campos);
                 $numcolunas    = sizeof($matriz_campos);
@@ -151,19 +151,19 @@ if($mostra_totalizador=="S"){
 if(isset($sql_disabled) && $sql_disabled!=""){
   $sql_disabled=base64_decode((string) $sql_disabled);
   $result03=db_query($sql_disabled);
-  $numrows03=pg_num_rows($result03);
+  $numrows03=$result03 === false || $result03 === null ? 0 : pg_num_rows($result03);
 }
 if(isset($sql_marca) && $sql_marca!=""){
   $sql_marca=base64_decode((string) $sql_marca);
   $result02=db_query($sql_marca);
-  $numrows02=pg_num_rows($result02);
+  $numrows02=$result02 === false || $result02 === null ? 0 : pg_num_rows($result02);
 }
 
 
 if(isset($sql) && $sql!=""){
        $result=db_query($sql);
-       $numrows=pg_num_rows($result);
-       $numcols=pg_num_fields($result);
+       $numrows=$result === false || $result === null ? 0 : pg_num_rows($result);
+       $numcols=$result === false || $result === null ? 0 : pg_num_fields($result);
        if($db_opcao=="Incluir"){
        }
        if($db_opcao=="Incluir"){
@@ -320,7 +320,7 @@ if($mostra_totalizador=="S"){
     if($posicao_totalizador=="B"){
         if(isset($sql) && $sql!=""){
             $result  = db_query($sql);
-            $numrows = pg_num_rows($result);
+            $numrows = $result === false || $result === null ? 0 : pg_num_rows($result);
             if($numrows > 0){
                 $matriz_campos = explode(",", $campos);
                 $numcolunas    = sizeof($matriz_campos);

@@ -64,7 +64,7 @@ order by rh55_estrut,z01_nome
 
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_num_rows($result);
+$xxnum = $result === false || $result === null ? 0 : pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários cadastrados no intervalo para o período de '.$mes.' / '.$ano);
 

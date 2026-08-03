@@ -113,7 +113,7 @@ try {
       foreach ($aCodigosSlip as $iCodigoSlip) {
 
         $rsExecutaBusca = pg_execute("pesquisa_autenticacao_slip", [$iCodigoSlip]);
-        $iTotalAutenticacao = pg_num_rows($rsExecutaBusca);
+        $iTotalAutenticacao = $rsExecutaBusca === false || $rsExecutaBusca === null ? 0 : pg_num_rows($rsExecutaBusca);
         if (!$rsExecutaBusca || $iTotalAutenticacao == 0) {
           throw new DBException("Não foi possível buscar a autenticação do slip {$iCodigoSlip}.\n\n".pg_last_error());
         }

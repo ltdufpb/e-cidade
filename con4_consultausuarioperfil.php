@@ -42,7 +42,7 @@ $sqlperfil = "select distinct id_perfil ,u.nome
 							     and s.anousu= $ano";
 
 $resultperfil = db_query($sqlperfil);
-$linhasperfil = pg_num_rows($resultperfil);
+$linhasperfil = $resultperfil === false || $resultperfil === null ? 0 : pg_num_rows($resultperfil);
 ?>
 <html>
 <head>

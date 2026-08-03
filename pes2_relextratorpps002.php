@@ -128,7 +128,7 @@ try {
 		throw new DBException("Ocorreu um erro ao consultar os servidores.");
 	}
 
-	$iQtdeServidores = pg_num_rows($rsServidores);
+	$iQtdeServidores = $rsServidores === false || $rsServidores === null ? 0 : pg_num_rows($rsServidores);
 	if($iQtdeServidores == 0) {
 		throw new BusinessException("Não há servidores para o filtro selecionado.");
 	}
