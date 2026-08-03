@@ -78,7 +78,8 @@ $stdClass = new db_stdClass();
 parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if (isset($sAuth)) {
-  parse_str( base64_decode($sAuth) );
+  parse_str( base64_decode($sAuth), $_parseStr );
+  extract($_parseStr, EXTR_SKIP);
 }
 
 if (isset($_GET["logOut"])) {

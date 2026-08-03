@@ -1068,7 +1068,8 @@ if(isset($tipo)) {
 
   //verifica se foi clicado no link agrupar e recria as variaveis do QUERY_STRING pra atualizar o agnump e agpar
   if(isset($verificaagrupar)) {
-    parse_str((string) $_SERVER['QUERY_STRING']);
+    parse_str((string) $_SERVER['QUERY_STRING'], $_parseStr);
+    extract($_parseStr, EXTR_SKIP);
   }
 
   // calcular totregistros...

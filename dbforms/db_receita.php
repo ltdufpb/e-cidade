@@ -30,8 +30,10 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-if(!isset($arg))
- parse_str(base64_decode((string) $_SERVER['QUERY_STRING']));
+if (!isset($arg)) {
+    parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $_parseStr);
+    extract($_parseStr, EXTR_SKIP);
+}
 
 if(isset($retorno)) {
   $ret = explode("##",$retorno);

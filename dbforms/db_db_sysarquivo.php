@@ -34,7 +34,8 @@ if(!isset($arg)) {
   $str1 = base64_decode((string) $str[0]);
   $str2 = base64_decode((string) $str[1]);
   parse_str($str1, $result);
-  parse_str($str2);  
+  parse_str($str2, $_parseStr);
+  extract($_parseStr, EXTR_SKIP);  
 }
 
 

@@ -37,7 +37,8 @@ if(!isset($arg)) {
   $str2 = base64_decode((string) $str[1]);
 //  echo "$str1<br>$str2";
   parse_str($str1, $result);
-  parse_str($str2);  
+  parse_str($str2, $_parseStr);
+  extract($_parseStr, EXTR_SKIP);  
 }
 if(isset($retorno)) {
   $ret = explode("##",$retorno);

@@ -355,7 +355,8 @@ if(isset($tipo)) {
   echo "</tr>\n";
   //verifica se foi clicado no link agrupar e recria as variaveis do QUERY_STRING pra atualizar o agnump e agpar
   if(isset($verificaagrupar)) {
-    parse_str((string) $_SERVER['QUERY_STRING']);
+    parse_str((string) $_SERVER['QUERY_STRING'], $_parseStr);
+    extract($_parseStr, EXTR_SKIP);
   }
   
   //if com 3 partes. Primeiro se é pra agrupar por numpre, segundo se é pra agrupar por parcela e terceiro mostra o default

@@ -33,7 +33,8 @@ define('FPDF_FONTPATH','fpdf151/font/');
 require(modification('fpdf151/fpdf.php'));
 parse_str((string) $_SERVER["QUERY_STRING"], $result);
 if(!isset($DB_login)) {
-  parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]));
+  parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $_parseStr);
+  extract($_parseStr, EXTR_SKIP);
 }
 if(!($conn = pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$DB_USUARIO password=$DB_SENHA"))) {
   echo "Erro(12) ao tentar conectar no servidor.";

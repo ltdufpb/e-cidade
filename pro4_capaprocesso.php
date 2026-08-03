@@ -44,7 +44,8 @@ require_once(modification("model/processoProtocolo.model.php"));
 
 // **********************************************
 if (!empty($HTTP_SERVER_VAR)) {
-    parse_str((string) $_SERVER["QUERY_STRING"]);
+    parse_str((string) $_SERVER["QUERY_STRING"], $_parseStr);
+    extract($_parseStr, EXTR_SKIP);
 }
 
 // Alteracao Plugin TaxonomiaDeProcessosDoMinisterioPublico - pro4_capaprocesso.php #1
