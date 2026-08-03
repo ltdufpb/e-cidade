@@ -17,12 +17,12 @@ class Error implements HandlerInterface {
   /**
    * Function to explicit return false and populate php_errormsg
    */
-  public static function _handle($type, $message, $file, $line, $context) {
+  public static function _handle($type, $message, $file, $line, $context = null) {
     static::handle($type, $message, $file, $line, $context);
     return false;
   }
 
-  public static function handle($type, $message, $file, $line, $context) {
+  public static function handle($type, $message, $file, $line, $context = null) {
 
     $suppress = error_reporting() === 0;
 

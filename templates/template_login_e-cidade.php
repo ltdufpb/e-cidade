@@ -180,7 +180,7 @@ $clientSecret = Registry::get('app.config')->get('api.client.secret');
     }
   });
 
-  function js_acessar_dbportal() {
+  function js_acessar_jquery() {
 
       btnLogar.style.display = 'none';
       btnLoading.style.display = '';
@@ -257,20 +257,20 @@ $clientSecret = Registry::get('app.config')->get('api.client.secret');
   $(document).ready(function() {
 
     $('#btnlogar').on('click', function(event) {
-      js_acessar_dbportal();
+      js_acessar_jquery();
     });
 
     $('#usu_senha').on('keyup', function(event){
 
       if (event.keyCode == 13) {
-        js_acessar_dbportal();
+        js_acessar_jquery();
       }
     });
 
     $('#ct_captcha').on('keyup', function(event){
 
       if (event.keyCode == 13) {
-        js_acessar_dbportal();
+        js_acessar_jquery();
       }
     });
 
